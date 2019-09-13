@@ -6,7 +6,7 @@ import com.qualcomm.robotcore.hardware.DcMotor;
 import com.qualcomm.robotcore.hardware.DcMotorSimple;
 import com.qualcomm.robotcore.hardware.Servo;
 
-@TeleOp(name = "Swerve Drive Test")
+//@TeleOp(name = "Swerve Drive Test")
 public class swerveDriveTest extends OpMode {
 
     //DC Motors

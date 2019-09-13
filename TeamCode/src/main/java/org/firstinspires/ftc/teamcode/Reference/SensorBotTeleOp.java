@@ -8,7 +8,7 @@ import com.qualcomm.robotcore.hardware.DistanceSensor;
 
 import org.firstinspires.ftc.robotcore.external.navigation.DistanceUnit;
 //test
-@TeleOp(name="SensorBot")
+//@TeleOp(name="SensorBot")
 public class SensorBotTeleOp extends OpMode {
     DcMotor fLeft, fRight, bLeft, bRight;
     //DistanceSensor distanceL, distanceCL, distanceCR, distanceR;

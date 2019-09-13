@@ -18,7 +18,7 @@ import org.firstinspires.ftc.robotcore.external.navigation.Velocity;
 
 import java.util.Locale;
 
-@TeleOp(name="AroundObjectTest")
+//@TeleOp(name="AroundObjectTest")
 public class AroundObjectTest extends OpMode {
 
     DcMotor fLeft, fRight, bLeft, bRight;

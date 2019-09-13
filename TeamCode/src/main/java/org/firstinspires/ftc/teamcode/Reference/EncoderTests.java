@@ -18,7 +18,7 @@ import org.firstinspires.ftc.robotcore.external.navigation.Velocity;
 
 import java.util.Locale;
 
-@TeleOp(name="EncoderTest")
+//@TeleOp(name="EncoderTest")
 public class EncoderTests extends OpMode {
 
     DcMotor fLeft, fRight, bLeft, bRight;
