@@ -8,7 +8,7 @@ import com.qualcomm.robotcore.hardware.DcMotorSimple;
 import com.qualcomm.robotcore.hardware.Servo;
 
 
-@TeleOp(name = "swerveee")
+//@TeleOp(name = "swerveee")
 public class turnyWheelBoi extends OpMode {
 /*
 * @todo test bot

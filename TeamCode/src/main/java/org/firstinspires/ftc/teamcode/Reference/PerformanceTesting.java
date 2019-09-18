@@ -17,7 +17,7 @@ import org.firstinspires.ftc.robotcore.external.navigation.Velocity;
 
 import java.util.Locale;
 
-@TeleOp(name = "Performance Testing")
+//@TeleOp(name = "Performance Testing")
 
 public class PerformanceTesting extends OpMode {
     DcMotor fLeft, fRight, bLeft, bRight;
