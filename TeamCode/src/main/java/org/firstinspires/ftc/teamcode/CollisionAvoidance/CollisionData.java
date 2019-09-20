@@ -6,20 +6,16 @@ import com.qualcomm.robotcore.hardware.DcMotor;
 public class CollisionData extends OpMode {
 
     //DC Motors
-DcMotor Motor1; //Left motor
-DcMotor Motor2; //right motor
-
+DcMotor motor1, motor2; //Left and right motors
     //Distance Sensors
-
-
-    public void loop() {
-        Motor1.setPower(gamepad1.left_stick_x);
-        Motor2.setPower(-gamepad1.left_stick_x);
+    public void init() {
+        motor1 = hardwareMap.dcMotor.get("m1");
+        motor2 = hardwareMap.dcMotor.get("m2");
     }
 
-    public void init() {
-        Motor1 = hardwareMap.dcMotor.get("m1");
-        Motor2 = hardwareMap.dcMotor.get("m2");
+    public void loop() {
+        motor1.setPower(gamepad1.left_stick_x);
+        motor2.setPower(-gamepad1.left_stick_x);
     }
 
     public void stop() {
