@@ -32,8 +32,13 @@ package org.firstinspires.ftc.teamcode.notHarry;
 
 import com.qualcomm.robotcore.eventloop.opmode.Disabled;
 import com.qualcomm.robotcore.eventloop.opmode.LinearOpMode;
+import com.qualcomm.robotcore.eventloop.opmode.OpMode;
 import com.qualcomm.robotcore.eventloop.opmode.TeleOp;
+import com.qualcomm.robotcore.hardware.DcMotor;
+import com.qualcomm.robotcore.hardware.DcMotorSimple;
+
 import java.util.List;
+
 import org.firstinspires.ftc.robotcore.external.ClassFactory;
 import org.firstinspires.ftc.robotcore.external.navigation.VuforiaLocalizer;
 import org.firstinspires.ftc.robotcore.external.navigation.VuforiaLocalizer.CameraDirection;
@@ -43,19 +48,22 @@ import org.firstinspires.ftc.robotcore.external.tfod.Recognition;
 /**
  * This 2019-2020 OpMode illustrates the basics of using the TensorFlow Object Detection API to
  * determine the position of the Skystone game elements.
- *
+ * <p>
  * Use Android Studio to Copy this Class, and Paste it into your team's code folder with a new name.
  * Remove or comment out the @Disabled line to add this opmode to the Driver Station OpMode list.
- *
+ * <p>
  * IMPORTANT: In order to use this OpMode, you need to obtain your own Vuforia license key as
  * is explained below.
  */
 @TeleOp(name = "centerAlign")
 //@Disabled
-public class centerAlign extends LinearOpMode {
+public class centerAlign extends OpMode {
     private static final String TFOD_MODEL_ASSET = "Skystone.tflite";
     private static final String LABEL_FIRST_ELEMENT = "Stone";
     private static final String LABEL_SECOND_ELEMENT = "Skystone";
+    float leftDrive, rightDrive, leftStrafe, rightStrafe;
+    DcMotor fLeft, fRight, bLeft, bRight;
+
 
     /*
      * IMPORTANT: You need to obtain your own license key to use Vuforia. The string below with which
@@ -70,7 +78,8 @@ public class centerAlign extends LinearOpMode {
      * and paste it in to your code on the next line, between the double quotes.
      */
     private static final String VUFORIA_KEY =
-            "Afe8mtn/////AAAAGSEHpcPbGksXnZDY1oNZ4stF2BoZwT7Xgcdi3AuWqz3ZGmgN8lUJqEQzvS9hmsvT+5ERk+B2c9iol+6TxH/AhiWr/D8jExF0BSuV22m29ctHLg0QHoo5xJH9Dqr98eojHO3w7181LIaPKBPUvu4WyeODzlNXYDy8IQ5Xq3CuOGEuq/e967FWjhr1Z/OsNgrMh9Gwh28vPqleIfZ3kvSQEArGesl3BuRKYs2w3CX1deteJRjDZ6ayuEBlGFERsy2phkd7uqa9tHiNxVgQt6KBL/mcAJIzvU1rTuq2HPumNMsmw0UMnH35IHyT7X+uieeh+ooHH9XePCL2GFWjHyNQOPUKXe5uSlcWfK2kRzkt8xFF";;
+            "Afe8mtn/////AAAAGSEHpcPbGksXnZDY1oNZ4stF2BoZwT7Xgcdi3AuWqz3ZGmgN8lUJqEQzvS9hmsvT+5ERk+B2c9iol+6TxH/AhiWr/D8jExF0BSuV22m29ctHLg0QHoo5xJH9Dqr98eojHO3w7181LIaPKBPUvu4WyeODzlNXYDy8IQ5Xq3CuOGEuq/e967FWjhr1Z/OsNgrMh9Gwh28vPqleIfZ3kvSQEArGesl3BuRKYs2w3CX1deteJRjDZ6ayuEBlGFERsy2phkd7uqa9tHiNxVgQt6KBL/mcAJIzvU1rTuq2HPumNMsmw0UMnH35IHyT7X+uieeh+ooHH9XePCL2GFWjHyNQOPUKXe5uSlcWfK2kRzkt8xFF";
+    ;
 
     /**
      * {@link #vuforia} is the variable we will use to store our instance of the Vuforia
@@ -84,10 +93,18 @@ public class centerAlign extends LinearOpMode {
      */
     private TFObjectDetector tfod;
 
-    @Override
-    public void runOpMode() {
+    public void init() {
         // The TFObjectDetector uses the camera frames from the VuforiaLocalizer, so we create that
         // first.
+        fLeft = hardwareMap.dcMotor.get("fLeft");
+        fRight = hardwareMap.dcMotor.get("fRight");
+        bLeft = hardwareMap.dcMotor.get("bLeft");
+        bRight = hardwareMap.dcMotor.get("bRight");
+
+        fLeft.setDirection(DcMotorSimple.Direction.REVERSE);
+        fRight.setDirection(DcMotorSimple.Direction.FORWARD);
+        bRight.setDirection(DcMotor.Direction.FORWARD);
+        bLeft.setDirection(DcMotor.Direction.REVERSE);
         initVuforia();
 
         if (ClassFactory.getInstance().canCreateTFObjectDetector()) {
@@ -107,41 +124,64 @@ public class centerAlign extends LinearOpMode {
         /** Wait for the game to begin */
         telemetry.addData(">", "Press Play to start op mode");
         telemetry.update();
-        waitForStart();
-
-        if (opModeIsActive()) {
-            while (opModeIsActive()) {
-                if (tfod != null) {
-                    // getUpdatedRecognitions() will return null if no new information is available since
-                    // the last time that call was made.
-                    List<Recognition> updatedRecognitions = tfod.getUpdatedRecognitions();
-                    if (updatedRecognitions != null) {
-                        telemetry.addData("# Object Detected", updatedRecognitions.size());
-
-                        // step through the list of recognitions and display boundary info.
-                        int i = 0;
+    }
 
 
-                        for (Recognition recognition : updatedRecognitions) {
-                            float lDist = recognition.getLeft();
+    public void loop() {
 
-                            telemetry.addData("Left",recognition.getLeft());
-                            telemetry.addData(String.format("label (%d)", i), recognition.getLabel());
-                            telemetry.addData(String.format("  left,top (%d)", i), "%.03f , %.03f",
-                                    recognition.getLeft(), recognition.getTop());
-                            telemetry.addData(String.format("  right,bottom (%d)", i), "%.03f , %.03f",
-                                    recognition.getRight(), recognition.getBottom());
-                           // if(lDist > 1){
+        if (tfod != null) {
+            // getUpdatedRecognitions() will return null if no new information is available since
+            // the last time that call was made.
+            List<Recognition> updatedRecognitions = tfod.getUpdatedRecognitions();
+            if (updatedRecognitions != null) {
+                telemetry.addData("# Object Detected", updatedRecognitions.size());
 
-                       // }
-                        telemetry.update();
+                // step through the list of recognitions and display boundary info.
+                int i = 0;
+
+
+                for (Recognition recognition : updatedRecognitions) {
+                    float width = recognition.getWidth();
+                    float imageWidth = recognition.getImageWidth();
+                    float left = recognition.getLeft();
+
+                    if (left <=-9 && left >= -11) {
+                        fLeft.setPower(0);
+                        fRight.setPower(0);
+                        bLeft.setPower(0);
+                        bRight.setPower(0);
+                    }else if ( left > -10){
+                        bLeft.setPower(-(rightStrafe*100)/128);
+                        fLeft.setPower((rightStrafe*100)/128);
+                        bRight.setPower((rightStrafe*100)/128);
+                        fRight.setPower(-(rightStrafe*100)/128);
+                    }else if (left < -10){
+                        bLeft.setPower((leftStrafe*100)/128);
+                        fLeft.setPower(-(leftStrafe*100)/128);
+                        bRight.setPower(-(leftStrafe*100)/128);
+                        fRight.setPower((leftStrafe*100)/128);
+                    }else{
+                        stop();
                     }
+                    telemetry.addData("Stone Height", recognition.getHeight());
+                    telemetry.addData("Image Height", recognition.getImageHeight());
+                    telemetry.addData("Stone Width", recognition.getWidth());
+                    telemetry.addData("Label", recognition.getLabel());
+                    telemetry.addData(String.format("label (%d)", i), recognition.getLabel());
+                    telemetry.addData(String.format("  left,top (%d)", i), "%.03f , %.03f",
+                            recognition.getLeft(), recognition.getTop());
+                    telemetry.addData(String.format("  right,bottom (%d)", i), "%.03f , %.03f",
+                            recognition.getRight(), recognition.getBottom());
+                    // if(lDist > 1){
 
-
-                    }
+                    // }
+                    telemetry.update();
                 }
+
+
             }
         }
+
 
         if (tfod != null) {
             tfod.shutdown();
@@ -176,5 +216,11 @@ public class centerAlign extends LinearOpMode {
         tfodParameters.minimumConfidence = 0.8;
         tfod = ClassFactory.getInstance().createTFObjectDetector(tfodParameters, vuforia);
         tfod.loadModelFromAsset(TFOD_MODEL_ASSET, LABEL_FIRST_ELEMENT, LABEL_SECOND_ELEMENT);
+    }
+    public void stop(){
+        fLeft.setPower(0);
+        fRight.setPower(0);
+        bLeft.setPower(0);
+        bRight.setPower(0);
     }
 }
