@@ -1,10 +1,9 @@
-/*
-package org.firstinspires.ftc.teamcode.Reference;
+package org.firstinspires.ftc.teamcode;
 
+import java.util.Locale;
 import com.qualcomm.hardware.bosch.BNO055IMU;
 import com.qualcomm.hardware.bosch.JustLoggingAccelerationIntegrator;
 import com.qualcomm.robotcore.eventloop.opmode.OpMode;
-import com.qualcomm.robotcore.eventloop.opmode.TeleOp;
 import com.qualcomm.robotcore.hardware.DcMotor;
 import com.qualcomm.robotcore.hardware.DcMotorSimple;
 import com.qualcomm.robotcore.hardware.DistanceSensor;
@@ -12,43 +11,23 @@ import com.qualcomm.robotcore.hardware.DistanceSensor;
 import org.firstinspires.ftc.robotcore.external.navigation.AngleUnit;
 import org.firstinspires.ftc.robotcore.external.navigation.AxesOrder;
 import org.firstinspires.ftc.robotcore.external.navigation.AxesReference;
-import org.firstinspires.ftc.robotcore.external.navigation.DistanceUnit;
 import org.firstinspires.ftc.robotcore.external.navigation.Orientation;
 import org.firstinspires.ftc.robotcore.external.navigation.Position;
 import org.firstinspires.ftc.robotcore.external.navigation.Velocity;
 
-import java.util.Locale;
-
-//@TeleOp(name="EncoderTest")
-public class EncoderTests extends OpMode {
-
+public class SkyStonev1_1 extends OpMode {
     DcMotor fLeft, fRight, bLeft, bRight;
     DistanceSensor distanceL, distanceR, distanceC;
     BNO055IMU imu;
     Orientation angles;
 
-    public enum DriveState {
-        M_FORWARD,
-        M_BACKWARD,
-        M_LEFT,
-        M_RIGHT,
-        M_NULL
-    }
-    public DriveState driveState = DriveState.M_FORWARD;
-    public DriveState prevState = DriveState.M_NULL;
-
-    double distanceRemaining = 0;
-
     //used for encoders
     static final double     EXTERNAL_GEARING        = 1;
-    static final double     COUNTS_PER_MOTOR_REV    = 537.6 ;  // eg: AndyMark NeverRest40 Motor Encoder
+    static final double     COUNTS_PER_MOTOR_REV    = 537.6 ;  //28  // eg: AndyMark NeverRest40 Motor Encoder
     static final double     DRIVE_GEAR_REDUCTION    = 1 ;     // This is < 1.0 if geared UP
     static final double     WHEEL_DIAMETER_INCHES   = 3.937 ;     // For figuring circumference
-    static final double     ROLLER_WHEEL_CIRC       = 13 ;    //Used for strafing
-    public static final double     COUNTS_PER_INCH_NORM         = ((COUNTS_PER_MOTOR_REV * DRIVE_GEAR_REDUCTION) /
-            (WHEEL_DIAMETER_INCHES * 3.1415)) / EXTERNAL_GEARING;       //Used for driving straight
-    public static final double      COUNTS_PER_INCH_STRAFE      = ((COUNTS_PER_MOTOR_REV * DRIVE_GEAR_REDUCTION) /
-            ROLLER_WHEEL_CIRC) / EXTERNAL_GEARING;          //Used for strafing
+    public static final double     COUNTS_PER_INCH         = ((COUNTS_PER_MOTOR_REV * DRIVE_GEAR_REDUCTION) /
+            (WHEEL_DIAMETER_INCHES * 3.1415))/EXTERNAL_GEARING;
 
     public void init(){
         //Hardware mapping of the four motors
@@ -100,76 +79,17 @@ public class EncoderTests extends OpMode {
         imu.startAccelerationIntegration(new Position(), new Velocity(), 1000);
     }
     public void loop(){
-        //telemetry.addData("target ", fRight.getCurrentPosition()*COUNTS_PER_INCH);
-        telemetry.addData("Current ",fRight.getCurrentPosition()/COUNTS_PER_INCH_NORM);
 
-        switch (driveState) {
-            case M_FORWARD:
-                if (prevState != DriveState.M_FORWARD) {
-                    resetEncoderWithoutEncoder();
-                    distanceRemaining = 15;
-                }
-                driveStraight(distanceRemaining, "forward");
-                driveState = DriveState.M_BACKWARD;
-                break;
-            case M_BACKWARD:
-                if (prevState != DriveState.M_BACKWARD) {
-                    resetEncoderWithoutEncoder();
-                    distanceRemaining = 15;
-                }
-                driveStraight(15, "backward");
-                driveState = DriveState.M_LEFT;
-                break;
+    }
+    public void stop(){
 
-            case M_LEFT:
-                if (prevState != DriveState.M_LEFT) {
-                    resetEncoderWithoutEncoder();
-                    distanceRemaining = 15;
-                }
-                driveStrafe(distanceRemaining, "left");
-                driveState = DriveState.M_RIGHT;
-                break;
-            case M_RIGHT:
-                if (prevState != DriveState.M_RIGHT) {
-                    resetEncoderWithoutEncoder();
-                    distanceRemaining = 15;
-                }
-                driveStrafe(distanceRemaining, "right");
-                driveState = DriveState.M_FORWARD;
-                break;
-            case M_NULL:
-                break;
-        }
-
-        prevState = driveState;
     }
 
-    public void driveStrafe(double distance, String direction) {
-        double startPos = fRight.getCurrentPosition() / COUNTS_PER_INCH_STRAFE;
-
-        int mDirection = 1;
-        if (direction.equals("right")) {
-            mDirection = -1;
-        }
-
-        double target = distance * mDirection;
-
-        if ((mDirection == 1 && fRight.getCurrentPosition() / COUNTS_PER_INCH_STRAFE < target) || (mDirection == -1 && fRight.getCurrentPosition() / COUNTS_PER_INCH_STRAFE > target)){
-            fLeft.setPower(-0.2 * mDirection);
-            fRight.setPower(0.2 * mDirection);
-            bLeft.setPower(0.2 * mDirection);
-            bRight.setPower(-0.2 * mDirection);
-        }
-        else {
-            fLeft.setPower(0);
-            fRight.setPower(0);
-            bLeft.setPower(0);
-            bRight.setPower(0);
-        }
-
-        distanceRemaining -= fRight.getCurrentPosition() - startPos;
-    }
-
+    /**
+     * drives inputted distance
+     * @param direction direction of driving. "backward" to go backward
+     * @param distance distance driving in inches
+     */
     public void driveStraight(String direction, double distance) {
         resetEncoderWithoutEncoder();
         int mDirection = 1;
@@ -192,18 +112,9 @@ public class EncoderTests extends OpMode {
         bRight.setPower(0);
     }
 
-    public void stop(){
-        fLeft.setPower(0);
-        fRight.setPower(0);
-        bLeft.setPower(0);
-        bRight.setPower(0);
-    }
-
-    */
-/**
+    /**
      * Resets drive encoders without running using encoders
-     *//*
-
+     */
     public void resetEncoderWithoutEncoder(){
         bRight.setMode(DcMotor.RunMode.STOP_AND_RESET_ENCODER);
         bLeft.setMode(DcMotor.RunMode.STOP_AND_RESET_ENCODER);
@@ -216,12 +127,10 @@ public class EncoderTests extends OpMode {
         bLeft.setMode(DcMotor.RunMode.RUN_WITHOUT_ENCODER);
     }
 
-    */
-/**
-     *
-     * @param destination
-     *//*
-
+    /**
+     * turns to the desired angle
+     * @param destination angle desired
+     */
     public void Rotation(float destination) {
         fRight.setMode(DcMotor.RunMode.RUN_WITHOUT_ENCODER);
         fLeft.setMode(DcMotor.RunMode.RUN_WITHOUT_ENCODER);
@@ -235,11 +144,6 @@ public class EncoderTests extends OpMode {
 
         //standard current angle
         double heading = cvtDegrees(angles.firstAngle);
-
-        */
-/**
-         * This will determine the actual intended heading from 0-360
-         *//*
 
         //check if over 360
         if (Math.abs(destination)>360) {
@@ -315,11 +219,12 @@ public class EncoderTests extends OpMode {
         fRight.setPower(0);
     }
 
+    /**
+     * converts gyro degrees from -180 to 180 to be 0 to 360
+     * @param heading
+     * @return
+     */
     public double cvtDegrees(double heading) {
-        */
-/**
-         * convert degrees from -180<->180 to 0<->360
-         *//*
 
         if (heading <0 ) {
             return 360 + heading;
@@ -328,35 +233,30 @@ public class EncoderTests extends OpMode {
         }
     }
 
-    */
-/**
-     * a function that is needed to format the gyro angle
+    /**
+     * method needed for gyro
      * @param angleUnit
      * @param angle
      * @return
-     *//*
-
+     */
     String formatAngle(AngleUnit angleUnit, double angle) {
         return formatDegrees(AngleUnit.DEGREES.fromUnit(angleUnit, angle));
     }
 
-    */
-/**
-     * a function that is needed to format the gyro angle
+    /**
+     * method needed for gyro
      * @param degrees
      * @return
-     *//*
-
+     */
     String formatDegrees(double degrees){
         return String.format(Locale.getDefault(), "%.1f", AngleUnit.DEGREES.normalize(degrees));
     }
 
+    /**
+    * will stall the program for the inputted amount of time
+    * wait time cannot be more than 5 seconds
+    * @param milTime the amount of time to wait in seconds
     */
-/**
-     * will stall the program for the inputted amount of time
-     * wait time cannot be more than 5 seconds
-     * @param milTime the amount of time to wait in seconds
-     *//*
 
     public void pause(double milTime){
         double iTime =System.currentTimeMillis();
@@ -366,4 +266,3 @@ public class EncoderTests extends OpMode {
         }
     }
 }
-*/
