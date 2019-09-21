@@ -38,6 +38,7 @@ public class RecordCollisionData extends OpMode {
         dataPoints = new double[20];
 
         //Initialize variables
+        power = 0.1;
         pause = false;
         count = 0;
     }
@@ -47,12 +48,16 @@ public class RecordCollisionData extends OpMode {
     }
 
     public void loop() {
+        buttonA = gamepad1.a;
+        bumperR = gamepad1.right_bumper;
+        bumperL = gamepad1.left_bumper;
+
         //General telemetry
         telemetry.addData("Done? ", pause);
         telemetry.addData("Power:", power);
         telemetry.addData("Data Points (distance per second): ", Arrays.toString(dataPoints));
 
-        if (count > 10) {  //If seconds are within testing limit
+        if (count > 20) {  //If seconds are within testing limit
             pause = true;
             count = 0;
         }
@@ -66,10 +71,11 @@ public class RecordCollisionData extends OpMode {
             else if (buttonA) {     //Wait until button A is pressed to continue
                 pause = false;
                 startTime = System.currentTimeMillis(); //Reset startTime
+                dataPoints = new double[20];
             }
         }
         else {
-            count = (int) Math.floor((System.currentTimeMillis() - startTime) / 1000);   //Set count to amount of seconds since startTime
+            count = (int) Math.round((System.currentTimeMillis() - startTime) / 500);   //Set count to amount of seconds since startTime
 
             dataPoints[count] = distF;       //Set data point for distance at some amount of seconds
         }
