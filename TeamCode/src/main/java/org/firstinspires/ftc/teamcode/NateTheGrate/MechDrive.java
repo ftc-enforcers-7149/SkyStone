@@ -3,6 +3,7 @@ package org.firstinspires.ftc.teamcode.NateTheGrate;
 import com.qualcomm.robotcore.eventloop.opmode.OpMode;
 import com.qualcomm.robotcore.eventloop.opmode.TeleOp;
 import com.qualcomm.robotcore.hardware.DcMotor;
+import com.qualcomm.robotcore.hardware.DcMotorSimple;
 
 @TeleOp(name = "MechDrive")
 public class MechDrive extends OpMode {
@@ -21,6 +22,12 @@ public class MechDrive extends OpMode {
         fRight = hardwareMap.dcMotor.get("fRight");
         bRight = hardwareMap.dcMotor.get("bRight");
         bLeft = hardwareMap.dcMotor.get("bLeft");
+
+        fLeft.setDirection(DcMotorSimple.Direction.REVERSE);
+        fRight.setDirection(DcMotorSimple.Direction.FORWARD);
+        bRight.setDirection(DcMotor.Direction.FORWARD);
+        bLeft.setDirection(DcMotor.Direction.REVERSE);
+
     }
 
 

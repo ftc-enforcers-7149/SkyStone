@@ -82,7 +82,10 @@ public class SkyStonev1_1 extends OpMode {
 
     }
     public void stop(){
-
+        fLeft.setPower(0);
+        bLeft.setPower(0);
+        bRight.setPower(0);
+        fRight.setPower(0);
     }
 
     /**
@@ -97,13 +100,18 @@ public class SkyStonev1_1 extends OpMode {
             mDirection = -1;
         }
 
-        double target=distance * mDirection;
+        double power=0.6*mDirection;
+        double cPosition=fRight.getCurrentPosition()/COUNTS_PER_INCH*mDirection;
 
-        while(fRight.getCurrentPosition()/COUNTS_PER_INCH < target){
-            fLeft.setPower(0.2);
-            fRight.setPower(0.2);
-            bLeft.setPower(0.2);
-            bRight.setPower(0.2);
+        while(cPosition < distance){
+            cPosition=fRight.getCurrentPosition()/COUNTS_PER_INCH*mDirection;
+            if(distance-Math.abs(cPosition)<20){
+                power=0.2*mDirection;
+            }
+            fLeft.setPower(power);
+            fRight.setPower(power);
+            bLeft.setPower(power);
+            bRight.setPower(power);
         }
 
         fLeft.setPower(0);
@@ -129,6 +137,7 @@ public class SkyStonev1_1 extends OpMode {
 
     /**
      * turns to the desired angle
+     * 0-360 in a counter clockwise format
      * @param destination angle desired
      */
     public void Rotation(float destination) {
