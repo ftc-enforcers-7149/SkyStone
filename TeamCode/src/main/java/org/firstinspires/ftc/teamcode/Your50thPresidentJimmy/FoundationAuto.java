@@ -1,42 +1,43 @@
 package org.firstinspires.ftc.teamcode.Your50thPresidentJimmy;
 
+import com.qualcomm.hardware.bosch.BNO055IMU;
+import com.qualcomm.robotcore.eventloop.opmode.Autonomous;
 import com.qualcomm.robotcore.eventloop.opmode.OpMode;
 import com.qualcomm.robotcore.hardware.DcMotor;
 import com.qualcomm.robotcore.hardware.DcMotorSimple;
+import com.qualcomm.robotcore.hardware.DistanceSensor;
 
-public class FoundationAuto extends OpMode {
+import org.firstinspires.ftc.robotcore.external.navigation.Orientation;
+import org.firstinspires.ftc.teamcode.SkyStonev1_1;
+
+@Autonomous(name="auto 1")
+public class FoundationAuto extends SkyStonev1_1 {
     DcMotor fLeft, fRight, bLeft, bRight;
+    DistanceSensor distanceL, distanceR, distanceC;
+    BNO055IMU imu;
+    Orientation angles;
+
     int step=0;
     public void init() {
-        fLeft = hardwareMap.dcMotor.get("fLeft");
-        fRight = hardwareMap.dcMotor.get("fRight");
-        bLeft = hardwareMap.dcMotor.get("bLeft");
-        bRight = hardwareMap.dcMotor.get("bRight");
-
-        fLeft.setZeroPowerBehavior(DcMotor.ZeroPowerBehavior.BRAKE);
-        fRight.setZeroPowerBehavior(DcMotor.ZeroPowerBehavior.BRAKE);
-        bLeft.setZeroPowerBehavior(DcMotor.ZeroPowerBehavior.BRAKE);
-        bRight.setZeroPowerBehavior(DcMotor.ZeroPowerBehavior.BRAKE);
-
-        fLeft.setDirection(DcMotorSimple.Direction.FORWARD);
-        fRight.setDirection(DcMotorSimple.Direction.REVERSE);
-        bLeft.setDirection(DcMotorSimple.Direction.FORWARD);
-        bLeft.setDirection(DcMotorSimple.Direction.REVERSE);
-
-
+        super.init();
     }
 
     public void loop() {
         switch(step){
-            case 0:
-            case 1:
-            case 2:
+            case 0:driveStraight("forward", 50);
+                break;
+            case 1:driveStraight("backward", 34);
+                break;
+            case 2:Rotation(90);
+                break;
+            case 3:driveStraight("forward", 20);
+                break;
         }
         step++;
 
     }
 
     public void stop() {
-
+      super.stop();
     }
 }
