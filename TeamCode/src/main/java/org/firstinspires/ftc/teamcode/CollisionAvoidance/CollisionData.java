@@ -11,6 +11,11 @@ import org.firstinspires.ftc.robotcore.external.navigation.DistanceUnit;
 
 //Made by Krishna and Nathanael, with help from Matteo
 //Made 9-21-19
+//Fiddler on the Green is a great song change my mind
+/*
+The program generates deltas every tenth of a second for testing and outputs raw data to a log file
+accessible on the phone.
+*/
 public class CollisionData extends OpMode {
 
     //Mr. Worldwide but variables
@@ -29,11 +34,11 @@ public class CollisionData extends OpMode {
     double speed = 1;
 
     //Testing buttons
-    boolean startTest, testing, endTest;
+    boolean startTest, testing, endTest, logData;
 
 
     //Time vars
-    double sTime, cTime;
+    double sTime, cTime, lTime;
 
 
     //Delta vars
@@ -58,6 +63,7 @@ public class CollisionData extends OpMode {
 
         testing = false;
         firstTest = true;
+        logData = false;
         delta1 = 0; delta2 = 0; delta3 = 0; delta4 = 0;
 
     }
@@ -87,24 +93,29 @@ public class CollisionData extends OpMode {
 
 
         //Set speed
-        if(speedFull > 0.1) {
-            speed = 1;
-        }
-        else if(speedHalf) {
-            speed = 0.5;
-        }
-        else if(speedTwoThirds > 0) {
-            speed = 0.67;
+        if(!testing) {
+            if(speedFull > 0.1) {
+                speed = 1;
+            }
+            else if(speedHalf) {
+                speed = 0.5;
+            }
+            else if(speedTwoThirds > 0) {
+                speed = 0.67;
+            }
         }
 
 
         //Test started?
         if(startTest) {
             sTime = System.currentTimeMillis();
+            lTime = System.currentTimeMillis();
             Log.w("Speed: ", Double.toString(speed));
             testing = true;
         }
 
+
+        cTime = System.currentTimeMillis();
 
         //Testing process
         if(testing) {
@@ -118,9 +129,16 @@ public class CollisionData extends OpMode {
                 bRight.setPower(speed);
             }
 
-            //Ends test
+            //Time-based functions (stopping the program, logging data, etc)
             if(cTime - sTime > 5000 || endTest) {
                 testing = false;
+            }
+            else if (cTime - lTime > 100) {
+                lTime = System.currentTimeMillis();
+                logData = true;
+            }
+            else {
+                logData = false;
             }
 
             //Testing
@@ -149,18 +167,21 @@ public class CollisionData extends OpMode {
             }
 
             //Logs delta
-            Log.i("Delta: ", Double.toString(delta1));
-            Log.i("Time: ", Double.toString(cTime));
+            if(logData) {
+                Log.i("Delta: ", Double.toString(delta1));
+                Log.i("Time: ", Double.toString(cTime/1000));
+                logData = false;
+            }
         }
 
     }
 
     public void stop() {
-        //Stops the program duh
-        //Why do you even need a comment for this part of the code smh
-        //There's not even anything here
-        //It's eeeeeeeemptttyyyyyy
-        //This code empty YEET
+        speed = 0;
+        fLeft.setPower(speed);
+        fRight.setPower(speed);
+        bLeft.setPower(speed);
+        bRight.setPower(speed);
     }
 
 }

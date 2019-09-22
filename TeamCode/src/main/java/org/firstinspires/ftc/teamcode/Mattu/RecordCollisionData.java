@@ -14,7 +14,7 @@ import java.util.Arrays;
 /**
  * This is a concept file for code to be implemented in CollisionAvoidance/CollisionData
  */
-
+//
 @Autonomous(name = "DeltaDistance")
 public class RecordCollisionData extends OpMode {
 
