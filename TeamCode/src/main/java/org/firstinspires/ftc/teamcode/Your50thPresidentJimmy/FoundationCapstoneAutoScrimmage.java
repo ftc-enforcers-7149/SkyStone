@@ -28,7 +28,7 @@ import org.firstinspires.ftc.teamcode.SkyStonev1_1;
                     case 1: Rotation (270);
                         break;
                         //FULL SPEED
-                    case 2: driveStraight(5);
+                    case 2: driveStraight("forward", 5);
                         break;
                     case 3: Rotation (180);
                         break;
