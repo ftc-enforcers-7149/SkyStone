@@ -11,7 +11,7 @@ import org.firstinspires.ftc.robotcore.external.navigation.Orientation;
 import org.firstinspires.ftc.teamcode.SkyStonev1_1;
 
 @Autonomous(name="auto 1")
-public class FoundationAuto extends SkyStonev1_1 {
+public class FoundationAutoRed extends SkyStonev1_1 {
     DcMotor fLeft, fRight, bLeft, bRight;
     DistanceSensor distanceL, distanceR, distanceC;
     BNO055IMU imu;
