@@ -8,7 +8,7 @@ import com.qualcomm.robotcore.hardware.DistanceSensor;
 import org.firstinspires.ftc.robotcore.external.navigation.Orientation;
 import org.firstinspires.ftc.teamcode.SkyStonev1_1;
 
-        @Autonomous(name="auto 1")
+        @Autonomous(name="auto 2 CAPSTONE")
         public class FoundationCapstoneAutoScrimmage extends SkyStonev1_1 {
             DcMotor fLeft, fRight, bLeft, bRight;
             DistanceSensor distanceL, distanceR, distanceC;
