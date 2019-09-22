@@ -11,6 +11,7 @@ import org.firstinspires.ftc.robotcore.external.navigation.DistanceUnit;
 
 //Made by Krishna and Nathanael, with help from Matteo
 //Made 9-21-19
+//Fiddler on the Green is a great song change my mind
 public class CollisionData extends OpMode {
 
     //Mr. Worldwide but variables
@@ -87,14 +88,16 @@ public class CollisionData extends OpMode {
 
 
         //Set speed
-        if(speedFull > 0.1) {
-            speed = 1;
-        }
-        else if(speedHalf) {
-            speed = 0.5;
-        }
-        else if(speedTwoThirds > 0) {
-            speed = 0.67;
+        if(!testing) {
+            if(speedFull > 0.1) {
+                speed = 1;
+            }
+            else if(speedHalf) {
+                speed = 0.5;
+            }
+            else if(speedTwoThirds > 0) {
+                speed = 0.67;
+            }
         }
 
 
@@ -150,7 +153,7 @@ public class CollisionData extends OpMode {
 
             //Logs delta
             Log.i("Delta: ", Double.toString(delta1));
-            Log.i("Time: ", Double.toString(cTime));
+            Log.i("Time: ", Double.toString(cTime/1000));
         }
 
     }
