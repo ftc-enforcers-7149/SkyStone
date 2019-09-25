@@ -40,6 +40,7 @@ import com.qualcomm.robotcore.hardware.DcMotorSimple;
 import java.util.List;
 
 import org.firstinspires.ftc.robotcore.external.ClassFactory;
+import org.firstinspires.ftc.robotcore.external.hardware.camera.WebcamName;
 import org.firstinspires.ftc.robotcore.external.navigation.VuforiaLocalizer;
 import org.firstinspires.ftc.robotcore.external.navigation.VuforiaLocalizer.CameraDirection;
 import org.firstinspires.ftc.robotcore.external.tfod.TFObjectDetector;
@@ -107,6 +108,14 @@ public class centerAlign extends OpMode {
         bLeft.setDirection(DcMotor.Direction.REVERSE);
         initVuforia();
 
+        VuforiaLocalizer.Parameters parameters = new VuforiaLocalizer.Parameters();
+
+        parameters.vuforiaLicenseKey = VUFORIA_KEY;
+        parameters.cameraName = hardwareMap.get(WebcamName.class, "Webcam 1");
+
+        //  Instantiate the Vuforia engine
+        vuforia = ClassFactory.getInstance().createVuforia(parameters);
+
         if (ClassFactory.getInstance().canCreateTFObjectDetector()) {
             initTfod();
         } else {
@@ -117,21 +126,19 @@ public class centerAlign extends OpMode {
          * Activate TensorFlow Object Detection before we wait for the start command.
          * Do it here so that the Camera Stream window will have the TensorFlow annotations visible.
          **/
-        if (tfod != null) {
-            tfod.activate();
-        }
 
-        /** Wait for the game to begin */
-        telemetry.addData(">", "Press Play to start op mode");
-        telemetry.update();
     }
 
 
     public void loop() {
+        if (tfod != null) {
+            tfod.activate();
+        }
 
         if (tfod != null) {
             // getUpdatedRecognitions() will return null if no new information is available since
             // the last time that call was made.
+
             List<Recognition> updatedRecognitions = tfod.getUpdatedRecognitions();
             if (updatedRecognitions != null) {
                 telemetry.addData("# Object Detected", updatedRecognitions.size());
@@ -145,7 +152,7 @@ public class centerAlign extends OpMode {
                     float imageWidth = recognition.getImageWidth();
                     float left = recognition.getLeft();
 
-                    if (left <=-9 && left >= -11) {
+                    /*if (left <=-9 && left >= -11) {
                         fLeft.setPower(0);
                         fRight.setPower(0);
                         bLeft.setPower(0);
@@ -162,9 +169,8 @@ public class centerAlign extends OpMode {
                         fRight.setPower((leftStrafe*100)/128);
                     }else{
                         stop();
-                    }
+                    }*/
                     telemetry.addData("Stone Height", recognition.getHeight());
-                    telemetry.addData("Image Height", recognition.getImageHeight());
                     telemetry.addData("Stone Width", recognition.getWidth());
                     telemetry.addData("Label", recognition.getLabel());
                     telemetry.addData(String.format("label (%d)", i), recognition.getLabel());
@@ -172,9 +178,6 @@ public class centerAlign extends OpMode {
                             recognition.getLeft(), recognition.getTop());
                     telemetry.addData(String.format("  right,bottom (%d)", i), "%.03f , %.03f",
                             recognition.getRight(), recognition.getBottom());
-                    // if(lDist > 1){
-
-                    // }
                     telemetry.update();
                 }
 
@@ -182,10 +185,6 @@ public class centerAlign extends OpMode {
             }
         }
 
-
-        if (tfod != null) {
-            tfod.shutdown();
-        }
     }
 
     /**
