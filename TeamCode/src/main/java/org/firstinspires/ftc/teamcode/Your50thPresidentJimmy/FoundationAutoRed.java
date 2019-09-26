@@ -9,13 +9,10 @@ import com.qualcomm.robotcore.hardware.DistanceSensor;
 
 import org.firstinspires.ftc.robotcore.external.navigation.Orientation;
 import org.firstinspires.ftc.teamcode.SkyStonev1_1;
+import org.firstinspires.ftc.teamcode.UpNAdam.Movement;
 
 @Autonomous(name="auto 1")
 public class FoundationAutoRed extends SkyStonev1_1 {
-    DcMotor fLeft, fRight, bLeft, bRight;
-    DistanceSensor distanceL, distanceR, distanceC;
-    BNO055IMU imu;
-    Orientation angles;
 
     int step=0;
     public void init() {

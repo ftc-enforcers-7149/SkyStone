@@ -11,12 +11,13 @@ import com.qualcomm.robotcore.hardware.DistanceSensor;
 import org.firstinspires.ftc.robotcore.external.navigation.AngleUnit;
 import org.firstinspires.ftc.robotcore.external.navigation.AxesOrder;
 import org.firstinspires.ftc.robotcore.external.navigation.AxesReference;
+import org.firstinspires.ftc.robotcore.external.navigation.DistanceUnit;
 import org.firstinspires.ftc.robotcore.external.navigation.Orientation;
 import org.firstinspires.ftc.robotcore.external.navigation.Position;
 import org.firstinspires.ftc.robotcore.external.navigation.Velocity;
 
 public class SkyStonev1_1 extends OpMode {
-    DcMotor fLeft, fRight, bLeft, bRight;
+    public DcMotor fLeft, fRight, bLeft, bRight;
     DistanceSensor distanceL, distanceR, distanceC;
     BNO055IMU imu;
     Orientation angles;
@@ -118,6 +119,32 @@ public class SkyStonev1_1 extends OpMode {
         fRight.setPower(0);
         bLeft.setPower(0);
         bRight.setPower(0);
+    }
+
+    /**
+     * drives until inputted distance
+     * @param distance distance driven until
+     */
+    public void distanceDrive(double distance) {
+        resetEncoderWithoutEncoder();
+
+        while(distanceC.getDistance(DistanceUnit.CM) > distance){
+
+            fLeft.setPower(0.2);
+            fRight.setPower(0.2);
+            bLeft.setPower(0.2);
+            bRight.setPower(0.2);
+        }
+
+        fLeft.setPower(0);
+        fRight.setPower(0);
+        bLeft.setPower(0);
+        bRight.setPower(0);
+    }
+
+    public void toOrigin(double y, double x){
+        Rotation(180-((float)Math.tan(y/x)));
+        driveStraight("forward",Math.sqrt(Math.pow(x,2)+Math.pow(y,2)));
     }
 
     /**
