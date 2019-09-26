@@ -64,6 +64,7 @@ public class CollisionData extends OpMode {
         testing = false;
         firstTest = true;
         logData = false;
+
         delta1 = 0; delta2 = 0; delta3 = 0; delta4 = 0;
 
     }
