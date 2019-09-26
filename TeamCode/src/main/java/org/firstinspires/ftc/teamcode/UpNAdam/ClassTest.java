@@ -32,6 +32,7 @@ public class ClassTest extends OpMode {
         bRight.setZeroPowerBehavior(DcMotor.ZeroPowerBehavior.BRAKE);
 
         robot=new Movement(bLeft,bRight,fLeft,fRight);
+        //
     }
 
     public void loop() {
