@@ -32,6 +32,7 @@ import org.firstinspires.ftc.teamcode.SkyStonev1_1;
                     case 3:driveStraight("forward", 56);
                         break;
                     case 4:driveStraight("backward", 33);
+                        break;
                 }
                 step++;
 
