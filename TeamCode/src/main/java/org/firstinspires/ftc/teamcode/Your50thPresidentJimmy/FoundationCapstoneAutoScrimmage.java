@@ -25,20 +25,13 @@ import org.firstinspires.ftc.teamcode.SkyStonev1_1;
                     //Change speed initially to make sure capstone does not dislocate
                     case 0:driveStraight("backward", 50);
                         break;
-                    case 1: Rotation (270);
+                    case 1:driveStraight("forward", 24.5);
                         break;
-                        //FULL SPEED
-
-                    case 2: driveStraight("backward", 5);
+                    case 2: Rotation (90);
                         break;
-                    case 3: Rotation (180);
+                    case 3:driveStraight("forward", 56);
                         break;
-                    case 4:driveStraight("forward", 34);
-                        break;
-                    case 5:Rotation(90);
-                        break;
-                    case 6:driveStraight("backward", 23);
-                        break;
+                    case 4:driveStraight("backward", 33);
                 }
                 step++;
 
