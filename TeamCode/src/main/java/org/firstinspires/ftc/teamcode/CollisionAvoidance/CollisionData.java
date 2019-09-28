@@ -3,7 +3,9 @@ package org.firstinspires.ftc.teamcode.CollisionAvoidance;
 import android.util.Log;
 
 import com.qualcomm.robotcore.eventloop.opmode.OpMode;
+import com.qualcomm.robotcore.eventloop.opmode.TeleOp;
 import com.qualcomm.robotcore.hardware.DcMotor;
+import com.qualcomm.robotcore.hardware.DcMotorSimple;
 import com.qualcomm.robotcore.hardware.DistanceSensor;
 
 import org.firstinspires.ftc.robotcore.external.navigation.DistanceUnit;
@@ -16,6 +18,7 @@ import org.firstinspires.ftc.robotcore.external.navigation.DistanceUnit;
 The program generates deltas every tenth of a second for testing and outputs raw data to a log file
 accessible on the phone.
 */
+@TeleOp(name = "TimeBasedCollisionData")
 public class CollisionData extends OpMode {
 
     //Mr. Worldwide but variables
@@ -57,9 +60,17 @@ public class CollisionData extends OpMode {
         bRight = hardwareMap.dcMotor.get("bRight");
         bLeft = hardwareMap.dcMotor.get("bLeft");
 
-        front = hardwareMap.get(DistanceSensor.class, "front");
-        distBLeft = hardwareMap.get(DistanceSensor.class, "distBLeft");
-        distBRight = hardwareMap.get(DistanceSensor.class, "distBRight");
+        front = hardwareMap.get(DistanceSensor.class, "distanceC");
+        distBLeft = hardwareMap.get(DistanceSensor.class, "distanceL");
+        distBRight = hardwareMap.get(DistanceSensor.class, "distanceR");
+
+        fLeft.setDirection(DcMotorSimple.Direction.REVERSE);
+        bLeft.setDirection(DcMotorSimple.Direction.REVERSE);
+
+        bLeft.setZeroPowerBehavior(DcMotor.ZeroPowerBehavior.BRAKE);
+        bRight.setZeroPowerBehavior(DcMotor.ZeroPowerBehavior.BRAKE);
+        fLeft.setZeroPowerBehavior(DcMotor.ZeroPowerBehavior.BRAKE);
+        fRight.setZeroPowerBehavior(DcMotor.ZeroPowerBehavior.BRAKE);
 
         testing = false;
         firstTest = true;
@@ -99,7 +110,7 @@ public class CollisionData extends OpMode {
                 speed = 1;
             }
             else if(speedHalf) {
-                speed = 0.5;
+                speed = 0.25;
             }
             else if(speedTwoThirds > 0) {
                 speed = 0.67;
@@ -121,17 +132,8 @@ public class CollisionData extends OpMode {
         //Testing process
         if(testing) {
 
-            //Starts moving bot
-            if(gamepad1.left_stick_y > 0 || gamepad1.right_stick_y > 0) {
-                //Drive
-                fLeft.setPower(speed);
-                fRight.setPower(speed);
-                bLeft.setPower(speed);
-                bRight.setPower(speed);
-            }
-
             //Time-based functions (stopping the program, logging data, etc)
-            if(cTime - sTime > 5000 || endTest) {
+            if(cTime - sTime > 2000 || endTest || fDist < 10) {
                 testing = false;
             }
             else if (cTime - lTime > 100) {
@@ -142,7 +144,7 @@ public class CollisionData extends OpMode {
                 logData = false;
             }
 
-            //Testing
+            /*//Testing
             if(firstTest) {
                 delta1 = (fDist - 0)/2;
                 secondTest = true;
@@ -165,14 +167,22 @@ public class CollisionData extends OpMode {
                 delta3 = delta2;
                 delta2 = delta1;
                 delta1 = fDist - delta2;
-            }
+            }*/
 
             //Logs delta
             if(logData) {
-                Log.i("Delta: ", Double.toString(delta1));
-                Log.i("Time: ", Double.toString(cTime/1000));
+                Log.i("Dist, time: ", Double.toString(fDist).concat(" ").concat(Double.toString(cTime/1000)));
                 logData = false;
             }
+        }
+
+        //Starts moving bot
+        if(gamepad1.left_stick_y > 0 || gamepad1.right_stick_y > 0) {
+            //Drive
+            fLeft.setPower(speed);
+            fRight.setPower(speed);
+            bLeft.setPower(speed);
+            bRight.setPower(speed);
         }
 
     }

@@ -63,7 +63,7 @@ public class RecordCollisionData extends OpMode {
         front = hardwareMap.get(DistanceSensor.class, "distanceC");
 
         //Initialize variables
-        power = 0.25;
+        power = 0.50;
     }
 
     public void start() {
@@ -83,7 +83,7 @@ public class RecordCollisionData extends OpMode {
             bLeft.setPower(power);
             bRight.setPower(power);
 
-            Log.i("Travel Dist and time: ", Double.toString(encoderDistance).concat(" ").concat(Double.toString(System.currentTimeMillis() - startTime)));
+            Log.i("TravelDist,FDist,Time: ", Double.toString(encoderDistance).concat(" \\t ").concat(Double.toString(distF).concat(" \\t ").concat(Double.toString(System.currentTimeMillis() - startTime))));
         }
         else {
             fLeft.setPower(0);
