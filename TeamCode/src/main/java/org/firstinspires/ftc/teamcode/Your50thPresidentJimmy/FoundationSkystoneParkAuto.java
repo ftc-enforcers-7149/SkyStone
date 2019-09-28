@@ -8,8 +8,8 @@ import com.qualcomm.robotcore.hardware.DistanceSensor;
 import org.firstinspires.ftc.robotcore.external.navigation.Orientation;
 import org.firstinspires.ftc.teamcode.SkyStonev1_1;
 
-        @Autonomous(name="auto 2 CAPSTONE")
-        public class FoundationCapstoneAutoScrimmage extends SkyStonev1_1 {
+        @Autonomous(name="auto 3 Skystone")
+        public class FoundationSkystoneParkAuto extends SkyStonev1_1 {
             DcMotor fLeft, fRight, bLeft, bRight;
             DistanceSensor distanceL, distanceR, distanceC;
             BNO055IMU imu;
@@ -27,7 +27,7 @@ import org.firstinspires.ftc.teamcode.SkyStonev1_1;
                         break;
                     case 1:driveStraight("forward", 24.5);
                         break;
-                    case 2: Rotation (90);
+                    case 2: Rotation (270);
                         break;
                     case 3:driveStraight("forward", 56);
                         break;
@@ -37,7 +37,6 @@ import org.firstinspires.ftc.teamcode.SkyStonev1_1;
                 step++;
 
             }
-
             public void stop() {
                 super.stop();
             }
