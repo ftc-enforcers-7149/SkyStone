@@ -16,6 +16,7 @@ public class MovementDetectionClass{
 
     //Class vars
     private double fDLast, fDCurrent;
+    private double tDLast, tDCurrent;
     private boolean firstTest = true;
 
 
@@ -55,16 +56,15 @@ public class MovementDetectionClass{
         bLeft.setZeroPowerBehavior(DcMotor.ZeroPowerBehavior.BRAKE);
         bRight.setZeroPowerBehavior(DcMotor.ZeroPowerBehavior.BRAKE);
 
+        resetEncoderWithoutEncoder();
     }
 
     /**
      * detects if object is moving or not
-     * @param lastDTraveled
-     * @param currentDTraveled
      * @param deltaTime
      * @return
      */
-    public boolean isMoving(double lastDTraveled, double currentDTraveled, double deltaTime) {
+    public boolean isMoving(double deltaTime) {
 
         if(firstTest) {
             fDLast = distanceC.getDistance(DistanceUnit.CM);
@@ -73,11 +73,32 @@ public class MovementDetectionClass{
 
         fDCurrent = distanceC.getDistance(DistanceUnit.CM);
 
-        if(-(fDCurrent - fDLast)/deltaTime > (convertINtoCM(currentDTraveled) - convertINtoCM(lastDTraveled))/deltaTime + 0.2 ){
+        if(-(fDCurrent - fDLast)/deltaTime > (convertINtoCM(tDCurrent) - convertINtoCM(tDLast))/deltaTime + 0.2 ){
             return true;
         }
 
         return false;
+    }
+
+    public void updateMovement() {
+        tDLast = tDCurrent;
+
+        tDCurrent = convertINtoCM(fLeft.getCurrentPosition()/COUNTS_PER_INCH);
+    }
+
+    /**
+     * Resets drive encoders without running using encoders
+     */
+    public void resetEncoderWithoutEncoder(){
+        bRight.setMode(DcMotor.RunMode.STOP_AND_RESET_ENCODER);
+        bLeft.setMode(DcMotor.RunMode.STOP_AND_RESET_ENCODER);
+        fLeft.setMode(DcMotor.RunMode.STOP_AND_RESET_ENCODER);
+        fRight.setMode(DcMotor.RunMode.STOP_AND_RESET_ENCODER);
+
+        fRight.setMode(DcMotor.RunMode.RUN_WITHOUT_ENCODER);
+        fLeft.setMode(DcMotor.RunMode.RUN_WITHOUT_ENCODER);
+        bRight.setMode(DcMotor.RunMode.RUN_WITHOUT_ENCODER);
+        bLeft.setMode(DcMotor.RunMode.RUN_WITHOUT_ENCODER);
     }
 
     /**
@@ -88,13 +109,4 @@ public class MovementDetectionClass{
     public double convertINtoCM(double input) {
        return input * 2.54;
     }
-
-    public void handleMovement(String moveDir, double motorPower) {
-
-        if(moveDir.equals("left")) {
-
-        }
-
-    }
-
 }
