@@ -1,10 +1,5 @@
 package org.firstinspires.ftc.teamcode.UpNAdam;
 
-import com.qualcomm.robotcore.eventloop.opmode.OpMode;
-
-import org.firstinspires.ftc.teamcode.SkyStonev1_1;
-import java.lang.Math;
-
 public class OdometryTest extends SkyStonev1_1 {
     int step=0;
     double x=0;

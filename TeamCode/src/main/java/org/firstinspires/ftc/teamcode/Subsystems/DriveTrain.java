@@ -1,92 +1,31 @@
-package org.firstinspires.ftc.teamcode;
+package org.firstinspires.ftc.teamcode.Subsystems;
 
-import java.util.Locale;
 import com.qualcomm.hardware.bosch.BNO055IMU;
-import com.qualcomm.hardware.bosch.JustLoggingAccelerationIntegrator;
-import com.qualcomm.robotcore.eventloop.opmode.OpMode;
 import com.qualcomm.robotcore.hardware.DcMotor;
-import com.qualcomm.robotcore.hardware.DcMotorSimple;
-import com.qualcomm.robotcore.hardware.DistanceSensor;
 
 import org.firstinspires.ftc.robotcore.external.navigation.AngleUnit;
-import org.firstinspires.ftc.robotcore.external.navigation.AxesOrder;
-import org.firstinspires.ftc.robotcore.external.navigation.AxesReference;
-import org.firstinspires.ftc.robotcore.external.navigation.DistanceUnit;
 import org.firstinspires.ftc.robotcore.external.navigation.Orientation;
-import org.firstinspires.ftc.robotcore.external.navigation.Position;
-import org.firstinspires.ftc.robotcore.external.navigation.Velocity;
 
-public class SkyStonev1_1 extends OpMode {
-    public DcMotor fLeft, fRight, bLeft, bRight;
-    DistanceSensor distanceL, distanceR, distanceC;
-    BNO055IMU imu;
-    Orientation angles;
+import java.util.Locale;
+
+public class DriveTrain {
+    private DcMotor fLeft, fRight, bLeft, bRight;
+    private Orientation angles;
 
     //used for encoders
-    static final double     EXTERNAL_GEARING        = 1;
-    static final double     COUNTS_PER_MOTOR_REV    = 537.6 ;  //28  // eg: AndyMark NeverRest40 Motor Encoder
-    static final double     DRIVE_GEAR_REDUCTION    = 1 ;     // This is < 1.0 if geared UP
-    static final double     WHEEL_DIAMETER_INCHES   = 3.937 ;     // For figuring circumference
+    private static final double     EXTERNAL_GEARING        = 1;
+    private static final double     COUNTS_PER_MOTOR_REV    = 537.6 ;  //28  // eg: AndyMark NeverRest40 Motor Encoder
+    private static final double     DRIVE_GEAR_REDUCTION    = 1 ;     // This is < 1.0 if geared UP
+    private static final double     WHEEL_DIAMETER_INCHES   = 3.937 ;     // For figuring circumference
     public static final double     COUNTS_PER_INCH         = ((COUNTS_PER_MOTOR_REV * DRIVE_GEAR_REDUCTION) /
             (WHEEL_DIAMETER_INCHES * 3.1415))/EXTERNAL_GEARING;
 
-    public void init(){
-        //Hardware mapping of the four motors
-        fLeft = hardwareMap.dcMotor.get("fLeft");
-        fRight = hardwareMap.dcMotor.get("fRight");
-        bLeft = hardwareMap.dcMotor.get("bLeft");
-        bRight = hardwareMap.dcMotor.get("bRight");
-
-        distanceL = hardwareMap.get(DistanceSensor.class, "distanceL");
-        distanceR = hardwareMap.get(DistanceSensor.class, "distanceR");
-        distanceC = hardwareMap.get(DistanceSensor.class, "distanceC");
-
-        fLeft.setDirection(DcMotorSimple.Direction.REVERSE);
-        fRight.setDirection(DcMotorSimple.Direction.FORWARD);
-        bRight.setDirection(DcMotor.Direction.FORWARD);
-        bLeft.setDirection(DcMotor.Direction.REVERSE);
-
-        fLeft.setZeroPowerBehavior(DcMotor.ZeroPowerBehavior.BRAKE);
-        fRight.setZeroPowerBehavior(DcMotor.ZeroPowerBehavior.BRAKE);
-        bLeft.setZeroPowerBehavior(DcMotor.ZeroPowerBehavior.BRAKE);
-        bRight.setZeroPowerBehavior(DcMotor.ZeroPowerBehavior.BRAKE);
-
-        //Set up imu parameters
-        BNO055IMU.Parameters parameters = new BNO055IMU.Parameters();
-        parameters.angleUnit = BNO055IMU.AngleUnit.DEGREES;
-        parameters.accelUnit = BNO055IMU.AccelUnit.METERS_PERSEC_PERSEC;
-        parameters.calibrationDataFile = "BNO055IMUCalibration.json"; // see the calibration sample opmode
-        parameters.loggingEnabled = true;
-        parameters.loggingTag = "IMU";
-        parameters.accelerationIntegrationAlgorithm = new JustLoggingAccelerationIntegrator();
-
-        telemetry.addAction(new Runnable() {
-            @Override
-            public void run() {
-                // Acquiring the angles is relatively expensive; we don't want
-                // to do that in each of the three items that need that info, as that's
-                // three times the necessary expense.
-                angles = imu.getAngularOrientation(AxesReference.INTRINSIC, AxesOrder.ZYX, AngleUnit.DEGREES);
-            }
-        });
-
-        // Retrieve and initialize the IMU. We expect the IMU to be attached to an I2C port
-        // on a Core Device Interface Module, configured to be a sensor of type "AdaFruit IMU",
-        // and named "imu".
-        imu = hardwareMap.get(BNO055IMU.class, "imu");
-        imu.initialize(parameters);
-
-        // Start the logging of measured acceleration
-        imu.startAccelerationIntegration(new Position(), new Velocity(), 1000);
-    }
-    public void loop(){
-
-    }
-    public void stop(){
-        fLeft.setPower(0);
-        bLeft.setPower(0);
-        bRight.setPower(0);
-        fRight.setPower(0);
+    public DriveTrain(DcMotor fLeft, DcMotor fRight, DcMotor bLeft, DcMotor bRight, Orientation angles){
+        this.fLeft = fLeft;
+        this.fRight = fRight;
+        this.bLeft = bLeft;
+        this.bRight = bRight;
+        this.angles = angles;
     }
 
     /**
@@ -119,32 +58,6 @@ public class SkyStonev1_1 extends OpMode {
         fRight.setPower(0);
         bLeft.setPower(0);
         bRight.setPower(0);
-    }
-
-    /**
-     * drives until inputted distance
-     * @param distance distance driven until
-     */
-    public void distanceDrive(double distance) {
-        resetEncoderWithoutEncoder();
-
-        while(distanceC.getDistance(DistanceUnit.CM) > distance){
-
-            fLeft.setPower(0.2);
-            fRight.setPower(0.2);
-            bLeft.setPower(0.2);
-            bRight.setPower(0.2);
-        }
-
-        fLeft.setPower(0);
-        fRight.setPower(0);
-        bLeft.setPower(0);
-        bRight.setPower(0);
-    }
-
-    public void toOrigin(double y, double x){
-        Rotation(180-((float)Math.tan(y/x)));
-        driveStraight("forward",Math.sqrt(Math.pow(x,2)+Math.pow(y,2)));
     }
 
     /**
@@ -208,10 +121,6 @@ public class SkyStonev1_1 extends OpMode {
 
         //main phase of method
         while (heading < destination - 2 || heading > destination + 2) {
-            telemetry.addData("heading", heading);
-            telemetry.addData("speed: ", speed);
-            telemetry.addData("destination:", destination);
-            telemetry.update();
 
             double delta = destination-heading; //the difference between destination and heading
             heading = cvtDegrees(angles.firstAngle);
@@ -288,17 +197,4 @@ public class SkyStonev1_1 extends OpMode {
         return String.format(Locale.getDefault(), "%.1f", AngleUnit.DEGREES.normalize(degrees));
     }
 
-    /**
-    * will stall the program for the inputted amount of time
-    * wait time cannot be more than 5 seconds
-    * @param milTime the amount of time to wait in seconds
-    */
-
-    public void pause(double milTime){
-        double iTime =System.currentTimeMillis();
-        double fTime=iTime+milTime;
-        while(System.currentTimeMillis()<fTime){
-
-        }
-    }
 }

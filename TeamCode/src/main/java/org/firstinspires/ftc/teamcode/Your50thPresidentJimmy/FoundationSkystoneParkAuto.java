@@ -15,9 +15,8 @@ import org.firstinspires.ftc.robotcore.external.navigation.Position;
 import org.firstinspires.ftc.robotcore.external.navigation.Velocity;
 import org.firstinspires.ftc.teamcode.Subsystems.DriveTrain;
 
-@Autonomous(name="auto 1")
-public class FoundationAutoRed extends OpMode {
-
+@Autonomous(name = "auto 3 Skystone")
+public class FoundationSkystoneParkAuto extends OpMode {
     public DcMotor fLeft, fRight, bLeft, bRight;
     int step=0;
     DriveTrain driveTrain;
@@ -75,14 +74,22 @@ public class FoundationAutoRed extends OpMode {
 
     }
     public void loop() {
-        switch(step){
-            case 0:driveTrain.driveStraight("forward", 50);
+        switch (step) {
+            //Change speed initially to make sure capstone does not dislocate
+            case 0:
+                driveTrain.driveStraight("backward", 50);
                 break;
-            case 1:driveTrain.driveStraight("backward", 34);
+            case 1:
+                driveTrain.driveStraight("forward", 24.5);
                 break;
-            case 2:driveTrain.Rotation(90);
+            case 2:
+                driveTrain.Rotation(270);
                 break;
-            case 3:driveTrain.driveStraight("forward", 20);
+            case 3:
+                driveTrain.driveStraight("forward", 56);
+                break;
+            case 4:
+                driveTrain.driveStraight("backward", 33);
                 break;
         }
         step++;
@@ -90,6 +97,6 @@ public class FoundationAutoRed extends OpMode {
     }
 
     public void stop() {
-      super.stop();
+        super.stop();
     }
 }
