@@ -17,7 +17,6 @@ public class MovementDetectionClass{
     //Class vars
     private double fDLast, fDCurrent;
     private double tDLast, tDCurrent;
-    private boolean firstTest = true;
 
 
     //Used for encoders
@@ -27,8 +26,6 @@ public class MovementDetectionClass{
     static final double     WHEEL_DIAMETER_INCHES   = 3.937 ;     // For figuring circumference
     public static final double     COUNTS_PER_INCH         = ((COUNTS_PER_MOTOR_REV * DRIVE_GEAR_REDUCTION) /
             (WHEEL_DIAMETER_INCHES * 3.1415))/EXTERNAL_GEARING;
-
-
 
     //Constructor
     MovementDetectionClass(HardwareMap hardwareMap, String distC, String distR, String distL, String fL, String bL, String fR, String bR) {
@@ -59,6 +56,7 @@ public class MovementDetectionClass{
         resetEncoderWithoutEncoder();
 
         fDCurrent = distanceC.getDistance(DistanceUnit.CM);
+        tDCurrent = 0;
     }
 
     /**
@@ -66,22 +64,21 @@ public class MovementDetectionClass{
      * @return
      */
     public boolean isMoving() {
-        if (fDLast - fDCurrent > (convertINtoCM(tDCurrent) - convertINtoCM(tDLast)) + 2) {
-            return false;
-        }
-
-        return true;
-    }
-
-    /**
-     * Updates encoder distance and sensor distance
-     */
-    public void updateMovement() {
         tDLast = tDCurrent;
         fDLast = fDCurrent;
 
-        tDCurrent = convertINtoCM((fLeft.getCurrentPosition()/COUNTS_PER_INCH + fRight.getCurrentPosition()/COUNTS_PER_INCH) / 2);
-        fDCurrent = distanceC.getDistance(DistanceUnit.CM);
+        double pos = convertINtoCM((fLeft.getCurrentPosition()/COUNTS_PER_INCH + fRight.getCurrentPosition()/COUNTS_PER_INCH) / 2);
+        double dist = distanceC.getDistance(DistanceUnit.CM);
+
+        if (fDLast - fDCurrent > (tDCurrent - tDLast) + 2) {
+            tDCurrent = pos;
+            fDCurrent = dist;
+            return false;
+        }
+
+        tDCurrent = pos;
+        fDCurrent = dist;
+        return true;
     }
 
     /**
@@ -108,6 +105,10 @@ public class MovementDetectionClass{
        return input * 2.54;
     }
 
+    /**
+     * Returns one string containing current and last travel and sensor distances
+     * @return
+     */
     public String rawData() {
         return "Distance traveled: " + tDCurrent + ", Last distance traveled: " + tDLast +
                 "\nSensor Distance: " + fDCurrent + ", Last sensor distance: " + fDLast;
