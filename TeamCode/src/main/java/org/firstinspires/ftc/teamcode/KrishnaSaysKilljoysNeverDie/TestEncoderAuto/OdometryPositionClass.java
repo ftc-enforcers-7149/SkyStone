@@ -121,6 +121,7 @@ public class OdometryPositionClass extends PositionClass {
         manualUpdatePosition(newPosX, newPosY);
     }
 
+    //Returns the motor distance in inches
     public double getMotorDistIn(double input) {
         return input/COUNTS_PER_INCH;
     }
@@ -216,6 +217,7 @@ public class OdometryPositionClass extends PositionClass {
 
 
 
+    //Converts degrees
     public double cvtDegrees(double heading) {
 
         if (heading <0 ) {

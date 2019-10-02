@@ -2,6 +2,8 @@ package org.firstinspires.ftc.teamcode.KrishnaSaysKilljoysNeverDie.TestEncoderAu
 
 import org.firstinspires.ftc.teamcode.Subsystems.DriveTrain;
 
+
+//A sample classfile for a path.
 public class SamplePath {
 
     DriveTrain driveTrain;
@@ -17,16 +19,19 @@ public class SamplePath {
         name = "test";
     }
 
+
+    //Runs our actual path
     public void runSamplePath() {
-        outputStep(1);
+        step = 1;
         driveTrain.driveStraight("forward", 5);
         driveTrain.Rotation(90);
-        outputStep(2);
+        step = 2;
         driveTrain.driveStraight("forward", 5);
 
 
     }
 
-    public int outputStep(int stepIn) {return stepIn;}
+    //Outputs our step
+    public int getStep() {return step;}
 
 }

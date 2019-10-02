@@ -1,9 +1,15 @@
 package org.firstinspires.ftc.teamcode.KrishnaSaysKilljoysNeverDie;
 
+
+//Simple positioning class for basic positioning.
 public class PositionClass {
 
+
+    //Class vars
     public double positionX, positionY;
 
+
+    //Constructors
     public PositionClass() {
         positionX = 0;
         positionY = 0;
@@ -15,6 +21,7 @@ public class PositionClass {
     }
 
 
+    //Manually updates position
     public void manualUpdatePosition(double newPosX, double newPosY) {
 
         positionX = newPosX;
@@ -22,14 +29,20 @@ public class PositionClass {
 
     }
 
+
+    //Returns x
     public double getBotX() {
         return positionX;
     }
 
+
+    //Returns Y
     public double getBotY(){
         return positionY;
     }
 
+
+    //Returns x and y as a double array
     public double[] getBotPosition() {
 
         double[] returnarray = new double[2];
