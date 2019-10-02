@@ -20,23 +20,25 @@ import java.util.Locale;
 public class HeadlessMode extends OpMode {
 
     //DC Motors
-    DcMotor fLeft, fRight, bRight, bLeft; //Left and right motors
+    DcMotor fLeft, fRight, bRight, bLeft;
 
-    //gyro define
+    //IMU variables
     BNO055IMU imu;
-    // gyro telemetry
     Orientation angles;
-
     double angle, offset;
+
+    //Variables for inputs
     double joyX, joyY, turnX;
     boolean resetAngle;
 
     public void init() {
-        fLeft= hardwareMap.dcMotor.get("fLeft");
+        //Hardware mapping the motors
+        fLeft = hardwareMap.dcMotor.get("fLeft");
         fRight = hardwareMap.dcMotor.get("fRight");
         bRight = hardwareMap.dcMotor.get("bRight");
         bLeft = hardwareMap.dcMotor.get("bLeft");
 
+        //Reversing left motors
         fLeft.setDirection(DcMotorSimple.Direction.REVERSE);
         bLeft.setDirection(DcMotorSimple.Direction.REVERSE);
 
@@ -70,12 +72,15 @@ public class HeadlessMode extends OpMode {
     }
 
     public void loop() {
+        //Getting inputs
         angle = angles.firstAngle;
         joyY = -gamepad1.left_stick_y;
         joyX = -gamepad1.left_stick_x;
         turnX = gamepad1.right_stick_x;
         resetAngle = gamepad1.y;
 
+        //Only set brakes if no inputs are given from the joysticks
+        //this makes it easier for the robot to move diagonally
         if (joyY == 0 && joyX == 0 && turnX == 0) {
             bLeft.setZeroPowerBehavior(DcMotor.ZeroPowerBehavior.BRAKE);
             bRight.setZeroPowerBehavior(DcMotor.ZeroPowerBehavior.BRAKE);
@@ -89,13 +94,21 @@ public class HeadlessMode extends OpMode {
             fRight.setZeroPowerBehavior(DcMotor.ZeroPowerBehavior.FLOAT);
         }
 
+        //Offset the angle if the imu is incorrect
         if (resetAngle) {
             offset = angle;
         }
 
+        //Telemetry for angles
         telemetry.addData("Angle: ", angle - offset);
-        telemetry.addData("Converted angle: ", cvtDegrees(angle));
+        telemetry.addData("Converted angle: ", cvtDegrees(angle - offset));
 
+        //r is used to scale the power of the motors depending on how much the joysticks are pushed
+        //robotAngle is the directional angle (radians) that the robot wants to go in terms of itself.
+        //45 degress is adding in radians because that is the small angle on a right triangle.
+        //v1 - v4 are the velocities for each motor. r is multiplied here.
+        //Sine and cosine are applied to their respective diagonal's wheels.
+        //turnX is added to and subtracted from their respective side's wheels.
         double r = Math.hypot(joyX, joyY);
         double robotAngle = Math.atan2(joyY, joyX) - Math.toRadians(cvtDegrees(angle - offset)) + Math.PI / 4;
         double v1 = r * Math.sin(robotAngle) + turnX;
@@ -103,8 +116,10 @@ public class HeadlessMode extends OpMode {
         double v3 = r * Math.cos(robotAngle) + turnX;
         double v4 = r * Math.sin(robotAngle) - turnX;
 
+        //Getting the max value can assure that no motor will be set to a value above a certain point.
         double max = Math.max(Math.max(Math.abs(v1), Math.abs(v2)), Math.max(Math.abs(v3), Math.abs(v4)));
 
+        //In this case, no motor can go above 0.8 power by scaling them all down if such a thing might occur.
         if (max > 0.8) {
             v1 /= max*1.25;
             v2 /= max*1.25;
@@ -112,17 +127,23 @@ public class HeadlessMode extends OpMode {
             v4 /= max*1.25;
         }
 
+        //Telemetry for the motor velocities
         telemetry.addData("fLeft: ", v1);
         telemetry.addData("fRight: ", v2);
         telemetry.addData("bLeft: ", v3);
         telemetry.addData("bRight: ", v4);
 
+        //Setting each velocity to its respective motor
         fLeft.setPower(v1);
         fRight.setPower(v2);
         bLeft.setPower(v3);
         bRight.setPower(v4);
     }
 
+    //This converts degrees to work with sine and cosine.
+    //The equations were made in Desmos by plotting certain points (input, output)
+    //Equation 1: y = -x + 90
+    //Equation 2: y = -x + 450
     public double cvtDegrees(double heading) {
         if (heading >= 0 && heading < 90) {
             return -heading + 90;

@@ -57,33 +57,31 @@ public class MovementDetectionClass{
         bRight.setZeroPowerBehavior(DcMotor.ZeroPowerBehavior.BRAKE);
 
         resetEncoderWithoutEncoder();
+
+        fDCurrent = distanceC.getDistance(DistanceUnit.CM);
     }
 
     /**
      * detects if object is moving or not
-     * @param deltaTime
      * @return
      */
-    public boolean isMoving(double deltaTime) {
-
-        if(firstTest) {
-            fDLast = distanceC.getDistance(DistanceUnit.CM);
-            firstTest = false;
+    public boolean isMoving() {
+        if (fDLast - fDCurrent > (convertINtoCM(tDCurrent) - convertINtoCM(tDLast)) + 2) {
+            return false;
         }
 
-        fDCurrent = distanceC.getDistance(DistanceUnit.CM);
-
-        if(-(fDCurrent - fDLast)/deltaTime > (convertINtoCM(tDCurrent) - convertINtoCM(tDLast))/deltaTime + 0.2 ){
-            return true;
-        }
-
-        return false;
+        return true;
     }
 
+    /**
+     * Updates encoder distance and sensor distance
+     */
     public void updateMovement() {
         tDLast = tDCurrent;
+        fDLast = fDCurrent;
 
-        tDCurrent = convertINtoCM(fLeft.getCurrentPosition()/COUNTS_PER_INCH);
+        tDCurrent = convertINtoCM((fLeft.getCurrentPosition()/COUNTS_PER_INCH + fRight.getCurrentPosition()/COUNTS_PER_INCH) / 2);
+        fDCurrent = distanceC.getDistance(DistanceUnit.CM);
     }
 
     /**
@@ -102,11 +100,16 @@ public class MovementDetectionClass{
     }
 
     /**
-     * converts inches to cm. duh
+     * converts inches to cm.
      * @param input
      * @return
      */
     public double convertINtoCM(double input) {
        return input * 2.54;
+    }
+
+    public String rawData() {
+        return "Distance traveled: " + tDCurrent + ", Last distance traveled: " + tDLast +
+                "\nSensor Distance: " + fDCurrent + ", Last sensor distance: " + fDLast;
     }
 }
