@@ -1,4 +1,6 @@
-package org.firstinspires.ftc.teamcode.Your50thPresidentJimmy;
+package org.firstinspires.ftc.teamcode.UpNAdam;
+
+import android.graphics.Path;
 
 import com.qualcomm.hardware.bosch.BNO055IMU;
 import com.qualcomm.hardware.bosch.JustLoggingAccelerationIntegrator;
@@ -6,21 +8,25 @@ import com.qualcomm.robotcore.eventloop.opmode.Autonomous;
 import com.qualcomm.robotcore.eventloop.opmode.OpMode;
 import com.qualcomm.robotcore.hardware.DcMotor;
 import com.qualcomm.robotcore.hardware.DcMotorSimple;
+import com.qualcomm.robotcore.hardware.DistanceSensor;
 
 import org.firstinspires.ftc.robotcore.external.navigation.AngleUnit;
 import org.firstinspires.ftc.robotcore.external.navigation.AxesOrder;
 import org.firstinspires.ftc.robotcore.external.navigation.AxesReference;
+import org.firstinspires.ftc.robotcore.external.navigation.DistanceUnit;
 import org.firstinspires.ftc.robotcore.external.navigation.Orientation;
 import org.firstinspires.ftc.robotcore.external.navigation.Position;
 import org.firstinspires.ftc.robotcore.external.navigation.Velocity;
 import org.firstinspires.ftc.teamcode.Subsystems.DriveTrain;
 
-@Autonomous(name="auto 1")
-public class FoundationAutoRed extends OpMode {
+import java.util.Locale;
+
+@Autonomous(name="auto class")
+public class ClassTest extends OpMode {
 
     public DcMotor fLeft, fRight, bLeft, bRight;
     int step=0;
-    DriveTrain driveTrain;
+    DriveTrain robot;
 
     BNO055IMU imu;
     Orientation angles;
@@ -70,19 +76,17 @@ public class FoundationAutoRed extends OpMode {
         imu.startAccelerationIntegration(new Position(), new Velocity(), 1000);
 
     }
-    public void start(){
-        driveTrain=new DriveTrain(bLeft,bRight,fLeft,fRight,angles);
+public void start(){
+    robot=new DriveTrain(bLeft,bRight,fLeft,fRight,angles);
 
-    }
+}
     public void loop() {
-        switch(step){
-            case 0:driveTrain.driveStraight("forward", 50);
+        switch(step) {
+            case 0:
+                robot.driveStraight("forward", 50);
                 break;
-            case 1:driveTrain.driveStraight("backward", 34);
-                break;
-            case 2:driveTrain.Rotation(90);
-                break;
-            case 3:driveTrain.driveStraight("forward", 20);
+            case 1:
+                robot.Rotation(10);
                 break;
         }
         step++;
@@ -90,6 +94,24 @@ public class FoundationAutoRed extends OpMode {
     }
 
     public void stop() {
-      super.stop();
+    }
+
+    /**
+     * method needed for gyro
+     * @param angleUnit
+     * @param angle
+     * @return
+     */
+    String formatAngle(AngleUnit angleUnit, double angle) {
+        return formatDegrees(AngleUnit.DEGREES.fromUnit(angleUnit, angle));
+    }
+
+    /**
+     * method needed for gyro
+     * @param degrees
+     * @return
+     */
+    String formatDegrees(double degrees){
+        return String.format(Locale.getDefault(), "%.1f", AngleUnit.DEGREES.normalize(degrees));
     }
 }
