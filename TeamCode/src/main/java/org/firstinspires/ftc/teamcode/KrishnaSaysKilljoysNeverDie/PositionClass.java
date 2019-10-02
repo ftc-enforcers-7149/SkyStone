@@ -4,21 +4,30 @@ public class PositionClass {
 
     public double positionX, positionY;
 
-    PositionClass() {
+    public PositionClass() {
         positionX = 0;
         positionY = 0;
     }
 
-    PositionClass(double posX, double posY) {
+    public PositionClass(double posX, double posY) {
         positionX = posX;
         positionY = posY;
     }
 
-    public void updatePosition(double newPosX, double newPosY) {
+
+    public void manualUpdatePosition(double newPosX, double newPosY) {
 
         positionX = newPosX;
         positionY = newPosY;
 
+    }
+
+    public double getBotX() {
+        return positionX;
+    }
+
+    public double getBotY(){
+        return positionY;
     }
 
     public double[] getBotPosition() {

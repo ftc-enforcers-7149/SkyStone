@@ -199,10 +199,9 @@ public class EncoderTests extends OpMode {
         bRight.setPower(0);
     }
 
-    */
-/**
+*
      * Resets drive encoders without running using encoders
-     *//*
+
 
     public void resetEncoderWithoutEncoder(){
         bRight.setMode(DcMotor.RunMode.STOP_AND_RESET_ENCODER);
@@ -216,11 +215,10 @@ public class EncoderTests extends OpMode {
         bLeft.setMode(DcMotor.RunMode.RUN_WITHOUT_ENCODER);
     }
 
-    */
-/**
+*
      *
      * @param destination
-     *//*
+
 
     public void Rotation(float destination) {
         fRight.setMode(DcMotor.RunMode.RUN_WITHOUT_ENCODER);
@@ -236,10 +234,9 @@ public class EncoderTests extends OpMode {
         //standard current angle
         double heading = cvtDegrees(angles.firstAngle);
 
-        */
-/**
+*
          * This will determine the actual intended heading from 0-360
-         *//*
+
 
         //check if over 360
         if (Math.abs(destination)>360) {
@@ -316,10 +313,9 @@ public class EncoderTests extends OpMode {
     }
 
     public double cvtDegrees(double heading) {
-        */
-/**
+*
          * convert degrees from -180<->180 to 0<->360
-         *//*
+
 
         if (heading <0 ) {
             return 360 + heading;
@@ -328,35 +324,32 @@ public class EncoderTests extends OpMode {
         }
     }
 
-    */
-/**
+*
      * a function that is needed to format the gyro angle
      * @param angleUnit
      * @param angle
      * @return
-     *//*
+
 
     String formatAngle(AngleUnit angleUnit, double angle) {
         return formatDegrees(AngleUnit.DEGREES.fromUnit(angleUnit, angle));
     }
 
-    */
-/**
+*
      * a function that is needed to format the gyro angle
      * @param degrees
      * @return
-     *//*
+
 
     String formatDegrees(double degrees){
         return String.format(Locale.getDefault(), "%.1f", AngleUnit.DEGREES.normalize(degrees));
     }
 
-    */
-/**
+*
      * will stall the program for the inputted amount of time
      * wait time cannot be more than 5 seconds
      * @param milTime the amount of time to wait in seconds
-     *//*
+
 
     public void pause(double milTime){
         double iTime =System.currentTimeMillis();
