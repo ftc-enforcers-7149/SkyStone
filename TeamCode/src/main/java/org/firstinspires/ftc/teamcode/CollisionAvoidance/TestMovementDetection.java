@@ -20,7 +20,7 @@ public class TestMovementDetection extends OpMode {
     }
 
     public void loop() {
-        detection.updateMovement();
+        //detection.updateMovement();
         telemetry.addData("Moving Obstacle? ", detection.isMoving());
         telemetry.addLine(detection.rawData());
 
