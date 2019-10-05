@@ -29,7 +29,6 @@ public class MovementDetectionClass{
 
     //Constructor
     MovementDetectionClass(HardwareMap hardwareMap, String distC, String distR, String distL, String fL, String bL, String fR, String bR) {
-
         //Mapping distance sensors
         distanceC = hardwareMap.get(DistanceSensor.class, distC);
         distanceR = hardwareMap.get(DistanceSensor.class, distR);
@@ -73,12 +72,12 @@ public class MovementDetectionClass{
         if (fDLast - fDCurrent > (tDCurrent - tDLast) + 2) {
             tDCurrent = pos;
             fDCurrent = dist;
-            return false;
+            return true;
         }
 
         tDCurrent = pos;
         fDCurrent = dist;
-        return true;
+        return false;
     }
 
     /**
