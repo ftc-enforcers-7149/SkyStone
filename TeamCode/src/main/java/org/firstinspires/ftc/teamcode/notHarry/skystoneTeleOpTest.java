@@ -30,7 +30,7 @@ public class skystoneTeleOpTest extends OpMode {
         fRight.setDirection(DcMotorSimple.Direction.FORWARD);
         bRight.setDirection(DcMotorSimple.Direction.FORWARD);
         bLeft.setDirection(DcMotorSimple.Direction.REVERSE);
-    }
+    }//
     public void loop(){
         armUp = gamepad1.b;
         armDown = gamepad1.a;
