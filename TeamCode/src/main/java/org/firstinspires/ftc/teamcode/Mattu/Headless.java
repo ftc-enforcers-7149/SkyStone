@@ -14,13 +14,12 @@ import org.firstinspires.ftc.robotcore.external.navigation.Orientation;
 import org.firstinspires.ftc.robotcore.external.navigation.Position;
 import org.firstinspires.ftc.robotcore.external.navigation.Velocity;
 
-import java.util.Locale;
-
 @TeleOp(name = "Headless")
-public class HeadlessMode extends OpMode {
+public class Headless extends OpMode {
 
-    //DC Motors
-    DcMotor fLeft, fRight, bRight, bLeft;
+    //DC Motors and velocity variables
+    DcMotor fLeft, fRight, bLeft, bRight;
+    double v1, v2, v3, v4; //In same order as motors
 
     //IMU variables
     BNO055IMU imu;
@@ -28,15 +27,18 @@ public class HeadlessMode extends OpMode {
     double angle, offset;
 
     //Variables for inputs
-    double joyX, joyY, turnX;
-    boolean resetAngle;
+    double leftX, leftY, rightX;
+    boolean resetAngle, changeMode;
+
+    //Power limit
+    double lim;
 
     public void init() {
         //Hardware mapping the motors
         fLeft = hardwareMap.dcMotor.get("fLeft");
         fRight = hardwareMap.dcMotor.get("fRight");
-        bRight = hardwareMap.dcMotor.get("bRight");
         bLeft = hardwareMap.dcMotor.get("bLeft");
+        bRight = hardwareMap.dcMotor.get("bRight");
 
         //Reversing left motors
         fLeft.setDirection(DcMotorSimple.Direction.REVERSE);
@@ -69,25 +71,39 @@ public class HeadlessMode extends OpMode {
 
         // Start the logging of measured acceleration
         imu.startAccelerationIntegration(new Position(), new Velocity(), 1000);
+
+        //Initialize variables
+        lim = 0.9;
+        v1 = 0;
+        v2 = 0;
+        v3 = 0;
+        v4 = 0;
     }
 
     public void loop() {
         //Getting inputs
+        leftY = gamepad1.left_stick_y;
+        leftX = gamepad1.left_stick_x;
+        rightX = gamepad1.right_stick_x;
+        changeMode = gamepad1.a;
+
+        telemetry.addLine("Mode is headless");
+
+        //Specific inputs
         angle = angles.firstAngle;
-        joyY = -gamepad1.left_stick_y;
-        joyX = -gamepad1.left_stick_x;
-        turnX = gamepad1.right_stick_x;
         resetAngle = gamepad1.y;
+
+        //Fixing inputs
+        rightX = -rightX;
 
         //Only set brakes if no inputs are given from the joysticks
         //this makes it easier for the robot to move diagonally
-        if (joyY == 0 && joyX == 0 && turnX == 0) {
+        if (leftY == 0 && leftX == 0 && rightX == 0) {
             bLeft.setZeroPowerBehavior(DcMotor.ZeroPowerBehavior.BRAKE);
             bRight.setZeroPowerBehavior(DcMotor.ZeroPowerBehavior.BRAKE);
             fLeft.setZeroPowerBehavior(DcMotor.ZeroPowerBehavior.BRAKE);
             fRight.setZeroPowerBehavior(DcMotor.ZeroPowerBehavior.BRAKE);
-        }
-        else {
+        } else {
             bLeft.setZeroPowerBehavior(DcMotor.ZeroPowerBehavior.FLOAT);
             bRight.setZeroPowerBehavior(DcMotor.ZeroPowerBehavior.FLOAT);
             fLeft.setZeroPowerBehavior(DcMotor.ZeroPowerBehavior.FLOAT);
@@ -105,26 +121,26 @@ public class HeadlessMode extends OpMode {
 
         //r is used to scale the power of the motors depending on how much the joysticks are pushed
         //robotAngle is the directional angle (radians) that the robot wants to go in terms of itself.
-        //45 degress is adding in radians because that is the small angle on a right triangle.
+        //45 degrees is adding in radians because that is the small angle on a right triangle.
         //v1 - v4 are the velocities for each motor. r is multiplied here.
         //Sine and cosine are applied to their respective diagonal's wheels.
-        //turnX is added to and subtracted from their respective side's wheels.
-        double r = Math.hypot(joyX, joyY);
-        double robotAngle = Math.atan2(joyY, joyX) - Math.toRadians(cvtDegrees(angle - offset)) + Math.PI / 4;
-        double v1 = r * Math.sin(robotAngle) + turnX;
-        double v2 = r * Math.cos(robotAngle) - turnX;
-        double v3 = r * Math.cos(robotAngle) + turnX;
-        double v4 = r * Math.sin(robotAngle) - turnX;
+        //rightX is added to and subtracted from their respective side's wheels.
+        double r = Math.hypot(leftX, leftY);
+        double robotAngle = Math.atan2(leftY, leftX) - Math.toRadians(cvtDegrees(angle - offset)) + Math.PI / 4;
+        v1 = r * Math.sin(robotAngle) + rightX;
+        v2 = r * Math.cos(robotAngle) - rightX;
+        v3 = r * Math.cos(robotAngle) + rightX;
+        v4 = r * Math.sin(robotAngle) - rightX;
 
         //Getting the max value can assure that no motor will be set to a value above a certain point.
         double max = Math.max(Math.max(Math.abs(v1), Math.abs(v2)), Math.max(Math.abs(v3), Math.abs(v4)));
 
-        //In this case, no motor can go above 0.8 power by scaling them all down if such a thing might occur.
-        if (max > 0.8) {
-            v1 /= max*1.25;
-            v2 /= max*1.25;
-            v3 /= max*1.25;
-            v4 /= max*1.25;
+        //In this case, no motor can go above lim power by scaling them all down if such a thing might occur.
+        if (max > lim) {
+            v1 /= max * (1 / lim);
+            v2 /= max * (1 / lim);
+            v3 /= max * (1 / lim);
+            v4 /= max * (1 / lim);
         }
 
         //Telemetry for the motor velocities

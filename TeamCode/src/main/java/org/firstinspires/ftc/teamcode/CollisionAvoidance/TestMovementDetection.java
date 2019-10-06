@@ -20,14 +20,14 @@ public class TestMovementDetection extends OpMode {
     }
 
     public void loop() {
-        detection.updateMovement();
+        //detection.updateMovement();
         telemetry.addData("Moving Obstacle? ", detection.isMoving());
         telemetry.addLine(detection.rawData());
 
-        detection.fLeft.setPower(-gamepad1.right_stick_y/1.25);
-        detection.fRight.setPower(-gamepad1.left_stick_y/1.25);
-        detection.bLeft.setPower(-gamepad1.right_stick_y/1.25);
-        detection.bRight.setPower(-gamepad1.left_stick_y/1.25);
+        detection.fLeft.setPower(-gamepad1.left_stick_y/1.5);
+        detection.fRight.setPower(-gamepad1.left_stick_y/1.5);
+        detection.bLeft.setPower(-gamepad1.left_stick_y/1.5);
+        detection.bRight.setPower(-gamepad1.left_stick_y/1.5);
 
         deltaTime = System.currentTimeMillis();
     }
