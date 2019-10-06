@@ -9,12 +9,12 @@ public class SamplePath {
     DriveTrain driveTrain;
 
     //Declaring object imports
-    private OdometryPositionClass odometryPositionClass = new OdometryPositionClass();
+    private OdometryPosition odometryPositionClass = new OdometryPosition();
 
     //Declaring variables
     String name;
     int step = 1;
-    OdometryPositionClass.Direction direction;
+    OdometryPosition.Direction direction;
 
 
     //Constructor
@@ -28,13 +28,13 @@ public class SamplePath {
         step = 1;
         switch(step) {
             case 1:
-                direction = OdometryPositionClass.Direction.FORWARD;
+                direction = OdometryPosition.Direction.FORWARD;
                 driveTrain.driveStraight("forward", 5);
                 driveTrain.Rotation(90);
                 step = 2;
                 break;
             case 2:
-                direction = OdometryPositionClass.Direction.FORWARD;
+                direction = OdometryPosition.Direction.FORWARD;
                 driveTrain.driveStraight("forward", 5);
                 break;
 
@@ -44,6 +44,6 @@ public class SamplePath {
     //Outputs our step
     public int getStep() {return step;}
 
-    public OdometryPositionClass.Direction returnDirection() {return direction;}
+    public OdometryPosition.Direction returnDirection() {return direction;}
 
 }

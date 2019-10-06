@@ -9,16 +9,15 @@ import org.firstinspires.ftc.robotcore.external.navigation.AngleUnit;
 import org.firstinspires.ftc.robotcore.external.navigation.AxesOrder;
 import org.firstinspires.ftc.robotcore.external.navigation.AxesReference;
 import org.firstinspires.ftc.robotcore.external.navigation.Orientation;
-import org.firstinspires.ftc.robotcore.external.navigation.Position;
 import org.firstinspires.ftc.robotcore.external.navigation.Velocity;
-import org.firstinspires.ftc.teamcode.KrishnaSaysKilljoysNeverDie.PositionClass;
+import org.firstinspires.ftc.teamcode.KrishnaSaysKilljoysNeverDie.Position;
 
 import java.util.Locale;
 
 
 //TODO: CALCULATE COUNTS PER INCH
 
-public class OdometryPositionClass extends PositionClass {
+public class OdometryPosition extends Position {
 
     //Declaring motors
     DcMotor fLeft, fRight, bLeft, bRight, encoderY, encoderX;
@@ -55,12 +54,12 @@ public class OdometryPositionClass extends PositionClass {
 
 
     //Constructor
-    public OdometryPositionClass() {
+    public OdometryPosition() {
         positionX = 0;
         positionY = 0;
     }
 
-    public OdometryPositionClass(HardwareMap hardwareMap, String fL, String fR, String bL, String bR, String encX, String encY, String imumap, double posX, double posY) {
+    public OdometryPosition(HardwareMap hardwareMap, String fL, String fR, String bL, String bR, String encX, String encY, String imumap, double posX, double posY) {
 
         //Mapping
         fLeft = hardwareMap.dcMotor.get(fL);
@@ -95,7 +94,7 @@ public class OdometryPositionClass extends PositionClass {
         imu.initialize(parameters);
 
         // Start the logging of measured acceleration
-        imu.startAccelerationIntegration(new Position(), new Velocity(), 1000);
+        imu.startAccelerationIntegration(new org.firstinspires.ftc.robotcore.external.navigation.Position(), new Velocity(), 1000);
 
     }
 

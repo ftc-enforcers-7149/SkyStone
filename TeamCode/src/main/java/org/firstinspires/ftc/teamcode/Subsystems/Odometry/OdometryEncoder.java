@@ -3,28 +3,28 @@ package org.firstinspires.ftc.teamcode.Subsystems.Odometry;
 import com.qualcomm.robotcore.hardware.DcMotor;
 import com.qualcomm.robotcore.hardware.HardwareMap;
 
-public class EncoderTestObject{
+public class OdometryEncoder {
 
     //Declaring hardware
     DcMotor fLeft, fRight, bLeft, bRight;
 
 
     //Initializing position
-    OdometryPositionClass odometryPositionClass;
+    OdometryPosition odometryPositionClass;
 
     //Variables
     double x, y;
 
 
     //Our constructor requires: hardware map, 4 motors, 2 encoders, an imu, and 2 positions.
-    public EncoderTestObject(HardwareMap hardwareMap, String fL, String fR, String bL, String bR, String encX, String encY, String imumap, double posX, double posY){
+    public OdometryEncoder(HardwareMap hardwareMap, String fL, String fR, String bL, String bR, String encX, String encY, String imumap, double posX, double posY){
 
         //Initializes start x
         x = posX;
         y = posY;
 
         //Initializes odometry pos class
-        odometryPositionClass = new OdometryPositionClass(hardwareMap, fL, fR, bL, bR, encX, encY, imumap, posX, posY);
+        odometryPositionClass = new OdometryPosition(hardwareMap, fL, fR, bL, bR, encX, encY, imumap, posX, posY);
 
         //Starts our odometry tracking
         startOdometry();
@@ -46,7 +46,7 @@ public class EncoderTestObject{
      * @param step step of the path
      * @return
      */
-    public double[] OnTrack(String path, int step, OdometryPositionClass.Direction direction) {
+    public double[] OnTrack(String path, int step, OdometryPosition.Direction direction) {
 
         odometryPositionClass.updatePosition(direction);
 

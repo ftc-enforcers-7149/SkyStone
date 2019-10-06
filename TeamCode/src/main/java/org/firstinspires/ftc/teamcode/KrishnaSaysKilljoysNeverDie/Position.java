@@ -2,7 +2,7 @@ package org.firstinspires.ftc.teamcode.KrishnaSaysKilljoysNeverDie;
 
 
 //Simple positioning class for basic positioning.
-public class PositionClass {
+public class Position {
 
 
     //Class vars
@@ -10,12 +10,12 @@ public class PositionClass {
 
 
     //Constructors
-    public PositionClass() {
+    public Position() {
         positionX = 0;
         positionY = 0;
     }
 
-    public PositionClass(double posX, double posY) {
+    public Position(double posX, double posY) {
         positionX = posX;
         positionY = posY;
     }

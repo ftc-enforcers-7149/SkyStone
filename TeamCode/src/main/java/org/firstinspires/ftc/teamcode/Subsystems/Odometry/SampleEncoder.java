@@ -9,13 +9,13 @@ public class SampleEncoder extends OpMode {
 
 
     //Declaring all of our object imports;
-    EncoderTestObject encoderTestObject;
+    OdometryEncoder encoderTestObject;
     SamplePath samplePath;
 
     public void init() {
 
         //Declaring encoder test object
-        encoderTestObject = new EncoderTestObject(hardwareMap, "fLeft", "fRight", "bLeft", "bRight", "encoderX", "encoderY", "imu", 0, 0);
+        encoderTestObject = new OdometryEncoder(hardwareMap, "fLeft", "fRight", "bLeft", "bRight", "encoderX", "encoderY", "imu", 0, 0);
 
     }
 
