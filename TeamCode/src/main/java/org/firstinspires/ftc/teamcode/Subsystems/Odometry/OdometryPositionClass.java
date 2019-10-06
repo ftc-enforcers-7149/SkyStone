@@ -1,4 +1,4 @@
-package org.firstinspires.ftc.teamcode.KrishnaSaysKilljoysNeverDie.TestEncoderAuto;
+package org.firstinspires.ftc.teamcode.Subsystems.Odometry;
 
 import com.qualcomm.hardware.bosch.BNO055IMU;
 import com.qualcomm.hardware.bosch.JustLoggingAccelerationIntegrator;
@@ -35,16 +35,17 @@ public class OdometryPositionClass extends PositionClass {
     //Used for encoders
     //TODO: THIS IS REALLY WRONG. FIX IT
     static final double     EXTERNAL_GEARING        = 1;
-    static final double     COUNTS_PER_MOTOR_REV    = 537.6 ;  //28  // eg: AndyMark NeverRest40 Motor Encoder
-    static final double     DRIVE_GEAR_REDUCTION    = 1 ;     // This is < 1.0 if geared UP
-    static final double     WHEEL_DIAMETER_INCHES   = 3.937 ;     // For figuring circumference
-    public static final double     COUNTS_PER_INCH         = ((COUNTS_PER_MOTOR_REV * DRIVE_GEAR_REDUCTION) /
+    static final double     COUNTS_PER_ODOM = 360;  //28  // eg: Our encoders duh
+    static final double     DRIVE_GEAR_REDUCTION    = 1;     // This is < 1.0 if geared UP
+    static final double     WHEEL_DIAMETER_INCHES   = 2;     // For figuring circumference
+    public static final double     COUNTS_PER_INCH         = ((COUNTS_PER_ODOM * DRIVE_GEAR_REDUCTION) /
             (WHEEL_DIAMETER_INCHES * 3.1415))/EXTERNAL_GEARING;
 
 
 
     //Direction enum
-    public enum direction {FORWARD, BACKWARD}
+    public enum Direction {FORWARD, BACKWARD}
+
 
 
 
@@ -139,7 +140,7 @@ public class OdometryPositionClass extends PositionClass {
 
 
     //Method that updates position (the big one!)
-    public void updatePosition(direction dir) {
+    public void updatePosition(Direction dir) {
 
         //Resets our encoders every time this is called. This is important because we
         //are adding to the position every time the method is called, and we don't
@@ -162,13 +163,13 @@ public class OdometryPositionClass extends PositionClass {
         if(heading % 180 == 0) {
 
             if (heading == 0) {
-                if (dir == direction.FORWARD) {
+                if (dir == Direction.FORWARD) {
                     positionX += getMotorDistIn(xPos);
                 } else {
                     positionX -= getMotorDistIn(xPos);
                 }
             } else {
-                if (dir == direction.FORWARD) {
+                if (dir == Direction.FORWARD) {
                     positionX -= getMotorDistIn(xPos);
                 } else {
                     positionX += getMotorDistIn(xPos);
@@ -179,13 +180,13 @@ public class OdometryPositionClass extends PositionClass {
         //This time, we calculate if we are facing up or not. If we are not forwards/backwards or up/down, we move on.
         else if ((heading - 90) % 90 == 0) {
             if (heading == 90) {
-                if (dir == direction.FORWARD) {
+                if (dir == Direction.FORWARD) {
                     positionY -= getMotorDistIn(yPos);
                 } else {
                     positionY += getMotorDistIn(yPos);
                 }
             } else {
-                if (dir == direction.FORWARD) {
+                if (dir == Direction.FORWARD) {
                     positionY += getMotorDistIn(yPos);
                 } else {
                     positionY -= getMotorDistIn(yPos);
