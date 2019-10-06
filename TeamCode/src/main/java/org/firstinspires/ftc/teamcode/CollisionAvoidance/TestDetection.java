@@ -16,6 +16,8 @@ import org.firstinspires.ftc.robotcore.external.navigation.Position;
 import org.firstinspires.ftc.robotcore.external.navigation.Velocity;
 import org.firstinspires.ftc.teamcode.Subsystems.DriveTrain;
 
+import java.util.Arrays;
+
 @TeleOp(name = "Detect Movement")
 public class TestDetection extends OpMode {
     //Instance classes for detection and movement
@@ -31,6 +33,7 @@ public class TestDetection extends OpMode {
     double v1, v2, v3, v4;
     double prevTime;
     double lim;
+    boolean isMoving;
 
     public void init() {
         detection = new DetectionClass(hardwareMap, "distanceL", "distanceR", "distanceC");
@@ -77,6 +80,7 @@ public class TestDetection extends OpMode {
 
         //Initialize variables
         lim = 0.9;
+        isMoving = false;
     }
 
     public void start() {
@@ -85,11 +89,20 @@ public class TestDetection extends OpMode {
 
     public void loop() {
         //Getting inputs
-        leftY = gamepad1.left_stick_y;
+        leftY = -gamepad1.left_stick_y;
         leftX = gamepad1.left_stick_x;
-        rightX = gamepad1.right_stick_x;
+        rightX = -gamepad1.right_stick_x;
 
-        telemetry.addData("Moving Obstacle? ", detection.isObjectMoving(fLeft, fRight));
+        detection.getInput();
+
+        if (System.currentTimeMillis() - prevTime > 100) {
+            isMoving = detection.isObjectMoving(fLeft);
+
+            prevTime += 100;
+        }
+
+        telemetry.addData("Moving Obstacle? ", isMoving);
+        telemetry.addData("Sensor State (left, front, right)", Arrays.toString(detection.getSensorState()));
         telemetry.addLine(detection.getMovingData());
 
         v1 = leftY + leftX + rightX;
@@ -113,7 +126,5 @@ public class TestDetection extends OpMode {
         fRight.setPower(v2);
         bLeft.setPower(v3);
         bRight.setPower(v4);
-
-        prevTime = System.currentTimeMillis();
     }
 }

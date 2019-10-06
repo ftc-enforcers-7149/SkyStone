@@ -57,21 +57,18 @@ public class DetectionClass {
      * detects if object is moving or not
      * @return
      */
-    public boolean isObjectMoving(DcMotor fLeft, DcMotor fRight) {
-        tDLast = tDCurrent;
-        fDLast = fDCurrent;
-
-        double pos = inToCm(fLeft.getCurrentPosition()/COUNTS_PER_INCH + fRight.getCurrentPosition()/COUNTS_PER_INCH) / 2;
-        double dist = distC.getDistance(DistanceUnit.CM);
+    public boolean isObjectMoving(DcMotor fLeft) {
+        tDCurrent = inToCm(fLeft.getCurrentPosition()/COUNTS_PER_INCH);
+        fDCurrent = mid;
 
         if (fDLast - fDCurrent > (tDCurrent - tDLast) + 2) {
-            tDCurrent = pos;
-            fDCurrent = dist;
+            tDLast = tDCurrent;
+            fDLast = fDCurrent;
             return true;
         }
 
-        tDCurrent = pos;
-        fDCurrent = dist;
+        tDLast = tDCurrent;
+        fDLast = fDCurrent;
         return false;
     }
 
