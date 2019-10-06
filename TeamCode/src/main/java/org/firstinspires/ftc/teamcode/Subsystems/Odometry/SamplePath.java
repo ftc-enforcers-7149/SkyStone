@@ -17,7 +17,7 @@ public class SamplePath {
     OdometryPositionClass.Direction direction;
 
 
-
+    //Constructor
     public SamplePath(){
         name = "test";
     }
