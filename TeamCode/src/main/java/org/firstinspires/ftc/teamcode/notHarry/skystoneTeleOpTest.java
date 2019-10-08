@@ -84,7 +84,7 @@ public class skystoneTeleOpTest extends OpMode {
             bLeft.setPower(-rStrafe);
             fRight.setPower(-rStrafe);
             bRight.setPower(rStrafe);
-        }
+         }
 
 
 
