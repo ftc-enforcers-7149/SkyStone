@@ -18,7 +18,7 @@ import org.firstinspires.ftc.teamcode.Subsystems.DriveTrain;
 
 import java.util.Arrays;
 
-@TeleOp(name = "Detect Movement")
+//@TeleOp(name = "Detect Movement")
 public class TestDetection extends OpMode {
     //Instance classes for detection and movement
     DetectionClass detection;

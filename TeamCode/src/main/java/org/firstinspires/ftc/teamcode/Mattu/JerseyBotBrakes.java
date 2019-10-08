@@ -5,7 +5,7 @@ import com.qualcomm.robotcore.eventloop.opmode.TeleOp;
 import com.qualcomm.robotcore.hardware.DcMotor;
 import com.qualcomm.robotcore.hardware.DcMotorSimple;
 
-@TeleOp(name = "JerseyBrakes")
+//@TeleOp(name = "JerseyBrakes")
 public class JerseyBotBrakes extends OpMode {
 
     DcMotor mLeft, mRight;

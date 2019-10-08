@@ -4,7 +4,7 @@ import com.qualcomm.robotcore.eventloop.opmode.OpMode;
 import com.qualcomm.robotcore.eventloop.opmode.TeleOp;
 import com.qualcomm.robotcore.hardware.Servo;
 
-@TeleOp(name="claw test")
+//@TeleOp(name="claw test")
 public class ClawTest extends OpMode {
     Servo clawL, clawR;
     boolean grab,realease,attack,mode1,mode2,toggle=false;
