@@ -11,8 +11,11 @@ public class TestMovementDetection extends OpMode {
 
     double deltaTime;
 
+    double v1, v2, v3, v4;
+
     public void init() {
         detection = new MovementDetectionClass(hardwareMap, "distanceC", "distanceR", "distanceL", "fLeft", "bLeft", "fRight", "bRight");
+        v1 = 0; v2 = 0; v3 = 0; v4 = 0;
     }
 
     public void start() {
@@ -20,14 +23,42 @@ public class TestMovementDetection extends OpMode {
     }
 
     public void loop() {
-        //detection.updateMovement();
-        telemetry.addData("Moving Obstacle? ", detection.isMoving());
-        telemetry.addLine(detection.rawData());
+        boolean isFront = detection.isFrontMoving();
+        boolean isLeft = detection.isLeftMoving();
+        boolean isRight = detection.isRightMovement();
+        String raw = detection.rawData();
 
-        detection.fLeft.setPower(-gamepad1.left_stick_y/1.5);
-        detection.fRight.setPower(-gamepad1.left_stick_y/1.5);
-        detection.bLeft.setPower(-gamepad1.left_stick_y/1.5);
-        detection.bRight.setPower(-gamepad1.left_stick_y/1.5);
+        telemetry.addData("Moving in front? ", isFront);
+        telemetry.addData("Moving on left? ", isLeft);
+        telemetry.addData("Moving on right? ", isRight);
+        telemetry.addLine(raw);
+
+        if (isFront) {
+            v1 = -0.7;
+            v2 = -0.7;
+            v3 = -0.7;
+            v4 = -0.7;
+        }
+        else if (isLeft) {
+            v1 = -0.8;
+            v2 = 0.8;
+            v3 = 0.8;
+            v4 = -0.8;
+        }
+        else if (isRight) {
+            v1 = 0.8;
+            v2 = -0.8;
+            v3 = -0.8;
+            v4 = 0.8;
+        }
+        else {
+            v1 = 0; v2 = 0; v3 = 0; v4 = 0;
+        }
+
+        detection.fLeft.setPower(v1);
+        detection.fRight.setPower(v2);
+        detection.bLeft.setPower(v3);
+        detection.bRight.setPower(v4);
 
         deltaTime = System.currentTimeMillis();
     }

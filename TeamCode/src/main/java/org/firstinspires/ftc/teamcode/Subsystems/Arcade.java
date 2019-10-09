@@ -1,21 +1,15 @@
-package org.firstinspires.ftc.teamcode.Mattu;
-
-import com.qualcomm.hardware.bosch.BNO055IMU;
-import com.qualcomm.robotcore.eventloop.opmode.OpMode;
-import com.qualcomm.robotcore.eventloop.opmode.TeleOp;
+package org.firstinspires.ftc.teamcode.Subsystems;
 import com.qualcomm.robotcore.hardware.DcMotor;
 import com.qualcomm.robotcore.hardware.DcMotorSimple;
-import org.firstinspires.ftc.robotcore.external.navigation.Orientation;
+import com.qualcomm.robotcore.hardware.Gamepad;
+import com.qualcomm.robotcore.hardware.HardwareMap;
 
-@TeleOp(name = "Arcade")
-public class Arcade extends OpMode {
+import org.firstinspires.ftc.robotcore.external.Telemetry;
+
+public class Arcade {
     //DC Motors and velocity variables
     DcMotor fLeft, fRight, bLeft, bRight;
     double v1, v2, v3, v4; //In same order as motors
-
-    //IMU variables
-    BNO055IMU imu;
-    Orientation angles;
 
     //Variables for inputs
     double leftX, leftY, rightX;
@@ -23,16 +17,21 @@ public class Arcade extends OpMode {
     //Power limit
     double lim;
 
-    public void init() {
+    //Telemetry object
+    Telemetry telemetry;
+
+    public Arcade(HardwareMap hardwareMap, Telemetry telemetry, String fl, String fr, String bl, String br) {
         //Hardware mapping the motors
-        fLeft = hardwareMap.dcMotor.get("fLeft");
-        fRight = hardwareMap.dcMotor.get("fRight");
-        bLeft = hardwareMap.dcMotor.get("bLeft");
-        bRight = hardwareMap.dcMotor.get("bRight");
+        fLeft = hardwareMap.dcMotor.get(fl);
+        fRight = hardwareMap.dcMotor.get(fr);
+        bLeft = hardwareMap.dcMotor.get(bl);
+        bRight = hardwareMap.dcMotor.get(br);
 
         //Reversing left motors
         fLeft.setDirection(DcMotorSimple.Direction.REVERSE);
         bLeft.setDirection(DcMotorSimple.Direction.REVERSE);
+
+        this.telemetry = telemetry;
 
         //Initialize variables
         lim = 0.9;
@@ -42,7 +41,7 @@ public class Arcade extends OpMode {
         v4 = 0;
     }
 
-    public void loop() {
+    public void drive(Gamepad gamepad1) {
         //Getting inputs
         leftY = gamepad1.left_stick_y;
         leftX = gamepad1.left_stick_x;
