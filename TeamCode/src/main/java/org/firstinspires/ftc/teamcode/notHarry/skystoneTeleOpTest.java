@@ -10,10 +10,11 @@ import com.qualcomm.robotcore.hardware.Servo;
 @TeleOp(name = "claw test")
 public class skystoneTeleOpTest extends OpMode {
     Servo lArm, rArm, lGrab, rGrab;
-    DcMotor fRight,fLeft,bRight,bLeft;
+    DcMotor fRight,fLeft,bRight,bLeft,lift;
 
     boolean armUp, armDown;
     boolean gGrab,gRelease;
+    boolean liftUp,liftDown;
     float lDrive,rDrive,lStrafe,rStrafe;
     public void init(){
         //Servos
@@ -26,23 +27,32 @@ public class skystoneTeleOpTest extends OpMode {
         fRight = hardwareMap.dcMotor.get("fRight");
         bLeft = hardwareMap.dcMotor.get("bLeft");
         bRight = hardwareMap.dcMotor.get("bRight");
+        lift = hardwareMap.dcMotor.get("lift");
 
         fLeft.setDirection(DcMotorSimple.Direction.REVERSE);
         fRight.setDirection(DcMotorSimple.Direction.FORWARD);
         bRight.setDirection(DcMotorSimple.Direction.FORWARD);
         bLeft.setDirection(DcMotorSimple.Direction.REVERSE);
+        lift.setDirection(DcMotorSimple.Direction.REVERSE);
 
         lArm.setDirection(Servo.Direction.REVERSE);
         rArm.setDirection(Servo.Direction.FORWARD);
         lGrab.setDirection(Servo.Direction.REVERSE);
         rGrab.setDirection(Servo.Direction.FORWARD);
 
+        lArm.setPosition(0.40);
+        rArm.setPosition(0.57);
+        lGrab.setPosition(0.25);
+        rGrab.setPosition(0.3);
+
     }//
     public void loop(){
-        armUp = gamepad1.b;
+        armUp = gamepad1.y;
         armDown = gamepad1.a;
         gGrab = gamepad1.x;
-        gRelease = gamepad1.y;
+        gRelease = gamepad1.b;
+        liftDown = gamepad1.dpad_down;
+        liftUp = gamepad1.dpad_up;
         lDrive = gamepad1.left_stick_y;
         rDrive = gamepad1.right_stick_y;
         lStrafe = gamepad1.left_trigger;
@@ -64,7 +74,7 @@ public class skystoneTeleOpTest extends OpMode {
         }
         else if(gRelease){
             lGrab.setPosition(0.25);
-            rGrab.setPosition(0.2);
+            rGrab.setPosition(0.3);
         }
 
         if(lStrafe<0.1 && rStrafe<0.1){
@@ -84,7 +94,17 @@ public class skystoneTeleOpTest extends OpMode {
             bLeft.setPower(-rStrafe);
             fRight.setPower(-rStrafe);
             bRight.setPower(rStrafe);
-         }
+        }
+
+        if(liftUp){
+            lift.setPower(0.1);
+        }
+        else if(liftDown){
+            lift.setPower(-0.1);
+        }
+        else{
+            lift.setPower(0);
+        }
 
 
 
