@@ -16,6 +16,7 @@ import java.util.Locale;
 
 
 //TODO: CALCULATE COUNTS PER INCH
+//TODO: write in better error handling
 
 public class OdometryPosition extends Position {
 
@@ -122,7 +123,7 @@ public class OdometryPosition extends Position {
     }
 
     //Returns the motor distance in inches
-    public double getMotorDistIn(double input) {
+    private double getMotorDistIn(double input) {
         return input/COUNTS_PER_INCH;
     }
 
@@ -218,7 +219,7 @@ public class OdometryPosition extends Position {
 
 
     //Converts degrees
-    public double cvtDegrees(double heading) {
+    private double cvtDegrees(double heading) {
 
         if (heading <0 ) {
             return 360 + heading;
@@ -233,7 +234,7 @@ public class OdometryPosition extends Position {
      * @param angle
      * @return
      */
-    String formatAngle(AngleUnit angleUnit, double angle) {
+    private String formatAngle(AngleUnit angleUnit, double angle) {
         return formatDegrees(AngleUnit.DEGREES.fromUnit(angleUnit, angle));
     }
 
@@ -242,7 +243,7 @@ public class OdometryPosition extends Position {
      * @param degrees
      * @return
      */
-    String formatDegrees(double degrees){
+    private String formatDegrees(double degrees){
         return String.format(Locale.getDefault(), "%.1f", AngleUnit.DEGREES.normalize(degrees));
     }
 

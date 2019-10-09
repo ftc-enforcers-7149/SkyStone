@@ -3,6 +3,7 @@ package org.firstinspires.ftc.teamcode.Subsystems.Odometry;
 import com.qualcomm.robotcore.hardware.DcMotor;
 import com.qualcomm.robotcore.hardware.HardwareMap;
 
+//TODO: write in better error handling
 public class OdometryEncoder {
 
     //Declaring hardware

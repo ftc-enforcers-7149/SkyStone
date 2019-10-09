@@ -4,6 +4,7 @@ import org.firstinspires.ftc.teamcode.Subsystems.DriveTrain;
 
 
 //A sample classfile for a path.
+//TODO: write in better error handling
 public class SamplePath {
 
     DriveTrain driveTrain;
