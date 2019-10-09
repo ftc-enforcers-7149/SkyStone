@@ -30,33 +30,18 @@
 
 package org.firstinspires.ftc.teamcode.notHarry;
 
-import com.qualcomm.robotcore.eventloop.opmode.Disabled;
-import com.qualcomm.robotcore.eventloop.opmode.LinearOpMode;
 import com.qualcomm.robotcore.eventloop.opmode.OpMode;
 import com.qualcomm.robotcore.eventloop.opmode.TeleOp;
 import com.qualcomm.robotcore.hardware.DcMotor;
 import com.qualcomm.robotcore.hardware.DcMotorSimple;
-
 import java.util.List;
-
 import org.firstinspires.ftc.robotcore.external.ClassFactory;
 import org.firstinspires.ftc.robotcore.external.hardware.camera.WebcamName;
 import org.firstinspires.ftc.robotcore.external.navigation.VuforiaLocalizer;
-import org.firstinspires.ftc.robotcore.external.navigation.VuforiaLocalizer.CameraDirection;
 import org.firstinspires.ftc.robotcore.external.tfod.TFObjectDetector;
 import org.firstinspires.ftc.robotcore.external.tfod.Recognition;
 
-/**
- * This 2019-2020 OpMode illustrates the basics of using the TensorFlow Object Detection API to
- * determine the position of the Skystone game elements.
- * <p>
- * Use Android Studio to Copy this Class, and Paste it into your team's code folder with a new name.
- * Remove or comment out the @Disabled line to add this opmode to the Driver Station OpMode list.
- * <p>
- * IMPORTANT: In order to use this OpMode, you need to obtain your own Vuforia license key as
- * is explained below.
- */
-@TeleOp(name = "centerAlign")
+//@TeleOp(name = "centerAlign")
 //@Disabled
 public class centerAlign extends OpMode {
     private static final String TFOD_MODEL_ASSET = "Skystone.tflite";
@@ -66,18 +51,6 @@ public class centerAlign extends OpMode {
     DcMotor fLeft, fRight, bLeft, bRight;
 
 
-    /*
-     * IMPORTANT: You need to obtain your own license key to use Vuforia. The string below with which
-     * 'parameters.vuforiaLicenseKey' is initialized is for illustration only, and will not function.
-     * A Vuforia 'Development' license key, can be obtained free of charge from the Vuforia developer
-     * web site at https://developer.vuforia.com/license-manager.
-     *
-     * Vuforia license keys are always 380 characters long, and look as if they contain mostly
-     * random data. As an example, here is a example of a fragment of a valid key:
-     *      ... yIgIzTqZ4mWjk9wd3cZO9T1axEqzuhxoGlfOOI2dRzKS4T0hQ8kT ...
-     * Once you've obtained a license key, copy the string from the Vuforia web site
-     * and paste it in to your code on the next line, between the double quotes.
-     */
     private static final String VUFORIA_KEY =
             "Afe8mtn/////AAAAGSEHpcPbGksXnZDY1oNZ4stF2BoZwT7Xgcdi3AuWqz3ZGmgN8lUJqEQzvS9hmsvT+5ERk+B2c9iol+6TxH/AhiWr/D8jExF0BSuV22m29ctHLg0QHoo5xJH9Dqr98eojHO3w7181LIaPKBPUvu4WyeODzlNXYDy8IQ5Xq3CuOGEuq/e967FWjhr1Z/OsNgrMh9Gwh28vPqleIfZ3kvSQEArGesl3BuRKYs2w3CX1deteJRjDZ6ayuEBlGFERsy2phkd7uqa9tHiNxVgQt6KBL/mcAJIzvU1rTuq2HPumNMsmw0UMnH35IHyT7X+uieeh+ooHH9XePCL2GFWjHyNQOPUKXe5uSlcWfK2kRzkt8xFF";
     ;
@@ -152,17 +125,17 @@ public class centerAlign extends OpMode {
                     float imageWidth = recognition.getImageWidth();
                     float left = recognition.getLeft();
 
-                    /*if (left <=-9 && left >= -11) {
+                    /*if (left <= && left >= ) {
                         fLeft.setPower(0);
                         fRight.setPower(0);
                         bLeft.setPower(0);
                         bRight.setPower(0);
-                    }else if ( left > -10){
+                    }else if ( left > ){
                         bLeft.setPower(-(rightStrafe*100)/128);
                         fLeft.setPower((rightStrafe*100)/128);
                         bRight.setPower((rightStrafe*100)/128);
                         fRight.setPower(-(rightStrafe*100)/128);
-                    }else if (left < -10){
+                    }else if (left < ){
                         bLeft.setPower((leftStrafe*100)/128);
                         fLeft.setPower(-(leftStrafe*100)/128);
                         bRight.setPower(-(leftStrafe*100)/128);
@@ -173,6 +146,7 @@ public class centerAlign extends OpMode {
                     telemetry.addData("Stone Height", recognition.getHeight());
                     telemetry.addData("Stone Width", recognition.getWidth());
                     telemetry.addData("Label", recognition.getLabel());
+                    telemetry.addData("Confidence", recognition.getConfidence());
                     telemetry.addData(String.format("label (%d)", i), recognition.getLabel());
                     telemetry.addData(String.format("  left,top (%d)", i), "%.03f , %.03f",
                             recognition.getLeft(), recognition.getTop());

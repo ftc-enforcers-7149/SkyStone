@@ -51,7 +51,7 @@ import org.firstinspires.ftc.robotcore.external.tfod.Recognition;
  * IMPORTANT: In order to use this OpMode, you need to obtain your own Vuforia license key as
  * is explained below.
  */
-@TeleOp(name = "ObjectAllign")
+//@TeleOp(name = "ObjectAllign")
 
 public class ObjectAllign extends LinearOpMode {
     private static final String TFOD_MODEL_ASSET = "Skystone.tflite";

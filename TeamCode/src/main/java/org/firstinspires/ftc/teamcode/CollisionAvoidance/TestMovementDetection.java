@@ -4,7 +4,7 @@ import com.qualcomm.robotcore.eventloop.opmode.Autonomous;
 import com.qualcomm.robotcore.eventloop.opmode.OpMode;
 import com.qualcomm.robotcore.eventloop.opmode.TeleOp;
 
-@TeleOp(name = "Detect Movement")
+//@TeleOp(name = "Detect Movement")
 public class TestMovementDetection extends OpMode {
 
     MovementDetectionClass detection;
@@ -20,7 +20,7 @@ public class TestMovementDetection extends OpMode {
     }
 
     public void loop() {
-        detection.updateMovement();
+        //detection.updateMovement();
         telemetry.addData("Moving Obstacle? ", detection.isMoving());
         telemetry.addLine(detection.rawData());
 

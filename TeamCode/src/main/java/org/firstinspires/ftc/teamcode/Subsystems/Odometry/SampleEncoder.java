@@ -1,8 +1,6 @@
-package org.firstinspires.ftc.teamcode.KrishnaSaysKilljoysNeverDie.TestEncoderAuto;
+package org.firstinspires.ftc.teamcode.Subsystems.Odometry;
 
 import com.qualcomm.robotcore.eventloop.opmode.OpMode;
-
-import org.firstinspires.ftc.teamcode.KrishnaSaysKilljoysNeverDie.PositionClass;
 
 
 //THIS IS A TEST PROGRAM
@@ -11,13 +9,13 @@ public class SampleEncoder extends OpMode {
 
 
     //Declaring all of our object imports;
-    EncoderTestObject encoderTestObject;
+    OdometryEncoder odometryEncoder;
     SamplePath samplePath;
 
     public void init() {
 
         //Declaring encoder test object
-        encoderTestObject = new EncoderTestObject(hardwareMap, "fLeft", "fRight", "bLeft", "bRight", "encoderX", "encoderY", "imu", 0, 0);
+        odometryEncoder = new OdometryEncoder(hardwareMap, "fLeft", "fRight", "bLeft", "bRight", "encoderX", "encoderY", "imu", 0, 0);
 
     }
 
@@ -25,7 +23,7 @@ public class SampleEncoder extends OpMode {
 
         //Declares our sample path
         samplePath.runSamplePath();
-        encoderTestObject.EncoderTrack("test", samplePath.getStep());
+        odometryEncoder.OnTrack("test", samplePath.getStep(), samplePath.returnDirection());
 
     }
 

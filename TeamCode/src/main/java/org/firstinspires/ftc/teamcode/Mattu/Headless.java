@@ -14,8 +14,8 @@ import org.firstinspires.ftc.robotcore.external.navigation.Orientation;
 import org.firstinspires.ftc.robotcore.external.navigation.Position;
 import org.firstinspires.ftc.robotcore.external.navigation.Velocity;
 
-@TeleOp(name = "MecanumDrives")
-public class MecanumDrives extends OpMode {
+@TeleOp(name = "Headless")
+public class Headless extends OpMode {
 
     //DC Motors and velocity variables
     DcMotor fLeft, fRight, bLeft, bRight;
@@ -27,15 +27,8 @@ public class MecanumDrives extends OpMode {
     double angle, offset;
 
     //Variables for inputs
-    double leftX, leftY, rightX, rightY;
-    double leftT, rightT;
+    double leftX, leftY, rightX;
     boolean resetAngle, changeMode;
-
-    //Variable for mode
-    //0 is tank
-    //1 is arcade
-    //2 is headless
-    int mode;
 
     //Power limit
     double lim;
@@ -80,7 +73,6 @@ public class MecanumDrives extends OpMode {
         imu.startAccelerationIntegration(new Position(), new Velocity(), 1000);
 
         //Initialize variables
-        mode = 0;
         lim = 0.9;
         v1 = 0;
         v2 = 0;
@@ -93,113 +85,62 @@ public class MecanumDrives extends OpMode {
         leftY = gamepad1.left_stick_y;
         leftX = gamepad1.left_stick_x;
         rightX = gamepad1.right_stick_x;
-        changeMode = gamepad1.right_stick_button;
+        changeMode = gamepad1.a;
 
+        telemetry.addLine("Mode is headless");
 
-        //Tank Drive
-        if (mode == 0) {
-            //Specific inputs
-            rightY = gamepad1.right_stick_y;
-            leftT = gamepad1.left_trigger;
-            rightT = gamepad1.right_trigger;
+        //Specific inputs
+        angle = angles.firstAngle;
+        resetAngle = gamepad1.y;
 
-            v1 = leftY;
-            v2 = rightY;
-            v3 = leftY;
-            v4 = rightY;
+        //Fixing inputs
+        rightX = -rightX;
 
-            if (rightT > 0.1) {
-                v1 = rightT;
-                v2 = -rightT;
-                v3 = -rightT;
-                v4 = rightT;
-            }
-            else if (leftT > 0.1) {
-                v1 = -rightT;
-                v2 = rightT;
-                v3 = rightT;
-                v4 = -rightT;
-            }
-
-            if (changeMode) {
-                mode = 1;
-            }
+        //Only set brakes if no inputs are given from the joysticks
+        //this makes it easier for the robot to move diagonally
+        if (leftY == 0 && leftX == 0 && rightX == 0) {
+            bLeft.setZeroPowerBehavior(DcMotor.ZeroPowerBehavior.BRAKE);
+            bRight.setZeroPowerBehavior(DcMotor.ZeroPowerBehavior.BRAKE);
+            fLeft.setZeroPowerBehavior(DcMotor.ZeroPowerBehavior.BRAKE);
+            fRight.setZeroPowerBehavior(DcMotor.ZeroPowerBehavior.BRAKE);
+        } else {
+            bLeft.setZeroPowerBehavior(DcMotor.ZeroPowerBehavior.FLOAT);
+            bRight.setZeroPowerBehavior(DcMotor.ZeroPowerBehavior.FLOAT);
+            fLeft.setZeroPowerBehavior(DcMotor.ZeroPowerBehavior.FLOAT);
+            fRight.setZeroPowerBehavior(DcMotor.ZeroPowerBehavior.FLOAT);
         }
 
-
-        //Arcade Drive
-        else if (mode == 1) {
-            v1 = leftY + leftX + rightX;
-            v2 = leftY - leftX - rightX;
-            v3 = leftY - leftX + rightX;
-            v4 = leftY + leftX - rightX;
-
-            if (changeMode) {
-                mode = 2;
-            }
+        //Offset the angle if the imu is incorrect
+        if (resetAngle) {
+            offset = angle;
         }
 
+        //Telemetry for angles
+        telemetry.addData("Angle: ", angle - offset);
+        telemetry.addData("Converted angle: ", cvtDegrees(angle - offset));
 
-        //Headless Arcade Drive
-        else if (mode == 2) {
-            //Specific inputs
-            angle = angles.firstAngle;
-            resetAngle = gamepad1.y;
-
-            //Fixing inputs
-            leftY = -leftY;
-            leftX = -leftX;
-
-            //Only set brakes if no inputs are given from the joysticks
-            //this makes it easier for the robot to move diagonally
-            if (leftY == 0 && leftX == 0 && rightX == 0) {
-                bLeft.setZeroPowerBehavior(DcMotor.ZeroPowerBehavior.BRAKE);
-                bRight.setZeroPowerBehavior(DcMotor.ZeroPowerBehavior.BRAKE);
-                fLeft.setZeroPowerBehavior(DcMotor.ZeroPowerBehavior.BRAKE);
-                fRight.setZeroPowerBehavior(DcMotor.ZeroPowerBehavior.BRAKE);
-            } else {
-                bLeft.setZeroPowerBehavior(DcMotor.ZeroPowerBehavior.FLOAT);
-                bRight.setZeroPowerBehavior(DcMotor.ZeroPowerBehavior.FLOAT);
-                fLeft.setZeroPowerBehavior(DcMotor.ZeroPowerBehavior.FLOAT);
-                fRight.setZeroPowerBehavior(DcMotor.ZeroPowerBehavior.FLOAT);
-            }
-
-            //Offset the angle if the imu is incorrect
-            if (resetAngle) {
-                offset = angle;
-            }
-
-            //Telemetry for angles
-            telemetry.addData("Angle: ", angle - offset);
-            telemetry.addData("Converted angle: ", cvtDegrees(angle - offset));
-
-            //r is used to scale the power of the motors depending on how much the joysticks are pushed
-            //robotAngle is the directional angle (radians) that the robot wants to go in terms of itself.
-            //45 degrees is adding in radians because that is the small angle on a right triangle.
-            //v1 - v4 are the velocities for each motor. r is multiplied here.
-            //Sine and cosine are applied to their respective diagonal's wheels.
-            //rightX is added to and subtracted from their respective side's wheels.
-            double r = Math.hypot(leftX, leftY);
-            double robotAngle = Math.atan2(leftY, leftX) - Math.toRadians(cvtDegrees(angle - offset)) + Math.PI / 4;
-            v1 = r * Math.sin(robotAngle) + rightX;
-            v2 = r * Math.cos(robotAngle) - rightX;
-            v3 = r * Math.cos(robotAngle) + rightX;
-            v4 = r * Math.sin(robotAngle) - rightX;
-
-            if (changeMode) {
-                mode = 0;
-            }
-        }
+        //r is used to scale the power of the motors depending on how much the joysticks are pushed
+        //robotAngle is the directional angle (radians) that the robot wants to go in terms of itself.
+        //45 degrees is adding in radians because that is the small angle on a right triangle.
+        //v1 - v4 are the velocities for each motor. r is multiplied here.
+        //Sine and cosine are applied to their respective diagonal's wheels.
+        //rightX is added to and subtracted from their respective side's wheels.
+        double r = Math.hypot(leftX, leftY);
+        double robotAngle = Math.atan2(leftY, leftX) - Math.toRadians(cvtDegrees(angle - offset)) + Math.PI / 4;
+        v1 = r * Math.sin(robotAngle) + rightX;
+        v2 = r * Math.cos(robotAngle) - rightX;
+        v3 = r * Math.cos(robotAngle) + rightX;
+        v4 = r * Math.sin(robotAngle) - rightX;
 
         //Getting the max value can assure that no motor will be set to a value above a certain point.
         double max = Math.max(Math.max(Math.abs(v1), Math.abs(v2)), Math.max(Math.abs(v3), Math.abs(v4)));
 
         //In this case, no motor can go above lim power by scaling them all down if such a thing might occur.
         if (max > lim) {
-            v1 /= max * (1/lim);
-            v2 /= max * (1/lim);
-            v3 /= max * (1/lim);
-            v4 /= max * (1/lim);
+            v1 /= max * (1 / lim);
+            v2 /= max * (1 / lim);
+            v3 /= max * (1 / lim);
+            v4 /= max * (1 / lim);
         }
 
         //Telemetry for the motor velocities
