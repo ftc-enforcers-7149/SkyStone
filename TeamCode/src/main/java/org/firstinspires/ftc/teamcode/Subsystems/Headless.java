@@ -1,12 +1,13 @@
-package org.firstinspires.ftc.teamcode.Mattu;
+package org.firstinspires.ftc.teamcode.Subsystems;
 
 import com.qualcomm.hardware.bosch.BNO055IMU;
 import com.qualcomm.hardware.bosch.JustLoggingAccelerationIntegrator;
-import com.qualcomm.robotcore.eventloop.opmode.OpMode;
-import com.qualcomm.robotcore.eventloop.opmode.TeleOp;
 import com.qualcomm.robotcore.hardware.DcMotor;
 import com.qualcomm.robotcore.hardware.DcMotorSimple;
+import com.qualcomm.robotcore.hardware.Gamepad;
+import com.qualcomm.robotcore.hardware.HardwareMap;
 
+import org.firstinspires.ftc.robotcore.external.Telemetry;
 import org.firstinspires.ftc.robotcore.external.navigation.AngleUnit;
 import org.firstinspires.ftc.robotcore.external.navigation.AxesOrder;
 import org.firstinspires.ftc.robotcore.external.navigation.AxesReference;
@@ -14,31 +15,33 @@ import org.firstinspires.ftc.robotcore.external.navigation.Orientation;
 import org.firstinspires.ftc.robotcore.external.navigation.Position;
 import org.firstinspires.ftc.robotcore.external.navigation.Velocity;
 
-@TeleOp(name = "Headless")
-public class Headless extends OpMode {
+public class Headless {
 
     //DC Motors and velocity variables
-    DcMotor fLeft, fRight, bLeft, bRight;
-    double v1, v2, v3, v4; //In same order as motors
+    private DcMotor fLeft, fRight, bLeft, bRight;
+    private double v1, v2, v3, v4; //In same order as motors
 
     //IMU variables
-    BNO055IMU imu;
-    Orientation angles;
-    double angle, offset;
+    private BNO055IMU imu;
+    private Orientation angles;
+    private double angle, offset;
 
     //Variables for inputs
-    double leftX, leftY, rightX;
-    boolean resetAngle, changeMode;
+    private double leftX, leftY, rightX;
+    private boolean resetAngle, changeMode;
 
     //Power limit
-    double lim;
+    private double lim;
 
-    public void init() {
+    //Telemetry object
+    private Telemetry telemetry;
+
+    public Headless(HardwareMap hardwareMap, Telemetry telemetry, String fl, String fr, String bl, String br) {
         //Hardware mapping the motors
-        fLeft = hardwareMap.dcMotor.get("fLeft");
-        fRight = hardwareMap.dcMotor.get("fRight");
-        bLeft = hardwareMap.dcMotor.get("bLeft");
-        bRight = hardwareMap.dcMotor.get("bRight");
+        fLeft = hardwareMap.dcMotor.get(fl);
+        fRight = hardwareMap.dcMotor.get(fr);
+        bLeft = hardwareMap.dcMotor.get(bl);
+        bRight = hardwareMap.dcMotor.get(br);
 
         //Reversing left motors
         fLeft.setDirection(DcMotorSimple.Direction.REVERSE);
@@ -53,7 +56,9 @@ public class Headless extends OpMode {
         parameters.loggingTag = "IMU";
         parameters.accelerationIntegrationAlgorithm = new JustLoggingAccelerationIntegrator();
 
-        telemetry.addAction(new Runnable() {
+        this.telemetry = telemetry;
+
+        this.telemetry.addAction(new Runnable() {
             @Override
             public void run() {
                 // Acquiring the angles is relatively expensive; we don't want
@@ -80,7 +85,7 @@ public class Headless extends OpMode {
         v4 = 0;
     }
 
-    public void loop() {
+    public void drive(Gamepad gamepad1) {
         //Getting inputs
         leftY = gamepad1.left_stick_y;
         leftX = gamepad1.left_stick_x;
@@ -160,7 +165,7 @@ public class Headless extends OpMode {
     //The equations were made in Desmos by plotting certain points (input, output)
     //Equation 1: y = -x + 90
     //Equation 2: y = -x + 450
-    public double cvtDegrees(double heading) {
+    private double cvtDegrees(double heading) {
         if (heading >= 0 && heading < 90) {
             return -heading + 90;
         }

@@ -14,12 +14,16 @@ public class MovementDetectionClass{
     DcMotor fLeft, fRight, bLeft, bRight;
 
 
-    //Class vars
+    //fDLast fDCurrent front distances
+    //lDLast lDCurrent left distances
+    //rDLast rDCurrent right distances
     private double fDLast, fDCurrent;
+    private double lDLast, lDCurrent;
+    private double rDLast, rDCurrent;
     private double tDLast, tDCurrent;
 
 
-    //Used for encoders
+    //Used for  encoders
     static final double     EXTERNAL_GEARING        = 1;
     static final double     COUNTS_PER_MOTOR_REV    = 537.6 ;  //28  // eg: AndyMark NeverRest40 Motor Encoder
     static final double     DRIVE_GEAR_REDUCTION    = 1 ;     // This is < 1.0 if geared UP
@@ -55,21 +59,40 @@ public class MovementDetectionClass{
         resetEncoderWithoutEncoder();
 
         fDCurrent = distanceC.getDistance(DistanceUnit.CM);
+        lDCurrent = distanceL.getDistance(DistanceUnit.CM);
+        rDCurrent = distanceR.getDistance(DistanceUnit.CM);
         tDCurrent = 0;
     }
 
+    public double getChange(String sensor) {
+
+        double difference = 0;
+
+        if (sensor.equals("front")) {
+            difference = fDLast - fDCurrent;
+        }
+        else if (sensor.equals("left")) {
+            difference = lDLast - lDCurrent;
+        }
+        else if (sensor.equals("right")) {
+            difference = rDLast - rDCurrent;
+        }
+
+        return difference;
+    }
+
     /**
-     * detects if object is moving or not
+     * Detects if object is moving or not in front
      * @return
      */
-    public boolean isMoving() {
+    public boolean isFrontMoving() {
         tDLast = tDCurrent;
         fDLast = fDCurrent;
 
         double pos = convertINtoCM((fLeft.getCurrentPosition()/COUNTS_PER_INCH + fRight.getCurrentPosition()/COUNTS_PER_INCH) / 2);
         double dist = distanceC.getDistance(DistanceUnit.CM);
 
-        if (fDLast - fDCurrent > (tDCurrent - tDLast) + 2) {
+        if (getChange("front") > (tDCurrent - tDLast) + 2) {
             tDCurrent = pos;
             fDCurrent = dist;
             return true;
@@ -77,6 +100,56 @@ public class MovementDetectionClass{
 
         tDCurrent = pos;
         fDCurrent = dist;
+        return false;
+    }
+
+    /**
+     * Detects if object is moving or not on left
+     * Only when robot is still
+     * @return
+     */
+    public boolean isLeftMoving() {
+        tDLast = tDCurrent;
+        lDLast = lDCurrent;
+
+        double pos = convertINtoCM((fLeft.getCurrentPosition() / COUNTS_PER_INCH + fRight.getCurrentPosition() / COUNTS_PER_INCH) / 2);
+        double dist = distanceL.getDistance(DistanceUnit.CM);
+
+        if (-2 < tDCurrent - tDLast && tDCurrent - tDLast < 2) {
+            if (getChange("left") > (tDCurrent - tDLast) + 2) {
+                tDCurrent = pos;
+                lDCurrent = dist;
+                return true;
+            }
+        }
+
+        tDCurrent = pos;
+        lDCurrent = dist;
+        return false;
+    }
+
+    /**
+     * Detects if object is moving or not on right
+     * Only when robot is still
+     * @return
+     */
+    public boolean isRightMovement() {
+        tDLast = tDCurrent;
+        rDLast = rDCurrent;
+
+        double pos = convertINtoCM((fLeft.getCurrentPosition() / COUNTS_PER_INCH + fRight.getCurrentPosition() / COUNTS_PER_INCH) / 2);
+        double dist = distanceR.getDistance(DistanceUnit.CM);
+
+        if (-2 < tDCurrent - tDLast && tDCurrent - tDLast < 2) {
+            if (getChange("right") > (tDCurrent - tDLast) + 2) {
+                tDCurrent = pos;
+                rDCurrent = dist;
+                return true;
+            }
+        }
+
+        tDCurrent = pos;
+        rDCurrent = dist;
         return false;
     }
 
