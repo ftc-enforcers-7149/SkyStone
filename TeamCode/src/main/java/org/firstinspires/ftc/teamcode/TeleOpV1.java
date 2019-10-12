@@ -47,12 +47,12 @@ public class TeleOpV1 extends OpMode {
 
     }//
     public void loop(){
-        armUp = gamepad1.y;
-        armDown = gamepad1.a;
-        gGrab = gamepad1.x;
-        gRelease = gamepad1.b;
-        liftDown = gamepad1.dpad_down;
-        liftUp = gamepad1.dpad_up;
+        armUp = gamepad2.y;
+        armDown = gamepad2.a;
+        gGrab = gamepad2.x;
+        gRelease = gamepad2.b;
+        liftDown = gamepad1.left_bumper;
+        liftUp = gamepad1.right_bumper;
         lDrive = gamepad1.left_stick_y;
         rDrive = gamepad1.right_stick_y;
         lStrafe = gamepad1.left_trigger;
