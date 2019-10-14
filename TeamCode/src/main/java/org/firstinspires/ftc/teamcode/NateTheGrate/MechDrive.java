@@ -6,7 +6,7 @@ import com.qualcomm.robotcore.hardware.DcMotor;
 import com.qualcomm.robotcore.hardware.DcMotorSimple;
 
 @TeleOp(name = "MechDrive")
-public class MechDrive extends OpMode {
+public class    MechDrive extends OpMode {
 
 
     DcMotor fRight, fLeft, bLeft, bRight;
