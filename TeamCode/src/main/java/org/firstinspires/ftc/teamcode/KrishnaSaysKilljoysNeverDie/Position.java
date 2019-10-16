@@ -1,7 +1,7 @@
 package org.firstinspires.ftc.teamcode.KrishnaSaysKilljoysNeverDie;
 
 
-//Simple positioning class for basic positioning.
+//Simple positioning class for basic position functionality
 public class Position {
 
 
