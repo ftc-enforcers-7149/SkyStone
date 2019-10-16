@@ -87,10 +87,10 @@ public class TeleOpHeadless extends OpMode {
             lift.setPower(0.6);
         }
         else if(liftDown){
-            lift.setPower(-0.1);
+            lift.setPower(0);
         }
         else{
-            lift.setPower(0);
+            lift.setPower(0.1);
         }
     }
 }
