@@ -18,7 +18,7 @@ import org.firstinspires.ftc.robotcore.external.navigation.DistanceUnit;
 The program generates deltas every tenth of a second for testing and outputs raw data to a log file
 accessible on the phone.
 */
-@TeleOp(name = "TimeBasedCollisionData")
+//@TeleOp(name = "TimeBasedCollisionData")
 public class CollisionData extends OpMode {
 
     //Mr. Worldwide but variables

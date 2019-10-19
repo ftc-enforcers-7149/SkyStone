@@ -76,6 +76,25 @@ public class DriveTrain {
     }
 
     /**
+     * strafes for a given time
+     * @param time time strafing(in milliseconds)
+     * @param direction "left" for left "right" for right
+     */
+    public void StrafeSeconds(double time, String direction){
+        double stopTime=time+System.currentTimeMillis();
+        int mDirection=1;
+        if(direction.equals("left")){
+            mDirection=-1;
+        }
+        while(System.currentTimeMillis()<stopTime){
+            fLeft.setPower(0.3*mDirection);
+            fRight.setPower(-0.3*mDirection);
+            bLeft.setPower(-0.3*mDirection);
+            bRight.setPower(0.3*mDirection);
+        }
+    }
+
+    /**
      * turns to the desired angle
      * 0-360 in a counter clockwise format
      * @param destination angle desired

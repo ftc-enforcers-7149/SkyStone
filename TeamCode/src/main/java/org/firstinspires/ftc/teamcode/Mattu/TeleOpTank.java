@@ -8,7 +8,7 @@ import com.qualcomm.robotcore.hardware.Servo;
 
 import org.firstinspires.ftc.teamcode.Subsystems.Tank;
 
-@TeleOp(name = "Tank")
+//@TeleOp(name = "Tank")
 public class TeleOpTank extends OpMode {
 
     Tank driveSystem;

@@ -6,6 +6,7 @@ import com.qualcomm.robotcore.eventloop.opmode.Autonomous;
 import com.qualcomm.robotcore.eventloop.opmode.OpMode;
 import com.qualcomm.robotcore.hardware.DcMotor;
 import com.qualcomm.robotcore.hardware.DcMotorSimple;
+import com.qualcomm.robotcore.hardware.Servo;
 
 import org.firstinspires.ftc.robotcore.external.navigation.AngleUnit;
 import org.firstinspires.ftc.robotcore.external.navigation.AxesOrder;
@@ -15,13 +16,14 @@ import org.firstinspires.ftc.robotcore.external.navigation.Position;
 import org.firstinspires.ftc.robotcore.external.navigation.Velocity;
 import org.firstinspires.ftc.teamcode.Subsystems.DriveTrain;
 
-@Autonomous(name="auto 1")
+//@Autonomous(name="auto foundation park")
 public class FoundationAutoRed extends OpMode {
 
     public DcMotor fLeft, fRight, bLeft, bRight;
     int step=0;
     DriveTrain driveTrain;
 
+    Servo  lFound, rFound;;
     BNO055IMU imu;
     Orientation angles;
     public void init() {
@@ -30,11 +32,16 @@ public class FoundationAutoRed extends OpMode {
         fRight = hardwareMap.dcMotor.get("fRight");
         bLeft = hardwareMap.dcMotor.get("bLeft");
         bRight = hardwareMap.dcMotor.get("bRight");
+        lFound = hardwareMap.servo.get("lFound");
+        rFound = hardwareMap.servo.get("rFound");
 
         fLeft.setDirection(DcMotorSimple.Direction.REVERSE);
         fRight.setDirection(DcMotorSimple.Direction.FORWARD);
         bRight.setDirection(DcMotor.Direction.FORWARD);
         bLeft.setDirection(DcMotor.Direction.REVERSE);
+
+        lFound.setDirection(Servo.Direction.REVERSE);
+        rFound.setDirection(Servo.Direction.FORWARD);
 
         fLeft.setZeroPowerBehavior(DcMotor.ZeroPowerBehavior.BRAKE);
         fRight.setZeroPowerBehavior(DcMotor.ZeroPowerBehavior.BRAKE);
@@ -78,11 +85,13 @@ public class FoundationAutoRed extends OpMode {
         switch(step){
             case 0:driveTrain.driveStraight("forward", 50);
                 break;
-            case 1:driveTrain.driveStraight("backward", 34);
+            case 1:lFound.setPosition(1);rFound.setPosition(1);
                 break;
-            case 2:driveTrain.Rotation(90);
+            case 2:driveTrain.driveStraight("backward", 34);
                 break;
-            case 3:driveTrain.driveStraight("forward", 20);
+            case 3:driveTrain.Rotation(270);
+                break;
+            case 4:driveTrain.driveStraight("backward", 18);
                 break;
         }
         step++;

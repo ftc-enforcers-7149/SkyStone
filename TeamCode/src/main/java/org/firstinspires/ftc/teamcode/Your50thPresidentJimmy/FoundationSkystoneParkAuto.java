@@ -15,7 +15,7 @@ import org.firstinspires.ftc.robotcore.external.navigation.Position;
 import org.firstinspires.ftc.robotcore.external.navigation.Velocity;
 import org.firstinspires.ftc.teamcode.Subsystems.DriveTrain;
 
-@Autonomous(name = "auto 3 Skystone")
+//@Autonomous(name = "auto 3 Skystone")
 public class FoundationSkystoneParkAuto extends OpMode {
     public DcMotor fLeft, fRight, bLeft, bRight;
     int step=0;

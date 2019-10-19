@@ -1,6 +1,4 @@
-package org.firstinspires.ftc.teamcode.UpNAdam;
-
-import android.graphics.Path;
+package org.firstinspires.ftc.teamcode.AutonomousPrograms;
 
 import com.qualcomm.hardware.bosch.BNO055IMU;
 import com.qualcomm.hardware.bosch.JustLoggingAccelerationIntegrator;
@@ -8,44 +6,52 @@ import com.qualcomm.robotcore.eventloop.opmode.Autonomous;
 import com.qualcomm.robotcore.eventloop.opmode.OpMode;
 import com.qualcomm.robotcore.hardware.DcMotor;
 import com.qualcomm.robotcore.hardware.DcMotorSimple;
-import com.qualcomm.robotcore.hardware.DistanceSensor;
+import com.qualcomm.robotcore.hardware.Servo;
 
 import org.firstinspires.ftc.robotcore.external.navigation.AngleUnit;
 import org.firstinspires.ftc.robotcore.external.navigation.AxesOrder;
 import org.firstinspires.ftc.robotcore.external.navigation.AxesReference;
-import org.firstinspires.ftc.robotcore.external.navigation.DistanceUnit;
 import org.firstinspires.ftc.robotcore.external.navigation.Orientation;
 import org.firstinspires.ftc.robotcore.external.navigation.Position;
 import org.firstinspires.ftc.robotcore.external.navigation.Velocity;
 import org.firstinspires.ftc.teamcode.Subsystems.DriveTrain;
 
-import java.util.Locale;
-
-//@Autonomous(name="auto class")
-public class ClassTest extends OpMode {
-
-    public DcMotor fLeft, fRight, bLeft, bRight;
-    int step=0;
-    DriveTrain robot;
-
+@Autonomous(name="Blue Foundation Park")
+public class BlueFounndationPark extends OpMode {
+    Servo lArm, rArm, lGrab, rGrab, lFound, rFound;
+    DcMotor fRight,fLeft,bRight,bLeft,lift;
+    DriveTrain driveTrain;
     BNO055IMU imu;
     Orientation angles;
-    public void init() {
-        //Hardware mapping of the four motors
+
+    int step;
+    public void init(){
+        //Servos
+        lArm = hardwareMap.servo.get("lArm");
+        rArm = hardwareMap.servo.get("rArm");
+        lGrab = hardwareMap.servo.get("lGrab");
+        rGrab = hardwareMap.servo.get("rGrab");
+        lFound = hardwareMap.servo.get("lFound");
+        rFound = hardwareMap.servo.get("rFound");
+        //Drive motors
         fLeft = hardwareMap.dcMotor.get("fLeft");
         fRight = hardwareMap.dcMotor.get("fRight");
         bLeft = hardwareMap.dcMotor.get("bLeft");
         bRight = hardwareMap.dcMotor.get("bRight");
+        lift = hardwareMap.dcMotor.get("lift");
 
         fLeft.setDirection(DcMotorSimple.Direction.REVERSE);
         fRight.setDirection(DcMotorSimple.Direction.FORWARD);
-        bRight.setDirection(DcMotor.Direction.FORWARD);
-        bLeft.setDirection(DcMotor.Direction.REVERSE);
+        bRight.setDirection(DcMotorSimple.Direction.FORWARD);
+        bLeft.setDirection(DcMotorSimple.Direction.REVERSE);
+        lift.setDirection(DcMotorSimple.Direction.FORWARD);
 
-        fLeft.setZeroPowerBehavior(DcMotor.ZeroPowerBehavior.BRAKE);
-        fRight.setZeroPowerBehavior(DcMotor.ZeroPowerBehavior.BRAKE);
-        bLeft.setZeroPowerBehavior(DcMotor.ZeroPowerBehavior.BRAKE);
-        bRight.setZeroPowerBehavior(DcMotor.ZeroPowerBehavior.BRAKE);
+        lArm.setDirection(Servo.Direction.REVERSE);
+        rArm.setDirection(Servo.Direction.FORWARD);
+        lGrab.setDirection(Servo.Direction.REVERSE);
+        rGrab.setDirection(Servo.Direction.FORWARD);
+        lFound.setDirection(Servo.Direction.REVERSE);
+        rFound.setDirection(Servo.Direction.FORWARD);
 
         //Set up imu parameters
         BNO055IMU.Parameters parameters = new BNO055IMU.Parameters();
@@ -75,43 +81,23 @@ public class ClassTest extends OpMode {
         // Start the logging of measured acceleration
         imu.startAccelerationIntegration(new Position(), new Velocity(), 1000);
 
-    }
-public void start(){
-    robot=new DriveTrain(bLeft,bRight,fLeft,fRight,angles);
 
-}
-    public void loop() {
-        switch(step) {
-            case 0:
-                robot.driveStraight("forward", 50);
-                break;
-            case 1:
-                robot.Rotation(10);
-                break;
+        lArm.setPosition(0.65);
+        rArm.setPosition(0.45);
+        lGrab.setPosition(0.2);
+        rGrab.setPosition(0.25);
+
+        lift.setZeroPowerBehavior(DcMotor.ZeroPowerBehavior.BRAKE);
+
+        driveTrain = new DriveTrain(fLeft,fRight,bLeft,bRight,angles);
+    }
+    public void loop(){
+        switch(step){
+            case 0:driveTrain.StrafeSeconds(1,"left");
         }
         step++;
-
     }
+    public void stop(){
 
-    public void stop() {
-    }
-
-    /**
-     * method needed for gyro
-     * @param angleUnit
-     * @param angle
-     * @return
-     */
-    String formatAngle(AngleUnit angleUnit, double angle) {
-        return formatDegrees(AngleUnit.DEGREES.fromUnit(angleUnit, angle));
-    }
-
-    /**
-     * method needed for gyro
-     * @param degrees
-     * @return
-     */
-    String formatDegrees(double degrees){
-        return String.format(Locale.getDefault(), "%.1f", AngleUnit.DEGREES.normalize(degrees));
     }
 }

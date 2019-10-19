@@ -16,7 +16,7 @@ import org.firstinspires.ftc.robotcore.external.navigation.Velocity;
 
 import java.util.Locale;
 
-@TeleOp(name = "Strafer Chassis")
+//@TeleOp(name = "Strafer Chassis")
 public class StraferChassis extends OpMode {
 
     //Declaring motors

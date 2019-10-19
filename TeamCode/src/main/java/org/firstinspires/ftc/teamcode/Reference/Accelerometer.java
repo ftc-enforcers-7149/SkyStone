@@ -19,7 +19,7 @@ import org.firstinspires.ftc.robotcore.external.navigation.Velocity;
 
 import java.util.concurrent.TimeUnit;
 
-@Autonomous(name = "Accelerometer Test")
+//@Autonomous(name = "Accelerometer Test")
 public class Accelerometer extends OpMode {
     //Sensor and motor variables
     DcMotor fLeft, fRight, bLeft, bRight;

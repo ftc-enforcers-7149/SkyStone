@@ -17,7 +17,7 @@ import org.firstinspires.ftc.robotcore.external.navigation.Position;
 import org.firstinspires.ftc.robotcore.external.navigation.Velocity;
 import java.util.Arrays;
 
-@Autonomous(name = "MecaRoomba")
+//@Autonomous(name = "MecaRoomba")
 public class MecaRoomba extends OpMode {
     //Motors and sensors
     DcMotor fLeft, fRight, bLeft, bRight;

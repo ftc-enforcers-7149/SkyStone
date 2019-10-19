@@ -6,15 +6,22 @@ import com.qualcomm.robotcore.hardware.DcMotor;
 import com.qualcomm.robotcore.hardware.DcMotorSimple;
 import com.qualcomm.robotcore.hardware.Servo;
 
+import org.firstinspires.ftc.teamcode.Subsystems.Headless;
+
 
 @TeleOp(name = "TeleOpV1")
 public class TeleOpV1 extends OpMode {
-    Servo lArm, rArm, lGrab, rGrab;
+    //Drive train
+    Headless driveSystem;
+
+    Servo lArm, rArm, lGrab, rGrab, lFound, rFound;
     DcMotor fRight,fLeft,bRight,bLeft,lift;
 
     boolean armUp, armDown;
-    boolean gGrab,gRelease;
-    boolean liftUp,liftDown;
+    boolean isBreak=false;
+    float leftG,rightG;
+    float liftUp,liftDown;
+    boolean foundationDown;
     float lDrive,rDrive,lStrafe,rStrafe;
     public void init(){
         //Servos
@@ -22,6 +29,8 @@ public class TeleOpV1 extends OpMode {
         rArm = hardwareMap.servo.get("rArm");
         lGrab = hardwareMap.servo.get("lGrab");
         rGrab = hardwareMap.servo.get("rGrab");
+        lFound = hardwareMap.servo.get("lFound");
+        rFound = hardwareMap.servo.get("rFound");
         //Drive motors
         fLeft = hardwareMap.dcMotor.get("fLeft");
         fRight = hardwareMap.dcMotor.get("fRight");
@@ -29,85 +38,103 @@ public class TeleOpV1 extends OpMode {
         bRight = hardwareMap.dcMotor.get("bRight");
         lift = hardwareMap.dcMotor.get("lift");
 
+        //Initialize drive train
+        driveSystem = new Headless(hardwareMap, telemetry, "fLeft", "fRight", "bLeft", "bRight");
+
         fLeft.setDirection(DcMotorSimple.Direction.REVERSE);
         fRight.setDirection(DcMotorSimple.Direction.FORWARD);
         bRight.setDirection(DcMotorSimple.Direction.FORWARD);
         bLeft.setDirection(DcMotorSimple.Direction.REVERSE);
-        lift.setDirection(DcMotorSimple.Direction.REVERSE);
+        lift.setDirection(DcMotorSimple.Direction.FORWARD);
 
         lArm.setDirection(Servo.Direction.REVERSE);
         rArm.setDirection(Servo.Direction.FORWARD);
         lGrab.setDirection(Servo.Direction.REVERSE);
         rGrab.setDirection(Servo.Direction.FORWARD);
+        lFound.setDirection(Servo.Direction.REVERSE);
+        rFound.setDirection(Servo.Direction.FORWARD);
 
-        lArm.setPosition(0.40);
-        rArm.setPosition(0.57);
-        lGrab.setPosition(0.25);
-        rGrab.setPosition(0.3);
+
+        lArm.setPosition(0.65);
+        rArm.setPosition(0.45);
+        lGrab.setPosition(0.2);
+        rGrab.setPosition(0.25);
+
+        lift.setZeroPowerBehavior(DcMotor.ZeroPowerBehavior.BRAKE);
 
     }//
     public void loop(){
         armUp = gamepad2.y;
         armDown = gamepad2.a;
-        gGrab = gamepad2.x;
-        gRelease = gamepad2.b;
-        liftDown = gamepad1.left_bumper;
-        liftUp = gamepad1.right_bumper;
+        rightG = gamepad2.right_trigger;
+        leftG = gamepad2.left_trigger;
+        liftDown = gamepad1.left_trigger;
+        liftUp = gamepad1.right_trigger;
+        foundationDown = gamepad1.a;
         lDrive = gamepad1.left_stick_y;
         rDrive = gamepad1.right_stick_y;
         lStrafe = gamepad1.left_trigger;
         rStrafe = gamepad1.right_trigger;
 
+        //Drive
+        driveSystem.drive(gamepad1);
 
         if (armUp) {
-            lArm.setPosition(0.6);
-            rArm.setPosition(0.4);
+            lArm.setPosition(0.1);
+            rArm.setPosition(0.05);
         }
         else if(armDown){
-            lArm.setPosition(1);
-            rArm.setPosition(1);
+            lArm.setPosition(0.65);
+            rArm.setPosition(0.45);
         }
 
-        if(gGrab){
-            lGrab.setPosition(0);
-            rGrab.setPosition(0);
+        if(rightG>0.1){
+            rGrab.setPosition(0.15);
+        }
+        else{
+            rGrab.setPosition(0.25);
+        }
+
+        if(leftG>0.1){
+            lGrab.setPosition(0.1);
+        }
+        else{
+            lGrab.setPosition(0.2);
+        }
+
+        if (foundationDown) {
+            lFound.setPosition(0.95);
+            rFound.setPosition(0.95);
+        }
+        else {
+            lFound.setPosition(0);
+            rFound.setPosition(0);
+        }
+        /*if(gGrab){
+            lGrab.setPosition(0.1);
+            rGrab.setPosition(0.1);
         }
         else if(gRelease){
             lGrab.setPosition(0.2);
             rGrab.setPosition(0.25);
-        }
+        }*/
 
-        if(lStrafe<0.1 && rStrafe<0.1){
-            fLeft.setPower(lDrive);
-            bLeft.setPower(lDrive);
-            fRight.setPower(rDrive);
-            bRight.setPower(rDrive);
+        if(liftUp>0.1){
+            lift.setPower(0.7);
+            isBreak=true;
         }
-        else if(lStrafe>0.1){
-            fLeft.setPower(-lStrafe);
-            bLeft.setPower(lStrafe);
-            fRight.setPower(lStrafe);
-            bRight.setPower(-lStrafe);
+        else if(liftDown>0.1){
+            lift.setPower(-0.05);
+           isBreak=false;
         }
         else{
-            fLeft.setPower(rStrafe);
-            bLeft.setPower(-rStrafe);
-            fRight.setPower(-rStrafe);
-            bRight.setPower(rStrafe);
+            if(isBreak){
+                lift.setPower(0.3);
+            }
+            else{
+                lift.setPower(0.0);
+            }
         }
-
-        if(liftUp){
-            lift.setPower(0.1);
-        }
-        else if(liftDown){
-            lift.setPower(-0.1);
-        }
-        else{
-            lift.setPower(0);
-        }
-
-
-
 
     }
     public void stop(){

@@ -7,7 +7,7 @@ import com.qualcomm.robotcore.hardware.DcMotor;
 import com.qualcomm.robotcore.hardware.DcMotorSimple;
 import com.qualcomm.robotcore.hardware.Servo;
 
-@TeleOp(name = "claw test")
+//@TeleOp(name = "claw test")
 public class skystoneTeleOpTest extends OpMode {
     Servo lArm, rArm, lGrab, rGrab;
     DcMotor fRight,fLeft,bRight,bLeft,lift;

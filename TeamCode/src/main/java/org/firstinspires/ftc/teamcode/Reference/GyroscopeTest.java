@@ -16,7 +16,7 @@ import org.firstinspires.ftc.robotcore.external.navigation.Velocity;
 
 import java.util.Locale;
 
-@TeleOp(name="Gyroscope Test")
+//@TeleOp(name="Gyroscope Test")
 public class GyroscopeTest extends OpMode {
     DcMotor fLeft, fRight, bLeft, bRight;
     BNO055IMU imu;
