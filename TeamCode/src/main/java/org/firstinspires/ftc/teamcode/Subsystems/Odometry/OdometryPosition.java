@@ -44,7 +44,7 @@ public class OdometryPosition extends Position {
 
 
     //Direction enum
-    public enum Direction {FORWARD, BACKWARD}
+    public enum Direction {FORWARD, BACKWARD, TURNING}
 
 
 
@@ -160,59 +160,58 @@ public class OdometryPosition extends Position {
 
         //Calculates whether the robot is facing forwards or backwards. Note that all calculations are based on
         //The assumption we are facing straight out from the wall
-        if(heading % 180 == 0) {
+        if (dir != Direction.TURNING) {
+            if (heading % 180 == 0) {
 
-            if (heading == 0) {
-                if (dir == Direction.FORWARD) {
-                    positionX += getMotorDistIn(xPos);
+                if (heading == 0) {
+                    if (dir == Direction.FORWARD) {
+                        positionX += getMotorDistIn(xPos);
+                    } else {
+                        positionX -= getMotorDistIn(xPos);
+                    }
                 } else {
-                    positionX -= getMotorDistIn(xPos);
+                    if (dir == Direction.FORWARD) {
+                        positionX -= getMotorDistIn(xPos);
+                    } else {
+                        positionX += getMotorDistIn(xPos);
+                    }
                 }
-            } else {
-                if (dir == Direction.FORWARD) {
-                    positionX -= getMotorDistIn(xPos);
+
+            }
+            //This time, we calculate if we are facing up or not. If we are not forwards/backwards or up/down, we move on.
+            else if ((heading - 90) % 90 == 0) {
+                if (heading == 90) {
+                    if (dir == Direction.FORWARD) {
+                        positionY -= getMotorDistIn(yPos);
+                    } else {
+                        positionY += getMotorDistIn(yPos);
+                    }
                 } else {
-                    positionX += getMotorDistIn(xPos);
+                    if (dir == Direction.FORWARD) {
+                        positionY += getMotorDistIn(yPos);
+                    } else {
+                        positionY -= getMotorDistIn(yPos);
+                    }
+                }
+            }
+            //Uses some reeeeeeeeally (not) complicated trig to calculate the distance.
+            else {
+                if (heading > 0 && heading < 90) {
+                    positionY -= getMotorDistIn(xPos) * Math.sin(360 - heading);
+                    positionX += getMotorDistIn(xPos) * Math.cos(360 - heading);
+                } else if (heading > 90 && heading < 180) {
+                    positionY -= getMotorDistIn(xPos) * Math.sin(360 - heading);
+                    positionX -= getMotorDistIn(xPos) * Math.cos(360 - heading);
+                } else if (heading > 180 && heading < 270) {
+                    positionY += getMotorDistIn(xPos) * Math.sin(360 - heading);
+                    positionX -= getMotorDistIn(xPos) * Math.cos(360 - heading);
+                } else if (heading > 270 && heading < 360) {
+                    positionY += getMotorDistIn(xPos) * Math.sin(360 - heading);
+                    positionX += getMotorDistIn(xPos) * Math.cos(360 - heading);
                 }
             }
 
         }
-        //This time, we calculate if we are facing up or not. If we are not forwards/backwards or up/down, we move on.
-        else if ((heading - 90) % 90 == 0) {
-            if (heading == 90) {
-                if (dir == Direction.FORWARD) {
-                    positionY -= getMotorDistIn(yPos);
-                } else {
-                    positionY += getMotorDistIn(yPos);
-                }
-            } else {
-                if (dir == Direction.FORWARD) {
-                    positionY += getMotorDistIn(yPos);
-                } else {
-                    positionY -= getMotorDistIn(yPos);
-                }
-            }
-        }
-        //Uses some reeeeeeeeally (not) complicated trig to calculate the distance.
-        else {
-            if(heading > 0 && heading < 90) {
-                positionY -= getMotorDistIn(xPos) * Math.sin(360 - heading);
-                positionX += getMotorDistIn(xPos) * Math.cos(360 - heading);
-            }
-            else if(heading > 90 && heading < 180) {
-                positionY -= getMotorDistIn(xPos) * Math.sin(360 - heading);
-                positionX -= getMotorDistIn(xPos) * Math.cos(360 - heading);
-            }
-            else if(heading > 180 && heading < 270) {
-                positionY += getMotorDistIn(xPos) * Math.sin(360 - heading);
-                positionX -= getMotorDistIn(xPos) * Math.cos(360 - heading);
-            }
-            else if(heading > 270 && heading < 360) {
-                positionY += getMotorDistIn(xPos) * Math.sin(360 - heading);
-                positionX += getMotorDistIn(xPos) * Math.cos(360 - heading);
-            }
-        }
-
     }
 
 
