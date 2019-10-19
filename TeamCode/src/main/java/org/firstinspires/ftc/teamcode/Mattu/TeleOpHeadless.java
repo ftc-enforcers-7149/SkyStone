@@ -22,7 +22,6 @@ public class TeleOpHeadless extends OpMode {
     boolean armUp, armDown;
     boolean gGrab,gRelease;
     boolean liftUp,liftDown;
-    float lDrive,rDrive,lStrafe,rStrafe;
 
     public void init() {
         //Initialize drive train
@@ -59,10 +58,6 @@ public class TeleOpHeadless extends OpMode {
         gRelease = gamepad1.b;
         liftUp = gamepad1.dpad_down;
         liftDown = gamepad1.dpad_up;
-        lDrive = gamepad1.left_stick_y;
-        rDrive = gamepad1.right_stick_y;
-        lStrafe = gamepad1.left_trigger;
-        rStrafe = gamepad1.right_trigger;
 
         //Do flip function
         if (armUp) {
@@ -92,10 +87,10 @@ public class TeleOpHeadless extends OpMode {
             lift.setPower(0.6);
         }
         else if(liftDown){
-            lift.setPower(-0.1);
+            lift.setPower(0);
         }
         else{
-            lift.setPower(0);
+            lift.setPower(0.1);
         }
     }
 }
