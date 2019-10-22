@@ -20,6 +20,14 @@ public class DriveTrain {
     public static final double     COUNTS_PER_INCH         = ((COUNTS_PER_MOTOR_REV * DRIVE_GEAR_REDUCTION) /
             (WHEEL_DIAMETER_INCHES * 3.1415))/EXTERNAL_GEARING;
 
+    /**
+     * Main constructor
+     * @param fLeft fLeft
+     * @param fRight fRight
+     * @param bLeft bLeft
+     * @param bRight bRight
+     * @param angles angles
+     */
     public DriveTrain(DcMotor fLeft, DcMotor fRight, DcMotor bLeft, DcMotor bRight, Orientation angles){
         this.fLeft = fLeft;
         this.fRight = fRight;
@@ -80,7 +88,7 @@ public class DriveTrain {
      * @param time time strafing(in milliseconds)
      * @param direction "left" for left "right" for right
      */
-    public void StrafeSeconds(double time, String direction){
+    public void strafeSeconds(double time, String direction){
         double stopTime=time+System.currentTimeMillis();
         int mDirection=1;
         if(direction.equals("left")){
@@ -104,7 +112,7 @@ public class DriveTrain {
      * 0-360 in a counter clockwise format
      * @param destination angle desired
      */
-    public void Rotation(float destination) {
+    public void rotation(float destination) {
         fRight.setMode(DcMotor.RunMode.RUN_WITHOUT_ENCODER);
         fLeft.setMode(DcMotor.RunMode.RUN_WITHOUT_ENCODER);
         bRight.setMode(DcMotor.RunMode.RUN_WITHOUT_ENCODER);

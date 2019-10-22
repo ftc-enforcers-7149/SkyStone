@@ -2,7 +2,6 @@ package org.firstinspires.ftc.teamcode.Your50thPresidentJimmy;
 
 import com.qualcomm.hardware.bosch.BNO055IMU;
 import com.qualcomm.hardware.bosch.JustLoggingAccelerationIntegrator;
-import com.qualcomm.robotcore.eventloop.opmode.Autonomous;
 import com.qualcomm.robotcore.eventloop.opmode.OpMode;
 import com.qualcomm.robotcore.hardware.DcMotor;
 import com.qualcomm.robotcore.hardware.DcMotorSimple;
@@ -89,7 +88,7 @@ public class FoundationAutoRed extends OpMode {
                 break;
             case 2:driveTrain.driveStraight("backward", 34);
                 break;
-            case 3:driveTrain.Rotation(270);
+            case 3:driveTrain.rotation(270);
                 break;
             case 4:driveTrain.driveStraight("backward", 18);
                 break;

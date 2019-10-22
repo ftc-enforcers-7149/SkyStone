@@ -2,7 +2,6 @@ package org.firstinspires.ftc.teamcode.Your50thPresidentJimmy;
 
 import com.qualcomm.hardware.bosch.BNO055IMU;
 import com.qualcomm.hardware.bosch.JustLoggingAccelerationIntegrator;
-import com.qualcomm.robotcore.eventloop.opmode.Autonomous;
 import com.qualcomm.robotcore.eventloop.opmode.OpMode;
 import com.qualcomm.robotcore.hardware.DcMotor;
 import com.qualcomm.robotcore.hardware.DcMotorSimple;
@@ -83,7 +82,7 @@ public class FoundationSkystoneParkAuto extends OpMode {
                 driveTrain.driveStraight("forward", 24.5);
                 break;
             case 2:
-                driveTrain.Rotation(270);
+                driveTrain.rotation(270);
                 break;
             case 3:
                 driveTrain.driveStraight("forward", 56);

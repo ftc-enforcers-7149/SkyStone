@@ -16,7 +16,7 @@ public class OdometryTest extends SkyStonev1_1 {
             case 0:distanceDrive(10);
                 y=bRight.getCurrentPosition()/COUNTS_PER_INCH;
                 break;
-            case 1:Rotation(90);
+            case 1:rotation(90);
                 break;
             case 2:distanceDrive(10);
                 x=bRight.getCurrentPosition()/COUNTS_PER_INCH;

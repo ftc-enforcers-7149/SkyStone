@@ -6,7 +6,7 @@ import com.qualcomm.robotcore.hardware.DcMotor;
 import com.qualcomm.robotcore.hardware.DcMotorSimple;
 import com.qualcomm.robotcore.hardware.Servo;
 
-import org.firstinspires.ftc.teamcode.Subsystems.Headless;
+import org.firstinspires.ftc.teamcode.Subsystems.DriveSystems.Headless;
 
 @TeleOp(name = "Headless")
 public class TeleOpHeadless extends OpMode {

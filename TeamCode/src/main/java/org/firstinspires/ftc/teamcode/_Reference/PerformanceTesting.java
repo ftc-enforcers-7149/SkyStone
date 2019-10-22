@@ -1,12 +1,10 @@
-package org.firstinspires.ftc.teamcode.UpNAdam;
+package org.firstinspires.ftc.teamcode._Reference;
 
 import com.qualcomm.hardware.bosch.BNO055IMU;
 import com.qualcomm.hardware.bosch.JustLoggingAccelerationIntegrator;
-import com.qualcomm.robotcore.eventloop.opmode.Autonomous;
 import com.qualcomm.robotcore.eventloop.opmode.OpMode;
 import com.qualcomm.robotcore.hardware.DcMotor;
 import com.qualcomm.robotcore.hardware.DcMotorSimple;
-import com.qualcomm.robotcore.hardware.Servo;
 
 import org.firstinspires.ftc.robotcore.external.navigation.AngleUnit;
 import org.firstinspires.ftc.robotcore.external.navigation.AxesOrder;
@@ -14,29 +12,25 @@ import org.firstinspires.ftc.robotcore.external.navigation.AxesReference;
 import org.firstinspires.ftc.robotcore.external.navigation.Orientation;
 import org.firstinspires.ftc.robotcore.external.navigation.Position;
 import org.firstinspires.ftc.robotcore.external.navigation.Velocity;
-import org.firstinspires.ftc.teamcode.Subsystems.DriveTrain;
 
 import java.util.Locale;
 
-@Autonomous(name="auto class")
-public class ClassTest extends OpMode {
+//@TeleOp(name = "Performance Testing")
 
-    public DcMotor fLeft, fRight, bLeft, bRight;
-    Servo lArm, rArm, lGrab, rGrab, lFound, rFound;
-    int step=0;
-    DriveTrain robot;
-
+public class PerformanceTesting extends OpMode {
+    DcMotor fLeft, fRight, bLeft, bRight;
     BNO055IMU imu;
     Orientation angles;
-    public void init() {
-        //Servos
-        lArm = hardwareMap.servo.get("lArm");
-        rArm = hardwareMap.servo.get("rArm");
-        lGrab = hardwareMap.servo.get("lGrab");
-        rGrab = hardwareMap.servo.get("rGrab");
-        lFound = hardwareMap.servo.get("lFound");
-        rFound = hardwareMap.servo.get("rFound");
 
+    double threshold = 0.25;//degree threshold of what counts as straight
+    double initAngle,time;
+    boolean state = false;//boolean that switches between initializing angle and detetcting current angle
+    boolean isStraight = true;
+
+    double leftY, rightY;
+    double leftTrigger, rightTrigger;
+
+    public void init() {
         //Hardware mapping of the four motors
         fLeft = hardwareMap.dcMotor.get("fLeft");
         fRight = hardwareMap.dcMotor.get("fRight");
@@ -47,19 +41,6 @@ public class ClassTest extends OpMode {
         fRight.setDirection(DcMotorSimple.Direction.FORWARD);
         bRight.setDirection(DcMotor.Direction.FORWARD);
         bLeft.setDirection(DcMotor.Direction.REVERSE);
-
-        lArm.setDirection(Servo.Direction.REVERSE);
-        rArm.setDirection(Servo.Direction.FORWARD);
-        lGrab.setDirection(Servo.Direction.REVERSE);
-        rGrab.setDirection(Servo.Direction.FORWARD);
-        lFound.setDirection(Servo.Direction.REVERSE);
-        rFound.setDirection(Servo.Direction.FORWARD);
-
-
-        fLeft.setZeroPowerBehavior(DcMotor.ZeroPowerBehavior.BRAKE);
-        fRight.setZeroPowerBehavior(DcMotor.ZeroPowerBehavior.BRAKE);
-        bLeft.setZeroPowerBehavior(DcMotor.ZeroPowerBehavior.BRAKE);
-        bRight.setZeroPowerBehavior(DcMotor.ZeroPowerBehavior.BRAKE);
 
         //Set up imu parameters
         BNO055IMU.Parameters parameters = new BNO055IMU.Parameters();
@@ -89,34 +70,68 @@ public class ClassTest extends OpMode {
         // Start the logging of measured acceleration
         imu.startAccelerationIntegration(new Position(), new Velocity(), 1000);
 
-        lArm.setPosition(0.1);
-        rArm.setPosition(0.05);
-        lGrab.setPosition(0.2);
-        rGrab.setPosition(0.25);
-
+        fLeft.setZeroPowerBehavior(DcMotor.ZeroPowerBehavior.BRAKE);
+        fRight.setZeroPowerBehavior(DcMotor.ZeroPowerBehavior.BRAKE);
+        bLeft.setZeroPowerBehavior(DcMotor.ZeroPowerBehavior.BRAKE);
+        bRight.setZeroPowerBehavior(DcMotor.ZeroPowerBehavior.BRAKE);
     }
-public void start(){
-    robot=new DriveTrain(bLeft,bRight,fLeft,fRight,angles);
 
-}
     public void loop() {
-        switch(step) {
-            case 0:
-                robot.driveStraight("forward", 50);
-                break;
-            case 1:
-                robot.rotation(10);
-                break;
-        }
-        step++;
+        //teleop mech drive
+        leftY = gamepad1.left_stick_y;
+        rightY = gamepad1.right_stick_y;
+        leftTrigger = gamepad1.left_trigger;
+        rightTrigger = gamepad1.right_trigger;
 
+        if(leftTrigger>0.2){
+            bLeft.setPower(-leftTrigger);
+            bRight.setPower(leftTrigger);
+            fLeft.setPower(leftTrigger);
+            fRight.setPower(-leftTrigger);
+        }
+        else if(rightTrigger>0.2){
+            bLeft.setPower(rightTrigger);
+            bRight.setPower(-rightTrigger);
+            fLeft.setPower(-rightTrigger);
+            fRight.setPower(rightTrigger);
+        }
+        else{
+            bLeft.setPower(leftY);
+            bRight.setPower(rightY);
+            fLeft.setPower(leftY);
+            fRight.setPower(rightY);
+        }
+
+        telemetry.addData("Am I Straight? ",isStraight);
+        //current time
+        time=System.currentTimeMillis();
+
+        //if and else if are the different states. if is initializing, else if is comparing
+        if (time%500==0 && state) {
+            initAngle = angles.firstAngle;
+            state = false;
+        }
+        else if (time%500==0 && !state){
+            //logic that sees if robot is drifting
+            if (Math.abs(initAngle-angles.firstAngle)<=threshold) {
+                isStraight = true;
+            }
+            else {
+                isStraight = false;
+            }
+            state = true;
+        }
     }
 
     public void stop() {
+        bLeft.setPower(0);
+        bRight.setPower(0);
+        fLeft.setPower(0);
+        fRight.setPower(0);
     }
 
     /**
-     * method needed for gyro
+     * a function that is needed to format the gyro angle
      * @param angleUnit
      * @param angle
      * @return
@@ -126,11 +141,12 @@ public void start(){
     }
 
     /**
-     * method needed for gyro
+     * a function that is needed to format the gyro angle
      * @param degrees
      * @return
      */
     String formatDegrees(double degrees){
         return String.format(Locale.getDefault(), "%.1f", AngleUnit.DEGREES.normalize(degrees));
     }
+
 }

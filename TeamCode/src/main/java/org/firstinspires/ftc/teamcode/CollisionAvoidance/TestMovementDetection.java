@@ -2,12 +2,11 @@ package org.firstinspires.ftc.teamcode.CollisionAvoidance;
 
 import android.util.Log;
 
-import com.qualcomm.robotcore.eventloop.opmode.Autonomous;
 import com.qualcomm.robotcore.eventloop.opmode.OpMode;
 import com.qualcomm.robotcore.eventloop.opmode.TeleOp;
 import com.qualcomm.robotcore.hardware.Servo;
 
-import org.firstinspires.ftc.teamcode.Subsystems.Headless;
+import org.firstinspires.ftc.teamcode.Subsystems.DriveSystems.Headless;
 
 @TeleOp(name = "Detect Movement")
 public class TestMovementDetection extends OpMode {

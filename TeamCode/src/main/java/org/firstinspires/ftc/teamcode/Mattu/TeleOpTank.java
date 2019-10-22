@@ -1,12 +1,11 @@
 package org.firstinspires.ftc.teamcode.Mattu;
 
 import com.qualcomm.robotcore.eventloop.opmode.OpMode;
-import com.qualcomm.robotcore.eventloop.opmode.TeleOp;
 import com.qualcomm.robotcore.hardware.DcMotor;
 import com.qualcomm.robotcore.hardware.DcMotorSimple;
 import com.qualcomm.robotcore.hardware.Servo;
 
-import org.firstinspires.ftc.teamcode.Subsystems.Tank;
+import org.firstinspires.ftc.teamcode.Subsystems.DriveSystems.Tank;
 
 //@TeleOp(name = "Tank")
 public class TeleOpTank extends OpMode {
