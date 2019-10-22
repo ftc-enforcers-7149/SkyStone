@@ -13,7 +13,6 @@ public class MovementDetectionClass{
     DistanceSensor distanceL, distanceC, distanceR;
     DcMotor fLeft, fRight, bLeft, bRight;
 
-
     //fDLast fDCurrent front distances
     //lDLast lDCurrent left distances
     //rDLast rDCurrent right distances
@@ -21,7 +20,6 @@ public class MovementDetectionClass{
     private double lDLast, lDCurrent;
     private double rDLast, rDCurrent;
     private double tDLast, tDCurrent;
-
 
     //Used for  encoders
     static final double     EXTERNAL_GEARING        = 1;
@@ -86,20 +84,26 @@ public class MovementDetectionClass{
      * @return
      */
     public boolean isFrontMoving() {
-        tDLast = tDCurrent;
-        fDLast = fDCurrent;
-
-        double pos = convertINtoCM((fLeft.getCurrentPosition()/COUNTS_PER_INCH + fRight.getCurrentPosition()/COUNTS_PER_INCH) / 2);
-        double dist = distanceC.getDistance(DistanceUnit.CM);
-
-        if (getChange("front") > (tDCurrent - tDLast) + 2) {
-            tDCurrent = pos;
-            fDCurrent = dist;
+        if (getChange("front") > (tDCurrent - tDLast) + 3) {
             return true;
         }
 
-        tDCurrent = pos;
-        fDCurrent = dist;
+        return false;
+    }
+
+    public boolean isLeftClose() {
+        if (lDCurrent < 20) {
+            return true;
+        }
+
+        return false;
+    }
+
+    public boolean isRightClose() {
+        if (rDCurrent < 20) {
+            return true;
+        }
+
         return false;
     }
 
@@ -109,22 +113,12 @@ public class MovementDetectionClass{
      * @return
      */
     public boolean isLeftMoving() {
-        tDLast = tDCurrent;
-        lDLast = lDCurrent;
-
-        double pos = convertINtoCM((fLeft.getCurrentPosition() / COUNTS_PER_INCH + fRight.getCurrentPosition() / COUNTS_PER_INCH) / 2);
-        double dist = distanceL.getDistance(DistanceUnit.CM);
-
         if (-2 < tDCurrent - tDLast && tDCurrent - tDLast < 2) {
             if (getChange("left") > (tDCurrent - tDLast) + 2) {
-                tDCurrent = pos;
-                lDCurrent = dist;
                 return true;
             }
         }
 
-        tDCurrent = pos;
-        lDCurrent = dist;
         return false;
     }
 
@@ -134,23 +128,25 @@ public class MovementDetectionClass{
      * @return
      */
     public boolean isRightMovement() {
-        tDLast = tDCurrent;
-        rDLast = rDCurrent;
-
-        double pos = convertINtoCM((fLeft.getCurrentPosition() / COUNTS_PER_INCH + fRight.getCurrentPosition() / COUNTS_PER_INCH) / 2);
-        double dist = distanceR.getDistance(DistanceUnit.CM);
-
         if (-2 < tDCurrent - tDLast && tDCurrent - tDLast < 2) {
             if (getChange("right") > (tDCurrent - tDLast) + 2) {
-                tDCurrent = pos;
-                rDCurrent = dist;
                 return true;
             }
         }
 
-        tDCurrent = pos;
-        rDCurrent = dist;
         return false;
+    }
+
+    public void update() {
+        tDLast = tDCurrent;
+        fDLast = fDCurrent;
+        rDLast = rDCurrent;
+        lDLast = lDCurrent;
+
+        lDCurrent = distanceL.getDistance(DistanceUnit.CM);
+        rDCurrent = distanceR.getDistance(DistanceUnit.CM);
+        tDCurrent = convertINtoCM(fLeft.getCurrentPosition() / COUNTS_PER_INCH);
+        fDCurrent = distanceC.getDistance(DistanceUnit.CM);
     }
 
     /**
