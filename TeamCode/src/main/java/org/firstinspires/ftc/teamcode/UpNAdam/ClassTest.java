@@ -9,6 +9,7 @@ import com.qualcomm.robotcore.eventloop.opmode.OpMode;
 import com.qualcomm.robotcore.hardware.DcMotor;
 import com.qualcomm.robotcore.hardware.DcMotorSimple;
 import com.qualcomm.robotcore.hardware.DistanceSensor;
+import com.qualcomm.robotcore.hardware.Servo;
 
 import org.firstinspires.ftc.robotcore.external.navigation.AngleUnit;
 import org.firstinspires.ftc.robotcore.external.navigation.AxesOrder;
@@ -21,16 +22,25 @@ import org.firstinspires.ftc.teamcode.Subsystems.DriveTrain;
 
 import java.util.Locale;
 
-//@Autonomous(name="auto class")
+@Autonomous(name="auto class")
 public class ClassTest extends OpMode {
 
     public DcMotor fLeft, fRight, bLeft, bRight;
+    Servo lArm, rArm, lGrab, rGrab, lFound, rFound;
     int step=0;
     DriveTrain robot;
 
     BNO055IMU imu;
     Orientation angles;
     public void init() {
+        //Servos
+        lArm = hardwareMap.servo.get("lArm");
+        rArm = hardwareMap.servo.get("rArm");
+        lGrab = hardwareMap.servo.get("lGrab");
+        rGrab = hardwareMap.servo.get("rGrab");
+        lFound = hardwareMap.servo.get("lFound");
+        rFound = hardwareMap.servo.get("rFound");
+
         //Hardware mapping of the four motors
         fLeft = hardwareMap.dcMotor.get("fLeft");
         fRight = hardwareMap.dcMotor.get("fRight");
@@ -41,6 +51,14 @@ public class ClassTest extends OpMode {
         fRight.setDirection(DcMotorSimple.Direction.FORWARD);
         bRight.setDirection(DcMotor.Direction.FORWARD);
         bLeft.setDirection(DcMotor.Direction.REVERSE);
+
+        lArm.setDirection(Servo.Direction.REVERSE);
+        rArm.setDirection(Servo.Direction.FORWARD);
+        lGrab.setDirection(Servo.Direction.REVERSE);
+        rGrab.setDirection(Servo.Direction.FORWARD);
+        lFound.setDirection(Servo.Direction.REVERSE);
+        rFound.setDirection(Servo.Direction.FORWARD);
+
 
         fLeft.setZeroPowerBehavior(DcMotor.ZeroPowerBehavior.BRAKE);
         fRight.setZeroPowerBehavior(DcMotor.ZeroPowerBehavior.BRAKE);
@@ -74,6 +92,11 @@ public class ClassTest extends OpMode {
 
         // Start the logging of measured acceleration
         imu.startAccelerationIntegration(new Position(), new Velocity(), 1000);
+
+        lArm.setPosition(0.1);
+        rArm.setPosition(0.05);
+        lGrab.setPosition(0.2);
+        rGrab.setPosition(0.25);
 
     }
 public void start(){

@@ -55,8 +55,8 @@ public class TeleOpV1 extends OpMode {
         rFound.setDirection(Servo.Direction.FORWARD);
 
 
-        lArm.setPosition(0.65);
-        rArm.setPosition(0.45);
+        lArm.setPosition(0.1);
+        rArm.setPosition(0.05);
         lGrab.setPosition(0.2);
         rGrab.setPosition(0.25);
 

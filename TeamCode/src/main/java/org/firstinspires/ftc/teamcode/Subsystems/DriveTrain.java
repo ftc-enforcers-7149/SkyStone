@@ -14,7 +14,7 @@ public class DriveTrain {
 
     //used for encoders
     private static final double     EXTERNAL_GEARING        = 1;
-    private static final double     COUNTS_PER_MOTOR_REV    = 537.6 ;  //28  // eg: AndyMark NeverRest40 Motor Encoder
+    private static final double     COUNTS_PER_MOTOR_REV    = 753.2 ;  //28  // eg: AndyMark NeverRest40 Motor Encoder
     private static final double     DRIVE_GEAR_REDUCTION    = 1 ;     // This is < 1.0 if geared UP
     private static final double     WHEEL_DIAMETER_INCHES   = 3.937 ;     // For figuring circumference
     public static final double     COUNTS_PER_INCH         = ((COUNTS_PER_MOTOR_REV * DRIVE_GEAR_REDUCTION) /
@@ -92,6 +92,11 @@ public class DriveTrain {
             bLeft.setPower(-0.3*mDirection);
             bRight.setPower(0.3*mDirection);
         }
+
+        fLeft.setPower(0);
+        fRight.setPower(0);
+        bLeft.setPower(0);
+        bRight.setPower(0);
     }
 
     /**
@@ -112,6 +117,7 @@ public class DriveTrain {
 
         //standard current angle
         double heading = cvtDegrees(angles.firstAngle);
+
 
         //check if over 360
         if (Math.abs(destination)>360) {
