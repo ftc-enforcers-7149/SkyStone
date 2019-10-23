@@ -23,13 +23,13 @@ import java.util.Locale;
  */
 public class ParentInit extends OpMode {
     // The IMU sensor object
-    BNO055IMU imu;
+    public BNO055IMU imu;
     // State used for updating telemetry
-    Orientation angles;
-    Acceleration gravity;
+    public Orientation angles;
+    public Acceleration gravity;
 
-    Servo lArm, rArm, lGrab, rGrab, lFound, rFound;
-    DcMotor fRight,fLeft,bRight,bLeft,lift;
+    public Servo lArm, rArm, lGrab, rGrab, lFound, rFound;
+    public DcMotor fRight,fLeft,bRight,bLeft,lift;
     public void init() {
         //Servos
         lArm = hardwareMap.servo.get("lArm");
