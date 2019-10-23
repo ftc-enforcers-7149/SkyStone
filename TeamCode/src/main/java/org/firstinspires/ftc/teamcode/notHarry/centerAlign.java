@@ -51,9 +51,7 @@ public class centerAlign extends OpMode {
     DcMotor fLeft, fRight, bLeft, bRight;
 
 
-    private static final String VUFORIA_KEY =
-            "Afe8mtn/////AAAAGSEHpcPbGksXnZDY1oNZ4stF2BoZwT7Xgcdi3AuWqz3ZGmgN8lUJqEQzvS9hmsvT+5ERk+B2c9iol+6TxH/AhiWr/D8jExF0BSuV22m29ctHLg0QHoo5xJH9Dqr98eojHO3w7181LIaPKBPUvu4WyeODzlNXYDy8IQ5Xq3CuOGEuq/e967FWjhr1Z/OsNgrMh9Gwh28vPqleIfZ3kvSQEArGesl3BuRKYs2w3CX1deteJRjDZ6ayuEBlGFERsy2phkd7uqa9tHiNxVgQt6KBL/mcAJIzvU1rTuq2HPumNMsmw0UMnH35IHyT7X+uieeh+ooHH9XePCL2GFWjHyNQOPUKXe5uSlcWfK2kRzkt8xFF";
-    ;
+    private static final String VUFORIA_KEY ="Afe8mtn/////AAAAGSEHpcPbGksXnZDY1oNZ4stF2BoZwT7Xgcdi3AuWqz3ZGmgN8lUJqEQzvS9hmsvT+5ERk+B2c9iol+6TxH/AhiWr/D8jExF0BSuV22m29ctHLg0QHoo5xJH9Dqr98eojHO3w7181LIaPKBPUvu4WyeODzlNXYDy8IQ5Xq3CuOGEuq/e967FWjhr1Z/OsNgrMh9Gwh28vPqleIfZ3kvSQEArGesl3BuRKYs2w3CX1deteJRjDZ6ayuEBlGFERsy2phkd7uqa9tHiNxVgQt6KBL/mcAJIzvU1rTuq2HPumNMsmw0UMnH35IHyT7X+uieeh+ooHH9XePCL2GFWjHyNQOPUKXe5uSlcWfK2kRzkt8xFF";;
 
     /**
      * {@link #vuforia} is the variable we will use to store our instance of the Vuforia
