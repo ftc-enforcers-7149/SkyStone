@@ -2,7 +2,7 @@ package org.firstinspires.ftc.teamcode.Subsystems;
 
 import com.qualcomm.robotcore.eventloop.opmode.Autonomous;
 import com.qualcomm.robotcore.hardware.Servo;
-@Autonomous(name = "Foundation grabber")
+
 public class Foundation {
     private Servo lFound, rFound;
 

@@ -95,7 +95,7 @@ public class ParentInit extends OpMode {
 
 
     //configures telemetry for imu
-    void composeTelemetry() {
+    public void composeTelemetry() {
 
         // At the beginning of each telemetry update, grab a bunch of data
         // from the IMU that we will then display in separate lines.
@@ -155,10 +155,10 @@ public class ParentInit extends OpMode {
     }
 
     //imu formatting
-    String formatAngle(AngleUnit angleUnit, double angle) {
+    public String formatAngle(AngleUnit angleUnit, double angle) {
         return formatDegrees(AngleUnit.DEGREES.fromUnit(angleUnit, angle));
     }
-    String formatDegrees(double degrees){
+    public String formatDegrees(double degrees){
         return String.format(Locale.getDefault(), "%.1f", AngleUnit.DEGREES.normalize(degrees));
     }
 }

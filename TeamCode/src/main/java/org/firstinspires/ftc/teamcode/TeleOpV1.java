@@ -59,6 +59,8 @@ public class TeleOpV1 extends OpMode {
         rArm.setPosition(0.05);
         lGrab.setPosition(0.2);
         rGrab.setPosition(0.25);
+        lFound.setPosition(0);
+        rFound.setPosition(0);
 
         lift.setZeroPowerBehavior(DcMotor.ZeroPowerBehavior.BRAKE);
 
@@ -103,8 +105,8 @@ public class TeleOpV1 extends OpMode {
         }
 
         if (foundationDown) {
-            lFound.setPosition(0.95);
-            rFound.setPosition(0.95);
+            lFound.setPosition(1);
+            rFound.setPosition(1);
         }
         else {
             lFound.setPosition(0);
