@@ -30,23 +30,17 @@ public class MovementDetectionClass{
             (WHEEL_DIAMETER_INCHES * 3.1415))/EXTERNAL_GEARING;
 
     //Constructor
-    MovementDetectionClass(HardwareMap hardwareMap, String distC, String distR, String distL, String fL, String bL, String fR, String bR) {
+    MovementDetectionClass(HardwareMap hardwareMap, String distC, String distR, String distL, DcMotor fL, DcMotor fR, DcMotor bL, DcMotor bR) {
         //Mapping distance sensors
         distanceC = hardwareMap.get(DistanceSensor.class, distC);
         distanceR = hardwareMap.get(DistanceSensor.class, distR);
         distanceL = hardwareMap.get(DistanceSensor.class, distL);
 
         //Mapping motors
-        fLeft= hardwareMap.dcMotor.get(fL);
-        fRight = hardwareMap.dcMotor.get(fR);
-        bRight = hardwareMap.dcMotor.get(bR);
-        bLeft = hardwareMap.dcMotor.get(bL);
-
-        //Motor directions
-        fLeft.setDirection(DcMotorSimple.Direction.REVERSE);
-        fRight.setDirection(DcMotorSimple.Direction.FORWARD);
-        bRight.setDirection(DcMotor.Direction.FORWARD);
-        bLeft.setDirection(DcMotor.Direction.REVERSE);
+        fLeft= fL;
+        fRight = fR;
+        bRight = bR;
+        bLeft = bL;
 
         //Brakes
         fLeft.setZeroPowerBehavior(DcMotor.ZeroPowerBehavior.BRAKE);
