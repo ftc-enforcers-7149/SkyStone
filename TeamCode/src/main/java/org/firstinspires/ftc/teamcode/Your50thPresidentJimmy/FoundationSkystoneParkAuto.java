@@ -69,7 +69,7 @@ public class FoundationSkystoneParkAuto extends OpMode {
 
     }
     public void start(){
-        //driveTrain=new DriveTrain(bLeft,bRight,fLeft,fRight,angles);
+        driveTrain=new DriveTrain(hardwareMap, telemetry,fLeft,fRight,bLeft,bRight);
 
     }
     public void loop() {

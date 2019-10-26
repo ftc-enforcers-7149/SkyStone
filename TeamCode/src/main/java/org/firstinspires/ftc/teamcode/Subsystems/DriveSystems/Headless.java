@@ -171,4 +171,11 @@ public class Headless {
         }
         return -heading + 450;
     }
+
+    public void stop() {
+        fLeft.setPower(0);
+        fRight.setPower(0);
+        bLeft.setPower(0);
+        bRight.setPower(0);
+    }
 }

@@ -34,7 +34,7 @@ public class Arcade {
         this.telemetry = telemetry;
 
         //Initialize variables
-        lim = 0.9;
+        lim = 0.8;
         v1 = 0;
         v2 = 0;
         v3 = 0;
@@ -88,5 +88,12 @@ public class Arcade {
         fRight.setPower(v2);
         bLeft.setPower(v3);
         bRight.setPower(v4);
+    }
+
+    public void stop() {
+        fLeft.setPower(0);
+        fRight.setPower(0);
+        bLeft.setPower(0);
+        bRight.setPower(0);
     }
 }
