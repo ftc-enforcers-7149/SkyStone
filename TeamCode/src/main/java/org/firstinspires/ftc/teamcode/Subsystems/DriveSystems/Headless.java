@@ -78,7 +78,7 @@ public class Headless {
         imu.startAccelerationIntegration(new Position(), new Velocity(), 1000);
 
         //Initialize variables
-        lim = 0.7;
+        lim = 0.85;
         v1 = 0;
         v2 = 0;
         v3 = 0;
@@ -170,5 +170,12 @@ public class Headless {
             return -heading + 90;
         }
         return -heading + 450;
+    }
+
+    public void stop() {
+        fLeft.setPower(0);
+        fRight.setPower(0);
+        bLeft.setPower(0);
+        bRight.setPower(0);
     }
 }

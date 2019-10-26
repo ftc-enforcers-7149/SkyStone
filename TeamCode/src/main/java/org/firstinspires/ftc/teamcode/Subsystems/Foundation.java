@@ -20,7 +20,7 @@ public class Foundation {
      * Hardware Map. Initializing servos
      */
 
-    public void up() {
+    public void down() {
         rFound.setPosition(0.95);
         lFound.setPosition(0.95);
     }
@@ -29,7 +29,7 @@ public class Foundation {
      * Servos moving foundation grabbers
      */
 
-     public void down() {
+     public void up() {
          rFound.setPosition(0);
          lFound.setPosition(0);
      }
