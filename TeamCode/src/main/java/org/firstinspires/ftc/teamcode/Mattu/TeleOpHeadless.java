@@ -8,13 +8,14 @@ import com.qualcomm.robotcore.hardware.Servo;
 
 import org.firstinspires.ftc.teamcode.Subsystems.DriveSystems.Headless;
 import org.firstinspires.ftc.teamcode.Subsystems.DriveSystems.Tank;
+import org.firstinspires.ftc.teamcode.Subsystems.Foundation;
 
 @TeleOp(name = "Headless")
 public class TeleOpHeadless extends OpMode {
 
     //Drive train
     Headless driveSystem;
-    Tank tank;
+    Foundation foundation;
 
     //Servos and motors not used for driving
     Servo lArm, rArm, lGrab, rGrab, lFound, rFound;
@@ -23,16 +24,13 @@ public class TeleOpHeadless extends OpMode {
     //Input variables
     boolean armUp, armDown;
     double liftUp,liftDown;
-    boolean foundationDown;
+    boolean foundationDown, foundationPressed, foundationState;
     boolean isBreak;
     float leftG,rightG;
-    boolean switchDrive;
-    boolean pickDrive;
 
     public void init() {
         //Initialize drive train
         driveSystem = new Headless(hardwareMap, telemetry, "fLeft", "fRight", "bLeft", "bRight");
-        tank = new Tank(hardwareMap, telemetry, "fLeft", "fRight", "bLeft", "bRight");
 
         //Servos
         lArm = hardwareMap.servo.get("lArm");
@@ -62,9 +60,11 @@ public class TeleOpHeadless extends OpMode {
         lFound.setPosition(0);
         rFound.setPosition(0);
 
+        foundation = new Foundation(lFound, rFound);
+
         isBreak = false;
-        switchDrive = false;
-        pickDrive = true;
+        foundationPressed = false;
+        foundationState = false;
     }
 
     public void loop() {
@@ -76,7 +76,6 @@ public class TeleOpHeadless extends OpMode {
         liftDown = gamepad1.left_trigger;
         liftUp = gamepad1.right_trigger;
         foundationDown = gamepad1.a;
-        switchDrive = gamepad1.b;
 
         //Do flip function
         if (armUp) {
@@ -88,6 +87,7 @@ public class TeleOpHeadless extends OpMode {
             rArm.setPosition(0.45);
         }
 
+        //Grab with separate controls for each grabber
         if(rightG>0.1){
             rGrab.setPosition(0.15);
         }
@@ -102,26 +102,30 @@ public class TeleOpHeadless extends OpMode {
             lGrab.setPosition(0.2);
         }
 
-        if (foundationDown) {
-            lFound.setPosition(1);
-            rFound.setPosition(1);
+        //Toggle foundation
+        if (foundationPressed) {
+            if (!foundationDown) {
+                foundationPressed = false;
+                foundationState = !foundationState;
+            }
         }
         else {
-            lFound.setPosition(0);
-            rFound.setPosition(0);
+            if (foundationDown) {
+                foundationPressed = true;
+            }
         }
+        if (foundationState) {
+            foundation.up();
+        }
+        else {
+            foundation.down();
+        }
+
+        telemetry.addData("Pressed: ", foundationPressed);
+        telemetry.addData("Down: ", foundationDown);
 
         //Drive
-        if (switchDrive) {
-            pickDrive = !pickDrive;
-        }
-
-        if (pickDrive) {
-            driveSystem.drive(gamepad1);
-        }
-        else {
-            tank.drive(gamepad1);
-        }
+        driveSystem.drive(gamepad1);
 
         //Do lift function
         if(liftUp > 0.1){
