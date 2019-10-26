@@ -105,7 +105,7 @@ public void start(){
                 robot.driveStraight("forward", 50);
                 break;
             case 1:
-                robot.rotation(10);
+                //robot.rotation(10);
                 break;
         }
         step++;

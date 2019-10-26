@@ -88,7 +88,7 @@ public class FoundationAutoRed extends OpMode {
                 break;
             case 2:driveTrain.driveStraight("backward", 34);
                 break;
-            case 3:driveTrain.rotation(270);
+            case 3://driveTrain.rotation(270);
                 break;
             case 4:driveTrain.driveStraight("backward", 18);
                 break;

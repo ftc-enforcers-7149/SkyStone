@@ -82,7 +82,7 @@ public class FoundationSkystoneParkAuto extends OpMode {
                 driveTrain.driveStraight("forward", 24.5);
                 break;
             case 2:
-                driveTrain.rotation(270);
+                //driveTrain.rotation(270);
                 break;
             case 3:
                 driveTrain.driveStraight("forward", 56);
