@@ -77,7 +77,7 @@ public class FoundationAutoRed extends OpMode {
 
     }
     public void start(){
-        driveTrain=new DriveTrain(bLeft,bRight,fLeft,fRight,angles);
+        driveTrain=new DriveTrain(hardwareMap,telemetry,bLeft,bRight,fLeft,fRight);
 
     }
     public void loop() {

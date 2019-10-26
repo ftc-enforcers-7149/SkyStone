@@ -48,6 +48,7 @@ import org.firstinspires.ftc.robotcore.external.navigation.Orientation;
 import org.firstinspires.ftc.robotcore.external.navigation.Position;
 import org.firstinspires.ftc.robotcore.external.navigation.Velocity;
 import org.firstinspires.ftc.teamcode.Subsystems.DriveTrain;
+import org.firstinspires.ftc.teamcode.Subsystems.Foundation;
 
 import java.util.Locale;
 
@@ -65,6 +66,7 @@ public class BlueFounndationPark extends OpMode {
     public DcMotor fRight,fLeft,bRight,bLeft,lift;
 
     DriveTrain driveTrain;
+    Foundation foundation;
 
     int step=0;
 
@@ -99,10 +101,8 @@ public class BlueFounndationPark extends OpMode {
         rFound.setDirection(Servo.Direction.FORWARD);
 
         //setting safe positions for servos
-        lArm.setPosition(0.1);
-        rArm.setPosition(0.05);
-        lGrab.setPosition(0.2);
-        rGrab.setPosition(0.25);
+
+
 
         lift.setZeroPowerBehavior(DcMotor.ZeroPowerBehavior.BRAKE);
 /*
@@ -131,17 +131,29 @@ public class BlueFounndationPark extends OpMode {
     }
     public void start(){
         driveTrain=new DriveTrain(hardwareMap,telemetry,fLeft,fRight,bLeft,bRight);
+        foundation=new Foundation(lFound,rFound);
     }
 
     // Loop and update the dashboard
     public void loop() {
         switch(step){
-            case 0://driveTrain.driveStraight("forward",50);
+            case 0:
+                lArm.setPosition(0.1);
+                rArm.setPosition(0.05);
                 break;
-            case 1:driveTrain.rotation(180);
+            case 1:
+                driveTrain.driveStraight("backward",49);//50
                 break;
+            case 2:
+                driveTrain.strafeSeconds(1000,"right");
+                break;
+            case 3:
+                foundation.down();
+                break;
+
+
         }
-        step=1;
+        step++;
     }
 
 

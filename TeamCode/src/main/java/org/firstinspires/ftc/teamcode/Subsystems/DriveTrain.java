@@ -155,7 +155,6 @@ public class DriveTrain {
      * @param destination
      */
     public void rotation(double destination) {
-        telemetry.addData("heading",angles.firstAngle);
         fRight.setMode(DcMotor.RunMode.RUN_WITHOUT_ENCODER);
         fLeft.setMode(DcMotor.RunMode.RUN_WITHOUT_ENCODER);
         bRight.setMode(DcMotor.RunMode.RUN_WITHOUT_ENCODER);
@@ -163,7 +162,7 @@ public class DriveTrain {
 
 
         double speed = 0;
-        double min = 0.1;
+        double min = 0.15;
         double max = 0.8;
         double iTime=System.currentTimeMillis();
 
@@ -198,6 +197,9 @@ public class DriveTrain {
 
         //main phase of method
         while (heading < destination - 2 || heading > destination + 2) {
+            telemetry.addData("heading",heading);
+            telemetry.addData("speed",speed);
+            telemetry.update();
             double delta = destination-heading; //the difference between destination and heading
             heading = cvtDegrees(angles.firstAngle);
             //decreases speed as robot approaches destination
@@ -214,15 +216,15 @@ public class DriveTrain {
             }
             if (!(Math.abs(delta) == 360 || Math.abs(delta) == 0)) {//determine if we are at the intended heading
                 if (((delta + 360) % 360) > 180) { //Chooses fastest route by determining if the arc length is longer to the right or left. Chooses fastest route by
-                    fLeft.setPower(-speed);
-                    bLeft.setPower(-speed);
-                    bRight.setPower(speed);
-                    fRight.setPower(speed);
-                } else {
                     fLeft.setPower(speed);
                     bLeft.setPower(speed);
                     bRight.setPower(-speed);
                     fRight.setPower(-speed);
+                } else {
+                    fLeft.setPower(-speed);
+                    bLeft.setPower(-speed);
+                    bRight.setPower(speed);
+                    fRight.setPower(speed);
                 }
             } else {
                 fLeft.setPower(0);

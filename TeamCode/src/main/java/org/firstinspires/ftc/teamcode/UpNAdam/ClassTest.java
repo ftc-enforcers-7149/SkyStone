@@ -96,7 +96,7 @@ public class ClassTest extends OpMode {
 
     }
 public void start(){
-    robot=new DriveTrain(bLeft,bRight,fLeft,fRight,angles);
+    robot=new DriveTrain(hardwareMap,telemetry,bLeft,bRight,fLeft,fRight);
 
 }
     public void loop() {
