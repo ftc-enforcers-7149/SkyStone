@@ -76,7 +76,7 @@ public class TestDetection extends OpMode {
         // Start the logging of measured acceleration
         imu.startAccelerationIntegration(new Position(), new Velocity(), 1000);
 
-        driveTrain = new DriveTrain(fLeft, fRight, bLeft, bRight, angles);
+        driveTrain = new DriveTrain(hardwareMap, telemetry, fLeft, fRight, bLeft, bRight);
 
         //Initialize variables
         lim = 0.9;

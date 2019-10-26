@@ -7,31 +7,40 @@ import com.qualcomm.robotcore.hardware.DcMotorSimple;
 import com.qualcomm.robotcore.hardware.Servo;
 
 import org.firstinspires.ftc.teamcode.Subsystems.DriveSystems.Headless;
+import org.firstinspires.ftc.teamcode.Subsystems.DriveSystems.Tank;
 
 @TeleOp(name = "Headless")
 public class TeleOpHeadless extends OpMode {
 
     //Drive train
     Headless driveSystem;
+    Tank tank;
 
     //Servos and motors not used for driving
-    Servo lArm, rArm, lGrab, rGrab;
+    Servo lArm, rArm, lGrab, rGrab, lFound, rFound;
     DcMotor lift;
 
     //Input variables
     boolean armUp, armDown;
-    boolean gGrab,gRelease;
-    boolean liftUp,liftDown;
+    double liftUp,liftDown;
+    boolean foundationDown;
+    boolean isBreak;
+    float leftG,rightG;
+    boolean switchDrive;
+    boolean pickDrive;
 
     public void init() {
         //Initialize drive train
         driveSystem = new Headless(hardwareMap, telemetry, "fLeft", "fRight", "bLeft", "bRight");
+        tank = new Tank(hardwareMap, telemetry, "fLeft", "fRight", "bLeft", "bRight");
 
         //Servos
         lArm = hardwareMap.servo.get("lArm");
         rArm = hardwareMap.servo.get("rArm");
         lGrab = hardwareMap.servo.get("lGrab");
         rGrab = hardwareMap.servo.get("rGrab");
+        lFound = hardwareMap.servo.get("lFound");
+        rFound = hardwareMap.servo.get("rFound");
         //Lift
         lift = hardwareMap.dcMotor.get("lift");
         lift.setDirection(DcMotorSimple.Direction.REVERSE);
@@ -42,55 +51,98 @@ public class TeleOpHeadless extends OpMode {
         rArm.setDirection(Servo.Direction.FORWARD);
         lGrab.setDirection(Servo.Direction.REVERSE);
         rGrab.setDirection(Servo.Direction.FORWARD);
+        lFound.setDirection(Servo.Direction.REVERSE);
+        rFound.setDirection(Servo.Direction.FORWARD);
 
         //Set initial positions
-        lArm.setPosition(0.4); //0.4
-        rArm.setPosition(0.57); //0.57
-        lGrab.setPosition(0.25); //0.25
-        rGrab.setPosition(0.3); //0.3
+        lArm.setPosition(0.1);
+        rArm.setPosition(0.05);
+        lGrab.setPosition(0.2);
+        rGrab.setPosition(0.25);
+        lFound.setPosition(0);
+        rFound.setPosition(0);
+
+        isBreak = false;
+        switchDrive = false;
+        pickDrive = true;
     }
 
     public void loop() {
         //Get inputs
-        armUp = gamepad1.y;
-        armDown = gamepad1.a;
-        gGrab = gamepad1.x;
-        gRelease = gamepad1.b;
-        liftUp = gamepad1.dpad_down;
-        liftDown = gamepad1.dpad_up;
+        armUp = gamepad2.y;
+        armDown = gamepad2.a;
+        rightG = gamepad2.right_trigger;
+        leftG = gamepad2.left_trigger;
+        liftDown = gamepad1.left_trigger;
+        liftUp = gamepad1.right_trigger;
+        foundationDown = gamepad1.a;
+        switchDrive = gamepad1.b;
 
         //Do flip function
         if (armUp) {
-            lArm.setPosition(0);
-            rArm.setPosition(0);
+            lArm.setPosition(0.1);
+            rArm.setPosition(0.05);
         }
         else if(armDown){
-            lArm.setPosition(0.40);
-            rArm.setPosition(0.57);
+            lArm.setPosition(0.65);
+            rArm.setPosition(0.45);
         }
 
-        //Do grab function
-        if(gGrab){
-            lGrab.setPosition(0);
-            rGrab.setPosition(0);
+        if(rightG>0.1){
+            rGrab.setPosition(0.15);
         }
-        else if(gRelease){
-            lGrab.setPosition(0.25);
-            rGrab.setPosition(0.3);
+        else{
+            rGrab.setPosition(0.25);
+        }
+
+        if(leftG>0.1){
+            lGrab.setPosition(0.1);
+        }
+        else{
+            lGrab.setPosition(0.2);
+        }
+
+        if (foundationDown) {
+            lFound.setPosition(1);
+            rFound.setPosition(1);
+        }
+        else {
+            lFound.setPosition(0);
+            rFound.setPosition(0);
         }
 
         //Drive
-        driveSystem.drive(gamepad1);
+        if (switchDrive) {
+            pickDrive = !pickDrive;
+        }
+
+        if (pickDrive) {
+            driveSystem.drive(gamepad1);
+        }
+        else {
+            tank.drive(gamepad1);
+        }
 
         //Do lift function
-        if(liftUp){
-            lift.setPower(0.6);
+        if(liftUp > 0.1){
+            lift.setPower(0.7);
+            isBreak = true;
         }
-        else if(liftDown){
-            lift.setPower(0);
+        else if(liftDown > 0.1){
+            lift.setPower(-0.05);
+            isBreak = false;
         }
         else{
-            lift.setPower(0.1);
+            if (isBreak) {
+                lift.setPower(0.3);
+            }
+            else {
+                lift.setPower(0);
+            }
         }
+    }
+
+    public void stop(){
+
     }
 }
