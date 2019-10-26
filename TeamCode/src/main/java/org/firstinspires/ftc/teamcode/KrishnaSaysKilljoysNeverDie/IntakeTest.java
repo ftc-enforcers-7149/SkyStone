@@ -10,7 +10,7 @@ public class IntakeTest extends OpMode {
     IntakeVer0 intake;
 
     public void init() {
-        intake = new IntakeVer0(hardwareMap, "intakeL", "intakeR");
+        intake = new IntakeVer0(hardwareMap, "intakeL", "intakeR", true, false);
     }
 
     public void loop() {
