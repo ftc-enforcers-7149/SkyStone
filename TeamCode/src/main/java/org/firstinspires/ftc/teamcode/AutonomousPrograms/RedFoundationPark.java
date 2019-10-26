@@ -91,7 +91,7 @@ public class RedFoundationPark extends OpMode {
         foundation=new Foundation(lFound,rFound);
     }
 
-    // Loop and update the dashboard
+    // Loop and update the dashboard//
     public void loop() {
         switch(step){
             case 0:
