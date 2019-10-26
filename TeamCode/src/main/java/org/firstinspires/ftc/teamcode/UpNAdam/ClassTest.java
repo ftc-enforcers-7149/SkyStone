@@ -96,7 +96,7 @@ public class ClassTest extends OpMode {
 
     }
 public void start(){
-    robot=new DriveTrain(bLeft,bRight,fLeft,fRight,angles);
+    robot=new DriveTrain(hardwareMap, telemetry,fLeft,fRight,bLeft,bRight);
 
 }
     public void loop() {
@@ -105,7 +105,7 @@ public void start(){
                 robot.driveStraight("forward", 50);
                 break;
             case 1:
-                robot.rotation(10);
+                //robot.rotation(10);
                 break;
         }
         step++;

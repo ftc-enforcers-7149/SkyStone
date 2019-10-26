@@ -69,7 +69,7 @@ public class FoundationSkystoneParkAuto extends OpMode {
 
     }
     public void start(){
-        driveTrain=new DriveTrain(bLeft,bRight,fLeft,fRight,angles);
+        driveTrain=new DriveTrain(hardwareMap, telemetry,fLeft,fRight,bLeft,bRight);
 
     }
     public void loop() {
@@ -82,7 +82,7 @@ public class FoundationSkystoneParkAuto extends OpMode {
                 driveTrain.driveStraight("forward", 24.5);
                 break;
             case 2:
-                driveTrain.rotation(270);
+                //driveTrain.rotation(270);
                 break;
             case 3:
                 driveTrain.driveStraight("forward", 56);

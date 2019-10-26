@@ -1,4 +1,4 @@
-package org.firstinspires.ftc.teamcode.Mattu;
+package org.firstinspires.ftc.teamcode;
 
 import com.qualcomm.robotcore.eventloop.opmode.OpMode;
 import com.qualcomm.robotcore.eventloop.opmode.TeleOp;
@@ -9,7 +9,8 @@ import com.qualcomm.robotcore.hardware.Servo;
 import org.firstinspires.ftc.teamcode.Subsystems.DriveSystems.Headless;
 import org.firstinspires.ftc.teamcode.Subsystems.Foundation;
 
-public class TeleOpHeadless extends OpMode {
+@TeleOp(name = "TeleOpV1_1")
+public class TeleOpV1_1 extends OpMode {
 
     //Drive train
     Headless driveSystem;

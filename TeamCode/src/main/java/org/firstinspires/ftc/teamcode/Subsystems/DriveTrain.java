@@ -1,17 +1,27 @@
 package org.firstinspires.ftc.teamcode.Subsystems;
 
 import com.qualcomm.hardware.bosch.BNO055IMU;
+import com.qualcomm.hardware.bosch.JustLoggingAccelerationIntegrator;
 import com.qualcomm.robotcore.hardware.DcMotor;
+import com.qualcomm.robotcore.hardware.HardwareMap;
 
+import org.firstinspires.ftc.robotcore.external.Telemetry;
 import org.firstinspires.ftc.robotcore.external.navigation.AngleUnit;
+import org.firstinspires.ftc.robotcore.external.navigation.AxesOrder;
+import org.firstinspires.ftc.robotcore.external.navigation.AxesReference;
 import org.firstinspires.ftc.robotcore.external.navigation.Orientation;
+import org.firstinspires.ftc.robotcore.external.navigation.Position;
+import org.firstinspires.ftc.robotcore.external.navigation.Velocity;
 
 import java.util.Locale;
 
 public class DriveTrain {
     private DcMotor fLeft, fRight, bLeft, bRight;
+    //IMU variables
+    private BNO055IMU imu;
     private Orientation angles;
 
+    Telemetry telemetry;
     //used for encoders
     private static final double     EXTERNAL_GEARING        = 1;
     private static final double     COUNTS_PER_MOTOR_REV    = 753.2 ;  //28  // eg: AndyMark NeverRest40 Motor Encoder
@@ -22,13 +32,44 @@ public class DriveTrain {
 
     /**
      * Main constructor
+     * @param hardwareMap hardwareMap
+     * @param telemetry telemetry
      * @param fLeft fLeft
      * @param fRight fRight
      * @param bLeft bLeft
      * @param bRight bRight
-     * @param angles angles
      */
-    public DriveTrain(DcMotor fLeft, DcMotor fRight, DcMotor bLeft, DcMotor bRight, Orientation angles){
+    public DriveTrain(HardwareMap hardwareMap , Telemetry telemetry, DcMotor fLeft, DcMotor fRight, DcMotor bLeft, DcMotor bRight){
+        //Set up imu parameters
+        BNO055IMU.Parameters parameters = new BNO055IMU.Parameters();
+        parameters.angleUnit = BNO055IMU.AngleUnit.DEGREES;
+        parameters.accelUnit = BNO055IMU.AccelUnit.METERS_PERSEC_PERSEC;
+        parameters.calibrationDataFile = "BNO055IMUCalibration.json"; // see the calibration sample opmode
+        parameters.loggingEnabled = true;
+        parameters.loggingTag = "IMU";
+        parameters.accelerationIntegrationAlgorithm = new JustLoggingAccelerationIntegrator();
+
+        this.telemetry = telemetry;
+
+        this.telemetry.addAction(new Runnable() {
+            @Override
+            public void run() {
+                // Acquiring the angles is relatively expensive; we don't want
+                // to do that in each of the three items that need that info, as that's
+                // three times the necessary expense.
+                angles = imu.getAngularOrientation(AxesReference.INTRINSIC, AxesOrder.ZYX, AngleUnit.DEGREES);
+            }
+        });
+
+        // Retrieve and initialize the IMU. We expect the IMU to be attached to an I2C port
+        // on a Core Device Interface Module, configured to be a sensor of type "AdaFruit IMU",
+        // and named "imu".
+        imu = hardwareMap.get(BNO055IMU.class, "imu");
+        imu.initialize(parameters);
+
+        // Start the logging of measured acceleration
+        imu.startAccelerationIntegration(new Position(), new Velocity(), 1000);
+
         this.fLeft = fLeft;
         this.fRight = fRight;
         this.bLeft = bLeft;
@@ -107,16 +148,19 @@ public class DriveTrain {
         bRight.setPower(0);
     }
 
+
     /**
      * turns to the desired angle
      * 0-360 in a counter clockwise format
-     * @param destination angle desired
+     * @param destination
      */
-    public void rotation(float destination) {
+    public void rotation(double destination) {
+        telemetry.addData("heading",angles.firstAngle);
         fRight.setMode(DcMotor.RunMode.RUN_WITHOUT_ENCODER);
         fLeft.setMode(DcMotor.RunMode.RUN_WITHOUT_ENCODER);
         bRight.setMode(DcMotor.RunMode.RUN_WITHOUT_ENCODER);
         bLeft.setMode(DcMotor.RunMode.RUN_WITHOUT_ENCODER);
+
 
         double speed = 0;
         double min = 0.1;
@@ -154,7 +198,6 @@ public class DriveTrain {
 
         //main phase of method
         while (heading < destination - 2 || heading > destination + 2) {
-
             double delta = destination-heading; //the difference between destination and heading
             heading = cvtDegrees(angles.firstAngle);
             //decreases speed as robot approaches destination

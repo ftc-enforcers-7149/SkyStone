@@ -32,7 +32,7 @@ public class SamplePath {
                 direction = OdometryPosition.Direction.FORWARD;
                 driveTrain.driveStraight("forward", 5);
                 direction = OdometryPosition.Direction.TURNING;
-                driveTrain.rotation(90);
+                //driveTrain.rotation(90,angles);
                 step = 2;
                 break;
             case 2:

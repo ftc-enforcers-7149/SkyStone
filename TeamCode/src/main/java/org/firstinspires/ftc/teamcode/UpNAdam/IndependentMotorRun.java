@@ -1,4 +1,4 @@
-package org.firstinspires.ftc.teamcode;
+package org.firstinspires.ftc.teamcode.UpNAdam;
 
 import com.qualcomm.robotcore.eventloop.opmode.OpMode;
 import com.qualcomm.robotcore.eventloop.opmode.TeleOp;
@@ -8,8 +8,16 @@ import com.qualcomm.robotcore.hardware.Servo;
 
 import org.firstinspires.ftc.teamcode.Subsystems.DriveSystems.Headless;
 
-@TeleOp(name = "TeleOpV1")
-public class TeleOpV1 extends OpMode {
+
+@TeleOp(name = "Motor Test")
+public class IndependentMotorRun extends OpMode {
+    //used for encoders
+    private static final double     EXTERNAL_GEARING        = 1;
+    private static final double     COUNTS_PER_MOTOR_REV    = 753.2 ;  //28  // eg: AndyMark NeverRest40 Motor Encoder
+    private static final double     DRIVE_GEAR_REDUCTION    = 1 ;     // This is < 1.0 if geared UP
+    private static final double     WHEEL_DIAMETER_INCHES   = 3.937 ;     // For figuring circumference
+    public static final double     COUNTS_PER_INCH         = ((COUNTS_PER_MOTOR_REV * DRIVE_GEAR_REDUCTION) /
+            (WHEEL_DIAMETER_INCHES * 3.1415))/EXTERNAL_GEARING;
     //Drive train
     Headless driveSystem;
 
@@ -76,66 +84,55 @@ public class TeleOpV1 extends OpMode {
         rDrive = gamepad1.right_stick_y;
         lStrafe = gamepad1.left_trigger;
         rStrafe = gamepad1.right_trigger;
+        boolean b=gamepad1.b;
+        boolean y=gamepad1.y;
+        boolean x=gamepad1.x;
+        boolean dUp=gamepad1.dpad_up;
 
-        //Drive
-        driveSystem.drive(gamepad1);
-
-        if (armUp) {
-            lArm.setPosition(0.1);
-            rArm.setPosition(0.05);
-        }
-        else if(armDown){
-            lArm.setPosition(0.65);
-            rArm.setPosition(0.45);
-        }
-
-        if(rightG>0.1){
-            rGrab.setPosition(0.15);
+        if(foundationDown){
+            bLeft.setPower(0.5);
         }
         else{
-            rGrab.setPosition(0.25);
+            bLeft.setPower(0);
         }
 
-        if(leftG>0.1){
-            lGrab.setPosition(0.1);
+        if(b){
+            bRight.setPower(0.5);
         }
         else{
-            lGrab.setPosition(0.2);
+            bRight.setPower(0);
         }
 
-        if (foundationDown) {
-            lFound.setPosition(1);
-            rFound.setPosition(1);
-        }
-        else {
-            lFound.setPosition(0);
-            rFound.setPosition(0);
-        }
-        /*if(gGrab){
-            lGrab.setPosition(0.1);
-            rGrab.setPosition(0.1);
-        }
-        else if(gRelease){
-            lGrab.setPosition(0.2);
-            rGrab.setPosition(0.25);
-        }*/
-
-        if(liftUp>0.1){
-            lift.setPower(0.7);
-            isBreak=true;
-        }
-        else if(liftDown>0.1){
-            lift.setPower(-0.05);
-           isBreak=false;
+        if(y){
+            fLeft.setPower(0.5);
         }
         else{
-            if(isBreak){
-                lift.setPower(0.3);
-            }
-            else{
-                lift.setPower(0.0);
-            }
+            fLeft.setPower(0);
         }
+        if(x){
+            fRight.setPower(0.5);
+        }
+        else{
+            fRight.setPower(0);
+        }
+
+        if(dUp){
+            fRight.setPower(0.5);
+            bRight.setPower(0.5);
+            fLeft.setPower(0.5);
+            bLeft.setPower(0.5);
+        }
+        else{
+            fRight.setPower(0);
+            bRight.setPower(0);
+            fLeft.setPower(0);
+            bLeft.setPower(0);
+        }
+
+        telemetry.addData("bLeft ",bLeft.getCurrentPosition()/COUNTS_PER_INCH);
+        telemetry.addData("bRight",bRight.getCurrentPosition()/COUNTS_PER_INCH);
+        telemetry.addData("fLeft ",fLeft.getCurrentPosition()/COUNTS_PER_INCH);
+        telemetry.addData("fRight",fRight.getCurrentPosition()/COUNTS_PER_INCH);
 
     }
     public void stop(){
