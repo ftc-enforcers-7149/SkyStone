@@ -78,7 +78,7 @@ public class Headless {
         imu.startAccelerationIntegration(new Position(), new Velocity(), 1000);
 
         //Initialize variables
-        lim = 0.7;
+        lim = 1;
         v1 = 0;
         v2 = 0;
         v3 = 0;

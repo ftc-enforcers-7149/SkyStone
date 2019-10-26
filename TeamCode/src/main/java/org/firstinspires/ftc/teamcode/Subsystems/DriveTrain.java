@@ -110,6 +110,40 @@ public class DriveTrain {
     }
 
     /**
+     * drives inputted distance
+     * @param direction direction of driving. "backward" to go backward
+     * @param distance distance driving in inches
+     * @param rPower power for right side of the robot
+     * @param lPower power for left side of the robot
+     */
+    public void driveStraight(String direction, double distance, double rPower, double lPower) {
+        resetEncoderWithoutEncoder();
+        int mDirection = 1;
+        if (direction.equals("backward")) {
+            mDirection = -1;
+        }
+
+        //double power=0.6*mDirection;
+        rPower = rPower*mDirection;
+        lPower = lPower*mDirection;
+        double cPosition=fLeft.getCurrentPosition()/COUNTS_PER_INCH*mDirection;
+
+        while(cPosition < distance){
+            cPosition=fLeft.getCurrentPosition()/COUNTS_PER_INCH*mDirection;
+
+            fLeft.setPower(lPower);
+            fRight.setPower(rPower);
+            bLeft.setPower(lPower);
+            bRight.setPower(rPower);
+        }
+
+        fLeft.setPower(0);
+        fRight.setPower(0);
+        bLeft.setPower(0);
+        bRight.setPower(0);
+    }
+
+    /**
      * Resets drive encoders without running using encoders
      */
     public void resetEncoderWithoutEncoder(){
@@ -151,7 +185,7 @@ public class DriveTrain {
 
     /**
      * turns to the desired angle
-     * 0-360 in a counter clockwise format
+     * 0-360 in a clockwise format
      * @param destination
      */
     public void rotation(double destination) {
@@ -162,7 +196,7 @@ public class DriveTrain {
 
 
         double speed = 0;
-        double min = 0.15;
+        double min = 0.2;
         double max = 0.8;
         double iTime=System.currentTimeMillis();
 
@@ -253,6 +287,17 @@ public class DriveTrain {
             return 360 + heading;
         } else {
             return heading;
+        }
+    }
+
+    /**
+     * wait time. Can't be more than 5 seconds
+     * @param wTime time delayed in milliseconds
+     */
+    public void delay(double wTime){
+        double iTime=System.currentTimeMillis();
+        while (System.currentTimeMillis()<iTime+wTime) {
+
         }
     }
 
