@@ -19,7 +19,7 @@ public class TeleOpV1 extends OpMode {
     boolean armUp, armDown;
     boolean isBreak=false;
     float leftG,rightG;
-    float liftUp,liftDown;
+    float liftUp,liftDown;//liftMove;
     boolean foundationDown;
     float lDrive,rDrive,lStrafe,rStrafe;
     public void init(){
@@ -56,10 +56,10 @@ public class TeleOpV1 extends OpMode {
 
         lArm.setPosition(0.1);
         rArm.setPosition(0.05);
-        lGrab.setPosition(0.2);
+        lGrab.setPosition(0.7);
         rGrab.setPosition(0.25);
-        lFound.setPosition(0);
-        rFound.setPosition(0);
+        //lFound.setPosition(0);
+        //rFound.setPosition(0);
 
         lift.setZeroPowerBehavior(DcMotor.ZeroPowerBehavior.BRAKE);
 
@@ -69,8 +69,9 @@ public class TeleOpV1 extends OpMode {
         armDown = gamepad2.a;
         rightG = gamepad2.right_trigger;
         leftG = gamepad2.left_trigger;
-        liftDown = gamepad1.left_trigger;
-        liftUp = gamepad1.right_trigger;
+        //liftMove = gamepad2.left_stick_y;
+        liftUp=gamepad1.right_trigger;
+        liftDown=gamepad1.left_trigger;
         foundationDown = gamepad1.a;
         lDrive = gamepad1.left_stick_y;
         rDrive = gamepad1.right_stick_y;
@@ -97,10 +98,10 @@ public class TeleOpV1 extends OpMode {
         }
 
         if(leftG>0.1){
-            lGrab.setPosition(0.1);
+            lGrab.setPosition(0.48);
         }
         else{
-            lGrab.setPosition(0.2);
+            lGrab.setPosition(0.7);
         }
 
         if (foundationDown) {

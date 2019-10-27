@@ -5,7 +5,7 @@ import com.qualcomm.robotcore.eventloop.opmode.OpMode;
 import com.qualcomm.robotcore.hardware.DcMotor;
 import com.qualcomm.robotcore.hardware.Servo;
 
-//@Autonomous(name="auto claw park")
+@Autonomous(name="auto claw park")
 public class AutoClawPark extends OpMode {
     Servo lArm, rArm, lGrab, rGrab, lFound, rFound;
 
@@ -24,15 +24,17 @@ public class AutoClawPark extends OpMode {
         lFound.setDirection(Servo.Direction.REVERSE);
         rFound.setDirection(Servo.Direction.FORWARD);
 
-        lArm.setPosition(0.6);
-        rArm.setPosition(0.4);
-        lGrab.setPosition(0.05);
-        rGrab.setPosition(0.15);
+        lArm.setPosition(0.1);
+        rArm.setPosition(0.05);
+        //lGrab.setPosition(0.7);
+        //rGrab.setPosition(0.25);
     }
 
     public void loop(){
-        lArm.setPosition(1);
-        rArm.setPosition(1);
+        lArm.setPosition(0.65);
+        rArm.setPosition(0.45);
+        rGrab.setPosition(0.15);
+        lGrab.setPosition(0.5);
     }
     public void stop(){
 
