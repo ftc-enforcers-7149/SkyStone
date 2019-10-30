@@ -30,11 +30,11 @@ public class MovementDetectionClass{
             (WHEEL_DIAMETER_INCHES * 3.1415))/EXTERNAL_GEARING;
 
     //Constructor
-    public MovementDetectionClass(DistanceSensor distC, DistanceSensor distL, DistanceSensor distR, DcMotor fL, DcMotor fR, DcMotor bL, DcMotor bR) {
+    MovementDetectionClass(HardwareMap hardwareMap, String distC, String distR, String distL, DcMotor fL, DcMotor fR, DcMotor bL, DcMotor bR) {
         //Mapping distance sensors
-        distanceC = distC;
-        distanceR = distR;
-        distanceL = distL;
+        distanceC = hardwareMap.get(DistanceSensor.class, distC);
+        distanceR = hardwareMap.get(DistanceSensor.class, distR);
+        distanceL = hardwareMap.get(DistanceSensor.class, distL);
 
         //Mapping motors
         fLeft= fL;
@@ -85,6 +85,10 @@ public class MovementDetectionClass{
         return false;
     }
 
+    /**
+     * Detects if obstacle on front is close
+     * @return
+     */
     public boolean isFrontClose() {
         if (fDCurrent < 20) {
             return true;
@@ -93,6 +97,10 @@ public class MovementDetectionClass{
         return false;
     }
 
+    /**
+     * Detects if obstacle on left is close
+     * @return
+     */
     public boolean isLeftClose() {
         if (lDCurrent < 20) {
             return true;
@@ -101,39 +109,13 @@ public class MovementDetectionClass{
         return false;
     }
 
+    /**
+     * Detects if obstacle on right is close
+     * @return
+     */
     public boolean isRightClose() {
         if (rDCurrent < 20) {
             return true;
-        }
-
-        return false;
-    }
-
-    /**
-     * Detects if object is moving or not on left
-     * Only when robot is still
-     * @return
-     */
-    public boolean isLeftMoving() {
-        if (-2 < tDCurrent - tDLast && tDCurrent - tDLast < 2) {
-            if (getChange("left") > (tDCurrent - tDLast) + 2) {
-                return true;
-            }
-        }
-
-        return false;
-    }
-
-    /**
-     * Detects if object is moving or not on right
-     * Only when robot is still
-     * @return
-     */
-    public boolean isRightMoving() {
-        if (-2 < tDCurrent - tDLast && tDCurrent - tDLast < 2) {
-            if (getChange("right") > (tDCurrent - tDLast) + 2) {
-                return true;
-            }
         }
 
         return false;
@@ -183,5 +165,4 @@ public class MovementDetectionClass{
         return "Distance traveled: " + tDCurrent + ", Last distance traveled: " + tDLast +
                 "\nSensor Distance: " + fDCurrent + ", Last sensor distance: " + fDLast;
     }
-
 }

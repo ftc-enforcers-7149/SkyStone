@@ -38,39 +38,65 @@ public class TestMovementDetection extends ParentInit {
 
             prevTime += 100;
         }
-        boolean isFront = detection.isFrontMoving();
+        boolean isFrontMoving = detection.isFrontMoving();
+        boolean isFront = detection.isFrontClose();
         boolean isLeft = detection.isLeftClose();
         boolean isRight = detection.isRightClose();
         String raw = detection.rawData();
 
+        telemetry.addData("Moving in front? ", isFrontMoving);
         telemetry.addData("Moving in front? ", isFront);
         telemetry.addData("Is left close? ", isLeft);
         telemetry.addData("Is right close? ", isRight);
         telemetry.addLine(raw);
         Log.i("Raw Data: ", raw);
 
-        fL = 0;
+        fL = 0;         //Begin motor power logic by setting velocities to 0
         fR = 0;
         bL = 0;
         bR = 0;
         if (isFront) {
-            fL -= 0.5;
-            fR -= 0.5;
-            bL -= 0.5;
-            bR -= 0.5;
-        }
-        if (isLeft) {
+            if (isRight) {
+                fL -= 0.3;
+                fR += 0.3;
+                bL += 0.3;
+                bR -= 0.3;
+            }
+            else {
+                fL += 0.3;
+                fR -= 0.3;
+                bL -= 0.3;
+                bR += 0.3;
+            }
+
             fL -= 0.2;
-            fR += 0.2;
-            bL += 0.2;
-            bR -= 0.2;
-        }
-        else if (isRight) {
-            fL += 0.2;
             fR -= 0.2;
             bL -= 0.2;
-            bR += 0.2;
+            bR -= 0.2;
         }
+        else if (isFrontMoving) {
+            fL -= 0.1;
+            fR -= 0.1;
+            bL -= 0.1;
+            bR -= 0.1;
+        }
+        else {
+            if (isLeft) {
+                fL += 0.2;
+                fR -= 0.2;
+                bL -= 0.2;
+                bR += 0.2;
+            } else if (isRight) {
+                fL -= 0.2;
+                fR += 0.2;
+                bL += 0.2;
+                bR -= 0.2;
+            }
+        }
+        fL += 0.3;
+        fR += 0.3;
+        bL += 0.3;
+        bR += 0.3;
 
         //Getting the max value can assure that no motor will be set to a value above a certain point.
         double max = Math.max(Math.max(Math.abs(fL), Math.abs(fR)), Math.max(Math.abs(bL), Math.abs(bR)));
