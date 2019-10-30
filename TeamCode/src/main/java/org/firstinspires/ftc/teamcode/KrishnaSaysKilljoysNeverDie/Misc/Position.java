@@ -1,4 +1,4 @@
-package org.firstinspires.ftc.teamcode.KrishnaSaysKilljoysNeverDie;
+package org.firstinspires.ftc.teamcode.KrishnaSaysKilljoysNeverDie.Misc;
 
 
 //Simple positioning class for basic position functionality

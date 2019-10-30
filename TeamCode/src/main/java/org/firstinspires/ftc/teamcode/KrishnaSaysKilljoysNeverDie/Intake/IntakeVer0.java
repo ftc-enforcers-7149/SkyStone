@@ -1,4 +1,4 @@
-package org.firstinspires.ftc.teamcode.KrishnaSaysKilljoysNeverDie;
+package org.firstinspires.ftc.teamcode.KrishnaSaysKilljoysNeverDie.Intake;
 
 import com.qualcomm.robotcore.hardware.DcMotor;
 import com.qualcomm.robotcore.hardware.DcMotorSimple;

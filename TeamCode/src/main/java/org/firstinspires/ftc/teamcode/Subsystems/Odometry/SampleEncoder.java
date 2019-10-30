@@ -23,7 +23,7 @@ public class SampleEncoder extends OpMode {
 
         //Declares our sample path
         samplePath.runSamplePath();
-        odometryEncoder.OnTrack("test", samplePath.getStep(), samplePath.returnDirection());
+        odometryEncoder.OnTrack("test", samplePath.getStep(), samplePath.getDirection());
 
     }
 

@@ -46,6 +46,9 @@ public class SamplePath {
     //Outputs our step
     public int getStep() {return step;}
 
-    public OdometryPosition.Direction returnDirection() {return direction;}
+    public OdometryPosition.Direction getDirection() {return direction;}
+
+    public String getPath() {return name;}
+
 
 }

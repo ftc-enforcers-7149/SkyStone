@@ -30,11 +30,11 @@ public class MovementDetectionClass{
             (WHEEL_DIAMETER_INCHES * 3.1415))/EXTERNAL_GEARING;
 
     //Constructor
-    MovementDetectionClass(HardwareMap hardwareMap, String distC, String distR, String distL, DcMotor fL, DcMotor fR, DcMotor bL, DcMotor bR) {
+    public MovementDetectionClass(DistanceSensor distC, DistanceSensor distL, DistanceSensor distR, DcMotor fL, DcMotor fR, DcMotor bL, DcMotor bR) {
         //Mapping distance sensors
-        distanceC = hardwareMap.get(DistanceSensor.class, distC);
-        distanceR = hardwareMap.get(DistanceSensor.class, distR);
-        distanceL = hardwareMap.get(DistanceSensor.class, distL);
+        distanceC = distC;
+        distanceR = distR;
+        distanceL = distL;
 
         //Mapping motors
         fLeft= fL;
@@ -85,6 +85,14 @@ public class MovementDetectionClass{
         return false;
     }
 
+    public boolean isFrontClose() {
+        if (fDCurrent < 20) {
+            return true;
+        }
+
+        return false;
+    }
+
     public boolean isLeftClose() {
         if (lDCurrent < 20) {
             return true;
@@ -121,7 +129,7 @@ public class MovementDetectionClass{
      * Only when robot is still
      * @return
      */
-    public boolean isRightMovement() {
+    public boolean isRightMoving() {
         if (-2 < tDCurrent - tDLast && tDCurrent - tDLast < 2) {
             if (getChange("right") > (tDCurrent - tDLast) + 2) {
                 return true;
@@ -175,4 +183,5 @@ public class MovementDetectionClass{
         return "Distance traveled: " + tDCurrent + ", Last distance traveled: " + tDLast +
                 "\nSensor Distance: " + fDCurrent + ", Last sensor distance: " + fDLast;
     }
+
 }
