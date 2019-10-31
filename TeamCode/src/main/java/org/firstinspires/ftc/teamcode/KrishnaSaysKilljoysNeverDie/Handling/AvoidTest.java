@@ -3,17 +3,17 @@ package org.firstinspires.ftc.teamcode.KrishnaSaysKilljoysNeverDie.Handling;
 import android.util.Log;
 
 import com.qualcomm.robotcore.eventloop.opmode.OpMode;
+import com.qualcomm.robotcore.eventloop.opmode.TeleOp;
 import com.qualcomm.robotcore.hardware.DcMotor;
-import com.qualcomm.robotcore.hardware.DistanceSensor;
 
 import org.firstinspires.ftc.teamcode.CollisionAvoidance.MovementDetectionClass;
 
+@TeleOp(name = "avoid stuff boyo")
 public class AvoidTest extends OpMode {
 
 
     //Devices
     DcMotor fL, fR, bL, bR;
-    DistanceSensor distC, distL, distR;
     MovementDetectionClass movement;
 
 
@@ -21,7 +21,7 @@ public class AvoidTest extends OpMode {
 
     public void init() {
 
-        movement = new MovementDetectionClass(distC, distL, distR, fL, fR, bL, bR);
+        movement = new MovementDetectionClass(hardwareMap, "distC", "distL", "distR", fL, fR, bL, bR);
 
     }
 
@@ -52,17 +52,6 @@ public class AvoidTest extends OpMode {
             Log.d("Front moving: ", "True");
             telemetry.addLine("Front Moving");
         }
-
-        if(movement.isLeftMoving()) {
-            Log.d("Left moving: ", "True");
-            telemetry.addLine("Left Moving");
-        }
-
-        if(movement.isRightMoving()) {
-            Log.d("Right moving: ", "True");
-            telemetry.addLine("Right Moving");
-        }
-
 
     }
 

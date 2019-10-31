@@ -100,9 +100,6 @@ public class HandlingSystem {
         //Update dist sensors
         movementDetectionClass.update();
 
-        lMoving = movementDetectionClass.isLeftMoving();
-        rMoving = movementDetectionClass.isRightMoving();
-        cMoving = movementDetectionClass.isFrontMoving();
 
 
         //Update encoders

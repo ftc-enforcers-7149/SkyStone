@@ -33,6 +33,10 @@ public class Headless {
     //Power limit
     private double lim;
 
+    //Variables for acceleration
+    private double sysTime;
+    private double initTime = 0;
+
     //Telemetry object
     private Telemetry telemetry;
 
@@ -86,6 +90,10 @@ public class Headless {
     }
 
     public void drive(Gamepad gamepad1) {
+
+        //Update system time
+        sysTime = System.currentTimeMillis();
+
         //Getting inputs
         leftY = gamepad1.left_stick_y;
         leftX = gamepad1.left_stick_x;
@@ -132,10 +140,35 @@ public class Headless {
         //rightX is added to and subtracted from their respective side's wheels.
         double r = Math.hypot(leftX, leftY);
         double robotAngle = Math.atan2(leftY, leftX) - Math.toRadians(cvtDegrees(angle - offset)) + Math.PI / 4;
-        v1 = r * Math.sin(robotAngle) + rightX;
-        v2 = r * Math.cos(robotAngle) - rightX;
-        v3 = r * Math.cos(robotAngle) + rightX;
-        v4 = r * Math.sin(robotAngle) - rightX;
+        double accelOffset;
+
+
+        //Acceleration offset
+        if(leftY > 0 || leftX > 0 || leftY < 0 || leftX < 0) {
+
+            //Starts tracking
+            if(initTime == 0) {
+                initTime = System.currentTimeMillis();
+                accelOffset = 0.5;
+            }
+            else if(initTime > 0 && sysTime - initTime < 1500){
+                //Uses a linear equation to set the value of accelOffset
+                accelOffset = ((1/30) * (sysTime - initTime)) + 50;
+            }
+            else {
+                accelOffset = 1;
+            }
+
+        }
+        else {
+            initTime = 0;
+            accelOffset = 1;
+        }
+
+        v1 = r * accelOffset * Math.sin(robotAngle) + rightX;
+        v2 = r * accelOffset * Math.cos(robotAngle) - rightX;
+        v3 = r * accelOffset * Math.cos(robotAngle) + rightX;
+        v4 = r * accelOffset * Math.sin(robotAngle) - rightX;
 
         //Getting the max value can assure that no motor will be set to a value above a certain point.
         double max = Math.max(Math.max(Math.abs(v1), Math.abs(v2)), Math.max(Math.abs(v3), Math.abs(v4)));
@@ -178,4 +211,5 @@ public class Headless {
         bLeft.setPower(0);
         bRight.setPower(0);
     }
+
 }

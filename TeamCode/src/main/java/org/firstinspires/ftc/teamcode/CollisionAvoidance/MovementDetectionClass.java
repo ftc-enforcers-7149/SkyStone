@@ -30,7 +30,7 @@ public class MovementDetectionClass{
             (WHEEL_DIAMETER_INCHES * 3.1415))/EXTERNAL_GEARING;
 
     //Constructor
-    MovementDetectionClass(HardwareMap hardwareMap, String distC, String distR, String distL, DcMotor fL, DcMotor fR, DcMotor bL, DcMotor bR) {
+    public MovementDetectionClass(HardwareMap hardwareMap, String distC, String distR, String distL, DcMotor fL, DcMotor fR, DcMotor bL, DcMotor bR) {
         //Mapping distance sensors
         distanceC = hardwareMap.get(DistanceSensor.class, distC);
         distanceR = hardwareMap.get(DistanceSensor.class, distR);
