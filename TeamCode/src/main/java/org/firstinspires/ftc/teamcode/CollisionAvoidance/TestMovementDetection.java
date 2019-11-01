@@ -55,45 +55,46 @@ public class TestMovementDetection extends ParentInit {
         fR = 0;
         bL = 0;
         bR = 0;
-        if (isFront) {
-            if (isRight) {
+        if (isFront) {     //If obstacle is detected close to front, move faster
+            //Avoid obstacle by moving side to side
+            if (isRight) {      //Move left if obstacle on right
                 fL -= 0.3;
                 fR += 0.3;
                 bL += 0.3;
                 bR -= 0.3;
             }
-            else {
+            else {              //Move right for any other case
                 fL += 0.3;
                 fR -= 0.3;
                 bL -= 0.3;
                 bR += 0.3;
             }
 
-            fL -= 0.2;
-            fR -= 0.2;
-            bL -= 0.2;
-            bR -= 0.2;
+            fL -= 0.25;          //Slow down forward motion
+            fR -= 0.25;
+            bL -= 0.25;
+            bR -= 0.25;
         }
-        else if (isFrontMoving) {
+        else if (isFrontMoving) {       //Slow down a bit for an object moving towards the robot
             fL -= 0.1;
             fR -= 0.1;
             bL -= 0.1;
             bR -= 0.1;
         }
-        else {
-            if (isLeft) {
+        else {              //If there is no object / obstacle in front, handle for left and right
+            if (isLeft) {         //If obstacle on left, move right
                 fL += 0.2;
                 fR -= 0.2;
                 bL -= 0.2;
                 bR += 0.2;
-            } else if (isRight) {
+            } else if (isRight) {   //If obstacle on right, move left
                 fL -= 0.2;
                 fR += 0.2;
                 bL += 0.2;
                 bR -= 0.2;
             }
         }
-        fL += 0.3;
+        fL += 0.3;        //Move forward overall. Affected by above statements, so will only drive at this speed if no obstacles / objects detected
         fR += 0.3;
         bL += 0.3;
         bR += 0.3;
