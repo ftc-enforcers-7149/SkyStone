@@ -8,7 +8,7 @@ import com.qualcomm.robotcore.hardware.Servo;
 
 import org.firstinspires.ftc.teamcode.Subsystems.DriveSystems.Headless;
 
-@TeleOp(name = "TeleOpV1")
+@TeleOp(name = "TeleOp")
 public class TeleOpV1 extends OpMode {
     //Drive train
     Headless driveSystem;
@@ -57,7 +57,7 @@ public class TeleOpV1 extends OpMode {
         lArm.setPosition(0.1);
         rArm.setPosition(0.05);
         lGrab.setPosition(0.7);
-        rGrab.setPosition(0.25);
+        rGrab.setPosition(0.55);//0.25
         //lFound.setPosition(0);
         //rFound.setPosition(0);
 
@@ -91,14 +91,14 @@ public class TeleOpV1 extends OpMode {
         }
 
         if(rightG>0.1){
-            rGrab.setPosition(0.15);
+            rGrab.setPosition(0.4);//0.15
         }
         else{
-            rGrab.setPosition(0.25);
+            rGrab.setPosition(0.55);//0.25
         }
 
         if(leftG>0.1){
-            lGrab.setPosition(0.48);
+            lGrab.setPosition(0.52);
         }
         else{
             lGrab.setPosition(0.7);

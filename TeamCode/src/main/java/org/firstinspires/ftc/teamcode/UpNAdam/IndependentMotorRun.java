@@ -9,7 +9,7 @@ import com.qualcomm.robotcore.hardware.Servo;
 import org.firstinspires.ftc.teamcode.Subsystems.DriveSystems.Headless;
 
 
-@TeleOp(name = "Motor Test")
+//@TeleOp(name = "Motor Test")
 public class IndependentMotorRun extends OpMode {
     //used for encoders
     private static final double     EXTERNAL_GEARING        = 1;

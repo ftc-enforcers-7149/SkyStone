@@ -9,7 +9,7 @@ import com.qualcomm.robotcore.hardware.Servo;
 import org.firstinspires.ftc.teamcode.Subsystems.DriveSystems.Headless;
 import org.firstinspires.ftc.teamcode.Subsystems.Foundation;
 
-@TeleOp(name = "TeleOpV1_1")
+//@TeleOp(name = "TeleOpV1_1")
 public class TeleOpV1_1 extends OpMode {
 
     //Drive train

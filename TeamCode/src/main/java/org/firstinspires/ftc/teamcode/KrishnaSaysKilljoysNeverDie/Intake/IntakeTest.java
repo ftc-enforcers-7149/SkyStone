@@ -6,7 +6,7 @@ import com.qualcomm.robotcore.eventloop.opmode.TeleOp;
 import org.firstinspires.ftc.teamcode.Subsystems.DriveSystems.Headless;
 
 
-@TeleOp(name = "Intake Test")
+//@TeleOp(name = "Intake Test")
 public class IntakeTest extends OpMode {
 
     //Intake

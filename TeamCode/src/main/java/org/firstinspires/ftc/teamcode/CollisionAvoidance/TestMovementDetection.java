@@ -6,7 +6,7 @@ import com.qualcomm.robotcore.hardware.CRServo;
 import com.qualcomm.robotcore.hardware.Servo;
 import org.firstinspires.ftc.teamcode.Subsystems.ParentInit;
 
-@TeleOp(name = "Detect Movement")
+//@TeleOp(name = "Detect Movement")
 public class TestMovementDetection extends ParentInit {
 
     //Special objects

@@ -33,10 +33,6 @@ public class Headless {
     //Power limit
     private double lim;
 
-    //Variables for acceleration
-    private double sysTime;
-    private double initTime = 0;
-
     //Telemetry object
     private Telemetry telemetry;
 
@@ -90,10 +86,6 @@ public class Headless {
     }
 
     public void drive(Gamepad gamepad1) {
-
-        //Update system time
-        sysTime = System.currentTimeMillis();
-
         //Getting inputs
         leftY = gamepad1.left_stick_y;
         leftX = gamepad1.left_stick_x;
@@ -140,29 +132,6 @@ public class Headless {
         //rightX is added to and subtracted from their respective side's wheels.
         double r = Math.hypot(leftX, leftY);
         double robotAngle = Math.atan2(leftY, leftX) - Math.toRadians(cvtDegrees(angle - offset)) + Math.PI / 4;
-
-
-        //Acceleration offset
-        if(leftY > 0 || leftX > 0 || leftY < 0 || leftX < 0) {
-
-            //Starts tracking
-            if(initTime == 0) {
-                initTime = System.currentTimeMillis();
-                lim = 0.5;
-            }
-            else if(initTime > 0 && sysTime - initTime < 1500){
-                //Uses a linear equation to set the value of accelOffset
-                lim = ((1/30) * (sysTime - initTime)) + 50;
-            }
-            else {
-                lim = 1;
-            }
-
-        }
-        else {
-            initTime = 0;
-            lim = 1;
-        }
 
         v1 = r * Math.sin(robotAngle) + rightX;
         v2 = r * Math.cos(robotAngle) - rightX;

@@ -8,7 +8,7 @@ import com.qualcomm.robotcore.hardware.DcMotor;
 
 import org.firstinspires.ftc.teamcode.CollisionAvoidance.MovementDetectionClass;
 
-@TeleOp(name = "avoid stuff boyo")
+//@TeleOp(name = "avoid stuff boyo")
 public class AvoidTest extends OpMode {
 
 
