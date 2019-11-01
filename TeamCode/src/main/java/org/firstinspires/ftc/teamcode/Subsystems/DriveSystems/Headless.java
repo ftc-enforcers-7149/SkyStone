@@ -140,7 +140,6 @@ public class Headless {
         //rightX is added to and subtracted from their respective side's wheels.
         double r = Math.hypot(leftX, leftY);
         double robotAngle = Math.atan2(leftY, leftX) - Math.toRadians(cvtDegrees(angle - offset)) + Math.PI / 4;
-        double accelOffset;
 
 
         //Acceleration offset
@@ -149,26 +148,26 @@ public class Headless {
             //Starts tracking
             if(initTime == 0) {
                 initTime = System.currentTimeMillis();
-                accelOffset = 0.5;
+                lim = 0.5;
             }
             else if(initTime > 0 && sysTime - initTime < 1500){
                 //Uses a linear equation to set the value of accelOffset
-                accelOffset = ((1/30) * (sysTime - initTime)) + 50;
+                lim = ((1/30) * (sysTime - initTime)) + 50;
             }
             else {
-                accelOffset = 1;
+                lim = 1;
             }
 
         }
         else {
             initTime = 0;
-            accelOffset = 1;
+            lim = 1;
         }
 
-        v1 = r * accelOffset * Math.sin(robotAngle) + rightX;
-        v2 = r * accelOffset * Math.cos(robotAngle) - rightX;
-        v3 = r * accelOffset * Math.cos(robotAngle) + rightX;
-        v4 = r * accelOffset * Math.sin(robotAngle) - rightX;
+        v1 = r * Math.sin(robotAngle) + rightX;
+        v2 = r * Math.cos(robotAngle) - rightX;
+        v3 = r * Math.cos(robotAngle) + rightX;
+        v4 = r * Math.sin(robotAngle) - rightX;
 
         //Getting the max value can assure that no motor will be set to a value above a certain point.
         double max = Math.max(Math.max(Math.abs(v1), Math.abs(v2)), Math.max(Math.abs(v3), Math.abs(v4)));
