@@ -57,7 +57,7 @@ public class TeleOpV1 extends OpMode {
         lArm.setPosition(0.1);
         rArm.setPosition(0.05);
         lGrab.setPosition(0.7);
-        rGrab.setPosition(0.55);//0.25
+        rGrab.setPosition(1);//0.25
         //lFound.setPosition(0);
         //rFound.setPosition(0);
 
@@ -91,14 +91,14 @@ public class TeleOpV1 extends OpMode {
         }
 
         if(rightG>0.1){
-            rGrab.setPosition(0.4);//0.15
+            rGrab.setPosition(0.42);//0.15
         }
         else{
-            rGrab.setPosition(0.55);//0.25
+            rGrab.setPosition(1);//0.25
         }
 
         if(leftG>0.1){
-            lGrab.setPosition(0.52);
+            lGrab.setPosition(0.47);
         }
         else{
             lGrab.setPosition(0.7);
@@ -119,6 +119,15 @@ public class TeleOpV1 extends OpMode {
         else if(gRelease){
             lGrab.setPosition(0.2);
             rGrab.setPosition(0.25);
+        }*/
+
+        /*if(liftMove<-0.1){
+            lift.setPower(0.7);
+            isBreak=true;
+        }
+        else if(liftMove>0.1){
+            lift.setPower(-0.05);
+            isBreak=false;
         }*/
 
         if(liftUp>0.1){

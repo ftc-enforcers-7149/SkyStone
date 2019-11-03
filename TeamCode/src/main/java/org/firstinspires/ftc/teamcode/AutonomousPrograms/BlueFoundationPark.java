@@ -109,40 +109,48 @@ public class BlueFoundationPark extends OpMode {
     // Loop and update the dashboard
     public void loop() {
         switch(step){
-            case 0:
+            case 0:driveTrain.delay(3000);
+                break;
+            case 1:driveTrain.delay(4000);
+                break;
+            case 2:driveTrain.delay(4000);
+                break;
+            case 3:driveTrain.delay(3000);
+                break;
+            case 4:
                 lArm.setPosition(0.1);
                 rArm.setPosition(0.05);
                 break;
-            case 1:
+            case 5:
                 driveTrain.driveStraight("backward",47);//50
                 break;
-            case 2:
+            case 6:
                 driveTrain.strafeSeconds(750,"right");
                 break;
-            case 3:
+            case 7:
                 foundation.down();
                 break;
-            case 4:
+            case 8:
                 driveTrain.delay(1000);
                 break;
-            case 5:
-                driveTrain.driveStraight("forward",3);
-            case 6:
-                driveTrain.strafeSeconds(1000,"left");
-            case 7:
-                driveTrain.rotation(65,0.45);
+            case 9:
+               // driveTrain.driveStraight("forward",3);
+            case 10:
+                driveTrain.strafeSeconds(250,"left");
+            case 11:
+                driveTrain.simpleTurn(45,0.45);//0.45
                 //driveTrain.driveStraight("backward", 35, 0.7,0.7);
                 break;
-            case 8:
-                driveTrain.strafeSeconds(4000,"right");
-            case 9:
+            case 12:
+                driveTrain.strafeSeconds(3000,"right");
+            case 13:
                 foundation.up();
                 break;
-            case 10:
-                //driveTrain.strafeSeconds(2500,"left");
+            case 14:
+                driveTrain.strafeSeconds(1000,"left");
                 break;
-            case 11:
-                //driveTrain.rotation(270);
+            case 15:
+                //driveTrain.rotation(180);
 
         }
         step++;
