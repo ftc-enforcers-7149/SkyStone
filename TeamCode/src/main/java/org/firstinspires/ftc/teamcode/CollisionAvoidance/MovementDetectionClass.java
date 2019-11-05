@@ -57,7 +57,7 @@ public class MovementDetectionClass{
     }
 
     public double getChange(String sensor) {
-
+//
         double difference = 0;
 
         if (sensor.equals("front")) {
