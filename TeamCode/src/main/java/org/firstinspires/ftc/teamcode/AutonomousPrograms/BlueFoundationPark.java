@@ -109,49 +109,47 @@ public class BlueFoundationPark extends OpMode {
     // Loop and update the dashboard
     public void loop() {
         switch(step){
-            case 0:driveTrain.delay(3000);
-                break;
-            case 1:driveTrain.delay(4000);
-                break;
-            case 2:driveTrain.delay(4000);
-                break;
-            case 3:driveTrain.delay(3000);
-                break;
-            case 4:
+            case 1:
                 lArm.setPosition(0.1);
                 rArm.setPosition(0.05);
                 break;
-            case 5:
+            case 2:
                 driveTrain.driveStraight("backward",47);//50
                 break;
-            case 6:
+            case 3:
                 driveTrain.strafeSeconds(750,"right");
                 break;
-            case 7:
+            case 4:
                 foundation.down();
                 break;
-            case 8:
+            case 5:
                 driveTrain.delay(1000);
                 break;
-            case 9:
+            case 6:
                // driveTrain.driveStraight("forward",3);
-            case 10:
+            case 7:
                 driveTrain.strafeSeconds(250,"left");
-            case 11:
+            case 8:
                 driveTrain.simpleTurn(45,0.45);//0.45
                 //driveTrain.driveStraight("backward", 35, 0.7,0.7);
                 break;
-            case 12:
+            case 9:
                 driveTrain.strafeSeconds(3000,"right");
-            case 13:
+            case 10:
                 foundation.up();
                 break;
-            case 14:
-                driveTrain.strafeSeconds(1000,"left");
+            case 11:
+                driveTrain.strafeSeconds(250,"left");
                 break;
-            case 15:
-                //driveTrain.rotation(180);
-
+            case 12:
+                driveTrain.driveStraight("forward", 28);
+                break;
+            case 13:
+                driveTrain.rotation(270, 0.2);
+                break;
+            case 14:
+                driveTrain.driveStraight("backward", 12);
+                break;
         }
         step++;
     }
