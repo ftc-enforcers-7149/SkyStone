@@ -56,6 +56,30 @@ public class MovementDetectionClass{
         tDCurrent = 0;
     }
 
+    /**
+     * returns center range center distance
+     * @return distance in cm
+     */
+    public double getCDistance(){
+        return distanceC.getDistance(DistanceUnit.CM);
+    }
+
+    /**
+     * returns right range center distance
+     * @return distance in cm
+     */
+    public double getRDistance(){
+        return distanceR.getDistance(DistanceUnit.CM);
+    }
+
+    /**
+     * returns left range center distance
+     * @return distance in cm
+     */
+    public double getLDistance(){
+        return distanceL.getDistance(DistanceUnit.CM);
+    }
+
     public double getChange(String sensor) {
 //
         double difference = 0;
