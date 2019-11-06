@@ -15,7 +15,7 @@ public class RangeTest extends OpMode {
     public DcMotor fRight,fLeft,bRight,bLeft,lift;
 
     //Distance Sensors
-    DistanceSensor front, distBLeft, distBRight;
+    DistanceSensor distanceL, distanceR, distanceC;
 
     public void init(){
         //Servos
@@ -32,9 +32,9 @@ public class RangeTest extends OpMode {
         bRight = hardwareMap.dcMotor.get("bRight");
         lift = hardwareMap.dcMotor.get("lift");
 
-        front = hardwareMap.get(DistanceSensor.class, "distanceC");
-        distBLeft = hardwareMap.get(DistanceSensor.class, "distanceL");
-        distBRight = hardwareMap.get(DistanceSensor.class, "distanceR");
+        distanceC = hardwareMap.get(DistanceSensor.class, "distanceC");
+        distanceL = hardwareMap.get(DistanceSensor.class, "distanceL");
+        distanceR = hardwareMap.get(DistanceSensor.class, "distanceR");
 
         //direction of motors
         fLeft.setDirection(DcMotorSimple.Direction.FORWARD);
@@ -57,9 +57,11 @@ public class RangeTest extends OpMode {
         lift.setZeroPowerBehavior(DcMotor.ZeroPowerBehavior.BRAKE);
     }
     public void start(){
-       // detection-new MovementDetectionClass(hardwareMap,dis);
+       detection=new MovementDetectionClass(distanceC,distanceR,distanceL,fLeft,fRight,bLeft,bRight);
     }
     public void loop(){
-
+        telemetry.addData("distanceR:",detection.getRDistance());
+        telemetry.addData("distanceC:",detection.getCDistance());
+        telemetry.addData("distanceL:",detection.getLDistance());
     }
 }

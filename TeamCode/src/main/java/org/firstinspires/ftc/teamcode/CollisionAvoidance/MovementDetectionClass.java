@@ -29,24 +29,34 @@ public class MovementDetectionClass{
     public static final double     COUNTS_PER_INCH         = ((COUNTS_PER_MOTOR_REV * DRIVE_GEAR_REDUCTION) /
             (WHEEL_DIAMETER_INCHES * 3.1415))/EXTERNAL_GEARING;
 
-    //Constructor
-    public MovementDetectionClass(HardwareMap hardwareMap, String distC, String distR, String distL, DcMotor fL, DcMotor fR, DcMotor bL, DcMotor bR) {
+
+    /**
+     *
+     * @param distanceC distC
+     * @param distanceR distR
+     * @param distanceL distR
+     * @param fLeft fLeft
+     * @param fRight fRight
+     * @param bLeft bLeft
+     * @param bRight bRight
+     */
+    public MovementDetectionClass(DistanceSensor distanceC, DistanceSensor distanceR, DistanceSensor distanceL, DcMotor fLeft, DcMotor fRight, DcMotor bLeft, DcMotor bRight) {
         //Mapping distance sensors
-        distanceC = hardwareMap.get(DistanceSensor.class, distC);
-        distanceR = hardwareMap.get(DistanceSensor.class, distR);
-        distanceL = hardwareMap.get(DistanceSensor.class, distL);
+        this.distanceC = distanceC;
+        this.distanceR = distanceR;
+        this.distanceL = distanceL;
 
         //Mapping motors
-        fLeft= fL;
-        fRight = fR;
-        bRight = bR;
-        bLeft = bL;
+        this.fLeft= fLeft;
+        this.fRight = fRight;
+        this.bRight = bRight;
+        this.bLeft = bLeft;
 
         //Brakes
-        fLeft.setZeroPowerBehavior(DcMotor.ZeroPowerBehavior.BRAKE);
-        fRight.setZeroPowerBehavior(DcMotor.ZeroPowerBehavior.BRAKE);
-        bLeft.setZeroPowerBehavior(DcMotor.ZeroPowerBehavior.BRAKE);
-        bRight.setZeroPowerBehavior(DcMotor.ZeroPowerBehavior.BRAKE);
+        this.fLeft.setZeroPowerBehavior(DcMotor.ZeroPowerBehavior.BRAKE);
+        this.fRight.setZeroPowerBehavior(DcMotor.ZeroPowerBehavior.BRAKE);
+        this.bLeft.setZeroPowerBehavior(DcMotor.ZeroPowerBehavior.BRAKE);
+        this.bRight.setZeroPowerBehavior(DcMotor.ZeroPowerBehavior.BRAKE);
 
         resetEncoderWithoutEncoder();
 

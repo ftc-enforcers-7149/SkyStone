@@ -3,6 +3,7 @@ package org.firstinspires.ftc.teamcode.CollisionAvoidance;
 import android.util.Log;
 import com.qualcomm.robotcore.eventloop.opmode.TeleOp;
 import com.qualcomm.robotcore.hardware.CRServo;
+import com.qualcomm.robotcore.hardware.DistanceSensor;
 import com.qualcomm.robotcore.hardware.Servo;
 import org.firstinspires.ftc.teamcode.Subsystems.ParentInit;
 
@@ -17,12 +18,19 @@ public class TestMovementDetection extends ParentInit {
     double lim;
     double prevTime;
 
+    //Distance Sensors
+    DistanceSensor distanceL, distanceR, distanceC;
+
     public void init() {
         //Initialize motors, servos, and imu
         super.init();
 
+        distanceC = hardwareMap.get(DistanceSensor.class, "distanceC");
+        distanceL = hardwareMap.get(DistanceSensor.class, "distanceL");
+        distanceR = hardwareMap.get(DistanceSensor.class, "distanceR");
+
         //Initialize obstacle detection and drive system objects
-        detection = new MovementDetectionClass(hardwareMap, "distanceC", "distanceR", "distanceL", fLeft, fRight, bLeft, bRight);
+        detection = new MovementDetectionClass(distanceC,distanceR,distanceL,fLeft,fRight,bLeft,bRight);
 
         //Initialize needed variables
         lim=0.5;
