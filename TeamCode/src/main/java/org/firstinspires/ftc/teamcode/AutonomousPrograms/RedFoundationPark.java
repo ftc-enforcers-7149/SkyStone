@@ -132,10 +132,20 @@ public class RedFoundationPark extends OpMode {
                 foundation.up();
                 break;
             case 14:
-                driveTrain.strafeSeconds(1000,"left");
+                driveTrain.strafeSeconds(250,"left");
                 break;
             case 15:
+                driveTrain.driveStraight("backward", 28);
+                break;
+            case 16:
+                driveTrain.rotation(270, 0.2);
+                break;
+            case 17:
+                driveTrain.driveStraight("backward", 12);
+                break;
+            case 18:
                 //driveTrain.rotation(180);
+                break;
 
         }
         step++;
