@@ -3,12 +3,14 @@ package org.firstinspires.ftc.teamcode.Subsystems;
 import com.qualcomm.hardware.bosch.BNO055IMU;
 import com.qualcomm.hardware.bosch.JustLoggingAccelerationIntegrator;
 import com.qualcomm.robotcore.hardware.DcMotor;
+import com.qualcomm.robotcore.hardware.DistanceSensor;
 import com.qualcomm.robotcore.hardware.HardwareMap;
 
 import org.firstinspires.ftc.robotcore.external.Telemetry;
 import org.firstinspires.ftc.robotcore.external.navigation.AngleUnit;
 import org.firstinspires.ftc.robotcore.external.navigation.AxesOrder;
 import org.firstinspires.ftc.robotcore.external.navigation.AxesReference;
+import org.firstinspires.ftc.robotcore.external.navigation.DistanceUnit;
 import org.firstinspires.ftc.robotcore.external.navigation.Orientation;
 import org.firstinspires.ftc.robotcore.external.navigation.Position;
 import org.firstinspires.ftc.robotcore.external.navigation.Velocity;
@@ -71,46 +73,6 @@ public class DriveTrain {
         this.fRight = fRight;
         this.bLeft = bLeft;
         this.bRight = bRight;
-    }
-
-    /**
-     * Main constructor
-     * @param hardwareMap hardwareMap
-     * @param telemetry telemetry
-     * @param fLeft fLeft
-     * @param fRight fRight
-     * @param bLeft bLeft
-     * @param bRight bRight
-     */
-    public DriveTrain(HardwareMap hardwareMap , Telemetry telemetry, DcMotor fLeft, DcMotor fRight, DcMotor bLeft, DcMotor bRight, MovementDetectionClass detection){
-        //Set up imu parameters
-        BNO055IMU.Parameters parameters = new BNO055IMU.Parameters();
-        parameters.angleUnit = BNO055IMU.AngleUnit.DEGREES;
-        parameters.accelUnit = BNO055IMU.AccelUnit.METERS_PERSEC_PERSEC;
-        parameters.calibrationDataFile = "BNO055IMUCalibration.json"; // see the calibration sample opmode
-        parameters.loggingEnabled = true;
-        parameters.loggingTag = "IMU";
-        parameters.accelerationIntegrationAlgorithm = new JustLoggingAccelerationIntegrator();
-
-        this.telemetry = telemetry;
-
-        this.telemetry.addAction(new Runnable() {
-            @Override
-            public void run() {
-                angles = imu.getAngularOrientation(AxesReference.INTRINSIC, AxesOrder.ZYX, AngleUnit.DEGREES);
-            }
-        });
-
-        imu = hardwareMap.get(BNO055IMU.class, "imu");
-        imu.initialize(parameters);
-
-        imu.startAccelerationIntegration(new Position(), new Velocity(), 1000);
-
-        this.fLeft = fLeft;
-        this.fRight = fRight;
-        this.bLeft = bLeft;
-        this.bRight = bRight;
-        this.detection=detection;
     }
 
     /**
@@ -305,6 +267,44 @@ public class DriveTrain {
                 fRight.setPower(power);
             }
         }
+    }
+
+    /**
+     * strafe to a given range.
+     * Need to call sensors distanceR and distanceL
+     * @param dSensor distance sensor object
+     * @param distance distance strafing to
+     */
+    public void strafeRange(DistanceSensor dSensor, double distance){
+        int dir;
+        if(dSensor.getDeviceName().equals("distanceR")){
+            dir = 1;
+        }
+        else{
+            dir = -1;
+        }
+
+        if(distance>dSensor.getDistance(DistanceUnit.CM)){
+            while (distance>dSensor.getDistance(DistanceUnit.CM)) {
+                fLeft.setPower(0.5*dir);
+                fRight.setPower(-0.5*dir);
+                bLeft.setPower(-0.5*dir);
+                bRight.setPower(0.5*dir);
+            }
+        }
+        else{
+            while (distance<dSensor.getDistance(DistanceUnit.CM)) {
+                fLeft.setPower(-0.5*dir);
+                fRight.setPower(0.5*dir);
+                bLeft.setPower(0.5*dir);
+                bRight.setPower(-0.5*dir);
+            }
+        }
+
+        fLeft.setPower(0);
+        bLeft.setPower(0);
+        bRight.setPower(0);
+        fRight.setPower(0);
     }
 
     /**

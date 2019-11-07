@@ -1,6 +1,7 @@
 package org.firstinspires.ftc.teamcode.UpNAdam;
 
 import com.qualcomm.robotcore.eventloop.opmode.OpMode;
+import com.qualcomm.robotcore.eventloop.opmode.TeleOp;
 import com.qualcomm.robotcore.hardware.DcMotor;
 import com.qualcomm.robotcore.hardware.DcMotorSimple;
 import com.qualcomm.robotcore.hardware.DistanceSensor;
@@ -8,6 +9,7 @@ import com.qualcomm.robotcore.hardware.Servo;
 
 import org.firstinspires.ftc.teamcode.CollisionAvoidance.MovementDetectionClass;
 
+@TeleOp(name="range test")
 public class RangeTest extends OpMode {
     MovementDetectionClass detection;
 
@@ -60,6 +62,7 @@ public class RangeTest extends OpMode {
        detection=new MovementDetectionClass(distanceC,distanceR,distanceL,fLeft,fRight,bLeft,bRight);
     }
     public void loop(){
+        telemetry.addData("lGrab:",lGrab.getPosition());
         telemetry.addData("distanceR:",detection.getRDistance());
         telemetry.addData("distanceC:",detection.getCDistance());
         telemetry.addData("distanceL:",detection.getLDistance());
