@@ -2,6 +2,7 @@ package org.firstinspires.ftc.teamcode.UpNAdam;
 
 import com.qualcomm.robotcore.eventloop.opmode.OpMode;
 import com.qualcomm.robotcore.eventloop.opmode.TeleOp;
+import com.qualcomm.robotcore.hardware.ColorSensor;
 import com.qualcomm.robotcore.hardware.DcMotor;
 import com.qualcomm.robotcore.hardware.DcMotorSimple;
 import com.qualcomm.robotcore.hardware.DistanceSensor;
@@ -18,6 +19,7 @@ public class RangeTest extends OpMode {
 
     //Distance Sensors
     DistanceSensor distanceL, distanceR, distanceC;
+    ColorSensor color;
 
     public void init(){
         //Servos
@@ -37,6 +39,8 @@ public class RangeTest extends OpMode {
         distanceC = hardwareMap.get(DistanceSensor.class, "distanceC");
         distanceL = hardwareMap.get(DistanceSensor.class, "distanceL");
         distanceR = hardwareMap.get(DistanceSensor.class, "distanceR");
+
+        color = hardwareMap.get(ColorSensor.class, "color");
 
         //direction of motors
         fLeft.setDirection(DcMotorSimple.Direction.FORWARD);
@@ -66,5 +70,10 @@ public class RangeTest extends OpMode {
         telemetry.addData("distanceR:",detection.getRDistance());
         telemetry.addData("distanceC:",detection.getCDistance());
         telemetry.addData("distanceL:",detection.getLDistance());
+
+        telemetry.addData("Alpha", color.alpha());
+        telemetry.addData("Red  ", color.red());
+        telemetry.addData("Green", color.green());
+        telemetry.addData("Blue ", color.blue());
     }
 }

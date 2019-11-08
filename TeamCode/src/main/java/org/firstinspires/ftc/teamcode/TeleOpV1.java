@@ -48,18 +48,18 @@ public class TeleOpV1 extends OpMode {
 
         lArm.setDirection(Servo.Direction.REVERSE);
         rArm.setDirection(Servo.Direction.FORWARD);
-        lGrab.setDirection(Servo.Direction.REVERSE);
-        rGrab.setDirection(Servo.Direction.FORWARD);
+        lGrab.setDirection(Servo.Direction.FORWARD);
+        rGrab.setDirection(Servo.Direction.REVERSE);
         lFound.setDirection(Servo.Direction.REVERSE);
         rFound.setDirection(Servo.Direction.FORWARD);
 
 
-        lArm.setPosition(0.1);
-        rArm.setPosition(0.05);
-        lGrab.setPosition(0.7);
-        rGrab.setPosition(1);//0.25
-        //lFound.setPosition(0);
-        //rFound.setPosition(0);
+        lArm.setPosition(0.25);
+        rArm.setPosition(0.25);
+        lGrab.setPosition(0);
+        rGrab.setPosition(0);//0.25
+        lFound.setPosition(0);
+        rFound.setPosition(0);
 
         lift.setZeroPowerBehavior(DcMotor.ZeroPowerBehavior.BRAKE);
 
@@ -82,26 +82,26 @@ public class TeleOpV1 extends OpMode {
         driveSystem.drive(gamepad1);
 
         if (armUp) {
-            lArm.setPosition(0.1);
-            rArm.setPosition(0.05);
+            lArm.setPosition(0.25);
+            rArm.setPosition(0.25);
         }
         else if(armDown){
-            lArm.setPosition(0.65);
-            rArm.setPosition(0.45);
+            lArm.setPosition(1);
+            rArm.setPosition(1);
         }
 
         if(rightG>0.1){
-            rGrab.setPosition(0.42);//0.15
+            rGrab.setPosition(0.16);//0.15
         }
         else{
-            rGrab.setPosition(1);//0.25
+            rGrab.setPosition(0);//0.25
         }
 
         if(leftG>0.1){
-            lGrab.setPosition(0.47);
+            lGrab.setPosition(0.16);
         }
         else{
-            lGrab.setPosition(0.7);
+            lGrab.setPosition(0);
         }
 
         if (foundationDown) {

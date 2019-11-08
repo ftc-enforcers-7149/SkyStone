@@ -2,6 +2,7 @@ package org.firstinspires.ftc.teamcode.Subsystems;
 
 import com.qualcomm.hardware.bosch.BNO055IMU;
 import com.qualcomm.hardware.bosch.JustLoggingAccelerationIntegrator;
+import com.qualcomm.robotcore.hardware.ColorSensor;
 import com.qualcomm.robotcore.hardware.DcMotor;
 import com.qualcomm.robotcore.hardware.DistanceSensor;
 import com.qualcomm.robotcore.hardware.HardwareMap;
@@ -197,7 +198,7 @@ public class DriveTrain {
         }
 
         //main phase of method
-        while (heading < destination - 2 || heading > destination + 2) {
+        while (heading < destination - 1 || heading > destination + 1) {
             telemetry.addData("heading",heading);
             telemetry.addData("speed",speed);
             telemetry.update();
@@ -242,6 +243,19 @@ public class DriveTrain {
         fRight.setPower(0);
     }
 
+    public void driveToLine(ColorSensor color){
+        while(color.red()<35&&color.blue()<35){
+            fLeft.setPower(0.25);
+            bLeft.setPower(0.25);
+            bRight.setPower(0.25);
+            fRight.setPower(0.25);
+        }
+        fLeft.setPower(0);
+        bLeft.setPower(0);
+        bRight.setPower(0);
+        fRight.setPower(0);
+    }
+
     /**
      * turns to given angle without correction
      * @param distance angle destination
@@ -273,31 +287,52 @@ public class DriveTrain {
      * strafe to a given range.
      * Need to call sensors distanceR and distanceL
      * @param dSensor distance sensor object
-     * @param distance distance strafing to
+     * @param distance distance driving to
+     * @param sLocal location of sensor(center,right,left)
      */
-    public void strafeRange(DistanceSensor dSensor, double distance){
+    public void driveRange(DistanceSensor dSensor, double distance, String sLocal){
         int dir;
-        if(dSensor.getDeviceName().equals("distanceR")){
-            dir = 1;
-        }
-        else{
-            dir = -1;
-        }
-
-        if(distance>dSensor.getDistance(DistanceUnit.CM)){
-            while (distance>dSensor.getDistance(DistanceUnit.CM)) {
-                fLeft.setPower(0.5*dir);
-                fRight.setPower(-0.5*dir);
-                bLeft.setPower(-0.5*dir);
-                bRight.setPower(0.5*dir);
+        if(sLocal.equals("center")) {
+            if(distance<dSensor.getDistance(DistanceUnit.CM)){
+                while(distance<dSensor.getDistance(DistanceUnit.CM)){
+                    fLeft.setPower(-0.4);
+                    fRight.setPower(-0.4);
+                    bLeft.setPower(-0.4);
+                    bRight.setPower(-0.4);
+                }
+            }
+            else{
+                while(distance>dSensor.getDistance(DistanceUnit.CM)) {
+                    fLeft.setPower(0.4);
+                    fRight.setPower(0.4);
+                    bLeft.setPower(0.4);
+                    bRight.setPower(0.4);
+                }
             }
         }
         else{
-            while (distance<dSensor.getDistance(DistanceUnit.CM)) {
-                fLeft.setPower(-0.5*dir);
-                fRight.setPower(0.5*dir);
-                bLeft.setPower(0.5*dir);
-                bRight.setPower(-0.5*dir);
+            if(sLocal.equals("right")){
+                dir = -1;
+            }
+            else{
+                dir = 1;
+            }
+
+            if(distance>dSensor.getDistance(DistanceUnit.CM)){
+                while (distance>dSensor.getDistance(DistanceUnit.CM)) {
+                    fLeft.setPower(0.4*dir);
+                    fRight.setPower(-0.4*dir);
+                    bLeft.setPower(-0.4*dir);
+                    bRight.setPower(0.4*dir);
+                }
+            }
+            else{
+                while (distance<dSensor.getDistance(DistanceUnit.CM)) {
+                    fLeft.setPower(-0.4*dir);
+                    fRight.setPower(0.4*dir);
+                    bLeft.setPower(0.4*dir);
+                    bRight.setPower(-0.4*dir);
+                }
             }
         }
 
