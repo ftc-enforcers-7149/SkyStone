@@ -35,9 +35,9 @@ public class TeleOpV1_1 extends OpMode {
         lArm = hardwareMap.servo.get("lArm");
         rArm = hardwareMap.servo.get("rArm");
         lGrab = hardwareMap.servo.get("lGrab");
-        rGrab = hardwareMap.servo.get("rGrab");
-        lFound = hardwareMap.servo.get("lFound");
-        rFound = hardwareMap.servo.get("rFound");
+        rGrab = hardwareMap.servo.get("fRGrab");
+        lFound = hardwareMap.servo.get("fLFound");
+        rFound = hardwareMap.servo.get("fRFound");
         //Lift
         lift = hardwareMap.dcMotor.get("lift");
         lift.setDirection(DcMotorSimple.Direction.REVERSE);

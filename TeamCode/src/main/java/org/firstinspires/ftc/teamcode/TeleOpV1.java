@@ -27,9 +27,9 @@ public class TeleOpV1 extends OpMode {
         lArm = hardwareMap.servo.get("lArm");
         rArm = hardwareMap.servo.get("rArm");
         lGrab = hardwareMap.servo.get("lGrab");
-        rGrab = hardwareMap.servo.get("rGrab");
-        lFound = hardwareMap.servo.get("lFound");
-        rFound = hardwareMap.servo.get("rFound");
+        rGrab = hardwareMap.servo.get("fRGrab");
+        lFound = hardwareMap.servo.get("fLFound");
+        rFound = hardwareMap.servo.get("fRFound");
         //Drive motors
         fLeft = hardwareMap.dcMotor.get("fLeft");
         fRight = hardwareMap.dcMotor.get("fRight");
@@ -58,8 +58,8 @@ public class TeleOpV1 extends OpMode {
         rArm.setPosition(0.05);
         lGrab.setPosition(0.7);
         rGrab.setPosition(1);//0.25
-        //lFound.setPosition(0);
-        //rFound.setPosition(0);
+        //fLFound.setPosition(0);
+        //fRFound.setPosition(0);
 
         lift.setZeroPowerBehavior(DcMotor.ZeroPowerBehavior.BRAKE);
 
@@ -114,11 +114,11 @@ public class TeleOpV1 extends OpMode {
         }
         /*if(gGrab){
             lGrab.setPosition(0.1);
-            rGrab.setPosition(0.1);
+            fRGrab.setPosition(0.1);
         }
         else if(gRelease){
             lGrab.setPosition(0.2);
-            rGrab.setPosition(0.25);
+            fRGrab.setPosition(0.25);
         }*/
 
         /*if(liftMove<-0.1){
