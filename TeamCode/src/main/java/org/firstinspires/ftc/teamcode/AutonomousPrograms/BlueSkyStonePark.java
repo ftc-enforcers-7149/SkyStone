@@ -8,6 +8,7 @@ import com.qualcomm.robotcore.hardware.DcMotorSimple;
 import com.qualcomm.robotcore.hardware.DistanceSensor;
 import com.qualcomm.robotcore.hardware.Servo;
 
+import org.firstinspires.ftc.robotcore.external.navigation.DistanceUnit;
 import org.firstinspires.ftc.teamcode.Subsystems.DriveTrain;
 import org.firstinspires.ftc.teamcode.Subsystems.Webcam;
 
@@ -91,7 +92,7 @@ public class BlueSkyStonePark extends OpMode {
                 break;
             case 2:
                 if(position.equals("right")){
-                    driveTrain.driveRange(distanceR,62,"right");
+                    driveTrain.driveRange(distanceR,60,"right");
                 }
                 else if(position.equals("left")){
                     driveTrain.driveRange(distanceR,90,"right");
@@ -126,7 +127,7 @@ public class BlueSkyStonePark extends OpMode {
                 driveTrain.driveStraight("backward",17);
                 break;
             case 10:
-                driveTrain.rotation(90);
+                driveTrain.rotation(83);
                 break;
             case 11:
                 lArm.setPosition(1);
@@ -143,10 +144,17 @@ public class BlueSkyStonePark extends OpMode {
                 break;
             case 15:
                 driveTrain.driveRange(distanceC,20,"center");
+                lArm.setPosition(0.25);
+                rArm.setPosition(0.25);
                 break;
+            case 16:
+                driveTrain.simpleTurn(0,0.4);
+                break;
+
         }
         step++;
         telemetry.addData("position",position);
+        telemetry.addData("range",distanceC.getDistance(DistanceUnit.CM));
         telemetry.addData("Step: ", step);
     }
     public void stop(){

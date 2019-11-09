@@ -68,21 +68,21 @@ public class TeleOpV2 extends OpMode {
 
 
         if (lFoundationDown) {
-            fLFound.setPosition(0.3);
-            bLFound.setPosition(0.7);
+            fLFound.setPosition(1);
+            bLFound.setPosition(1);
         }
         else {
-            fLFound.setPosition(0.05);
+            fLFound.setPosition(0);
             bLFound.setPosition(0);
         }
 
         if (rFoundationDown) {
-            fRFound.setPosition(0.3);
-            bRFound.setPosition(0.3);
+            fRFound.setPosition(1);
+            bRFound.setPosition(1);
         }
         else {
-            fRFound.setPosition(0);
-            bRFound.setPosition(0.05);
+            fRFound.setPosition(0.4);
+            bRFound.setPosition(0.4);
         }
 
 
