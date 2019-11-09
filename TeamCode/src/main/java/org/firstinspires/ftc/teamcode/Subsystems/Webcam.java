@@ -275,6 +275,7 @@ public class Webcam {
      * @return position of block
      */
     public String getPosition(){
+        targetsSkyStone.activate();
         String position="";
         double iTime=System.currentTimeMillis();
 
@@ -311,6 +312,7 @@ public class Webcam {
                 position = "left";
             }
         }
+        targetsSkyStone.deactivate();
         return position;
     }
 }

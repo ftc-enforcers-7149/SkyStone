@@ -5,7 +5,7 @@ import com.qualcomm.robotcore.eventloop.opmode.TeleOp;
 import com.qualcomm.robotcore.hardware.CRServo;
 
 import org.firstinspires.ftc.teamcode.Subsystems.DriveSystems.Headless;
-//@TeleOp(name="GoBuilda")
+@TeleOp(name="GoBuilda")
 public class GoBuildaChassis extends OpMode {
 
 

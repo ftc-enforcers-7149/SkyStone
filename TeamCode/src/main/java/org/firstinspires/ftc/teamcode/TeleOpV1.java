@@ -27,9 +27,9 @@ public class TeleOpV1 extends OpMode {
         lArm = hardwareMap.servo.get("lArm");
         rArm = hardwareMap.servo.get("rArm");
         lGrab = hardwareMap.servo.get("lGrab");
-        rGrab = hardwareMap.servo.get("fRGrab");
-        lFound = hardwareMap.servo.get("fLFound");
-        rFound = hardwareMap.servo.get("fRFound");
+        rGrab = hardwareMap.servo.get("rGrab");
+        lFound = hardwareMap.servo.get("lFound");
+        rFound = hardwareMap.servo.get("rFound");
         //Drive motors
         fLeft = hardwareMap.dcMotor.get("fLeft");
         fRight = hardwareMap.dcMotor.get("fRight");
@@ -48,18 +48,18 @@ public class TeleOpV1 extends OpMode {
 
         lArm.setDirection(Servo.Direction.REVERSE);
         rArm.setDirection(Servo.Direction.FORWARD);
-        lGrab.setDirection(Servo.Direction.REVERSE);
-        rGrab.setDirection(Servo.Direction.FORWARD);
+        lGrab.setDirection(Servo.Direction.FORWARD);
+        rGrab.setDirection(Servo.Direction.REVERSE);
         lFound.setDirection(Servo.Direction.REVERSE);
         rFound.setDirection(Servo.Direction.FORWARD);
 
 
-        lArm.setPosition(0.1);
-        rArm.setPosition(0.05);
-        lGrab.setPosition(0.7);
-        rGrab.setPosition(1);//0.25
-        //fLFound.setPosition(0);
-        //fRFound.setPosition(0);
+        lArm.setPosition(0.25);
+        rArm.setPosition(0.25);
+        lGrab.setPosition(0);
+        rGrab.setPosition(0);//0.25
+        lFound.setPosition(0);
+        rFound.setPosition(0);
 
         lift.setZeroPowerBehavior(DcMotor.ZeroPowerBehavior.BRAKE);
 
@@ -82,26 +82,26 @@ public class TeleOpV1 extends OpMode {
         driveSystem.drive(gamepad1);
 
         if (armUp) {
-            lArm.setPosition(0.1);
-            rArm.setPosition(0.05);
+            lArm.setPosition(0.25);
+            rArm.setPosition(0.25);
         }
         else if(armDown){
-            lArm.setPosition(0.65);
-            rArm.setPosition(0.45);
+            lArm.setPosition(1);
+            rArm.setPosition(1);
         }
 
         if(rightG>0.1){
-            rGrab.setPosition(0.42);//0.15
+            rGrab.setPosition(0.16);//0.15
         }
         else{
-            rGrab.setPosition(1);//0.25
+            rGrab.setPosition(0);//0.25
         }
 
         if(leftG>0.1){
-            lGrab.setPosition(0.47);
+            lGrab.setPosition(0.16);
         }
         else{
-            lGrab.setPosition(0.7);
+            lGrab.setPosition(0);
         }
 
         if (foundationDown) {
@@ -114,11 +114,11 @@ public class TeleOpV1 extends OpMode {
         }
         /*if(gGrab){
             lGrab.setPosition(0.1);
-            fRGrab.setPosition(0.1);
+            rGrab.setPosition(0.1);
         }
         else if(gRelease){
             lGrab.setPosition(0.2);
-            fRGrab.setPosition(0.25);
+            rGrab.setPosition(0.25);
         }*/
 
         /*if(liftMove<-0.1){
