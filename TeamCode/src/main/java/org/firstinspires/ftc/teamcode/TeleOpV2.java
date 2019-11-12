@@ -64,7 +64,7 @@ public class TeleOpV2 extends OpMode {
 
         lArm.setDirection(Servo.Direction.FORWARD);
         rArm.setDirection(Servo.Direction.REVERSE);
-        lGrab.setDirection(Servo.Direction.FORWARD);
+        lGrab.setDirection(Servo.Direction.REVERSE);
         rGrab.setDirection(Servo.Direction.FORWARD);
 
         //Lift brake
@@ -109,22 +109,22 @@ public class TeleOpV2 extends OpMode {
             rArm.setPosition(0);
         }
         else if(armDown){
-            lArm.setPosition(1);
-            rArm.setPosition(0.85);
+            lArm.setPosition(0.95);
+            rArm.setPosition(0.81);
         }
 
         if(rightG>0.1){
-            rGrab.setPosition(1);
+            rGrab.setPosition(0.44);
         }
         else{
-            rGrab.setPosition(0);
+            rGrab.setPosition(1);
         }
 
         if(leftG>0.1){
-            lGrab.setPosition(1);
+            lGrab.setPosition(0.45);
         }
         else{
-            lGrab.setPosition(0);
+           lGrab.setPosition(1);
         }
 
         //Lift
@@ -133,7 +133,7 @@ public class TeleOpV2 extends OpMode {
             isBreak=true;
         }
         else if(liftDown>0.1){
-            lift.setPower(-0.2);
+            lift.setPower(-0.4);
             isBreak=false;
         }
         else{
