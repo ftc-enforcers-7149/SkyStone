@@ -1,5 +1,6 @@
 package org.firstinspires.ftc.teamcode;
 
+import com.qualcomm.hardware.rev.Rev2mDistanceSensor;
 import com.qualcomm.robotcore.eventloop.opmode.OpMode;
 import com.qualcomm.robotcore.eventloop.opmode.TeleOp;
 import com.qualcomm.robotcore.hardware.DcMotor;
@@ -8,102 +9,143 @@ import com.qualcomm.robotcore.hardware.Servo;
 
 import org.firstinspires.ftc.teamcode.Subsystems.DriveSystems.Headless;
 
+import java.util.FormatFlagsConversionMismatchException;
+
 @TeleOp(name = "TeleOp v2")
 public class TeleOpV2 extends OpMode {
     //Drive train
     Headless driveSystem;
 
+    //Hardware
     Servo fLFound, fRFound, bLFound, bRFound;
-    DcMotor fRight,fLeft,bRight,bLeft;
+    Servo lArm, rArm, lGrab, rGrab;
+    DcMotor fRight,fLeft,bRight,bLeft, lift;
 
+    //
     boolean armUp, armDown;
     boolean isBreak=false;
-    float fLeftG, fRightG;
-    float liftUp,liftDown;//liftMove;
+    float liftUp,liftDown;
     boolean lFoundationDown, rFoundationDown;
-    float lDrive,rDrive,lStrafe,rStrafe;
+    float rightG, leftG;
+
     public void init(){
         //Servos
         fLFound = hardwareMap.servo.get("fLFound");
         fRFound = hardwareMap.servo.get("fRFound");
         bLFound = hardwareMap.servo.get("bLFound");
         bRFound = hardwareMap.servo.get("bRFound");
+        lArm = hardwareMap.servo.get("lArm");
+        rArm = hardwareMap.servo.get("rArm");
+        lGrab = hardwareMap.servo.get("lGrab");
+        rGrab = hardwareMap.servo.get("rGrab");
+
         //Drive motors
         fLeft = hardwareMap.dcMotor.get("fLeft");
         fRight = hardwareMap.dcMotor.get("fRight");
         bLeft = hardwareMap.dcMotor.get("bLeft");
         bRight = hardwareMap.dcMotor.get("bRight");
+        lift = hardwareMap.dcMotor.get("lift");
 
         //Initialize drive train
         driveSystem = new Headless(hardwareMap, telemetry, "fLeft", "fRight", "bLeft", "bRight");
 
+        //Motor directions
         fLeft.setDirection(DcMotorSimple.Direction.REVERSE);
         fRight.setDirection(DcMotorSimple.Direction.FORWARD);
         bRight.setDirection(DcMotorSimple.Direction.FORWARD);
         bLeft.setDirection(DcMotorSimple.Direction.REVERSE);
+        lift.setDirection(DcMotorSimple.Direction.FORWARD);
 
-        fLFound.setDirection(Servo.Direction.FORWARD);
-        fRFound.setDirection(Servo.Direction.REVERSE);
-        bLFound.setDirection(Servo.Direction.REVERSE);
-        bRFound.setDirection(Servo.Direction.FORWARD);
+        //Servo directions
+        fLFound.setDirection(Servo.Direction.REVERSE);
+        fRFound.setDirection(Servo.Direction.FORWARD);
+        bLFound.setDirection(Servo.Direction.FORWARD);
+        bRFound.setDirection(Servo.Direction.REVERSE);
 
-    }//
+        lArm.setDirection(Servo.Direction.FORWARD);
+        rArm.setDirection(Servo.Direction.REVERSE);
+        lGrab.setDirection(Servo.Direction.FORWARD);
+        rGrab.setDirection(Servo.Direction.FORWARD);
+
+        //Lift brake
+        lift.setZeroPowerBehavior(DcMotor.ZeroPowerBehavior.BRAKE);
+    }
     public void loop(){
+        //Inputs
         armUp = gamepad2.y;
         armDown = gamepad2.a;
-        fRightG = gamepad2.right_trigger;
-        fLeftG = gamepad2.left_trigger;
-        //liftMove = gamepad2.left_stick_y;
+        rightG = gamepad2.right_trigger;
+        leftG = gamepad2.left_trigger;
         liftUp=gamepad1.right_trigger;
         liftDown=gamepad1.left_trigger;
-        lFoundationDown = gamepad1.a;
-        rFoundationDown = gamepad1.x;
-        lDrive = gamepad1.left_stick_y;
-        rDrive = gamepad1.right_stick_y;
-        lStrafe = gamepad1.left_trigger;
-        rStrafe = gamepad1.right_trigger;
+        lFoundationDown = gamepad1.x;
+        rFoundationDown = gamepad1.b;
 
         //Drive
         driveSystem.drive(gamepad1);
 
-
+        //Foundation grabbers
         if (lFoundationDown) {
-            fLFound.setPosition(1);
-            bLFound.setPosition(1);
-        }
-        else {
             fLFound.setPosition(0);
             bLFound.setPosition(0);
         }
+        else {
+            fLFound.setPosition(0.75);
+            bLFound.setPosition(0.75);
+        }
 
         if (rFoundationDown) {
-            fRFound.setPosition(1);
-            bRFound.setPosition(1);
+            fRFound.setPosition(0);
+            bRFound.setPosition(0);
         }
         else {
-            fRFound.setPosition(0.4);
-            bRFound.setPosition(0.4);
+            fRFound.setPosition(0.75);
+            bRFound.setPosition(0.79);
         }
 
-
-
-
-        /*if(gGrab){
-            lGrab.setPosition(0.1);
-            fRGrab.setPosition(0.1);
+        //Arms and block grabbers
+        if (armUp) {
+            lArm.setPosition(0);
+            rArm.setPosition(0);
         }
-        else if(gRelease){
-            lGrab.setPosition(0.2);
-            fRGrab.setPosition(0.25);
-        }*/
+        else if(armDown){
+            lArm.setPosition(1);
+            rArm.setPosition(0.85);
+        }
 
-        /*if(liftMove<-0.1){
+        if(rightG>0.1){
+            rGrab.setPosition(1);
+        }
+        else{
+            rGrab.setPosition(0);
+        }
+
+        if(leftG>0.1){
+            lGrab.setPosition(1);
+        }
+        else{
+            lGrab.setPosition(0);
+        }
+
+        //Lift
+        if(liftUp>0.1){
             lift.setPower(0.7);
             isBreak=true;
         }
-        else if(liftMove>0.1){
-            lift.setPower(-0.05);
+        else if(liftDown>0.1){
+            lift.setPower(-0.2);
             isBreak=false;
+        }
+        else{
+            lift.setPower(0);
+        }
+        /*else{
+            if(isBreak){
+                lift.setPower(0.3);
+            }
+            else{
+                lift.setPower(0.0);
+            }
         }*/
 
 
