@@ -26,41 +26,26 @@
  * OR TORT (INCLUDING NEGLIGENCE OR OTHERWISE) ARISING IN ANY WAY OUT OF THE USE
  * OF THIS SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
  */
-package org.firstinspires.ftc.teamcode.AutonomousPrograms;
+package org.firstinspires.ftc.teamcode.AutonomousPrograms.V1;
 
-import com.qualcomm.hardware.bosch.BNO055IMU;//
-import com.qualcomm.hardware.bosch.JustLoggingAccelerationIntegrator;
 import com.qualcomm.robotcore.eventloop.opmode.Autonomous;
-import com.qualcomm.robotcore.eventloop.opmode.Disabled;
-import com.qualcomm.robotcore.eventloop.opmode.LinearOpMode;
 import com.qualcomm.robotcore.eventloop.opmode.OpMode;
-import com.qualcomm.robotcore.eventloop.opmode.TeleOp;
 import com.qualcomm.robotcore.hardware.DcMotor;
 import com.qualcomm.robotcore.hardware.DcMotorSimple;
 import com.qualcomm.robotcore.hardware.Servo;
 
-import org.firstinspires.ftc.robotcore.external.Func;
-import org.firstinspires.ftc.robotcore.external.navigation.Acceleration;
-import org.firstinspires.ftc.robotcore.external.navigation.AngleUnit;
-import org.firstinspires.ftc.robotcore.external.navigation.AxesOrder;
-import org.firstinspires.ftc.robotcore.external.navigation.AxesReference;
-import org.firstinspires.ftc.robotcore.external.navigation.Orientation;
-import org.firstinspires.ftc.robotcore.external.navigation.Position;
-import org.firstinspires.ftc.robotcore.external.navigation.Velocity;
 import org.firstinspires.ftc.teamcode.Subsystems.DriveTrain;
-import org.firstinspires.ftc.teamcode.Subsystems.Foundation;
+import org.firstinspires.ftc.teamcode.Subsystems.FoundationV1;
 
-import java.util.Locale;
-
-@Autonomous(name = "Blue Foundation Park")
+//@Autonomous(name = "Red FoundationV1 Park")
 //@Disabled                            // Comment this out to add to the opmode list
-public class BlueFoundationPark extends OpMode {
+public class RedFoundationParkOld extends OpMode {
 
     public Servo lArm, rArm, lGrab, rGrab, lFound, rFound;
     public DcMotor fRight,fLeft,bRight,bLeft,lift;
 
     DriveTrain driveTrain;
-    Foundation foundation;
+    FoundationV1 foundationV1;
 
     int step=0;
 
@@ -99,58 +84,70 @@ public class BlueFoundationPark extends OpMode {
         lFound.setPosition(0);
 
         lift.setZeroPowerBehavior(DcMotor.ZeroPowerBehavior.BRAKE);
-
     }
     public void start(){
         driveTrain=new DriveTrain(hardwareMap,telemetry,fLeft,fRight,bLeft,bRight);
-        foundation=new Foundation(lFound,rFound);
+        foundationV1 =new FoundationV1(lFound,rFound);
     }
 
-    // Loop and update the dashboard
+    // Loop and update the dashboard//
     public void loop() {
         switch(step){
-            case 1:
+            case 0://driveTrain.delay(3000);
+                break;
+            case 1://driveTrain.delay(3000);
+                break;
+            case 2://driveTrain.delay(4000);
+                break;
+            case 3://driveTrain.delay(3000);
+                break;
+            case 4:
                 lArm.setPosition(0.1);
                 rArm.setPosition(0.05);
                 break;
-            case 2:
-                driveTrain.driveStraight("backward",47);//50
-                break;
-            case 3:
-                driveTrain.strafeSeconds(750,"right");
-                break;
-            case 4:
-                foundation.down();
-                break;
             case 5:
-                driveTrain.delay(1000);
+                driveTrain.driveStraight("forward",47);//50
                 break;
             case 6:
-               // driveTrain.driveStraight("forward",3);
+                driveTrain.strafeSeconds(500,"right");
+                break;
             case 7:
-                driveTrain.strafeSeconds(250,"left");
+                foundationV1.down();
+                break;
             case 8:
-                driveTrain.simpleTurn(45,0.45);//0.45
-                //driveTrain.driveStraight("backward", 35, 0.7,0.7);
+                driveTrain.delay(1000);
                 break;
             case 9:
-                driveTrain.strafeSeconds(3000,"right");
+                //driveTrain.driveStraight("backward",3);
             case 10:
-                foundation.up();
-                break;
-            case 11:
                 driveTrain.strafeSeconds(250,"left");
+            case 11:
+                driveTrain.simpleTurn(-45,0.45);//driveTrain.simpleRotateRed(295,0.35);//0.45
+                //driveTrain.driveStraight("backward", 35, 0.7,0.7);
                 break;
             case 12:
-                driveTrain.driveStraight("forward", 28);
-                break;
+                driveTrain.strafeSeconds(3000,"right");
             case 13:
-                driveTrain.rotation(270);
+                foundationV1.up();
                 break;
             case 14:
+                driveTrain.strafeSeconds(250,"left");
+                break;
+            case 15:
+                driveTrain.driveStraight("backward", 28);
+                break;
+            case 16:
+                driveTrain.rotation(270);
+                break;
+            case 17:
                 driveTrain.driveStraight("backward", 12);
                 break;
+            case 18:
+                //driveTrain.rotation(180);
+                break;
+
         }
         step++;
     }
+
 }

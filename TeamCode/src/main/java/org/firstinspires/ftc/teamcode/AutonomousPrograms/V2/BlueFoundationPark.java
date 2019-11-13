@@ -26,27 +26,30 @@
  * OR TORT (INCLUDING NEGLIGENCE OR OTHERWISE) ARISING IN ANY WAY OUT OF THE USE
  * OF THIS SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
  */
-package org.firstinspires.ftc.teamcode.AutonomousPrograms;
+package org.firstinspires.ftc.teamcode.AutonomousPrograms.V2;
 
-import com.qualcomm.hardware.bosch.BNO055IMU;
 import com.qualcomm.robotcore.eventloop.opmode.Autonomous;
 import com.qualcomm.robotcore.eventloop.opmode.OpMode;
 import com.qualcomm.robotcore.hardware.DcMotor;
 import com.qualcomm.robotcore.hardware.DcMotorSimple;
 import com.qualcomm.robotcore.hardware.Servo;
 
+import org.firstinspires.ftc.teamcode.Subsystems.Claw;
 import org.firstinspires.ftc.teamcode.Subsystems.DriveTrain;
-import org.firstinspires.ftc.teamcode.Subsystems.Foundation;
+import org.firstinspires.ftc.teamcode.Subsystems.FoundationV1;
+import org.firstinspires.ftc.teamcode.Subsystems.FoundationV2;
 
-@Autonomous(name = "Red Foundation Park")
+@Autonomous(name = "Blue FoundationV1 Park")
 //@Disabled                            // Comment this out to add to the opmode list
-public class RedFoundationPark extends OpMode {
+public class BlueFoundationPark extends OpMode {
 
-    public Servo lArm, rArm, lGrab, rGrab, lFound, rFound;
+    public Servo lArm, rArm, lGrab, rGrab;
+    Servo fLFound, fRFound, bLFound, bRFound;
     public DcMotor fRight,fLeft,bRight,bLeft,lift;
 
     DriveTrain driveTrain;
-    Foundation foundation;
+    FoundationV2 foundationV2;
+    Claw claw;
 
     int step=0;
 
@@ -57,8 +60,10 @@ public class RedFoundationPark extends OpMode {
         rArm = hardwareMap.servo.get("rArm");
         lGrab = hardwareMap.servo.get("lGrab");
         rGrab = hardwareMap.servo.get("rGrab");
-        lFound = hardwareMap.servo.get("lFound");
-        rFound = hardwareMap.servo.get("rFound");
+        fLFound = hardwareMap.servo.get("fLFound");
+        fRFound = hardwareMap.servo.get("fRFound");
+        bLFound = hardwareMap.servo.get("bLFound");
+        bRFound = hardwareMap.servo.get("bRFound");
         //Drive motors
         fLeft = hardwareMap.dcMotor.get("fLeft");
         fRight = hardwareMap.dcMotor.get("fRight");
@@ -73,82 +78,69 @@ public class RedFoundationPark extends OpMode {
         bLeft.setDirection(DcMotorSimple.Direction.FORWARD);
         lift.setDirection(DcMotorSimple.Direction.FORWARD);
         //direction of servos
-        lArm.setDirection(Servo.Direction.REVERSE);
-        rArm.setDirection(Servo.Direction.FORWARD);
+        lArm.setDirection(Servo.Direction.FORWARD);
+        rArm.setDirection(Servo.Direction.REVERSE);
         lGrab.setDirection(Servo.Direction.REVERSE);
         rGrab.setDirection(Servo.Direction.FORWARD);
-        lFound.setDirection(Servo.Direction.REVERSE);
-        rFound.setDirection(Servo.Direction.FORWARD);
-
-        //Servos up
-        rFound.setPosition(0);
-        lFound.setPosition(0);
+        fLFound.setDirection(Servo.Direction.REVERSE);
+        fRFound.setDirection(Servo.Direction.FORWARD);
+        bLFound.setDirection(Servo.Direction.FORWARD);
+        bRFound.setDirection(Servo.Direction.REVERSE);
 
         lift.setZeroPowerBehavior(DcMotor.ZeroPowerBehavior.BRAKE);
+
     }
     public void start(){
         driveTrain=new DriveTrain(hardwareMap,telemetry,fLeft,fRight,bLeft,bRight);
-        foundation=new Foundation(lFound,rFound);
+        foundationV2 =new FoundationV2(fLFound,fRFound,bLFound,bRFound);
+        claw=new Claw(lArm,rArm,lGrab,rGrab);
     }
 
-    // Loop and update the dashboard//
+    // Loop and update the dashboard
     public void loop() {
         switch(step){
-            case 0://driveTrain.delay(3000);
-                break;
-            case 1://driveTrain.delay(3000);
-                break;
-            case 2://driveTrain.delay(4000);
-                break;
-            case 3://driveTrain.delay(3000);
-                break;
-            case 4:
+            case 1:
                 lArm.setPosition(0.1);
                 rArm.setPosition(0.05);
                 break;
+            case 2:
+                driveTrain.driveStraight("backward",47);//50
+                break;
+            case 3:
+                driveTrain.strafeSeconds(750,"right");
+                break;
+            case 4:
+                foundationV2.lDown();
+                break;
             case 5:
-                driveTrain.driveStraight("forward",47);//50
-                break;
-            case 6:
-                driveTrain.strafeSeconds(500,"right");
-                break;
-            case 7:
-                foundation.down();
-                break;
-            case 8:
                 driveTrain.delay(1000);
                 break;
-            case 9:
-                //driveTrain.driveStraight("backward",3);
-            case 10:
+            case 6:
+               // driveTrain.driveStraight("forward",3);
+            case 7:
                 driveTrain.strafeSeconds(250,"left");
-            case 11:
-                driveTrain.simpleTurn(-45,0.45);//driveTrain.simpleRotateRed(295,0.35);//0.45
+            case 8:
+                driveTrain.simpleTurn(45,0.45);//0.45
                 //driveTrain.driveStraight("backward", 35, 0.7,0.7);
                 break;
-            case 12:
+            case 9:
                 driveTrain.strafeSeconds(3000,"right");
-            case 13:
-                foundation.up();
+            case 10:
+                foundationV2.lUp();
                 break;
-            case 14:
+            case 11:
                 driveTrain.strafeSeconds(250,"left");
                 break;
-            case 15:
-                driveTrain.driveStraight("backward", 28);
+            case 12:
+                driveTrain.driveStraight("forward", 28);
                 break;
-            case 16:
+            case 13:
                 driveTrain.rotation(270);
                 break;
-            case 17:
+            case 14:
                 driveTrain.driveStraight("backward", 12);
                 break;
-            case 18:
-                //driveTrain.rotation(180);
-                break;
-
         }
         step++;
     }
-
 }

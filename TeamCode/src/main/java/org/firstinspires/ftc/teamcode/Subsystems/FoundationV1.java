@@ -3,7 +3,7 @@ package org.firstinspires.ftc.teamcode.Subsystems;
 import com.qualcomm.robotcore.eventloop.opmode.Autonomous;
 import com.qualcomm.robotcore.hardware.Servo;
 
-public class Foundation {
+public class FoundationV1 {
     private Servo lFound, rFound;
 
     /**
@@ -11,7 +11,7 @@ public class Foundation {
      * @param lFound lFound
      * @param rFound rFound
      */
-    public Foundation(Servo lFound, Servo rFound) {
+    public FoundationV1(Servo lFound, Servo rFound) {
         this.lFound = lFound;
         this.rFound = rFound;
     }

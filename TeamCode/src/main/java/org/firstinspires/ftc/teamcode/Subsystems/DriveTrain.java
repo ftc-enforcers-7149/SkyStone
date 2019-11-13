@@ -291,10 +291,24 @@ public class DriveTrain {
      * @param sLocal location of sensor(center,right,left)
      */
     public void driveRange(DistanceSensor dSensor, double distance, String sLocal){
+        double cDistance=0;
+        if(dSensor.getDistance(DistanceUnit.CM)>150){
+            cDistance=150;
+        }
+        else{
+            cDistance=dSensor.getDistance(DistanceUnit.CM);
+        }
         int dir;
         if(sLocal.equals("center")) {
-            if(distance<dSensor.getDistance(DistanceUnit.CM)){
-                while(distance<dSensor.getDistance(DistanceUnit.CM)){
+            if(distance<cDistance){
+                while(distance<cDistance){
+                    if(dSensor.getDistance(DistanceUnit.CM)>150){
+                        cDistance=150;
+                    }
+                    else{
+                        cDistance=dSensor.getDistance(DistanceUnit.CM);
+                    }
+                    telemetry.update();
                     fLeft.setPower(-0.4);
                     fRight.setPower(-0.4);
                     bLeft.setPower(-0.4);
@@ -302,7 +316,13 @@ public class DriveTrain {
                 }
             }
             else{
-                while(distance>dSensor.getDistance(DistanceUnit.CM)) {
+                while(distance>cDistance) {
+                    if(dSensor.getDistance(DistanceUnit.CM)>150){
+                        cDistance=150;
+                    }
+                    else{
+                        cDistance=dSensor.getDistance(DistanceUnit.CM);
+                    }
                     fLeft.setPower(0.4);
                     fRight.setPower(0.4);
                     bLeft.setPower(0.4);

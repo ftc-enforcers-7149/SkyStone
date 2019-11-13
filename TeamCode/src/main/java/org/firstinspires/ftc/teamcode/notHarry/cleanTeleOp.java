@@ -1,18 +1,16 @@
 package org.firstinspires.ftc.teamcode.notHarry;
 
 import com.qualcomm.robotcore.hardware.DcMotor;
-import com.qualcomm.robotcore.hardware.Servo;
 
 import org.firstinspires.ftc.teamcode.Subsystems.Claw;
 import org.firstinspires.ftc.teamcode.Subsystems.DriveSystems.Headless;
-import org.firstinspires.ftc.teamcode.Subsystems.DriveTrain;
-import org.firstinspires.ftc.teamcode.Subsystems.Foundation;
+import org.firstinspires.ftc.teamcode.Subsystems.FoundationV1;
 import org.firstinspires.ftc.teamcode.Subsystems.ParentInit;
 
 public class cleanTeleOp extends ParentInit {
     DcMotor fLeft, fRight, bLeft, bRight;
     Claw  claw;
-    Foundation foundation;
+    FoundationV1 foundationV1;
     Headless driveSystem;
     boolean armUp, armDown;
     boolean isBreak=false;
@@ -23,7 +21,7 @@ public class cleanTeleOp extends ParentInit {
 
     public void init() {
     claw = new Claw(lArm,rArm,lGrab,rGrab);
-    foundation = new Foundation(lFound,rFound);
+    foundationV1 = new FoundationV1(lFound,rFound);
     driveSystem = new Headless(hardwareMap, telemetry, "fLeft", "fRight", "bLeft", "bRight");
     }
     public void loop() {
@@ -58,10 +56,10 @@ public class cleanTeleOp extends ParentInit {
 
 
         if (foundationDown) {
-            foundation.up();
+            foundationV1.up();
         }
         else {
-            foundation.down();
+            foundationV1.down();
         }
         /*if(gGrab){
             lGrab.setPosition(0.1);
