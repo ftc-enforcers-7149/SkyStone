@@ -86,21 +86,21 @@ public class TeleOpV2 extends OpMode {
 
         //Foundation grabbers
         if (lFoundationDown) {
-            fLFound.setPosition(0);
-            bLFound.setPosition(0);
+            fLFound.setPosition(0.45);
+            bLFound.setPosition(0.45);
         }
         else {
-            fLFound.setPosition(0.75);
-            bLFound.setPosition(0.75);
+            fLFound.setPosition(1);
+            bLFound.setPosition(1);
         }
 
         if (rFoundationDown) {
-            fRFound.setPosition(0);
-            bRFound.setPosition(0);
+            fRFound.setPosition(0.45);
+            bRFound.setPosition(0.45);
         }
         else {
-            fRFound.setPosition(0.75);
-            bRFound.setPosition(0.79);
+            fRFound.setPosition(1);
+            bRFound.setPosition(1);
         }
 
         //Arms and block grabbers
@@ -147,6 +147,11 @@ public class TeleOpV2 extends OpMode {
                 lift.setPower(0.0);
             }
         }*/
+
+        telemetry.addData("fL servo pos: ", fLFound.getPosition());
+        telemetry.addData("fR servo pos: ", fRFound.getPosition());
+        telemetry.addData("bL servo pos: ", bLFound.getPosition());
+        telemetry.addData("bR servo pos: ", bRFound.getPosition());
 
 
     }
