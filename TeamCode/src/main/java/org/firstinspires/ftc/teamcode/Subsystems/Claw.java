@@ -26,32 +26,32 @@ public class Claw {
      * Makes the claw go up
      */
     public void up(){
-        lArm.setPosition(0.1);
-        rArm.setPosition(0.05);
+        lArm.setPosition(0);
+        rArm.setPosition(0);
     }
 
     /**
      * Makes claw go down
      */
     public void down(){
-        lArm.setPosition(0.65);
-        rArm.setPosition(0.45);
+        lArm.setPosition(0.95);
+        rArm.setPosition(0.81);
     }
 
     /**
      * Makes claw grab
      */
     public void grab(){
-        rGrab.setPosition(0.15);
-        lGrab.setPosition(0.1);
+        rGrab.setPosition(0.44);
+        lGrab.setPosition(0.45);
     }
 
     /**
      * Makes claw release
      */
     public void release(){
-        rGrab.setPosition(0.25);
-        lGrab.setPosition(0.2);
+        rGrab.setPosition(1);
+        lGrab.setPosition(1);
     }
 
     /**
@@ -62,17 +62,25 @@ public class Claw {
      */
     public void setState(boolean left,boolean right){
         if(left){
-            lGrab.setPosition(0.1);
+            lGrab.setPosition(0.45);
         }
         else{
-            lGrab.setPosition(0.2);
+            lGrab.setPosition(1);
         }
 
         if(right){
-            rGrab.setPosition(0.15);
+            rGrab.setPosition(0.44);
         }
         else{
-            rGrab.setPosition(0.25);
+            rGrab.setPosition(1);
         }
     }
+
+    /**
+     * claw positions to grab skystone
+     */
+    public void skyStoneGrab(){
+
+    }
+
 }

@@ -1,19 +1,18 @@
 package org.firstinspires.ftc.teamcode.Mattu;
 
 import com.qualcomm.robotcore.eventloop.opmode.OpMode;
-import com.qualcomm.robotcore.eventloop.opmode.TeleOp;
 import com.qualcomm.robotcore.hardware.DcMotor;
 import com.qualcomm.robotcore.hardware.DcMotorSimple;
 import com.qualcomm.robotcore.hardware.Servo;
 
 import org.firstinspires.ftc.teamcode.Subsystems.DriveSystems.Headless;
-import org.firstinspires.ftc.teamcode.Subsystems.Foundation;
+import org.firstinspires.ftc.teamcode.Subsystems.FoundationV1;
 
 public class TeleOpHeadless extends OpMode {
 
     //Drive train
     Headless driveSystem;
-    Foundation foundation;
+    FoundationV1 foundationV1;
 
     //Servos and motors not used for driving
     Servo lArm, rArm, lGrab, rGrab, lFound, rFound;
@@ -58,7 +57,7 @@ public class TeleOpHeadless extends OpMode {
         lFound.setPosition(0);
         rFound.setPosition(0);
 
-        foundation = new Foundation(lFound, rFound);
+        foundationV1 = new FoundationV1(lFound, rFound);
 
         isBreak = false;
         foundationPressed = false;
@@ -100,7 +99,7 @@ public class TeleOpHeadless extends OpMode {
             lGrab.setPosition(0.2);
         }
 
-        //Toggle foundation
+        //Toggle foundationV1
         if (foundationPressed) {
             if (!foundationDown) {
                 foundationPressed = false;
@@ -113,10 +112,10 @@ public class TeleOpHeadless extends OpMode {
             }
         }
         if (foundationState) {
-            foundation.up();
+            foundationV1.up();
         }
         else {
-            foundation.down();
+            foundationV1.down();
         }
 
         //Do lift function
@@ -142,7 +141,7 @@ public class TeleOpHeadless extends OpMode {
         telemetry.addData("Right Grabber Closed: ", rGrab.getPosition() == 0.15);
         telemetry.addLine("Arms are " + (lArm.getPosition() == 0.65 ? "down" : "up"));
         telemetry.addLine("Lift " + (lift.getPower() == 0.7 ? "is " : "isn't ") + "going up");
-        telemetry.addLine("Foundation grabbers are" + (lFound.getPosition() == 0.95 ? "down" : "up"));
+        telemetry.addLine("FoundationV1 grabbers are" + (lFound.getPosition() == 0.95 ? "down" : "up"));
 
         //Drive
         driveSystem.drive(gamepad1);

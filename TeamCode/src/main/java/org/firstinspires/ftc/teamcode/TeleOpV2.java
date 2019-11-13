@@ -84,7 +84,7 @@ public class TeleOpV2 extends OpMode {
         //Drive
         driveSystem.drive(gamepad1);
 
-        //Foundation grabbers
+        //FoundationV1 grabbers
         if (lFoundationDown) {
             fLFound.setPosition(0);
             bLFound.setPosition(0);
