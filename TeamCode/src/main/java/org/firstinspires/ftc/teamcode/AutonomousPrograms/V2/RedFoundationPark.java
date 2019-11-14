@@ -34,18 +34,22 @@ import com.qualcomm.robotcore.hardware.DcMotor;
 import com.qualcomm.robotcore.hardware.DcMotorSimple;
 import com.qualcomm.robotcore.hardware.Servo;
 
+import org.firstinspires.ftc.teamcode.Subsystems.Claw;
 import org.firstinspires.ftc.teamcode.Subsystems.DriveTrain;
 import org.firstinspires.ftc.teamcode.Subsystems.FoundationV1;
+import org.firstinspires.ftc.teamcode.Subsystems.FoundationV2;
 
 @Autonomous(name = "Red FoundationV2 Park")
 //@Disabled                            // Comment this out to add to the opmode list
 public class RedFoundationPark extends OpMode {
 
-    public Servo lArm, rArm, lGrab, rGrab, lFound, rFound;
+    public Servo lArm, rArm, lGrab, rGrab;
+    public Servo fLFound, fRFound, bLFound, bRFound;
     public DcMotor fRight,fLeft,bRight,bLeft,lift;
 
     DriveTrain driveTrain;
-    FoundationV1 foundationV1;
+    FoundationV2 foundation;
+    Claw claw;
 
     int step=0;
 
@@ -56,8 +60,11 @@ public class RedFoundationPark extends OpMode {
         rArm = hardwareMap.servo.get("rArm");
         lGrab = hardwareMap.servo.get("lGrab");
         rGrab = hardwareMap.servo.get("rGrab");
-        lFound = hardwareMap.servo.get("lFound");
-        rFound = hardwareMap.servo.get("rFound");
+        fLFound = hardwareMap.servo.get("fLFound");
+        fRFound = hardwareMap.servo.get("fRFound");
+        bLFound = hardwareMap.servo.get("bLFound");
+        bRFound = hardwareMap.servo.get("bRFound");
+        //Drive motors
         //Drive motors
         fLeft = hardwareMap.dcMotor.get("fLeft");
         fRight = hardwareMap.dcMotor.get("fRight");
@@ -76,18 +83,27 @@ public class RedFoundationPark extends OpMode {
         rArm.setDirection(Servo.Direction.FORWARD);
         lGrab.setDirection(Servo.Direction.REVERSE);
         rGrab.setDirection(Servo.Direction.FORWARD);
-        lFound.setDirection(Servo.Direction.REVERSE);
-        rFound.setDirection(Servo.Direction.FORWARD);
+        fLFound.setDirection(Servo.Direction.REVERSE);
+        fRFound.setDirection(Servo.Direction.FORWARD);
+        bLFound.setDirection(Servo.Direction.FORWARD);
+        bRFound.setDirection(Servo.Direction.REVERSE);
 
         //Servos up
-        rFound.setPosition(0);
-        lFound.setPosition(0);
+        lArm.setPosition(0.95);
+        rArm.setPosition(0.81);
+
+        fLFound.setPosition(1);
+        bLFound.setPosition(1);
+
+        fRFound.setPosition(1);
+        bRFound.setPosition(1);
 
         lift.setZeroPowerBehavior(DcMotor.ZeroPowerBehavior.BRAKE);
     }
     public void start(){
         driveTrain=new DriveTrain(hardwareMap,telemetry,fLeft,fRight,bLeft,bRight);
-        foundationV1 =new FoundationV1(lFound,rFound);
+        foundation =new FoundationV2(fLFound,fRFound,bLFound,bRFound);
+        claw=new Claw(lArm,rArm,lGrab,rGrab);
     }
 
     // Loop and update the dashboard//
@@ -108,41 +124,41 @@ public class RedFoundationPark extends OpMode {
                 driveTrain.driveStraight("forward",47);//50
                 break;
             case 6:
-                driveTrain.strafeSeconds(500,"right");
+                //driveTrain.strafeSeconds(500,"right");
                 break;
             case 7:
-                foundationV1.down();
+                //foundationV1.down();
                 break;
             case 8:
-                driveTrain.delay(1000);
+                //driveTrain.delay(1000);
                 break;
             case 9:
                 //driveTrain.driveStraight("backward",3);
             case 10:
-                driveTrain.strafeSeconds(250,"left");
+                //driveTrain.strafeSeconds(250,"left");
             case 11:
-                driveTrain.simpleTurn(-45,0.45);//driveTrain.simpleRotateRed(295,0.35);//0.45
+                //driveTrain.simpleTurn(-45,0.45);//driveTrain.simpleRotateRed(295,0.35);//0.45
                 //driveTrain.driveStraight("backward", 35, 0.7,0.7);
                 break;
             case 12:
-                driveTrain.strafeSeconds(3000,"right");
+                //driveTrain.strafeSeconds(3000,"right");
             case 13:
-                foundationV1.up();
+                //foundationV1.up();
                 break;
             case 14:
-                driveTrain.strafeSeconds(250,"left");
+                //driveTrain.strafeSeconds(250,"left");
                 break;
             case 15:
-                driveTrain.driveStraight("backward", 28);
+                //driveTrain.driveStraight("backward", 28);
                 break;
             case 16:
-                driveTrain.rotation(270);
+               // driveTrain.rotation(270);
                 break;
             case 17:
-                driveTrain.driveStraight("backward", 12);
+                //driveTrain.driveStraight("backward", 12);
                 break;
             case 18:
-                //driveTrain.rotation(180);
+                ////driveTrain.rotation(180);
                 break;
 
         }
