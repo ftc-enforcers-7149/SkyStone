@@ -1,5 +1,7 @@
 package org.firstinspires.ftc.teamcode.Subsystems;
 
+import android.util.Log;
+
 import com.qualcomm.hardware.bosch.BNO055IMU;
 import com.qualcomm.hardware.bosch.JustLoggingAccelerationIntegrator;
 import com.qualcomm.robotcore.hardware.ColorSensor;
@@ -243,7 +245,32 @@ public class DriveTrain {
         fRight.setPower(0);
     }
 
-    public void driveToLine(ColorSensor color){
+    public void driveToLine(ColorSensor color, String lineColor, String dir){
+
+        int theD;
+
+        theD = dir.equals("forward") ? 1 : -1;
+
+        if(lineColor.equals("blue")) {
+            while(color.blue() < 35){
+                fLeft.setPower(theD * 0.25);
+                bLeft.setPower(theD * 0.25);
+                bRight.setPower(theD * 0.25);
+                fRight.setPower(theD * 0.25);
+            }
+        }
+        else if(lineColor.equals("red")) {
+            while(color.red() < 35){
+                fLeft.setPower(theD * 0.25);
+                bLeft.setPower(theD * 0.25);
+                bRight.setPower(theD * 0.25);
+                fRight.setPower(theD * 0.25);
+            }
+        }
+        else {
+            telemetry.addLine("Joe mama");
+            Log.e("Incorrect usage of: ", "driveToLine method");
+        }
         while(color.red()<35&&color.blue()<35){
             fLeft.setPower(0.25);
             bLeft.setPower(0.25);

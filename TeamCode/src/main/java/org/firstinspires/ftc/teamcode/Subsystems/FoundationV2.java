@@ -23,32 +23,32 @@ public class FoundationV2 {
      * left foundation down
      */
     public void lDown() {
-        fLFound.setPosition(0);
-        bLFound.setPosition(0);
+        fLFound.setPosition(0.45);
+        bLFound.setPosition(0.45);
     }
 
     /**
      * left foundation up
      */
     public void lUp() {
-        fLFound.setPosition(0.75);
-        bLFound.setPosition(0.75);
+        fLFound.setPosition(1);
+        bLFound.setPosition(1);
     }
 
     /**
      * right foundation down
      */
     public void rDown() {
-        fLFound.setPosition(0);
-        bLFound.setPosition(0);
+        fLFound.setPosition(0.4);
+        bLFound.setPosition(0.4);
     }
 
     /**
      * right foundation up
      */
     public void rUp() {
-        fRFound.setPosition(0.75);
-        bRFound.setPosition(0.79);
+        fRFound.setPosition(1);
+        bRFound.setPosition(1);
     }
 
 }

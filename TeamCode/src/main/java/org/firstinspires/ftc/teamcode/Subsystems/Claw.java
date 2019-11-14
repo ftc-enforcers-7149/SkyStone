@@ -25,7 +25,7 @@ public class Claw {
     /**
      * Makes the claw go up
      */
-    public void up(){
+    public void down(){
         lArm.setPosition(0);
         rArm.setPosition(0);
     }
@@ -33,7 +33,7 @@ public class Claw {
     /**
      * Makes claw go down
      */
-    public void down(){
+    public void up(){
         lArm.setPosition(0.95);
         rArm.setPosition(0.81);
     }

@@ -95,8 +95,8 @@ public class TeleOpV2 extends OpMode {
         }
 
         if (rFoundationDown) {
-            fRFound.setPosition(0.45);
-            bRFound.setPosition(0.45);
+            fRFound.setPosition(0.40);
+            bRFound.setPosition(0.40);
         }
         else {
             fRFound.setPosition(1);

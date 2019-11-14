@@ -133,7 +133,7 @@ public class BlueSkyStoneParkOld extends OpMode {
                 lArm.setPosition(1);
                 rArm.setPosition(1);
             case 12:
-                driveTrain.driveToLine(color);
+                //driveTrain.driveToLine(color);
                 break;
             case 13:
                 driveTrain.driveStraight("forward",28);

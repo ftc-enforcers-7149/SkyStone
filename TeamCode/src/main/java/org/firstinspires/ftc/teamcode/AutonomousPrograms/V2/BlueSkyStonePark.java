@@ -13,7 +13,7 @@ import org.firstinspires.ftc.teamcode.Subsystems.Claw;
 import org.firstinspires.ftc.teamcode.Subsystems.DriveTrain;
 import org.firstinspires.ftc.teamcode.Subsystems.Webcam;
 
-@Autonomous(name="Blue SkyStone Park")
+@Autonomous(name="Blue SkyStone Park v2")
 public class BlueSkyStonePark extends OpMode {
     public Servo lArm, rArm, lGrab, rGrab, lFound, rFound;
     public DcMotor fRight,fLeft,bRight,bLeft,lift;
@@ -134,7 +134,7 @@ public class BlueSkyStonePark extends OpMode {
                 lArm.setPosition(1);
                 rArm.setPosition(1);
             case 12:
-                driveTrain.driveToLine(color);
+                //driveTrain.driveToLine(color);
                 break;
             case 13:
                 driveTrain.driveStraight("forward",28);

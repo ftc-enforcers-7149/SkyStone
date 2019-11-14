@@ -37,7 +37,7 @@ import com.qualcomm.robotcore.hardware.Servo;
 import org.firstinspires.ftc.teamcode.Subsystems.DriveTrain;
 import org.firstinspires.ftc.teamcode.Subsystems.FoundationV1;
 
-@Autonomous(name = "Red FoundationV1 Park")
+@Autonomous(name = "Red FoundationV2 Park")
 //@Disabled                            // Comment this out to add to the opmode list
 public class RedFoundationPark extends OpMode {
 
@@ -102,8 +102,7 @@ public class RedFoundationPark extends OpMode {
             case 3://driveTrain.delay(3000);
                 break;
             case 4:
-                lArm.setPosition(0.1);
-                rArm.setPosition(0.05);
+
                 break;
             case 5:
                 driveTrain.driveStraight("forward",47);//50
