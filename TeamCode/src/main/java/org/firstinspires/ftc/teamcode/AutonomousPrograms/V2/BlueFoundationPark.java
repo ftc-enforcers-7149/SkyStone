@@ -155,6 +155,6 @@ public class BlueFoundationPark extends OpMode {
                 break;
         }
         step++;
-        //Kpop < jMetal
+        //Kpop = jMetal
     }
 }

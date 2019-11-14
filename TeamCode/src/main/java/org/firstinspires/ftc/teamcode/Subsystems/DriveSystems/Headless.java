@@ -92,8 +92,6 @@ public class Headless {
         rightX = gamepad1.right_stick_x;
         changeMode = gamepad1.a;
 
-        telemetry.addLine("Mode is headless");
-
         //Specific inputs
         angle = angles.firstAngle;
         resetAngle = gamepad1.y;
@@ -119,10 +117,6 @@ public class Headless {
         if (resetAngle) {
             offset = angle;
         }
-
-        //Telemetry for angles
-        telemetry.addData("Angle: ", angle - offset);
-        telemetry.addData("Converted angle: ", cvtDegrees(angle - offset));
 
         //r is used to scale the power of the motors depending on how much the joysticks are pushed
         //robotAngle is the directional angle (radians) that the robot wants to go in terms of itself.
