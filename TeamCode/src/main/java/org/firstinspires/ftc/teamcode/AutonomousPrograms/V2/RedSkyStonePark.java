@@ -9,12 +9,11 @@ import com.qualcomm.robotcore.hardware.DistanceSensor;
 import com.qualcomm.robotcore.hardware.Servo;
 
 import org.firstinspires.ftc.robotcore.external.navigation.DistanceUnit;
-import org.firstinspires.ftc.teamcode.Subsystems.Claw;
 import org.firstinspires.ftc.teamcode.Subsystems.DriveTrain;
 import org.firstinspires.ftc.teamcode.Subsystems.Webcam;
 
-@Autonomous(name="Blue SkyStone Park v2")
-public class BlueSkyStonePark extends OpMode {
+@Autonomous(name="Red SkyStone Park v2")
+public class RedSkyStonePark extends OpMode {
     public Servo lArm, rArm, lGrab, rGrab;
     Servo fLFound, fRFound, bLFound, bRFound;
     public DcMotor fRight,fLeft,bRight,bLeft,lift;
@@ -93,50 +92,50 @@ public class BlueSkyStonePark extends OpMode {
     public void loop(){
         switch(step){
             case 0:
-                driveTrain.driveStraight("forward",17);
+                driveTrain.driveStraight("forward",13);
                 break;
             case 1:
                 position=webcam.getPosition();
                 break;
             case 2:
                 if(position.equals("right")){
-                    driveTrain.driveRange(distanceR,62,"right");
+                    //driveTrain.driveRange(distanceR,56,"right");
                 }
                 else if(position.equals("left")){
-                    driveTrain.driveRange(distanceR,92,"right");
+                    //driveTrain.driveRange(distanceR,87,"right");
                 }
                 else{
-                    driveTrain.driveRange(distanceR,72,"right");
+                    //driveTrain.driveRange(distanceR,67,"right");
                 }
                 break;
             case 3:
-                lArm.setPosition(0);
+                /*lArm.setPosition(0);
                 rArm.setPosition(0);
                 lGrab.setPosition(1);
-                rGrab.setPosition(0.43);
+                rGrab.setPosition(0.43);*/
                 break;
 
-            case 4:driveTrain.delay(500);
+            case 4://driveTrain.delay(500);
                 break;
             case 5:
-                driveTrain.driveStraight("forward", 25);
+                //driveTrain.driveStraight("forward", 25);
                 break;
             case 6:
-                lGrab.setPosition(0.45);
-                rGrab.setPosition(0.43);
+                /*lGrab.setPosition(0.45);
+                rGrab.setPosition(0.43);*/
                 break;
             case 7:
-                driveTrain.delay(500);
+                //driveTrain.delay(500);
                 break;
             case 8:
-                lArm.setPosition(0.95);
-                rArm.setPosition(0.81);
+                /*lArm.setPosition(0.95);
+                rArm.setPosition(0.81);*/
                 break;
             case 9:
-               driveTrain.driveStraight("backward",17);
+               // driveTrain.driveStraight("backward",17);
                 break;
             case 10:
-                driveTrain.rotation(83);
+                //driveTrain.rotation(83);
                 break;
             case 11:
                 /*lArm.setPosition(1);

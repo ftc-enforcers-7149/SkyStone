@@ -88,9 +88,8 @@ public class RedFoundationPark extends OpMode {
         bLFound.setDirection(Servo.Direction.FORWARD);
         bRFound.setDirection(Servo.Direction.REVERSE);
 
-        //Servos up
-        lArm.setPosition(0.95);
-        rArm.setPosition(0.81);
+        lArm.setPosition(0);
+        rArm.setPosition(0);
 
         fLFound.setPosition(1);
         bLFound.setPosition(1);
@@ -124,7 +123,7 @@ public class RedFoundationPark extends OpMode {
                 driveTrain.driveStraight("forward",47);//50
                 break;
             case 6:
-                //driveTrain.strafeSeconds(500,"right");
+               // driveTrain.strafeSeconds(500,"right");
                 break;
             case 7:
                 //foundationV1.down();

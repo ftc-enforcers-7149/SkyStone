@@ -50,7 +50,7 @@ public class BlueFoundationPark extends OpMode {
     ColorSensor color;
 
     DriveTrain driveTrain;
-    FoundationV2 foundationV2;
+    FoundationV2 foundation;
     Claw claw;
 
     int step=0;
@@ -106,7 +106,7 @@ public class BlueFoundationPark extends OpMode {
     }
     public void start(){
         driveTrain=new DriveTrain(hardwareMap,telemetry,fLeft,fRight,bLeft,bRight);
-        foundationV2 =new FoundationV2(fLFound,fRFound,bLFound,bRFound);
+        foundation =new FoundationV2(fLFound,fRFound,bLFound,bRFound);
         claw=new Claw(lArm,rArm,lGrab,rGrab);
     }
 
@@ -114,44 +114,46 @@ public class BlueFoundationPark extends OpMode {
     public void loop() {
         switch(step){
             case 1:
-                claw.up();
+                //foundation.lDown();
                 break;
             case 2:
-                //driveTrain.driveStraight("backward",47);//50
+                driveTrain.driveStraight("backward",47);//50
                 break;
             case 3:
-                //driveTrain.strafeSeconds(750,"right");
+                driveTrain.strafeSeconds(750,"right");
                 break;
             case 4:
-                //foundationV2.lDown();
+                fRFound.setPosition(0.40);
+                bRFound.setPosition(0.40);
                 break;
             case 5:
-                //driveTrain.delay(1000);
+                driveTrain.delay(1000);
                 break;
             case 6:
-               // driveTrain.driveStraight("forward",3);
+
             case 7:
-                //driveTrain.strafeSeconds(250,"left");
+                driveTrain.strafeSeconds(250,"left");
             case 8:
-                //driveTrain.simpleTurn(45,0.45);//0.45
+                driveTrain.simpleTurn(45,0.45);//0.45
                 //was already commented out: driveTrain.driveStraight("backward", 35, 0.7,0.7);
                 break;
             case 9:
-                //driveTrain.strafeSeconds(3000,"right");
+                driveTrain.strafeSeconds(3000,"right");
             case 10:
-                //foundationV2.lUp();
+                fRFound.setPosition(1);
+                bRFound.setPosition(1);
                 break;
             case 11:
-                //driveTrain.strafeSeconds(250,"left");
+                driveTrain.strafeSeconds(250,"left");
                 break;
             case 12:
-                //driveTrain.driveStraight("forward", 28);
+                driveTrain.driveStraight("forward", 28);
                 break;
             case 13:
-                //driveTrain.rotation(270);
+                driveTrain.rotation(270);
                 break;
             case 14:
-                //driveTrain.driveToLine(color, "blue", "backward");
+                driveTrain.driveToLine(color, "blue", "backward");
                 break;
         }
         step++;

@@ -42,7 +42,7 @@ public class Claw {
      * Makes claw grab
      */
     public void grab(){
-        rGrab.setPosition(0.44);
+        rGrab.setPosition(0.41);
         lGrab.setPosition(0.45);
     }
 
@@ -50,7 +50,7 @@ public class Claw {
      * Makes claw release
      */
     public void release(){
-        rGrab.setPosition(1);
+        rGrab.setPosition(0.6);
         lGrab.setPosition(1);
     }
 
