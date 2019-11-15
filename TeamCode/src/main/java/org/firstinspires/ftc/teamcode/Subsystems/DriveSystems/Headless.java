@@ -36,12 +36,12 @@ public class Headless {
     //Telemetry object
     private Telemetry telemetry;
 
-    public Headless(HardwareMap hardwareMap, Telemetry telemetry, String fl, String fr, String bl, String br) {
+    public Headless(HardwareMap hardwareMap, Telemetry telemetry, DcMotor fl, DcMotor fr, DcMotor bl, DcMotor br) {
         //Hardware mapping the motors
-        fLeft = hardwareMap.dcMotor.get(fl);
-        fRight = hardwareMap.dcMotor.get(fr);
-        bLeft = hardwareMap.dcMotor.get(bl);
-        bRight = hardwareMap.dcMotor.get(br);
+        fLeft = fl;
+        fRight = fr;
+        bLeft = bl;
+        bRight = br;
 
         //Reversing left motors
         fLeft.setDirection(DcMotorSimple.Direction.REVERSE);
@@ -142,12 +142,6 @@ public class Headless {
             v3 /= max * (1 / lim);
             v4 /= max * (1 / lim);
         }
-
-        //Telemetry for the motor velocities
-        telemetry.addData("fLeft: ", v1);
-        telemetry.addData("fRight: ", v2);
-        telemetry.addData("bLeft: ", v3);
-        telemetry.addData("bRight: ", v4);
 
         //Setting each velocity to its respective motor
         fLeft.setPower(v1);
