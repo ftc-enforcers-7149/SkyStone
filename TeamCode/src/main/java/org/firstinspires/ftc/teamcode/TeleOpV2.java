@@ -1,6 +1,5 @@
 package org.firstinspires.ftc.teamcode;
 
-import com.qualcomm.hardware.rev.Rev2mDistanceSensor;
 import com.qualcomm.robotcore.eventloop.opmode.OpMode;
 import com.qualcomm.robotcore.eventloop.opmode.TeleOp;
 import com.qualcomm.robotcore.hardware.DcMotor;
@@ -8,8 +7,6 @@ import com.qualcomm.robotcore.hardware.DcMotorSimple;
 import com.qualcomm.robotcore.hardware.Servo;
 
 import org.firstinspires.ftc.teamcode.Subsystems.DriveSystems.Headless;
-
-import java.util.FormatFlagsConversionMismatchException;
 
 @TeleOp(name = "TeleOp v2")
 public class TeleOpV2 extends OpMode {
@@ -21,12 +18,17 @@ public class TeleOpV2 extends OpMode {
     Servo lArm, rArm, lGrab, rGrab;
     DcMotor fRight,fLeft,bRight,bLeft, lift;
 
+    //Prevents lag in color sensor?
+    /*ColorSensor colorSensor;
+    DistanceSensor distL, distR, distC;*/
+
     //
     boolean armUp, armDown;
     boolean isBreak=false;
     float liftUp,liftDown;
     boolean lFoundationDown, rFoundationDown;
-    float rightG, leftG;
+    float grab;
+    boolean armToggle = false;
 
     public void init(){
         //Servos
@@ -38,6 +40,12 @@ public class TeleOpV2 extends OpMode {
         rArm = hardwareMap.servo.get("rArm");
         lGrab = hardwareMap.servo.get("lGrab");
         rGrab = hardwareMap.servo.get("rGrab");
+
+        //Inits to combat lag
+        /*colorSensor = hardwareMap.colorSensor.get("color");
+        distL = hardwareMap.get(DistanceSensor.class, "distanceL");
+        distR = hardwareMap.get(DistanceSensor.class, "distanceR");
+        distC = hardwareMap.get(DistanceSensor.class, "distanceC");*/
 
         //Drive motors
         fLeft = hardwareMap.dcMotor.get("fLeft");
@@ -74,12 +82,12 @@ public class TeleOpV2 extends OpMode {
         //Inputs
         armUp = gamepad2.y;
         armDown = gamepad2.a;
-        rightG = gamepad2.right_trigger;
-        leftG = gamepad2.left_trigger;
+        grab = gamepad2.right_trigger;
         liftUp=gamepad1.right_trigger;
         liftDown=gamepad1.left_trigger;
-        lFoundationDown = gamepad1.x;
-        rFoundationDown = gamepad1.b;
+        lFoundationDown = gamepad1.left_bumper;
+        rFoundationDown = gamepad1.right_bumper;
+
 
         //Drive
         driveSystem.drive(gamepad1);
@@ -104,7 +112,7 @@ public class TeleOpV2 extends OpMode {
         }
 
         //Arms and block grabbers
-        if (armUp) {
+        if (armUp && !armToggle) {
             lArm.setPosition(0);
             rArm.setPosition(0);
         }
@@ -113,19 +121,21 @@ public class TeleOpV2 extends OpMode {
             rArm.setPosition(0.81);
         }
 
-        if(rightG>0.1){
+        if(grab >0.1){
             rGrab.setPosition(0.41);
+            lGrab.setPosition(0.45);
         }
         else{
             rGrab.setPosition(0.6);
+            lGrab.setPosition(1);
         }
 
-        if(leftG>0.1){
+        /*if(leftG>0.1){
             lGrab.setPosition(0.45);
         }
         else{
            lGrab.setPosition(1);
-        }
+        }*/
 
         //Lift
         if(liftUp>0.1){
