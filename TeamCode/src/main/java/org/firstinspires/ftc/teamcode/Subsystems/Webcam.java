@@ -3,6 +3,8 @@ package org.firstinspires.ftc.teamcode.Subsystems;
 import android.annotation.SuppressLint;
 import android.graphics.Bitmap;
 import android.graphics.Color;
+import android.util.Log;
+
 import com.qualcomm.robotcore.hardware.HardwareMap;
 import com.qualcomm.robotcore.util.ThreadPool;
 import com.vuforia.Frame;
@@ -299,6 +301,9 @@ public class Webcam {
             {
                 Bitmap bitmap = vuforia.convertFrameToBitmap(frame);
                 if (bitmap != null) {
+                    Log.i("Bitmap value: ", bitmap.toString());
+                    Log.i("Left side luminance: ", String.valueOf(Color.valueOf(bitmap.getPixel(-bitmap.getWidth()/4, bitmap.getHeight()/2)).luminance()));
+                    Log.i("Right side luminance: ", String.valueOf(Color.valueOf(bitmap.getPixel(bitmap.getWidth()/4, bitmap.getHeight()/2)).luminance()));
                     if (Color.valueOf(bitmap.getPixel(bitmap.getWidth()/4, bitmap.getHeight()/2)).luminance() < 0.5) {
                         position = "right";
                     }

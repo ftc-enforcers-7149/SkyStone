@@ -23,12 +23,11 @@ public class TeleOpV2 extends OpMode {
     DistanceSensor distL, distR, distC;*/
 
     //
-    boolean armUp, armDown;
+    float armUp;
     boolean isBreak=false;
     float liftUp,liftDown;
     boolean lFoundationDown, rFoundationDown;
     float grab;
-    boolean armToggle = false;
 
     public void init(){
         //Servos
@@ -80,9 +79,8 @@ public class TeleOpV2 extends OpMode {
     }
     public void loop(){
         //Inputs
-        armUp = gamepad2.y;
-        armDown = gamepad2.a;
-        grab = gamepad2.right_trigger;
+        armUp = gamepad2.right_trigger;
+        grab = gamepad2.left_trigger;
         liftUp=gamepad1.right_trigger;
         liftDown=gamepad1.left_trigger;
         lFoundationDown = gamepad1.left_bumper;
@@ -112,16 +110,16 @@ public class TeleOpV2 extends OpMode {
         }
 
         //Arms and block grabbers
-        if (armUp && !armToggle) {
+        if (armUp > 0.1) {
             lArm.setPosition(0);
             rArm.setPosition(0);
         }
-        else if(armDown){
+        else {
             lArm.setPosition(0.95);
             rArm.setPosition(0.81);
         }
 
-        if(grab >0.1){
+        if(grab > 0.1){
             rGrab.setPosition(0.41);
             lGrab.setPosition(0.45);
         }
