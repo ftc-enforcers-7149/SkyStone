@@ -1,3 +1,4 @@
+/*
 package org.firstinspires.ftc.teamcode.UpNAdam;
 
 import com.qualcomm.robotcore.eventloop.opmode.OpMode;
@@ -142,3 +143,4 @@ public class IndependentMotorRun extends OpMode {
         bLeft.setPower(0);
     }
 }
+*/

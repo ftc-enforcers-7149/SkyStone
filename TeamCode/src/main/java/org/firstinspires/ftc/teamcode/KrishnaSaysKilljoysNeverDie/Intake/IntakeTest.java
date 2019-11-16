@@ -1,3 +1,4 @@
+/*
 package org.firstinspires.ftc.teamcode.KrishnaSaysKilljoysNeverDie.Intake;
 
 import com.qualcomm.robotcore.eventloop.opmode.OpMode;
@@ -32,3 +33,4 @@ public class IntakeTest extends OpMode {
 
 
 }
+*/

@@ -40,7 +40,7 @@ import org.firstinspires.ftc.teamcode.Subsystems.DriveTrain;
 import org.firstinspires.ftc.teamcode.Subsystems.FoundationV1;
 import org.firstinspires.ftc.teamcode.Subsystems.FoundationV2;
 
-@Autonomous(name = "Blue FoundationV2 Park")
+@Autonomous(name = "Blue Foundation ParkV2")
 //@Disabled                            // Comment this out to add to the opmode list
 public class BlueFoundationPark extends OpMode {
 

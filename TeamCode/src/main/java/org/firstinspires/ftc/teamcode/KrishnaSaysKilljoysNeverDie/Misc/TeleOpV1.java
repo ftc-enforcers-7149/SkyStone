@@ -1,3 +1,4 @@
+/*
 package org.firstinspires.ftc.teamcode.KrishnaSaysKilljoysNeverDie.Misc;
 
 import com.qualcomm.robotcore.eventloop.opmode.OpMode;
@@ -117,14 +118,15 @@ public class TeleOpV1 extends OpMode {
             lFound.setPosition(0);
             rFound.setPosition(0);
         }
-        /*if(gGrab){
+if(gGrab){
             lGrab.setPosition(0.1);
             rGrab.setPosition(0.1);
         }
         else if(gRelease){
             lGrab.setPosition(0.2);
             rGrab.setPosition(0.25);
-        }*/
+        }
+
 
         if(liftUp>0.1){
             lift.setPower(0.7);
@@ -151,3 +153,4 @@ public class TeleOpV1 extends OpMode {
         bLeft.setPower(0);
     }
 }
+*/

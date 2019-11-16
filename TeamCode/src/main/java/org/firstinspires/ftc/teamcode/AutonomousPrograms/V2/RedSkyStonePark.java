@@ -12,7 +12,7 @@ import org.firstinspires.ftc.robotcore.external.navigation.DistanceUnit;
 import org.firstinspires.ftc.teamcode.Subsystems.DriveTrain;
 import org.firstinspires.ftc.teamcode.Subsystems.Webcam;
 
-@Autonomous(name="Red SkyStone Park v2")
+@Autonomous(name="Red SkyStone ParkV2")
 public class RedSkyStonePark extends OpMode {
     public Servo lArm, rArm, lGrab, rGrab;
     Servo fLFound, fRFound, bLFound, bRFound;
@@ -92,27 +92,27 @@ public class RedSkyStonePark extends OpMode {
     public void loop(){
         switch(step){
             case 0:
-                driveTrain.driveStraight("forward",13);
+                driveTrain.driveStraight("forward",17);
                 break;
             case 1:
                 position=webcam.getPosition();
                 break;
             case 2:
                 if(position.equals("right")){
-                    //driveTrain.driveRange(distanceR,56,"right");
+                    driveTrain.driveRange(distanceL,62,"left");
                 }
                 else if(position.equals("left")){
-                    //driveTrain.driveRange(distanceR,87,"right");
+                    driveTrain.driveRange(distanceL,92,"left");
                 }
                 else{
-                    //driveTrain.driveRange(distanceR,67,"right");
+                    driveTrain.driveRange(distanceL,75,"left");
                 }
                 break;
             case 3:
-                /*lArm.setPosition(0);
+                lArm.setPosition(0);
                 rArm.setPosition(0);
                 lGrab.setPosition(1);
-                rGrab.setPosition(0.43);*/
+                rGrab.setPosition(0.43);
                 break;
 
             case 4://driveTrain.delay(500);
@@ -128,20 +128,21 @@ public class RedSkyStonePark extends OpMode {
                 //driveTrain.delay(500);
                 break;
             case 8:
-                /*lArm.setPosition(0.95);
+               /* lArm.setPosition(0.95);
                 rArm.setPosition(0.81);*/
                 break;
             case 9:
-               // driveTrain.driveStraight("backward",17);
+               //driveTrain.driveStraight("backward",17);
                 break;
             case 10:
                 //driveTrain.rotation(83);
                 break;
             case 11:
-                /*lArm.setPosition(1);
-                rArm.setPosition(1);*/
+                /*lArm.setPosition(0);
+                rArm.setPosition(0);*/
+                break;
             case 12:
-                //driveTrain.driveToLine(color);
+                //driveTrain.driveToLine(color, "blue", "forward");
                 break;
             case 13:
                 //driveTrain.driveStraight("forward",28);

@@ -1,6 +1,7 @@
 package org.firstinspires.ftc.teamcode.AutonomousPrograms.V1;
 
 import com.qualcomm.robotcore.eventloop.opmode.Autonomous;
+import com.qualcomm.robotcore.eventloop.opmode.Disabled;
 import com.qualcomm.robotcore.eventloop.opmode.OpMode;
 import com.qualcomm.robotcore.hardware.ColorSensor;
 import com.qualcomm.robotcore.hardware.DcMotor;
@@ -12,7 +13,8 @@ import org.firstinspires.ftc.robotcore.external.navigation.DistanceUnit;
 import org.firstinspires.ftc.teamcode.Subsystems.DriveTrain;
 import org.firstinspires.ftc.teamcode.Subsystems.Webcam;
 
-//@Autonomous(name="Blue SkyStone Park")
+@Autonomous(name="Blue SkyStone Park")
+@Disabled
 public class BlueSkyStoneParkOld extends OpMode {
     public Servo lArm, rArm, lGrab, rGrab, lFound, rFound;
     public DcMotor fRight,fLeft,bRight,bLeft,lift;

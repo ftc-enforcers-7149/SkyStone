@@ -30,6 +30,7 @@ package org.firstinspires.ftc.teamcode.AutonomousPrograms.V2;
 
 import com.qualcomm.robotcore.eventloop.opmode.Autonomous;
 import com.qualcomm.robotcore.eventloop.opmode.OpMode;
+import com.qualcomm.robotcore.hardware.ColorSensor;
 import com.qualcomm.robotcore.hardware.DcMotor;
 import com.qualcomm.robotcore.hardware.DcMotorSimple;
 import com.qualcomm.robotcore.hardware.Servo;
@@ -39,7 +40,7 @@ import org.firstinspires.ftc.teamcode.Subsystems.DriveTrain;
 import org.firstinspires.ftc.teamcode.Subsystems.FoundationV1;
 import org.firstinspires.ftc.teamcode.Subsystems.FoundationV2;
 
-@Autonomous(name = "Red FoundationV2 Park")
+@Autonomous(name = "Red Foundation  ParkV2")
 //@Disabled                            // Comment this out to add to the opmode list
 public class RedFoundationPark extends OpMode {
 
@@ -50,6 +51,7 @@ public class RedFoundationPark extends OpMode {
     DriveTrain driveTrain;
     FoundationV2 foundation;
     Claw claw;
+    ColorSensor color;
 
     int step=0;
 
@@ -72,6 +74,8 @@ public class RedFoundationPark extends OpMode {
         bRight = hardwareMap.dcMotor.get("bRight");
         lift = hardwareMap.dcMotor.get("lift");
 
+        color = hardwareMap.colorSensor.get("color");
+
         //direction of motors
         fLeft.setDirection(DcMotorSimple.Direction.FORWARD);
         fRight.setDirection(DcMotorSimple.Direction.REVERSE);
@@ -79,8 +83,9 @@ public class RedFoundationPark extends OpMode {
         bLeft.setDirection(DcMotorSimple.Direction.FORWARD);
         lift.setDirection(DcMotorSimple.Direction.FORWARD);
         //direction of servos
-        lArm.setDirection(Servo.Direction.REVERSE);
-        rArm.setDirection(Servo.Direction.FORWARD);
+        //direction of servos
+        lArm.setDirection(Servo.Direction.FORWARD);
+        rArm.setDirection(Servo.Direction.REVERSE);
         lGrab.setDirection(Servo.Direction.REVERSE);
         rGrab.setDirection(Servo.Direction.FORWARD);
         fLFound.setDirection(Servo.Direction.REVERSE);
@@ -88,16 +93,16 @@ public class RedFoundationPark extends OpMode {
         bLFound.setDirection(Servo.Direction.FORWARD);
         bRFound.setDirection(Servo.Direction.REVERSE);
 
-        lArm.setPosition(0);
-        rArm.setPosition(0);
+        lift.setZeroPowerBehavior(DcMotor.ZeroPowerBehavior.BRAKE);
+
+        lArm.setPosition(0.95);
+        rArm.setPosition(0.81);
 
         fLFound.setPosition(1);
         bLFound.setPosition(1);
 
         fRFound.setPosition(1);
         bRFound.setPosition(1);
-
-        lift.setZeroPowerBehavior(DcMotor.ZeroPowerBehavior.BRAKE);
     }
     public void start(){
         driveTrain=new DriveTrain(hardwareMap,telemetry,fLeft,fRight,bLeft,bRight);
@@ -123,41 +128,43 @@ public class RedFoundationPark extends OpMode {
                 driveTrain.driveStraight("forward",47);//50
                 break;
             case 6:
-               // driveTrain.strafeSeconds(500,"right");
+                driveTrain.strafeSeconds(500,"right");
                 break;
             case 7:
-                //foundationV1.down();
+                fRFound.setPosition(0.40);
+                bRFound.setPosition(0.40);
                 break;
             case 8:
-                //driveTrain.delay(1000);
+                driveTrain.delay(1000);
                 break;
             case 9:
                 //driveTrain.driveStraight("backward",3);
             case 10:
-                //driveTrain.strafeSeconds(250,"left");
+                driveTrain.strafeSeconds(250,"left");
             case 11:
-                //driveTrain.simpleTurn(-45,0.45);//driveTrain.simpleRotateRed(295,0.35);//0.45
+                driveTrain.simpleTurn(-45,0.45);//driveTrain.simpleRotateRed(295,0.35);//0.45
                 //driveTrain.driveStraight("backward", 35, 0.7,0.7);
                 break;
             case 12:
-                //driveTrain.strafeSeconds(3000,"right");
+                driveTrain.strafeSeconds(3000,"right");
             case 13:
-                //foundationV1.up();
+                fRFound.setPosition(1);
+                bRFound.setPosition(1);
                 break;
             case 14:
-                //driveTrain.strafeSeconds(250,"left");
+                driveTrain.strafeSeconds(250,"left");
                 break;
             case 15:
-                //driveTrain.driveStraight("backward", 28);
+                driveTrain.driveStraight("backward", 28);
                 break;
             case 16:
-               // driveTrain.rotation(270);
+                driveTrain.rotation(270);
                 break;
             case 17:
-                //driveTrain.driveStraight("backward", 12);
+                driveTrain.driveToLine(color, "red", "backward");
                 break;
             case 18:
-                ////driveTrain.rotation(180);
+                //driveTrain.rotation(180);
                 break;
 
         }

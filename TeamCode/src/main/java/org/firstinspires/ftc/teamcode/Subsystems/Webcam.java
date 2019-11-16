@@ -3,6 +3,8 @@ package org.firstinspires.ftc.teamcode.Subsystems;
 import android.annotation.SuppressLint;
 import android.graphics.Bitmap;
 import android.graphics.Color;
+import android.graphics.ColorSpace;
+import android.os.Build;
 import android.util.Log;
 
 import com.qualcomm.robotcore.hardware.HardwareMap;
@@ -13,6 +15,7 @@ import com.vuforia.Image;
 import com.vuforia.PIXEL_FORMAT;
 
 import org.firstinspires.ftc.robotcore.external.ClassFactory;
+import org.firstinspires.ftc.robotcore.external.Telemetry;
 import org.firstinspires.ftc.robotcore.external.function.Consumer;
 import org.firstinspires.ftc.robotcore.external.function.Continuation;
 import org.firstinspires.ftc.robotcore.external.hardware.camera.WebcamName;
@@ -100,6 +103,11 @@ public class Webcam {
 
     int captureCounter = 0;
     File captureDirectory = AppUtil.ROBOT_DATA_DIR;
+
+    Image rgb = null;
+    Bitmap bitmap = null;
+
+    int cAlpha, rAlpha;
 
     public static final String TAG = "Vuforia Navigation Sample";
 
@@ -295,8 +303,6 @@ public class Webcam {
         // Note: To use the remote camera preview:
         // AFTER you hit Init on the Driver Station, use the "options menu" to select "Camera Stream"
         // Tap the preview window to receive a fresh image.
-
-        targetsSkyStone.activate();
     }
 
     /**
@@ -337,27 +343,45 @@ public class Webcam {
      * Sets the position accordingly, defaulting to left.
      * @return the position of the skystone
      */
-    public String getBitmapPos() {
-        position = "left";
+    public String getBitmapPos(final Telemetry telemetry) {
         vuforia.getFrameOnce(Continuation.create(ThreadPool.getDefault(), new Consumer<Frame>()
         {
-            @SuppressLint("NewApi")
+
             @Override public void accept(Frame frame)
             {
-                Bitmap bitmap = vuforia.convertFrameToBitmap(frame);
-                if (bitmap != null) {
-                    Log.i("Bitmap value: ", bitmap.toString());
-                    Log.i("Left side luminance: ", String.valueOf(Color.valueOf(bitmap.getPixel(-bitmap.getWidth()/4, bitmap.getHeight()/2)).luminance()));
-                    Log.i("Right side luminance: ", String.valueOf(Color.valueOf(bitmap.getPixel(bitmap.getWidth()/4, bitmap.getHeight()/2)).luminance()));
-                    if (Color.valueOf(bitmap.getPixel(bitmap.getWidth()/4, bitmap.getHeight()/2)).luminance() < 0.5) {
-                        position = "right";
+                for (int i = 0; i < frame.getNumImages(); i++) {
+                    if (frame.getImage(i).getFormat() == PIXEL_FORMAT.RGB565) {
+                        if (frame.getImage(i) != null) {
+                            rgb = frame.getImage(i);
+                        }
                     }
-                    else if (Color.valueOf(bitmap.getPixel(-bitmap.getWidth()/4, bitmap.getHeight()/2)).luminance() < 0.5) {
-                        position = "center";
-                    }
+                }
+
+                if (rgb.getPixels() != null) {
+                    bitmap = Bitmap.createBitmap(rgb.getWidth(), rgb.getHeight(), Bitmap.Config.RGB_565);
+                    bitmap.copyPixelsFromBuffer(rgb.getPixels());
                 }
             }
         }));
+
+        if (bitmap != null) {
+            //Width is 640. Height is 480
+            cAlpha = Color.green(bitmap.getPixel(100, 380));
+            rAlpha = Color.green(bitmap.getPixel(540, 380));
+        }
+
+        telemetry.addData("Green center", cAlpha);
+        telemetry.addData("Green right", rAlpha);
+
+        if (rAlpha < 120) {
+            position = "right";
+        }
+        else if (cAlpha < 120) {
+            position = "center";
+        }
+        else {
+            position = "left";
+        }
 
         return position;
     }
@@ -370,10 +394,11 @@ public class Webcam {
         targetsSkyStone.activate();
         String position="";
         double iTime=System.currentTimeMillis();
+        targetVisible = false;
 
         while(iTime+4500>System.currentTimeMillis()) {
             // check all the trackable targets to see which one (if any) is visible.
-            targetVisible = false;
+
             for (VuforiaTrackable trackable : allTrackables) {
                 if (((VuforiaTrackableDefaultListener) trackable.getListener()).isVisible()) {
                     targetVisible = true;
@@ -395,15 +420,16 @@ public class Webcam {
                 // express the rotation of the robot in degrees.
                 Orientation rotation = Orientation.getOrientation(lastLocation, EXTRINSIC, XYZ, DEGREES);
 
-                if (translation.get(1) / mmPerInch < 0) {
+                if (translation.get(1) / mmPerInch <= 0) {
                     position = "center";
-                } else if (translation.get(1) / mmPerInch > 0) {
+                } else if(translation.get(1) / mmPerInch > 0) {
                     position = "right";
                 }
             } else {
                 position = "left";
             }
         }
+
         targetsSkyStone.deactivate();
         return position;
     }

@@ -1,9 +1,11 @@
 package org.firstinspires.ftc.teamcode.Mattu;
 
+import com.qualcomm.robotcore.eventloop.opmode.Autonomous;
 import com.qualcomm.robotcore.eventloop.opmode.OpMode;
 
 import org.firstinspires.ftc.teamcode.Subsystems.Webcam;
 
+@Autonomous(name = "TestWebcam")
 public class TestWebcam extends OpMode {
 
     Webcam webcam;
@@ -17,19 +19,16 @@ public class TestWebcam extends OpMode {
     public void loop() {
         switch(step) {
             case 0:
-                double startTime = System.currentTimeMillis();
-                while (System.currentTimeMillis() < startTime + 3000) {
-                    position = webcam.getBitmapPos();
-                }
+                position = webcam.getBitmapPos(telemetry);
                 break;
             case 1:
-                webcam.captureFrameToFile();
+                //webcam.captureFrameToFile();
                 break;
         }
 
         telemetry.addData("position",position);
         telemetry.addData("Step: ", step);
-        step++;
+        //step++;
     }
 
     public void stop() {

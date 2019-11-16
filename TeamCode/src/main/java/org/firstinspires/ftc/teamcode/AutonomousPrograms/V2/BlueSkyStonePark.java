@@ -13,7 +13,7 @@ import org.firstinspires.ftc.teamcode.Subsystems.Claw;
 import org.firstinspires.ftc.teamcode.Subsystems.DriveTrain;
 import org.firstinspires.ftc.teamcode.Subsystems.Webcam;
 
-@Autonomous(name="Blue SkyStone Park v2")
+@Autonomous(name="Blue SkyStone ParkV2")
 public class BlueSkyStonePark extends OpMode {
     public Servo lArm, rArm, lGrab, rGrab;
     Servo fLFound, fRFound, bLFound, bRFound;
@@ -106,7 +106,7 @@ public class BlueSkyStonePark extends OpMode {
                     driveTrain.driveRange(distanceR,92,"right");
                 }
                 else{
-                    driveTrain.driveRange(distanceR,72,"right");
+                    driveTrain.driveRange(distanceR,75,"right");
                 }
                 break;
             case 3:
@@ -139,22 +139,23 @@ public class BlueSkyStonePark extends OpMode {
                 driveTrain.rotation(83);
                 break;
             case 11:
-                /*lArm.setPosition(1);
-                rArm.setPosition(1);*/
+                lArm.setPosition(0);
+                rArm.setPosition(0);
+                break;
             case 12:
-                //driveTrain.driveToLine(color);
+                driveTrain.driveToLine(color, "blue", "forward");
                 break;
             case 13:
-                //driveTrain.driveStraight("forward",28);
+                driveTrain.driveStraight("forward",17);
                 break;
             case 14:
-                /*lGrab.setPosition(0);
-                rGrab.setPosition(0);*/
+                rGrab.setPosition(0.6);
+                lGrab.setPosition(1);
                 break;
             case 15:
-                /*driveTrain.driveRange(distanceC,20,"center");
-                lArm.setPosition(0.25);
-                rArm.setPosition(0.25);*/
+                driveTrain.driveToLine(color, "blue", "backward");
+                lArm.setPosition(0.95);
+                rArm.setPosition(0.81);
                 break;
             case 16:
                 //driveTrain.simpleTurn(0,0.4);

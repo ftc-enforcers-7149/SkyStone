@@ -1,3 +1,4 @@
+/*
 package org.firstinspires.ftc.teamcode.notHarry;
 
 import com.qualcomm.robotcore.hardware.DcMotor;
@@ -61,14 +62,16 @@ public class cleanTeleOp extends ParentInit {
         else {
             foundationV1.down();
         }
-        /*if(gGrab){
+        */
+/*if(gGrab){
             lGrab.setPosition(0.1);
             rGrab.setPosition(0.1);
         }
         else if(gRelease){
             lGrab.setPosition(0.2);
             rGrab.setPosition(0.25);
-        }*/
+        }*//*
+
 
         if(liftUp>0.1){
             lift.setPower(0.7);
@@ -95,3 +98,4 @@ public class cleanTeleOp extends ParentInit {
     }
 }
 
+*/
