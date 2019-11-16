@@ -344,6 +344,7 @@ public class Webcam {
      * @return the position of the skystone
      */
     public String getBitmapPos(final Telemetry telemetry) {
+        targetsSkyStone.activate();
         vuforia.getFrameOnce(Continuation.create(ThreadPool.getDefault(), new Consumer<Frame>()
         {
 
@@ -364,52 +365,82 @@ public class Webcam {
             }
         }));
 
-        int darkVal = 255;
-
-        position = "left";
+        //int darkVal = 255;
 
         if (bitmap != null) {
+
             //Width is 640. Height is 480
-            cAlpha = Color.green(bitmap.getPixel(100, 450));
-            rAlpha = Color.green(bitmap.getPixel(540, 450));
-            for (int i = 0; i < rgb.getWidth() && (i < 300 || i > 340); i++) {
-                if (Color.green(bitmap.getPixel(i, 450)) < darkVal) {
-                    telemetry.addData("X pos", i);
-                    darkVal = Color.green(bitmap.getPixel(i, 450));
-                    if (darkVal < 100) {
-                        if (i < 300) {
-                            position = "center";
-                            break;
+            cAlpha = Color.red(bitmap.getPixel(10, 440));
+            rAlpha = Color.red(bitmap.getPixel(630, 440));
+            /*for (int i = 0; i < rgb.getWidth(); i++) {
+                if (i < 300 || i > 340) {
+                    if (Color.red(bitmap.getPixel(i, 450)) < darkVal) {
+                        darkVal = Color.red(bitmap.getPixel(i, 450));
+                        if (darkVal < 80) {
+                            if (i < 300) {
+                                position = "center";
+                            }
+                            else {
+                                position = "right";
+                            }
                         } else {
-                            position = "right";
-                            break;
+                            position = "left";
                         }
-                    } else {
-                        position = "left";
                     }
                 }
             }
 
-            if (darkVal > 100) {
+            if (darkVal > 80) {
                 position = "left";
-            }
+            }*/
         }
 
-        telemetry.addData("Green center", cAlpha);
-        telemetry.addData("Green right", rAlpha);
+        telemetry.addData("Red center", cAlpha);
+        telemetry.addData("Red right", rAlpha);
         telemetry.update();
 
-        /*if (rAlpha < 100) {
+        if (rAlpha < 100) {
             position = "right";
-        }
-        else if (cAlpha < 100) {
+        } else if (cAlpha < 100) {
             position = "center";
         }
         else {
             position = "left";
-        }*/
+        }
 
         return position;
+    }
+
+    public int getRed(final Telemetry telemetry) {
+        targetsSkyStone.activate();
+        vuforia.getFrameOnce(Continuation.create(ThreadPool.getDefault(), new Consumer<Frame>()
+        {
+
+            @Override public void accept(Frame frame)
+            {
+                for (int i = 0; i < frame.getNumImages(); i++) {
+                    if (frame.getImage(i).getFormat() == PIXEL_FORMAT.RGB565) {
+                        if (frame.getImage(i) != null) {
+                            rgb = frame.getImage(i);
+                        }
+                    }
+                }
+
+                if (rgb.getPixels() != null) {
+                    bitmap = Bitmap.createBitmap(rgb.getWidth(), rgb.getHeight(), Bitmap.Config.RGB_565);
+                    bitmap.copyPixelsFromBuffer(rgb.getPixels());
+                }
+            }
+        }));
+
+        //int darkVal = 255;
+
+        if (bitmap != null) {
+            //Width is 640. Height is 480
+            cAlpha = Color.red(bitmap.getPixel(10, 440));
+        }
+
+        return cAlpha;
     }
 
     public void deactivate() {

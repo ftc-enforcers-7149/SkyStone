@@ -93,10 +93,15 @@ public class BlueSkyStonePark extends OpMode {
     public void loop(){
         switch(step){
             case 0:
-                driveTrain.driveStraight("forward",17);
+                driveTrain.driveStraight("forward",20);
                 break;
             case 1:
-                position=webcam.getPosition();
+                webcam.captureFrameToFile();
+                double startTime = System.currentTimeMillis();
+                while (System.currentTimeMillis() < startTime + 4000) {
+                    position = webcam.getBitmapPos(telemetry);
+                }
+                webcam.deactivate();
                 break;
             case 2:
                 if(position.equals("right")){

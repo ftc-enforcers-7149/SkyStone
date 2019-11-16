@@ -19,11 +19,7 @@ public class TestWebcam extends OpMode {
     public void loop() {
         switch(step) {
             case 0:
-                double startTime = System.currentTimeMillis();
-                while (System.currentTimeMillis() < startTime + 2000) {
-                    position = webcam.getBitmapPos(telemetry);
-                }
-                webcam.deactivate();
+                telemetry.addData("Red of center", webcam.getRed(telemetry));
                 break;
             case 1:
                 break;
@@ -31,7 +27,7 @@ public class TestWebcam extends OpMode {
 
         telemetry.addData("position",position);
         telemetry.addData("Step: ", step);
-        step++;
+        //step++
     }
 
     public void stop() {

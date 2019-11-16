@@ -98,7 +98,7 @@ public class DriveTrain {
         while(cPosition < distance){
             cPosition=fRight.getCurrentPosition()/COUNTS_PER_INCH*mDirection;
             if(distance-Math.abs(cPosition)<20){
-                power=0.2*mDirection;
+                power=0.4*mDirection;
             }
             fLeft.setPower(power);
             fRight.setPower(power);

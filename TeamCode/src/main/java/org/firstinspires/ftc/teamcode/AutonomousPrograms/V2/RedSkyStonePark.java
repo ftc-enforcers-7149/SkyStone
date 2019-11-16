@@ -92,20 +92,24 @@ public class RedSkyStonePark extends OpMode {
     public void loop(){
         switch(step){
             case 0:
-                driveTrain.driveStraight("forward",17);
+                driveTrain.driveStraight("forward",20);
                 break;
             case 1:
-                position=webcam.getPosition();
+                double startTime = System.currentTimeMillis();
+                while (System.currentTimeMillis() < startTime + 4000) {
+                    position = webcam.getBitmapPos(telemetry);
+                }
+                webcam.deactivate();
                 break;
             case 2:
                 if(position.equals("right")){
-                    driveTrain.driveRange(distanceL,62,"left");
+                    driveTrain.driveRange(distanceL,106,"left");
                 }
                 else if(position.equals("left")){
-                    driveTrain.driveRange(distanceL,92,"left");
+                    driveTrain.driveRange(distanceL,75,"left");
                 }
                 else{
-                    driveTrain.driveRange(distanceL,75,"left");
+                    driveTrain.driveRange(distanceL,90,"left");
                 }
                 break;
             case 3:
@@ -115,46 +119,46 @@ public class RedSkyStonePark extends OpMode {
                 rGrab.setPosition(0.43);
                 break;
 
-            case 4://driveTrain.delay(500);
+            case 4:driveTrain.delay(500);
                 break;
             case 5:
-                //driveTrain.driveStraight("forward", 25);
+                driveTrain.driveStraight("forward", 25);
                 break;
             case 6:
-                /*lGrab.setPosition(0.45);
-                rGrab.setPosition(0.43);*/
+                lGrab.setPosition(0.45);
+                rGrab.setPosition(0.43);
                 break;
             case 7:
-                //driveTrain.delay(500);
+                driveTrain.delay(500);
                 break;
             case 8:
-               /* lArm.setPosition(0.95);
-                rArm.setPosition(0.81);*/
+                lArm.setPosition(0.95);
+                rArm.setPosition(0.81);
                 break;
             case 9:
-               //driveTrain.driveStraight("backward",17);
+               driveTrain.driveStraight("backward",17);
                 break;
             case 10:
-                //driveTrain.rotation(83);
+                driveTrain.rotation(272);
                 break;
             case 11:
-                /*lArm.setPosition(0);
-                rArm.setPosition(0);*/
+                lArm.setPosition(0);
+                rArm.setPosition(0);
                 break;
             case 12:
-                //driveTrain.driveToLine(color, "blue", "forward");
+                driveTrain.driveToLine(color, "red", "forward");
                 break;
             case 13:
-                //driveTrain.driveStraight("forward",28);
+                driveTrain.driveStraight("forward",17);
                 break;
             case 14:
-                /*lGrab.setPosition(0);
-                rGrab.setPosition(0);*/
+                rGrab.setPosition(0.6);
+                lGrab.setPosition(1);
                 break;
             case 15:
-                /*driveTrain.driveRange(distanceC,20,"center");
-                lArm.setPosition(0.25);
-                rArm.setPosition(0.25);*/
+                driveTrain.driveToLine(color, "red", "backward");
+                lArm.setPosition(0.95);
+                rArm.setPosition(0.81);
                 break;
             case 16:
                 //driveTrain.simpleTurn(0,0.4);
@@ -163,7 +167,7 @@ public class RedSkyStonePark extends OpMode {
         }
         step++;
         telemetry.addData("position",position);
-        telemetry.addData("range",distanceC.getDistance(DistanceUnit.CM));
+        telemetry.addData("range",distanceL.getDistance(DistanceUnit.CM));
         telemetry.addData("Step: ", step);
     }
     public void stop(){
