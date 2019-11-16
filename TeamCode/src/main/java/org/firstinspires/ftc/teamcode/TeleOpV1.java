@@ -38,7 +38,7 @@ public class TeleOpV1 extends OpMode {
         lift = hardwareMap.dcMotor.get("lift");
 
         //Initialize drive train
-        driveSystem = new Headless(hardwareMap, telemetry, "fLeft", "fRight", "bLeft", "bRight");
+        //driveSystem = new Headless(hardwareMap, telemetry, "fLeft", "fRight", "bLeft", "bRight");
 
         fLeft.setDirection(DcMotorSimple.Direction.REVERSE);
         fRight.setDirection(DcMotorSimple.Direction.FORWARD);

@@ -1,8 +1,17 @@
 package org.firstinspires.ftc.teamcode.Subsystems;
 
+import android.annotation.SuppressLint;
+import android.graphics.Bitmap;
+import android.graphics.Color;
 import com.qualcomm.robotcore.hardware.HardwareMap;
+import com.qualcomm.robotcore.util.ThreadPool;
+import com.vuforia.Frame;
+import com.vuforia.Image;
+import com.vuforia.PIXEL_FORMAT;
 
 import org.firstinspires.ftc.robotcore.external.ClassFactory;
+import org.firstinspires.ftc.robotcore.external.function.Consumer;
+import org.firstinspires.ftc.robotcore.external.function.Continuation;
 import org.firstinspires.ftc.robotcore.external.hardware.camera.WebcamName;
 import org.firstinspires.ftc.robotcore.external.matrices.OpenGLMatrix;
 import org.firstinspires.ftc.robotcore.external.matrices.VectorF;
@@ -12,6 +21,7 @@ import org.firstinspires.ftc.robotcore.external.navigation.VuforiaTrackable;
 import org.firstinspires.ftc.robotcore.external.navigation.VuforiaTrackableDefaultListener;
 import org.firstinspires.ftc.robotcore.external.navigation.VuforiaTrackables;
 
+import java.nio.ByteBuffer;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -78,6 +88,8 @@ public class Webcam {
     private VuforiaTrackables targetsSkyStone;
     private List<VuforiaTrackable> allTrackables;
 
+    private String position;
+
     public Webcam(HardwareMap hardwareMap){
         /*
          * Retrieve the camera we are to use.
@@ -103,6 +115,8 @@ public class Webcam {
 
         //  Instantiate the Vuforia engine
         vuforia = ClassFactory.getInstance().createVuforia(parameters);
+
+        vuforia.enableConvertFrameToBitmap();
 
         // Load the data sets for the trackable objects. These particular data
         // sets are stored in the 'assets' part of our application.
@@ -268,6 +282,34 @@ public class Webcam {
         // Tap the preview window to receive a fresh image.
 
         targetsSkyStone.activate();
+    }
+
+    /**
+     * Creates a bitmap from a single frame from the camera.
+     * Then, gets alpha values of two points, one on the right and one on the left.
+     * Sets the position accordingly, defaulting to left.
+     * @return the position of the skystone
+     */
+    public String getBitmapPos() {
+        position = "left";
+        vuforia.getFrameOnce(Continuation.create(ThreadPool.getDefault(), new Consumer<Frame>()
+        {
+            @SuppressLint("NewApi")
+            @Override public void accept(Frame frame)
+            {
+                Bitmap bitmap = vuforia.convertFrameToBitmap(frame);
+                if (bitmap != null) {
+                    if (Color.valueOf(bitmap.getPixel(bitmap.getWidth()/4, bitmap.getHeight()/2)).luminance() < 0.5) {
+                        position = "right";
+                    }
+                    else if (Color.valueOf(bitmap.getPixel(-bitmap.getWidth()/4, bitmap.getHeight()/2)).luminance() < 0.5) {
+                        position = "center";
+                    }
+                }
+            }
+        }));
+
+        return position;
     }
 
     /**
