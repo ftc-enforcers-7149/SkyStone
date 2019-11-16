@@ -364,35 +364,40 @@ public class Webcam {
             }
         }));
 
-        int darkPos = 0;
         int darkVal = 255;
+
+        position = "left";
 
         if (bitmap != null) {
             //Width is 640. Height is 480
-            //cAlpha = Color.green(bitmap.getPixel(100, 380));
-            //rAlpha = Color.green(bitmap.getPixel(540, 380));
-            for (int i = 0; i < rgb.getWidth(); i++) {
-                if (Color.green(bitmap.getPixel(i, 380)) < darkVal) {
-                    darkPos = i;
-                    darkVal = Color.green(bitmap.getPixel(i, 380));
+            cAlpha = Color.green(bitmap.getPixel(100, 450));
+            rAlpha = Color.green(bitmap.getPixel(540, 450));
+            for (int i = 0; i < rgb.getWidth() && (i < 300 || i > 340); i++) {
+                if (Color.green(bitmap.getPixel(i, 450)) < darkVal) {
+                    telemetry.addData("X pos", i);
+                    darkVal = Color.green(bitmap.getPixel(i, 450));
+                    if (darkVal < 100) {
+                        if (i < 300) {
+                            position = "center";
+                            break;
+                        } else {
+                            position = "right";
+                            break;
+                        }
+                    } else {
+                        position = "left";
+                    }
                 }
+            }
+
+            if (darkVal > 100) {
+                position = "left";
             }
         }
 
         telemetry.addData("Green center", cAlpha);
         telemetry.addData("Green right", rAlpha);
-
-        if (darkVal < 100) {
-            if (darkPos < 300) {
-                position = "center";
-            }
-            else if (darkPos > 340) {
-                position = "right";
-            }
-        }
-        else {
-            position = "left";
-        }
+        telemetry.update();
 
         /*if (rAlpha < 100) {
             position = "right";
@@ -405,6 +410,10 @@ public class Webcam {
         }*/
 
         return position;
+    }
+
+    public void deactivate() {
+        targetsSkyStone.deactivate();
     }
 
     /**

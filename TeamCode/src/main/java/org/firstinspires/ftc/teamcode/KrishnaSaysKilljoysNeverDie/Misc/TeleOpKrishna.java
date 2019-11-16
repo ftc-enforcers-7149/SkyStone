@@ -9,7 +9,7 @@ import com.qualcomm.robotcore.hardware.Servo;
 import org.firstinspires.ftc.teamcode.Subsystems.DriveSystems.Headless;
 import org.firstinspires.ftc.teamcode.Subsystems.DriveSystems.Tank;
 
-@TeleOp(name = "TeleOp v2 Tank")
+//@TeleOp(name = "TeleOp v2 Tank")
 public class TeleOpKrishna extends OpMode {
     //Drive train
     Tank driveSystem;

@@ -19,16 +19,19 @@ public class TestWebcam extends OpMode {
     public void loop() {
         switch(step) {
             case 0:
-                position = webcam.getBitmapPos(telemetry);
+                double startTime = System.currentTimeMillis();
+                while (System.currentTimeMillis() < startTime + 2000) {
+                    position = webcam.getBitmapPos(telemetry);
+                }
+                webcam.deactivate();
                 break;
             case 1:
-                //webcam.captureFrameToFile();
                 break;
         }
 
         telemetry.addData("position",position);
         telemetry.addData("Step: ", step);
-        //step++;
+        step++;
     }
 
     public void stop() {

@@ -23,7 +23,7 @@ public class cleanTeleOp extends ParentInit {
     public void init() {
     claw = new Claw(lArm,rArm,lGrab,rGrab);
     foundationV1 = new FoundationV1(lFound,rFound);
-    driveSystem = new Headless(hardwareMap, telemetry, "fLeft", "fRight", "bLeft", "bRight");
+    //driveSystem = new Headless(hardwareMap, telemetry, "fLeft", "fRight", "bLeft", "bRight");
     }
     public void loop() {
         armUp = gamepad2.y;

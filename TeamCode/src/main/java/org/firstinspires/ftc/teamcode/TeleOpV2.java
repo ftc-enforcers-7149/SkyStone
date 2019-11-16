@@ -79,12 +79,12 @@ public class TeleOpV2 extends OpMode {
     }
     public void loop(){
         //Inputs
-        armUp = gamepad2.right_trigger;
-        grab = gamepad2.left_trigger;
+        armUp = gamepad2.left_trigger;
+        grab = gamepad2.right_trigger;
         liftUp=gamepad1.right_trigger;
         liftDown=gamepad1.left_trigger;
-        lFoundationDown = gamepad1.left_bumper;
-        rFoundationDown = gamepad1.right_bumper;
+        lFoundationDown = gamepad1.left_bumper || gamepad2.x;
+        rFoundationDown = gamepad1.right_bumper || gamepad2.b;
 
 
         //Drive
@@ -92,8 +92,8 @@ public class TeleOpV2 extends OpMode {
 
         //FoundationV1 grabbers
         if (lFoundationDown) {
-            fLFound.setPosition(0.50);
-            bLFound.setPosition(0.50);
+            fLFound.setPosition(0.46);
+            bLFound.setPosition(0.46);
         }
         else {
             fLFound.setPosition(1);
@@ -111,12 +111,13 @@ public class TeleOpV2 extends OpMode {
 
         //Arms and block grabbers
         if (armUp > 0.1) {
-            lArm.setPosition(0);
-            rArm.setPosition(0);
-        }
-        else {
             lArm.setPosition(0.95);
             rArm.setPosition(0.81);
+        }
+        else {
+
+            lArm.setPosition(0);
+            rArm.setPosition(0);
         }
 
         if(grab > 0.1){

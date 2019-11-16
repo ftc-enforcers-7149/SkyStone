@@ -5,7 +5,7 @@ import com.qualcomm.robotcore.eventloop.opmode.OpMode;
 import com.qualcomm.robotcore.hardware.HardwareMap;
 
 import org.firstinspires.ftc.teamcode.Subsystems.Webcam;
-@Autonomous(name="VuForia Test")
+//@Autonomous(name="VuForia Test")
 public class VuForiaTest extends OpMode {
     int step=0;
     public Webcam webcam;
