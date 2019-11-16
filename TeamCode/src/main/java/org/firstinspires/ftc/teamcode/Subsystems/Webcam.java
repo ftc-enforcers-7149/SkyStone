@@ -6,6 +6,7 @@ import android.graphics.Color;
 import android.util.Log;
 
 import com.qualcomm.robotcore.hardware.HardwareMap;
+import com.qualcomm.robotcore.util.RobotLog;
 import com.qualcomm.robotcore.util.ThreadPool;
 import com.vuforia.Frame;
 import com.vuforia.Image;
@@ -22,10 +23,15 @@ import org.firstinspires.ftc.robotcore.external.navigation.VuforiaLocalizer;
 import org.firstinspires.ftc.robotcore.external.navigation.VuforiaTrackable;
 import org.firstinspires.ftc.robotcore.external.navigation.VuforiaTrackableDefaultListener;
 import org.firstinspires.ftc.robotcore.external.navigation.VuforiaTrackables;
+import org.firstinspires.ftc.robotcore.internal.system.AppUtil;
 
+import java.io.File;
+import java.io.FileOutputStream;
+import java.io.IOException;
 import java.nio.ByteBuffer;
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Locale;
 
 import static org.firstinspires.ftc.robotcore.external.navigation.AngleUnit.DEGREES;
 import static org.firstinspires.ftc.robotcore.external.navigation.AxesOrder.XYZ;
@@ -92,6 +98,11 @@ public class Webcam {
 
     private String position;
 
+    int captureCounter = 0;
+    File captureDirectory = AppUtil.ROBOT_DATA_DIR;
+
+    public static final String TAG = "Vuforia Navigation Sample";
+
     public Webcam(HardwareMap hardwareMap){
         /*
          * Retrieve the camera we are to use.
@@ -119,6 +130,8 @@ public class Webcam {
         vuforia = ClassFactory.getInstance().createVuforia(parameters);
 
         vuforia.enableConvertFrameToBitmap();
+
+        AppUtil.getInstance().ensureDirectoryExists(captureDirectory);
 
         // Load the data sets for the trackable objects. These particular data
         // sets are stored in the 'assets' part of our application.
@@ -284,6 +297,38 @@ public class Webcam {
         // Tap the preview window to receive a fresh image.
 
         targetsSkyStone.activate();
+    }
+
+    /**
+     * Sample one frame from the Vuforia stream and write it to a .PNG image file on the robot
+     * controller in the /sdcard/FIRST/data directory. The images can be downloaded using Android
+     * Studio's Device File Explorer, ADB, or the Media Transfer Protocol (MTP) integration into
+     * Windows Explorer, among other means. The images can be useful during robot design and calibration
+     * in order to get a sense of what the camera is actually seeing and so assist in camera
+     * aiming and alignment.
+     */
+    public void captureFrameToFile() {
+        vuforia.getFrameOnce(Continuation.create(ThreadPool.getDefault(), new Consumer<Frame>()
+        {
+            @Override public void accept(Frame frame)
+            {
+                Bitmap bitmap = vuforia.convertFrameToBitmap(frame);
+                if (bitmap != null) {
+                    File file = new File(captureDirectory, String.format(Locale.getDefault(), "VuforiaFrame-%d.png", captureCounter++));
+                    try {
+                        FileOutputStream outputStream = new FileOutputStream(file);
+                        try {
+                            bitmap.compress(Bitmap.CompressFormat.PNG, 100, outputStream);
+                        } finally {
+                            outputStream.close();
+                            Log.i("captured %s", file.getName());
+                        }
+                    } catch (IOException e) {
+                        RobotLog.ee(TAG, e, "exception in captureFrameToFile()");
+                    }
+                }
+            }
+        }));
     }
 
     /**
