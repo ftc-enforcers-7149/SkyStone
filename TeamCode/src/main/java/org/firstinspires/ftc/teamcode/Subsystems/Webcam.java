@@ -364,24 +364,45 @@ public class Webcam {
             }
         }));
 
+        int darkPos = 0;
+        int darkVal = 255;
+
         if (bitmap != null) {
             //Width is 640. Height is 480
-            cAlpha = Color.green(bitmap.getPixel(100, 380));
-            rAlpha = Color.green(bitmap.getPixel(540, 380));
+            //cAlpha = Color.green(bitmap.getPixel(100, 380));
+            //rAlpha = Color.green(bitmap.getPixel(540, 380));
+            for (int i = 0; i < rgb.getWidth(); i++) {
+                if (Color.green(bitmap.getPixel(i, 380)) < darkVal) {
+                    darkPos = i;
+                    darkVal = Color.green(bitmap.getPixel(i, 380));
+                }
+            }
         }
 
         telemetry.addData("Green center", cAlpha);
         telemetry.addData("Green right", rAlpha);
 
-        if (rAlpha < 120) {
-            position = "right";
-        }
-        else if (cAlpha < 120) {
-            position = "center";
+        if (darkVal < 100) {
+            if (darkPos < 300) {
+                position = "center";
+            }
+            else if (darkPos > 340) {
+                position = "right";
+            }
         }
         else {
             position = "left";
         }
+
+        /*if (rAlpha < 100) {
+            position = "right";
+        }
+        else if (cAlpha < 100) {
+            position = "center";
+        }
+        else {
+            position = "left";
+        }*/
 
         return position;
     }
