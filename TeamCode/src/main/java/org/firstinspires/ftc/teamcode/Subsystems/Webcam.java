@@ -371,7 +371,7 @@ public class Webcam {
 
             //Width is 640. Height is 480
             cAlpha = Color.red(bitmap.getPixel(10, 440));
-            rAlpha = Color.red(bitmap.getPixel(630, 440));
+            rAlpha = Color.red(bitmap.getPixel(600, 440));
             /*for (int i = 0; i < rgb.getWidth(); i++) {
                 if (i < 300 || i > 340) {
                     if (Color.red(bitmap.getPixel(i, 450)) < darkVal) {

@@ -1,11 +1,13 @@
 package org.firstinspires.ftc.teamcode.AutonomousPrograms.V1;
 
 import com.qualcomm.robotcore.eventloop.opmode.Autonomous;
+import com.qualcomm.robotcore.eventloop.opmode.Disabled;
 import com.qualcomm.robotcore.eventloop.opmode.OpMode;
 import com.qualcomm.robotcore.hardware.DcMotor;
 import com.qualcomm.robotcore.hardware.Servo;
 
 //@Autonomous(name="auto claw park")
+@Disabled
 public class AutoClawPark extends OpMode {
     Servo lArm, rArm, lGrab, rGrab, lFound, rFound;
 

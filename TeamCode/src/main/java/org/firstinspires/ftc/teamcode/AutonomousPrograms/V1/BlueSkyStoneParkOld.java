@@ -13,7 +13,7 @@ import org.firstinspires.ftc.robotcore.external.navigation.DistanceUnit;
 import org.firstinspires.ftc.teamcode.Subsystems.DriveTrain;
 import org.firstinspires.ftc.teamcode.Subsystems.Webcam;
 
-@Autonomous(name="Blue SkyStone Park")
+//@Autonomous(name="Blue SkyStone Park")
 @Disabled
 public class BlueSkyStoneParkOld extends OpMode {
     public Servo lArm, rArm, lGrab, rGrab, lFound, rFound;

@@ -149,7 +149,7 @@ public class RedSkyStonePark extends OpMode {
                 driveTrain.driveToLine(color, "red", "forward");
                 break;
             case 13:
-                driveTrain.driveStraight("forward",17);
+                driveTrain.driveStraight("forward",20);
                 break;
             case 14:
                 rGrab.setPosition(0.6);

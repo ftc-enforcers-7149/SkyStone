@@ -5,7 +5,7 @@ import com.qualcomm.robotcore.eventloop.opmode.OpMode;
 
 import org.firstinspires.ftc.teamcode.Subsystems.Webcam;
 
-@Autonomous(name = "TestWebcam")
+//@Autonomous(name = "TestWebcam")
 public class TestWebcam extends OpMode {
 
     Webcam webcam;

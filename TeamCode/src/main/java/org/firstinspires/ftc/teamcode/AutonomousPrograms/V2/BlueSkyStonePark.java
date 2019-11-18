@@ -105,7 +105,7 @@ public class BlueSkyStonePark extends OpMode {
                 break;
             case 2:
                 if(position.equals("right")){
-                    driveTrain.driveRange(distanceR,62,"right");
+                    driveTrain.driveRange(distanceR,52,"right");
                 }
                 else if(position.equals("left")){
                     driveTrain.driveRange(distanceR,92,"right");
@@ -141,7 +141,7 @@ public class BlueSkyStonePark extends OpMode {
                driveTrain.driveStraight("backward",17);
                 break;
             case 10:
-                driveTrain.rotation(83);
+                driveTrain.rotation(87);
                 break;
             case 11:
                 lArm.setPosition(0);
@@ -151,7 +151,7 @@ public class BlueSkyStonePark extends OpMode {
                 driveTrain.driveToLine(color, "blue", "forward");
                 break;
             case 13:
-                driveTrain.driveStraight("forward",17);
+                driveTrain.driveStraight("forward",20);
                 break;
             case 14:
                 rGrab.setPosition(0.6);
@@ -169,7 +169,7 @@ public class BlueSkyStonePark extends OpMode {
         }
         step++;
         telemetry.addData("position",position);
-        telemetry.addData("range",distanceC.getDistance(DistanceUnit.CM));
+        telemetry.addData("range",distanceR.getDistance(DistanceUnit.CM));
         telemetry.addData("Step: ", step);
     }
     public void stop(){

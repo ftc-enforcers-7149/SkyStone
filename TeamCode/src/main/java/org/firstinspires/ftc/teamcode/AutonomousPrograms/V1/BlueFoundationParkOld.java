@@ -38,7 +38,7 @@ import com.qualcomm.robotcore.hardware.Servo;
 import org.firstinspires.ftc.teamcode.Subsystems.DriveTrain;
 import org.firstinspires.ftc.teamcode.Subsystems.FoundationV1;
 
-@Autonomous(name = "Blue Foundation Park")
+//@Autonomous(name = "Blue Foundation Park")
 @Disabled                          // Comment this out to add to the opmode list
 public class BlueFoundationParkOld extends OpMode {
 
