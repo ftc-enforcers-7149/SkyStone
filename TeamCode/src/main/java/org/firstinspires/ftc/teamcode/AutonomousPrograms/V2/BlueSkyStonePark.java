@@ -150,16 +150,16 @@ public class BlueSkyStonePark extends OpMode {
                 break;
             case 14:
                 claw.release();
+                claw.up();
                 break;
             case 15:
                 driveTrain.driveToLine(color, "blue", "backward");
-                claw.down();
                 break;
             case 16:
-                driveTrain.rotation(100);
+                driveTrain.rotation(80);
                 break;
             case 17:
-                driveTrain.driveRange(distanceC,12,"center");
+                driveTrain.driveRange(distanceC,40,"center");
 
         }
         step++;
