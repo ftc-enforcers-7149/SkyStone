@@ -21,7 +21,7 @@ import java.util.Locale;
 public class OdometryPosition extends Position {
 
     //Declaring motors
-    DcMotor fLeft, fRight, bLeft, bRight, encoderY, encoderX;
+    DcMotor encoderY, encoderX;
 
     BNO055IMU imu;
     private Orientation angles;
@@ -35,9 +35,9 @@ public class OdometryPosition extends Position {
     //Used for encoders
     //TODO: THIS IS REALLY WRONG. FIX IT
     static final double     EXTERNAL_GEARING        = 1;
-    static final double     COUNTS_PER_ODOM = 360;  //28  // eg: Our encoders duh
+    static final double     COUNTS_PER_ODOM = 360; // eg: Our encoders duh
     static final double     DRIVE_GEAR_REDUCTION    = 1;     // This is < 1.0 if geared UP
-    static final double     WHEEL_DIAMETER_INCHES   = 2;     // For figuring circumference
+    static final double     WHEEL_DIAMETER_INCHES   = 1.49606;     // For figuring circumference
     public static final double     COUNTS_PER_INCH         = ((COUNTS_PER_ODOM * DRIVE_GEAR_REDUCTION) /
             (WHEEL_DIAMETER_INCHES * 3.1415))/EXTERNAL_GEARING;
 
@@ -60,13 +60,8 @@ public class OdometryPosition extends Position {
         positionY = 0;
     }
 
-    public OdometryPosition(HardwareMap hardwareMap, String fL, String fR, String bL, String bR, String encX, String encY, String imumap, double posX, double posY) {
+    public OdometryPosition(HardwareMap hardwareMap, String encX, String encY, String imumap, double posX, double posY) {
 
-        //Mapping
-        fLeft = hardwareMap.dcMotor.get(fL);
-        fRight = hardwareMap.dcMotor.get(fR);
-        bLeft = hardwareMap.dcMotor.get(bL);
-        bRight = hardwareMap.dcMotor.get(bR);
         imu = hardwareMap.get(BNO055IMU.class, imumap);
         encoderX = hardwareMap.dcMotor.get(encX);
         encoderY = hardwareMap.dcMotor.get(encY);
@@ -164,28 +159,17 @@ public class OdometryPosition extends Position {
             if (heading % 180 == 0) {
 
                 if (heading == 0) {
-                    if (dir == Direction.FORWARD) {
                         positionX += getMotorDistIn(xPos);
-                    } else {
-                        positionX -= getMotorDistIn(xPos);
-                    }
                 } else {
-                    if (dir == Direction.FORWARD) {
                         positionX -= getMotorDistIn(xPos);
-                    } else {
-                        positionX += getMotorDistIn(xPos);
-                    }
                 }
 
             }
             //This time, we calculate if we are facing up or not. If we are not forwards/backwards or up/down, we move on.
             else if ((heading - 90) % 90 == 0) {
                 if (heading == 90) {
-                    if (dir == Direction.FORWARD) {
                         positionY -= getMotorDistIn(yPos);
-                    } else {
-                        positionY += getMotorDistIn(yPos);
-                    }
+
                 } else {
                     if (dir == Direction.FORWARD) {
                         positionY += getMotorDistIn(yPos);

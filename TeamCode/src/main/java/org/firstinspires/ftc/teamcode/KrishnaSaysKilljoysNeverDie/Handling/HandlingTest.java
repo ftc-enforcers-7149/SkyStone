@@ -9,7 +9,7 @@ public class HandlingTest extends OpMode {
     SamplePath samplePath;
 
     public void init() {
-        handle = new HandlingSystem(hardwareMap, samplePath, "fL", "fR", "bL", "bR", "encX", "encY", "imu", 0, 0, "distC", "distR", "distL");
+        handle = new HandlingSystem(hardwareMap, samplePath, "encX", "encY", "imu", 0, 0, "distC", "distR", "distL");
     }
 
     public void loop() {

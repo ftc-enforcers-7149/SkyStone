@@ -15,7 +15,7 @@ public class SampleEncoder extends OpMode {
     public void init() {
 
         //Declaring encoder test object
-        odometryEncoder = new OdometryEncoder(hardwareMap, "fLeft", "fRight", "bLeft", "bRight", "encoderX", "encoderY", "imu", 0, 0);
+        odometryEncoder = new OdometryEncoder(hardwareMap, "encoderX", "encoderY", "imu", 0, 0);
 
     }
 
