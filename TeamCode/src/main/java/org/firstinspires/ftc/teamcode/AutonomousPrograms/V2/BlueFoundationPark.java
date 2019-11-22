@@ -123,8 +123,7 @@ public class BlueFoundationPark extends OpMode {
                 driveTrain.strafeSeconds(750,"right");
                 break;
             case 4:
-                fRFound.setPosition(0.40);
-                bRFound.setPosition(0.40);
+                foundation.rDown();
                 break;
             case 5:
                 driveTrain.delay(1000);
@@ -140,8 +139,7 @@ public class BlueFoundationPark extends OpMode {
             case 9:
                 driveTrain.strafeSeconds(3000,"right");
             case 10:
-                fRFound.setPosition(1);
-                bRFound.setPosition(1);
+                foundation.rUp();
                 break;
             case 11:
                 driveTrain.strafeSeconds(250,"left");
