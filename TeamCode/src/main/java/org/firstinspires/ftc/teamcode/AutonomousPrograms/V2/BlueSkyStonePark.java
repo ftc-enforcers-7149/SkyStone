@@ -123,7 +123,7 @@ public class BlueSkyStonePark extends OpMode {
                 break;
             case 5:
                 driveTrain.driveStraight("forward", 25);
-                break;
+                break;//
             case 6:
                 claw.grab();
                 break;
