@@ -148,10 +148,10 @@ public class BlueFoundationPark extends OpMode {
                 driveTrain.driveStraight("forward", 28);
                 break;
             case 13:
-                driveTrain.rotation(270);
+                driveTrain.rotation(90);
                 break;
             case 14:
-                driveTrain.driveToLine(color, "blue", "backward");
+                driveTrain.driveToLine(color, "blue", "forward");
                 break;
         }
         step++;

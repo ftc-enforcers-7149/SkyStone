@@ -125,14 +125,13 @@ public class RedFoundationPark extends OpMode {
 
                 break;
             case 5:
-                driveTrain.driveStraight("forward",47);//50
+                driveTrain.driveStraight("backward",47);//50
                 break;
             case 6:
-                driveTrain.strafeSeconds(500,"right");
+                driveTrain.strafeSeconds(500,"left");
                 break;
             case 7:
-                fRFound.setPosition(0.40);
-                bRFound.setPosition(0.40);
+                foundation.lDown();
                 break;
             case 8:
                 driveTrain.delay(1000);
@@ -140,12 +139,12 @@ public class RedFoundationPark extends OpMode {
             case 9:
                 //driveTrain.driveStraight("backward",3);
             case 10:
-                driveTrain.strafeSeconds(250,"left");
+                driveTrain.strafeSeconds(250,"right");
             case 11:
                 driveTrain.simpleTurn(-45,0.45);//driveTrain.simpleRotateRed(295,0.35);//0.45
                 //driveTrain.driveStraight("backward", 35, 0.7,0.7);
                 break;
-            case 12:
+            /*case 12:
                 driveTrain.strafeSeconds(3000,"right");
             case 13:
                 fRFound.setPosition(1);
@@ -165,7 +164,7 @@ public class RedFoundationPark extends OpMode {
                 break;
             case 18:
                 //driveTrain.rotation(180);
-                break;
+                break;*/
 
         }
         step++;
