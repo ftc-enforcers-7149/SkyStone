@@ -7,24 +7,31 @@
       <change beforePath="$PROJECT_DIR$/.gradle/5.1.1/fileHashes/fileHashes.bin" beforeDir="false" afterPath="$PROJECT_DIR$/.gradle/5.1.1/fileHashes/fileHashes.bin" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/.gradle/5.1.1/fileHashes/fileHashes.lock" beforeDir="false" afterPath="$PROJECT_DIR$/.gradle/5.1.1/fileHashes/fileHashes.lock" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/.gradle/buildOutputCleanup/buildOutputCleanup.lock" beforeDir="false" afterPath="$PROJECT_DIR$/.gradle/buildOutputCleanup/buildOutputCleanup.lock" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/.idea/caches/build_file_checksums.ser" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/caches/build_file_checksums.ser" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/.idea/caches/gradle_models.ser" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/caches/gradle_models.ser" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/.idea/libraries/Gradle___Blocks_release__aar.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/libraries/Gradle___Blocks_release__aar.xml" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/.idea/libraries/Gradle___FtcCommon_release__aar.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/libraries/Gradle___FtcCommon_release__aar.xml" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/.idea/libraries/Gradle___Hardware_release__aar.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/libraries/Gradle___Hardware_release__aar.xml" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/.idea/libraries/Gradle___Inspection_release__aar.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/libraries/Gradle___Inspection_release__aar.xml" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/.idea/libraries/Gradle___OnBotJava_release__aar.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/libraries/Gradle___OnBotJava_release__aar.xml" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/.idea/libraries/Gradle___RobotCore_release__aar.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/libraries/Gradle___RobotCore_release__aar.xml" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/.idea/libraries/Gradle___RobotServer_release__aar.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/libraries/Gradle___RobotServer_release__aar.xml" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/.idea/libraries/Gradle___WirelessP2p_release__aar.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/libraries/Gradle___WirelessP2p_release__aar.xml" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/.idea/libraries/Gradle___tensorflow_lite_0_0_0_nightly__aar.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/libraries/Gradle___tensorflow_lite_0_0_0_nightly__aar.xml" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/.idea/libraries/Gradle___tfod_release__aar.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/libraries/Gradle___tfod_release__aar.xml" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/.idea/libraries/Gradle__android_arch_lifecycle_runtime_1_1_1_aar.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/libraries/Gradle__android_arch_lifecycle_runtime_1_1_1_aar.xml" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/.idea/libraries/Gradle__com_android_support_support_compat_28_0_0_aar.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/libraries/Gradle__com_android_support_support_compat_28_0_0_aar.xml" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/.idea/libraries/Gradle__com_android_support_versionedparcelable_28_0_0_aar.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/libraries/Gradle__com_android_support_versionedparcelable_28_0_0_aar.xml" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/.idea/modules.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/modules.xml" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/FtcRobotController/FtcRobotController.iml" beforeDir="false" afterPath="$PROJECT_DIR$/FtcRobotController/FtcRobotController.iml" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/FtcRobotController/build/generated/source/buildConfig/androidTest/debug/com/qualcomm/ftcrobotcontroller/test/BuildConfig.java" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/FtcRobotController/build/intermediates/merged_manifests/debugAndroidTest/AndroidManifest.xml" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/FtcRobotController/build/intermediates/merged_manifests/debugAndroidTest/output.json" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/TeamCode/TeamCode.iml" beforeDir="false" afterPath="$PROJECT_DIR$/TeamCode/TeamCode.iml" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/TeamCode/build/generated/source/buildConfig/androidTest/debug/com/qualcomm/ftcrobotcontroller/test/BuildConfig.java" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/TeamCode/build/intermediates/merged_manifests/debugAndroidTest/AndroidManifest.xml" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/TeamCode/build/intermediates/merged_manifests/debugAndroidTest/output.json" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/TeamCode/src/main/java/org/firstinspires/ftc/teamcode/AutonomousPrograms/V1/AutoClawPark.java" beforeDir="false" afterPath="$PROJECT_DIR$/TeamCode/src/main/java/org/firstinspires/ftc/teamcode/AutonomousPrograms/V1/AutoClawPark.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/TeamCode/src/main/java/org/firstinspires/ftc/teamcode/AutonomousPrograms/V1/BlueFoundationParkOld.java" beforeDir="false" afterPath="$PROJECT_DIR$/TeamCode/src/main/java/org/firstinspires/ftc/teamcode/AutonomousPrograms/V1/BlueFoundationParkOld.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/TeamCode/src/main/java/org/firstinspires/ftc/teamcode/AutonomousPrograms/V1/BlueSkyStoneParkOld.java" beforeDir="false" afterPath="$PROJECT_DIR$/TeamCode/src/main/java/org/firstinspires/ftc/teamcode/AutonomousPrograms/V1/BlueSkyStoneParkOld.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/TeamCode/src/main/java/org/firstinspires/ftc/teamcode/AutonomousPrograms/V1/RedFoundationParkOld.java" beforeDir="false" afterPath="$PROJECT_DIR$/TeamCode/src/main/java/org/firstinspires/ftc/teamcode/AutonomousPrograms/V1/RedFoundationParkOld.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/FtcRobotController/build/outputs/logs/manifest-merger-debug-report.txt" beforeDir="false" afterPath="$PROJECT_DIR$/FtcRobotController/build/outputs/logs/manifest-merger-debug-report.txt" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/TeamCode/build/outputs/logs/manifest-merger-debug-report.txt" beforeDir="false" afterPath="$PROJECT_DIR$/TeamCode/build/outputs/logs/manifest-merger-debug-report.txt" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/TeamCode/src/main/java/org/firstinspires/ftc/teamcode/AutonomousPrograms/V2/BlueSkyStonePark.java" beforeDir="false" afterPath="$PROJECT_DIR$/TeamCode/src/main/java/org/firstinspires/ftc/teamcode/AutonomousPrograms/V2/BlueSkyStonePark.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/TeamCode/src/main/java/org/firstinspires/ftc/teamcode/AutonomousPrograms/V2/RedSkyStonePark.java" beforeDir="false" afterPath="$PROJECT_DIR$/TeamCode/src/main/java/org/firstinspires/ftc/teamcode/AutonomousPrograms/V2/RedSkyStonePark.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/TeamCode/src/main/java/org/firstinspires/ftc/teamcode/Mattu/TestWebcam.java" beforeDir="false" afterPath="$PROJECT_DIR$/TeamCode/src/main/java/org/firstinspires/ftc/teamcode/Mattu/TestWebcam.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/TeamCode/src/main/java/org/firstinspires/ftc/teamcode/Subsystems/Claw.java" beforeDir="false" afterPath="$PROJECT_DIR$/TeamCode/src/main/java/org/firstinspires/ftc/teamcode/Subsystems/Claw.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/TeamCode/src/main/java/org/firstinspires/ftc/teamcode/Subsystems/DriveTrain.java" beforeDir="false" afterPath="$PROJECT_DIR$/TeamCode/src/main/java/org/firstinspires/ftc/teamcode/Subsystems/DriveTrain.java" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/TeamCode/src/main/java/org/firstinspires/ftc/teamcode/Subsystems/Webcam.java" beforeDir="false" afterPath="$PROJECT_DIR$/TeamCode/src/main/java/org/firstinspires/ftc/teamcode/Subsystems/Webcam.java" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/TeamCode/src/main/java/org/firstinspires/ftc/teamcode/TeleOpV2.java" beforeDir="false" afterPath="$PROJECT_DIR$/TeamCode/src/main/java/org/firstinspires/ftc/teamcode/TeleOpV2.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/local.properties" beforeDir="false" afterPath="$PROJECT_DIR$/local.properties" afterDir="false" />
     </list>
     <ignored path="$PROJECT_DIR$/.gradle/" />
     <ignored path="$PROJECT_DIR$/build/" />
@@ -52,8 +59,35 @@
       <file pinned="false" current-in-tab="true">
         <entry file="file://$PROJECT_DIR$/TeamCode/src/main/java/org/firstinspires/ftc/teamcode/AutonomousPrograms/V2/BlueSkyStonePark.java">
           <provider selected="true" editor-type-id="text-editor">
-            <state relative-caret-position="123">
-              <caret line="107" column="54" selection-start-line="107" selection-start-column="54" selection-end-line="107" selection-end-column="54" />
+            <state relative-caret-position="469">
+              <caret line="158" column="38" selection-start-line="158" selection-start-column="38" selection-end-line="158" selection-end-column="38" />
+            </state>
+          </provider>
+        </entry>
+      </file>
+      <file pinned="false" current-in-tab="false">
+        <entry file="file://$PROJECT_DIR$/TeamCode/src/main/java/org/firstinspires/ftc/teamcode/Subsystems/DriveTrain.java">
+          <provider selected="true" editor-type-id="text-editor">
+            <state relative-caret-position="162">
+              <caret line="299" column="16" selection-start-line="299" selection-start-column="16" selection-end-line="299" selection-end-column="16" />
+            </state>
+          </provider>
+        </entry>
+      </file>
+      <file pinned="false" current-in-tab="false">
+        <entry file="file://$PROJECT_DIR$/TeamCode/src/main/java/org/firstinspires/ftc/teamcode/Subsystems/Claw.java">
+          <provider selected="true" editor-type-id="text-editor">
+            <state relative-caret-position="697">
+              <caret line="74" column="36" selection-start-line="74" selection-start-column="36" selection-end-line="74" selection-end-column="36" />
+            </state>
+          </provider>
+        </entry>
+      </file>
+      <file pinned="false" current-in-tab="false">
+        <entry file="file://$PROJECT_DIR$/TeamCode/src/main/java/org/firstinspires/ftc/teamcode/TeleOpV2.java">
+          <provider selected="true" editor-type-id="text-editor">
+            <state relative-caret-position="476">
+              <caret line="127" column="12" selection-start-line="127" selection-start-column="12" selection-end-line="128" selection-end-column="33" />
             </state>
           </provider>
         </entry>
@@ -70,7 +104,7 @@
       <file pinned="false" current-in-tab="false">
         <entry file="file://$PROJECT_DIR$/TeamCode/src/main/java/org/firstinspires/ftc/teamcode/Subsystems/Webcam.java">
           <provider selected="true" editor-type-id="text-editor">
-            <state relative-caret-position="124">
+            <state relative-caret-position="277">
               <caret line="373" column="50" selection-start-line="373" selection-start-column="50" selection-end-line="373" selection-end-column="50" />
               <folding>
                 <element signature="e#21207#21208#0" expanded="true" />
@@ -125,8 +159,6 @@
         <option value="$PROJECT_DIR$/TeamCode/src/main/java/org/firstinspires/ftc/teamcode/TeleOpV1.java" />
         <option value="$PROJECT_DIR$/FtcRobotController/src/main/java/org/firstinspires/ftc/robotcontroller/external/samples/ConceptVuforiaNavigationWebcam.java" />
         <option value="$PROJECT_DIR$/build.common.gradle" />
-        <option value="$PROJECT_DIR$/TeamCode/src/main/java/org/firstinspires/ftc/teamcode/Subsystems/DriveTrain.java" />
-        <option value="$PROJECT_DIR$/TeamCode/src/main/java/org/firstinspires/ftc/teamcode/TeleOpV2.java" />
         <option value="$PROJECT_DIR$/TeamCode/src/main/java/org/firstinspires/ftc/teamcode/AutonomousPrograms/V1/BlueFoundationParkOld.java" />
         <option value="$PROJECT_DIR$/TeamCode/src/main/java/org/firstinspires/ftc/teamcode/AutonomousPrograms/V1/RedFoundationParkOld.java" />
         <option value="$PROJECT_DIR$/TeamCode/src/main/java/org/firstinspires/ftc/teamcode/AutonomousPrograms/V1/BlueSkyStoneParkOld.java" />
@@ -134,7 +166,10 @@
         <option value="$PROJECT_DIR$/TeamCode/src/main/java/org/firstinspires/ftc/teamcode/AutonomousPrograms/V1/AutoClawPark.java" />
         <option value="$PROJECT_DIR$/TeamCode/src/main/java/org/firstinspires/ftc/teamcode/UpNAdam/GoBuildaChassis.java" />
         <option value="$PROJECT_DIR$/TeamCode/src/main/java/org/firstinspires/ftc/teamcode/AutonomousPrograms/V2/RedSkyStonePark.java" />
+        <option value="$PROJECT_DIR$/TeamCode/src/main/java/org/firstinspires/ftc/teamcode/TeleOpV2.java" />
         <option value="$PROJECT_DIR$/TeamCode/src/main/java/org/firstinspires/ftc/teamcode/Subsystems/Webcam.java" />
+        <option value="$PROJECT_DIR$/TeamCode/src/main/java/org/firstinspires/ftc/teamcode/Subsystems/Claw.java" />
+        <option value="$PROJECT_DIR$/TeamCode/src/main/java/org/firstinspires/ftc/teamcode/Subsystems/DriveTrain.java" />
         <option value="$PROJECT_DIR$/TeamCode/src/main/java/org/firstinspires/ftc/teamcode/AutonomousPrograms/V2/BlueSkyStonePark.java" />
       </list>
     </option>
@@ -151,7 +186,6 @@
       <foldersAlwaysOnTop value="true" />
     </navigator>
     <panes>
-      <pane id="Scope" />
       <pane id="AndroidView">
         <subPane>
           <expand>
@@ -229,8 +263,9 @@
           <select />
         </subPane>
       </pane>
-      <pane id="PackagesPane" />
       <pane id="ProjectPane" />
+      <pane id="PackagesPane" />
+      <pane id="Scope" />
     </panes>
   </component>
   <component name="PropertiesComponent">
@@ -423,11 +458,19 @@
       <option name="project" value="LOCAL" />
       <updated>1573938820382</updated>
     </task>
-    <option name="localTasksCounter" value="14" />
+    <task id="LOCAL-00014" summary="qualifier changes">
+      <created>1574095368043</created>
+      <option name="number" value="00014" />
+      <option name="presentableId" value="LOCAL-00014" />
+      <option name="project" value="LOCAL" />
+      <updated>1574095368043</updated>
+    </task>
+    <option name="localTasksCounter" value="15" />
     <servers />
   </component>
   <component name="ToolWindowManager">
     <frame x="-6" y="-6" width="1513" height="973" extended-state="6" />
+    <editor active="true" />
     <layout>
       <window_info id="Captures" order="0" side_tool="true" weight="0.25" />
       <window_info id="Designer" order="1" />
@@ -441,7 +484,7 @@
       <window_info anchor="bottom" id="Version Control" order="0" />
       <window_info anchor="bottom" id="TODO" order="1" />
       <window_info anchor="bottom" id="Android Profiler" order="2" />
-      <window_info anchor="bottom" id="Terminal" order="3" visible="true" weight="0.32977462" />
+      <window_info anchor="bottom" id="Terminal" order="3" weight="0.32977462" />
       <window_info anchor="bottom" id="Event Log" order="4" sideWeight="0.50040483" side_tool="true" weight="0.31728044" />
       <window_info anchor="bottom" id="Build" order="5" sideWeight="0.49959514" weight="0.31553975" />
       <window_info anchor="bottom" id="Logcat" order="6" />
@@ -496,7 +539,8 @@
     <MESSAGE value="Using bitmaps for position finding" />
     <MESSAGE value="Use for loop in webcam" />
     <MESSAGE value="pushing up for qualifier" />
-    <option name="LAST_COMMIT_MESSAGE" value="pushing up for qualifier" />
+    <MESSAGE value="qualifier changes" />
+    <option name="LAST_COMMIT_MESSAGE" value="qualifier changes" />
   </component>
   <component name="editorHistoryManager">
     <entry file="file://$PROJECT_DIR$/TeamCode/src/main/java/org/firstinspires/ftc/teamcode/CollisionAvoidance/TestMovementDetection.java">
@@ -555,13 +599,6 @@
       <provider selected="true" editor-type-id="text-editor">
         <state relative-caret-position="119">
           <caret line="41" column="13" selection-start-line="41" selection-start-column="13" selection-end-line="41" selection-end-column="13" />
-        </state>
-      </provider>
-    </entry>
-    <entry file="file://$PROJECT_DIR$/TeamCode/src/main/java/org/firstinspires/ftc/teamcode/Subsystems/Claw.java">
-      <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="544">
-          <caret line="35" column="18" selection-start-line="35" selection-start-column="18" selection-end-line="35" selection-end-column="18" />
         </state>
       </provider>
     </entry>
@@ -767,13 +804,6 @@
         </state>
       </provider>
     </entry>
-    <entry file="file://$PROJECT_DIR$/TeamCode/src/main/java/org/firstinspires/ftc/teamcode/Subsystems/DriveTrain.java">
-      <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="1377">
-          <caret line="100" column="25" selection-start-line="100" selection-start-column="25" selection-end-line="100" selection-end-column="25" />
-        </state>
-      </provider>
-    </entry>
     <entry file="file://$PROJECT_DIR$/TeamCode/src/main/java/org/firstinspires/ftc/teamcode/UpNAdam/GoBuildaChassis.java">
       <provider selected="true" editor-type-id="text-editor">
         <state relative-caret-position="85">
@@ -802,16 +832,9 @@
         </state>
       </provider>
     </entry>
-    <entry file="file://$PROJECT_DIR$/TeamCode/src/main/java/org/firstinspires/ftc/teamcode/TeleOpV2.java">
-      <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="123">
-          <caret line="140" column="29" selection-start-line="140" selection-start-column="29" selection-end-line="140" selection-end-column="29" />
-        </state>
-      </provider>
-    </entry>
     <entry file="file://$PROJECT_DIR$/TeamCode/src/main/java/org/firstinspires/ftc/teamcode/Subsystems/Webcam.java">
       <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="124">
+        <state relative-caret-position="277">
           <caret line="373" column="50" selection-start-line="373" selection-start-column="50" selection-end-line="373" selection-end-column="50" />
           <folding>
             <element signature="e#21207#21208#0" expanded="true" />
@@ -827,10 +850,31 @@
         </state>
       </provider>
     </entry>
+    <entry file="file://$PROJECT_DIR$/TeamCode/src/main/java/org/firstinspires/ftc/teamcode/TeleOpV2.java">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="476">
+          <caret line="127" column="12" selection-start-line="127" selection-start-column="12" selection-end-line="128" selection-end-column="33" />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/TeamCode/src/main/java/org/firstinspires/ftc/teamcode/Subsystems/Claw.java">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="697">
+          <caret line="74" column="36" selection-start-line="74" selection-start-column="36" selection-end-line="74" selection-end-column="36" />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/TeamCode/src/main/java/org/firstinspires/ftc/teamcode/Subsystems/DriveTrain.java">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="162">
+          <caret line="299" column="16" selection-start-line="299" selection-start-column="16" selection-end-line="299" selection-end-column="16" />
+        </state>
+      </provider>
+    </entry>
     <entry file="file://$PROJECT_DIR$/TeamCode/src/main/java/org/firstinspires/ftc/teamcode/AutonomousPrograms/V2/BlueSkyStonePark.java">
       <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="123">
-          <caret line="107" column="54" selection-start-line="107" selection-start-column="54" selection-end-line="107" selection-end-column="54" />
+        <state relative-caret-position="469">
+          <caret line="158" column="38" selection-start-line="158" selection-start-column="38" selection-end-line="158" selection-end-column="38" />
         </state>
       </provider>
     </entry>

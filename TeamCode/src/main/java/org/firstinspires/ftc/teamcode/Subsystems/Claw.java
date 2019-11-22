@@ -42,15 +42,15 @@ public class Claw {
      * Makes claw grab
      */
     public void grab(){
-        rGrab.setPosition(0.41);
-        lGrab.setPosition(0.45);
+        rGrab.setPosition(0.1);
+        lGrab.setPosition(0.5);
     }
 
     /**
      * Makes claw release
      */
     public void release(){
-        rGrab.setPosition(0.6);
+        rGrab.setPosition(0.25);//.6
         lGrab.setPosition(1);
     }
 
@@ -61,18 +61,18 @@ public class Claw {
      * @param right right claw
      */
     public void setState(boolean left,boolean right){
-        if(left){
-            lGrab.setPosition(0.45);
+        if(left){//grab
+            lGrab.setPosition(0.5);
         }
-        else{
+        else{//release
             lGrab.setPosition(1);
         }
 
-        if(right){
-            rGrab.setPosition(0.44);
+        if(right){//grab
+            rGrab.setPosition(0.1);
         }
-        else{
-            rGrab.setPosition(1);
+        else{//release
+            rGrab.setPosition(0.25);
         }
     }
 

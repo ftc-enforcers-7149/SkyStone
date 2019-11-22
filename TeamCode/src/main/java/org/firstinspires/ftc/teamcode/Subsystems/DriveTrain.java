@@ -167,7 +167,7 @@ public class DriveTrain {
         bLeft.setMode(DcMotor.RunMode.RUN_WITHOUT_ENCODER);
 
         double speed = 0;
-        double min = 0.2;
+        double min = 0.18;
         double max = 0.8;
         double iTime=System.currentTimeMillis();
 
@@ -200,7 +200,7 @@ public class DriveTrain {
         }
 
         //main phase of method
-        while (heading < destination - 1 || heading > destination + 1) {
+        while (heading < destination - 0.5 || heading > destination + 0.5) {
             telemetry.addData("heading",heading);
             telemetry.addData("speed",speed);
             telemetry.update();
@@ -251,31 +251,11 @@ public class DriveTrain {
 
         theD = dir.equals("forward") ? 1 : -1;
 
-        if(lineColor.equals("blue")) {
-            while(color.blue() < 35){
-                fLeft.setPower(theD * 0.25);
-                bLeft.setPower(theD * 0.25);
-                bRight.setPower(theD * 0.25);
-                fRight.setPower(theD * 0.25);
-            }
-        }
-        else if(lineColor.equals("red")) {
-            while(color.red() < 35){
-                fLeft.setPower(theD * 0.25);
-                bLeft.setPower(theD * 0.25);
-                bRight.setPower(theD * 0.25);
-                fRight.setPower(theD * 0.25);
-            }
-        }
-        else {
-            telemetry.addLine("Joe mama");
-            Log.e("Incorrect usage of: ", "driveToLine method");
-        }
         while(color.red()<35&&color.blue()<35){
-            fLeft.setPower(0.25);
-            bLeft.setPower(0.25);
-            bRight.setPower(0.25);
-            fRight.setPower(0.25);
+            fLeft.setPower(0.5*theD);
+            bLeft.setPower(0.5*theD);
+            bRight.setPower(0.5*theD);
+            fRight.setPower(0.5*theD);
         }
         fLeft.setPower(0);
         bLeft.setPower(0);

@@ -23,6 +23,7 @@ public class BlueSkyStonePark extends OpMode {
 
     Webcam webcam;
     DriveTrain driveTrain;
+    Claw claw;
 
     String position="";
 
@@ -86,6 +87,7 @@ public class BlueSkyStonePark extends OpMode {
         telemetry.addData("sensor:",distanceC.getDeviceName());
 
         webcam=new Webcam(hardwareMap);
+        claw=new Claw(lArm,rArm,lGrab,rGrab);
     }
     public void start(){
         driveTrain=new DriveTrain(hardwareMap,telemetry,fLeft,fRight,bLeft,bRight);
@@ -98,9 +100,7 @@ public class BlueSkyStonePark extends OpMode {
             case 1:
                 webcam.captureFrameToFile();
                 double startTime = System.currentTimeMillis();
-                while (System.currentTimeMillis() < startTime + 4000) {
-                    position = webcam.getBitmapPos(telemetry);
-                }
+                position = webcam.getBitmapPos(telemetry);
                 webcam.deactivate();
                 break;
             case 2:
@@ -115,10 +115,8 @@ public class BlueSkyStonePark extends OpMode {
                 }
                 break;
             case 3:
-                lArm.setPosition(0);
-                rArm.setPosition(0);
-                lGrab.setPosition(1);
-                rGrab.setPosition(0.43);
+                claw.down();;
+                claw.setState(false,true);
                 break;
 
             case 4:driveTrain.delay(500);
@@ -127,25 +125,22 @@ public class BlueSkyStonePark extends OpMode {
                 driveTrain.driveStraight("forward", 25);
                 break;
             case 6:
-                lGrab.setPosition(0.45);
-                rGrab.setPosition(0.43);
+                claw.grab();
                 break;
             case 7:
                 driveTrain.delay(500);
                 break;
             case 8:
-                lArm.setPosition(0.95);
-                rArm.setPosition(0.81);
+                claw.up();
                 break;
             case 9:
                driveTrain.driveStraight("backward",17);
                 break;
             case 10:
-                driveTrain.rotation(87);
+                driveTrain.rotation(90);
                 break;
             case 11:
-                lArm.setPosition(0);
-                rArm.setPosition(0);
+                claw.down();
                 break;
             case 12:
                 driveTrain.driveToLine(color, "blue", "forward");
@@ -154,17 +149,17 @@ public class BlueSkyStonePark extends OpMode {
                 driveTrain.driveStraight("forward",20);
                 break;
             case 14:
-                rGrab.setPosition(0.6);
-                lGrab.setPosition(1);
+                claw.release();
                 break;
             case 15:
                 driveTrain.driveToLine(color, "blue", "backward");
-                lArm.setPosition(0.95);
-                rArm.setPosition(0.81);
+                claw.down();
                 break;
             case 16:
-                //driveTrain.simpleTurn(0,0.4);
+                driveTrain.rotation(100);
                 break;
+            case 17:
+                driveTrain.driveRange(distanceC,12,"center");
 
         }
         step++;
