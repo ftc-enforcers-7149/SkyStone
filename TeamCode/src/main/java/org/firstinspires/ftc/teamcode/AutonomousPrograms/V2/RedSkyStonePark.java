@@ -1,7 +1,6 @@
-package org.firstinspires.ftc.teamcode.AutonomousPrograms.V1;
+package org.firstinspires.ftc.teamcode.AutonomousPrograms.V2;
 
 import com.qualcomm.robotcore.eventloop.opmode.Autonomous;
-import com.qualcomm.robotcore.eventloop.opmode.Disabled;
 import com.qualcomm.robotcore.eventloop.opmode.OpMode;
 import com.qualcomm.robotcore.hardware.ColorSensor;
 import com.qualcomm.robotcore.hardware.DcMotor;
@@ -13,10 +12,10 @@ import org.firstinspires.ftc.robotcore.external.navigation.DistanceUnit;
 import org.firstinspires.ftc.teamcode.Subsystems.DriveTrain;
 import org.firstinspires.ftc.teamcode.Subsystems.Webcam;
 
-//@Autonomous(name="Blue SkyStone Park")
-@Disabled
-public class BlueSkyStoneParkOld extends OpMode {
-    public Servo lArm, rArm, lGrab, rGrab, lFound, rFound;
+@Autonomous(name="Red SkyStone ParkV2")
+public class RedSkyStonePark extends OpMode {
+    public Servo lArm, rArm, lGrab, rGrab;
+    Servo fLFound, fRFound, bLFound, bRFound;
     public DcMotor fRight,fLeft,bRight,bLeft,lift;
 
     int step=0;
@@ -35,8 +34,10 @@ public class BlueSkyStoneParkOld extends OpMode {
         rArm = hardwareMap.servo.get("rArm");
         lGrab = hardwareMap.servo.get("lGrab");
         rGrab = hardwareMap.servo.get("rGrab");
-        lFound = hardwareMap.servo.get("lFound");
-        rFound = hardwareMap.servo.get("rFound");
+        fLFound = hardwareMap.servo.get("fLFound");
+        fRFound = hardwareMap.servo.get("fRFound");
+        bLFound = hardwareMap.servo.get("bLFound");
+        bRFound = hardwareMap.servo.get("bRFound");
         //Drive motors
         fLeft = hardwareMap.dcMotor.get("fLeft");
         fRight = hardwareMap.dcMotor.get("fRight");
@@ -57,19 +58,23 @@ public class BlueSkyStoneParkOld extends OpMode {
         bLeft.setDirection(DcMotorSimple.Direction.FORWARD);
         lift.setDirection(DcMotorSimple.Direction.FORWARD);
         //direction of servos
-        lArm.setDirection(Servo.Direction.REVERSE);
-        rArm.setDirection(Servo.Direction.FORWARD);
-        lGrab.setDirection(Servo.Direction.FORWARD);
-        rGrab.setDirection(Servo.Direction.REVERSE);
-        lFound.setDirection(Servo.Direction.REVERSE);
-        rFound.setDirection(Servo.Direction.FORWARD);
+        lArm.setDirection(Servo.Direction.FORWARD);
+        rArm.setDirection(Servo.Direction.REVERSE);
+        lGrab.setDirection(Servo.Direction.REVERSE);
+        rGrab.setDirection(Servo.Direction.FORWARD);
+        fLFound.setDirection(Servo.Direction.REVERSE);
+        fRFound.setDirection(Servo.Direction.FORWARD);
+        bLFound.setDirection(Servo.Direction.FORWARD);
+        bRFound.setDirection(Servo.Direction.REVERSE);
 
-        //Servos up
-        rFound.setPosition(0);
-        lFound.setPosition(0);
+        lArm.setPosition(0.95);
+        rArm.setPosition(0.81);
 
-        lArm.setPosition(0.1);
-        rArm.setPosition(0.05);
+        fLFound.setPosition(1);
+        bLFound.setPosition(1);
+
+        fRFound.setPosition(1);
+        bRFound.setPosition(1);
 
         lift.setZeroPowerBehavior(DcMotor.ZeroPowerBehavior.BRAKE);
         fLeft.setZeroPowerBehavior(DcMotor.ZeroPowerBehavior.BRAKE);
@@ -87,27 +92,32 @@ public class BlueSkyStoneParkOld extends OpMode {
     public void loop(){
         switch(step){
             case 0:
-                driveTrain.driveStraight("forward",17);
+                driveTrain.driveStraight("forward",20);
                 break;
             case 1:
-                position=webcam.getPosition();
+                double startTime = System.currentTimeMillis();
+                while (System.currentTimeMillis() < startTime + 4000) {
+                    position = webcam.getBitmapPos(telemetry);
+                }
+                webcam.deactivate();
                 break;
             case 2:
                 if(position.equals("right")){
-                    driveTrain.driveRange(distanceR,60,"right");
+                    driveTrain.driveRange(distanceL,106,"left");
                 }
                 else if(position.equals("left")){
-                    driveTrain.driveRange(distanceR,90,"right");
+                    driveTrain.driveRange(distanceL,75,"left");
                 }
                 else{
-                    driveTrain.driveRange(distanceR,70,"right");
+                    driveTrain.driveRange(distanceL,90,"left");
                 }
                 break;
             case 3:
-                lArm.setPosition(1);
-                rArm.setPosition(1);
-                lGrab.setPosition(0);
-                rGrab.setPosition(0.15);
+                lArm.setPosition(0);
+                rArm.setPosition(0);
+                lGrab.setPosition(1);
+                rGrab.setPosition(0.43);
+                break;
 
             case 4:driveTrain.delay(500);
                 break;
@@ -115,48 +125,49 @@ public class BlueSkyStoneParkOld extends OpMode {
                 driveTrain.driveStraight("forward", 25);
                 break;
             case 6:
-                lGrab.setPosition(0.16);
-                rGrab.setPosition(0.16);
+                lGrab.setPosition(0.45);
+                rGrab.setPosition(0.43);
                 break;
             case 7:
                 driveTrain.delay(500);
                 break;
             case 8:
-                lArm.setPosition(0.25);
-                rArm.setPosition(0.25);
+                lArm.setPosition(0.95);
+                rArm.setPosition(0.81);
                 break;
             case 9:
-                driveTrain.driveStraight("backward",17);
+               driveTrain.driveStraight("backward",17);
                 break;
             case 10:
-                driveTrain.rotation(83);
+                driveTrain.rotation(272);
                 break;
             case 11:
-                lArm.setPosition(1);
-                rArm.setPosition(1);
+                lArm.setPosition(0);
+                rArm.setPosition(0);
+                break;
             case 12:
-                //driveTrain.driveToLine(color);
+                driveTrain.driveToLine(color, "red", "forward");
                 break;
             case 13:
-                driveTrain.driveStraight("forward",28);
+                driveTrain.driveStraight("forward",20);
                 break;
             case 14:
-                lGrab.setPosition(0);
-                rGrab.setPosition(0);
+                rGrab.setPosition(0.6);
+                lGrab.setPosition(1);
                 break;
             case 15:
-                driveTrain.driveRange(distanceC,20,"center");
-                lArm.setPosition(0.25);
-                rArm.setPosition(0.25);
+                driveTrain.driveToLine(color, "red", "backward");
+                lArm.setPosition(0.95);
+                rArm.setPosition(0.81);
                 break;
             case 16:
-                driveTrain.simpleTurn(0,0.4);
+                //driveTrain.simpleTurn(0,0.4);
                 break;
 
         }
         step++;
         telemetry.addData("position",position);
-        telemetry.addData("range",distanceC.getDistance(DistanceUnit.CM));
+        telemetry.addData("range",distanceL.getDistance(DistanceUnit.CM));
         telemetry.addData("Step: ", step);
     }
     public void stop(){

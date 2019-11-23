@@ -1,5 +1,7 @@
 package org.firstinspires.ftc.teamcode.Subsystems;
 
+import android.util.Log;
+
 import com.qualcomm.hardware.bosch.BNO055IMU;
 import com.qualcomm.hardware.bosch.JustLoggingAccelerationIntegrator;
 import com.qualcomm.robotcore.hardware.ColorSensor;
@@ -96,7 +98,7 @@ public class DriveTrain {
         while(cPosition < distance){
             cPosition=fRight.getCurrentPosition()/COUNTS_PER_INCH*mDirection;
             if(distance-Math.abs(cPosition)<20){
-                power=0.2*mDirection;
+                power=0.4*mDirection;
             }
             fLeft.setPower(power);
             fRight.setPower(power);
@@ -165,7 +167,7 @@ public class DriveTrain {
         bLeft.setMode(DcMotor.RunMode.RUN_WITHOUT_ENCODER);
 
         double speed = 0;
-        double min = 0.2;
+        double min = 0.18;
         double max = 0.8;
         double iTime=System.currentTimeMillis();
 
@@ -198,7 +200,7 @@ public class DriveTrain {
         }
 
         //main phase of method
-        while (heading < destination - 1 || heading > destination + 1) {
+        while (heading < destination - 0.5 || heading > destination + 0.5) {
             telemetry.addData("heading",heading);
             telemetry.addData("speed",speed);
             telemetry.update();
@@ -243,12 +245,17 @@ public class DriveTrain {
         fRight.setPower(0);
     }
 
-    public void driveToLine(ColorSensor color){
+    public void driveToLine(ColorSensor color, String lineColor, String dir){
+
+        int theD;
+
+        theD = dir.equals("forward") ? 1 : -1;
+
         while(color.red()<35&&color.blue()<35){
-            fLeft.setPower(0.25);
-            bLeft.setPower(0.25);
-            bRight.setPower(0.25);
-            fRight.setPower(0.25);
+            fLeft.setPower(0.5*theD);
+            bLeft.setPower(0.5*theD);
+            bRight.setPower(0.5*theD);
+            fRight.setPower(0.5*theD);
         }
         fLeft.setPower(0);
         bLeft.setPower(0);

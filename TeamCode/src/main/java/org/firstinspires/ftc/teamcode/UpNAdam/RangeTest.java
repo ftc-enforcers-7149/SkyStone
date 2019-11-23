@@ -10,7 +10,7 @@ import com.qualcomm.robotcore.hardware.Servo;
 
 import org.firstinspires.ftc.teamcode.CollisionAvoidance.MovementDetectionClass;
 
-@TeleOp(name="range test")
+//@TeleOp(name="range test")
 public class RangeTest extends OpMode {
     MovementDetectionClass detection;
 

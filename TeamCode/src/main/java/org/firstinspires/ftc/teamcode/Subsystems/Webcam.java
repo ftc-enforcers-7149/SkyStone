@@ -1,8 +1,23 @@
 package org.firstinspires.ftc.teamcode.Subsystems;
 
+import android.annotation.SuppressLint;
+import android.graphics.Bitmap;
+import android.graphics.Color;
+import android.graphics.ColorSpace;
+import android.os.Build;
+import android.util.Log;
+
 import com.qualcomm.robotcore.hardware.HardwareMap;
+import com.qualcomm.robotcore.util.RobotLog;
+import com.qualcomm.robotcore.util.ThreadPool;
+import com.vuforia.Frame;
+import com.vuforia.Image;
+import com.vuforia.PIXEL_FORMAT;
 
 import org.firstinspires.ftc.robotcore.external.ClassFactory;
+import org.firstinspires.ftc.robotcore.external.Telemetry;
+import org.firstinspires.ftc.robotcore.external.function.Consumer;
+import org.firstinspires.ftc.robotcore.external.function.Continuation;
 import org.firstinspires.ftc.robotcore.external.hardware.camera.WebcamName;
 import org.firstinspires.ftc.robotcore.external.matrices.OpenGLMatrix;
 import org.firstinspires.ftc.robotcore.external.matrices.VectorF;
@@ -11,9 +26,15 @@ import org.firstinspires.ftc.robotcore.external.navigation.VuforiaLocalizer;
 import org.firstinspires.ftc.robotcore.external.navigation.VuforiaTrackable;
 import org.firstinspires.ftc.robotcore.external.navigation.VuforiaTrackableDefaultListener;
 import org.firstinspires.ftc.robotcore.external.navigation.VuforiaTrackables;
+import org.firstinspires.ftc.robotcore.internal.system.AppUtil;
 
+import java.io.File;
+import java.io.FileOutputStream;
+import java.io.IOException;
+import java.nio.ByteBuffer;
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Locale;
 
 import static org.firstinspires.ftc.robotcore.external.navigation.AngleUnit.DEGREES;
 import static org.firstinspires.ftc.robotcore.external.navigation.AxesOrder.XYZ;
@@ -78,6 +99,18 @@ public class Webcam {
     private VuforiaTrackables targetsSkyStone;
     private List<VuforiaTrackable> allTrackables;
 
+    private String position;
+
+    int captureCounter = 0;
+    File captureDirectory = AppUtil.ROBOT_DATA_DIR;
+
+    Image rgb = null;
+    Bitmap bitmap = null;
+
+    int cAlpha, rAlpha;
+
+    public static final String TAG = "Vuforia Navigation Sample";
+
     public Webcam(HardwareMap hardwareMap){
         /*
          * Retrieve the camera we are to use.
@@ -103,6 +136,10 @@ public class Webcam {
 
         //  Instantiate the Vuforia engine
         vuforia = ClassFactory.getInstance().createVuforia(parameters);
+
+        vuforia.enableConvertFrameToBitmap();
+
+        AppUtil.getInstance().ensureDirectoryExists(captureDirectory);
 
         // Load the data sets for the trackable objects. These particular data
         // sets are stored in the 'assets' part of our application.
@@ -266,8 +303,148 @@ public class Webcam {
         // Note: To use the remote camera preview:
         // AFTER you hit Init on the Driver Station, use the "options menu" to select "Camera Stream"
         // Tap the preview window to receive a fresh image.
+    }
 
+    /**
+     * Sample one frame from the Vuforia stream and write it to a .PNG image file on the robot
+     * controller in the /sdcard/FIRST/data directory. The images can be downloaded using Android
+     * Studio's Device File Explorer, ADB, or the Media Transfer Protocol (MTP) integration into
+     * Windows Explorer, among other means. The images can be useful during robot design and calibration
+     * in order to get a sense of what the camera is actually seeing and so assist in camera
+     * aiming and alignment.
+     */
+    public void captureFrameToFile() {
+        vuforia.getFrameOnce(Continuation.create(ThreadPool.getDefault(), new Consumer<Frame>()
+        {
+            @Override public void accept(Frame frame)
+            {
+                Bitmap bitmap = vuforia.convertFrameToBitmap(frame);
+                if (bitmap != null) {
+                    File file = new File(captureDirectory, String.format(Locale.getDefault(), "VuforiaFrame-%d.png", captureCounter++));
+                    try {
+                        FileOutputStream outputStream = new FileOutputStream(file);
+                        try {
+                            bitmap.compress(Bitmap.CompressFormat.PNG, 100, outputStream);
+                        } finally {
+                            outputStream.close();
+                            Log.i("captured %s", file.getName());
+                        }
+                    } catch (IOException e) {
+                        RobotLog.ee(TAG, e, "exception in captureFrameToFile()");
+                    }
+                }
+            }
+        }));
+    }
+
+    /**
+     * Creates a bitmap from a single frame from the camera.
+     * Then, gets alpha values of two points, one on the right and one on the left.
+     * Sets the position accordingly, defaulting to left.
+     * @return the position of the skystone
+     */
+    public String getBitmapPos(final Telemetry telemetry) {
         targetsSkyStone.activate();
+        vuforia.getFrameOnce(Continuation.create(ThreadPool.getDefault(), new Consumer<Frame>()
+        {
+
+            @Override public void accept(Frame frame)
+            {
+                for (int i = 0; i < frame.getNumImages(); i++) {
+                    if (frame.getImage(i).getFormat() == PIXEL_FORMAT.RGB565) {
+                        if (frame.getImage(i) != null) {
+                            rgb = frame.getImage(i);
+                        }
+                    }
+                }
+
+                if (rgb.getPixels() != null) {
+                    bitmap = Bitmap.createBitmap(rgb.getWidth(), rgb.getHeight(), Bitmap.Config.RGB_565);
+                    bitmap.copyPixelsFromBuffer(rgb.getPixels());
+                }
+            }
+        }));
+
+        //int darkVal = 255;
+
+        if (bitmap != null) {
+
+            //Width is 640. Height is 480
+            cAlpha = Color.red(bitmap.getPixel(160, 440));
+            rAlpha = Color.red(bitmap.getPixel(480, 440));
+            /*for (int i = 0; i < rgb.getWidth(); i++) {
+                if (i < 300 || i > 340) {
+                    if (Color.red(bitmap.getPixel(i, 450)) < darkVal) {
+                        darkVal = Color.red(bitmap.getPixel(i, 450));
+                        if (darkVal < 80) {
+                            if (i < 300) {
+                                position = "center";
+                            }
+                            else {
+                                position = "right";
+                            }
+                        } else {
+                            position = "left";
+                        }
+                    }
+                }
+            }
+
+            if (darkVal > 80) {
+                position = "left";
+            }*/
+        }
+
+        telemetry.addData("Red center", cAlpha);
+        telemetry.addData("Red right", rAlpha);
+        telemetry.update();
+
+        if (rAlpha < 100) {
+            position = "right";
+        } else if (cAlpha < 100) {
+            position = "center";
+        }
+        else {
+            position = "left";
+        }
+
+        return position;
+    }
+
+    public int getRed(final Telemetry telemetry) {
+        targetsSkyStone.activate();
+        vuforia.getFrameOnce(Continuation.create(ThreadPool.getDefault(), new Consumer<Frame>()
+        {
+
+            @Override public void accept(Frame frame)
+            {
+                for (int i = 0; i < frame.getNumImages(); i++) {
+                    if (frame.getImage(i).getFormat() == PIXEL_FORMAT.RGB565) {
+                        if (frame.getImage(i) != null) {
+                            rgb = frame.getImage(i);
+                        }
+                    }
+                }
+
+                if (rgb.getPixels() != null) {
+                    bitmap = Bitmap.createBitmap(rgb.getWidth(), rgb.getHeight(), Bitmap.Config.RGB_565);
+                    bitmap.copyPixelsFromBuffer(rgb.getPixels());
+                }
+            }
+        }));
+
+        //int darkVal = 255;
+
+        if (bitmap != null) {
+            //Width is 640. Height is 480
+            cAlpha = Color.red(bitmap.getPixel(10, 440));
+        }
+
+        return cAlpha;
+    }
+
+    public void deactivate() {
+        targetsSkyStone.deactivate();
     }
 
     /**
@@ -278,10 +455,11 @@ public class Webcam {
         targetsSkyStone.activate();
         String position="";
         double iTime=System.currentTimeMillis();
+        targetVisible = false;
 
         while(iTime+4500>System.currentTimeMillis()) {
             // check all the trackable targets to see which one (if any) is visible.
-            targetVisible = false;
+
             for (VuforiaTrackable trackable : allTrackables) {
                 if (((VuforiaTrackableDefaultListener) trackable.getListener()).isVisible()) {
                     targetVisible = true;
@@ -303,15 +481,16 @@ public class Webcam {
                 // express the rotation of the robot in degrees.
                 Orientation rotation = Orientation.getOrientation(lastLocation, EXTRINSIC, XYZ, DEGREES);
 
-                if (translation.get(1) / mmPerInch < 0) {
+                if (translation.get(1) / mmPerInch <= 0) {
                     position = "center";
-                } else if (translation.get(1) / mmPerInch > 0) {
+                } else if(translation.get(1) / mmPerInch > 0) {
                     position = "right";
                 }
             } else {
                 position = "left";
             }
         }
+
         targetsSkyStone.deactivate();
         return position;
     }

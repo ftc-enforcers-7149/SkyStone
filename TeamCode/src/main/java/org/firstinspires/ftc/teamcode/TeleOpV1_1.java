@@ -1,3 +1,4 @@
+/*
 package org.firstinspires.ftc.teamcode;
 
 import com.qualcomm.robotcore.eventloop.opmode.OpMode;
@@ -28,7 +29,7 @@ public class TeleOpV1_1 extends OpMode {
 
     public void init() {
         //Initialize drive train
-        driveSystem = new Headless(hardwareMap, telemetry, "fLeft", "fRight", "bLeft", "bRight");
+        //driveSystem = new Headless(hardwareMap, telemetry, "fLeft", "fRight", "bLeft", "bRight");
 
         //Servos
         lArm = hardwareMap.servo.get("lArm");
@@ -152,3 +153,4 @@ public class TeleOpV1_1 extends OpMode {
         driveSystem.stop();
     }
 }
+*/

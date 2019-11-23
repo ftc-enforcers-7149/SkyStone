@@ -29,6 +29,7 @@
 package org.firstinspires.ftc.teamcode.AutonomousPrograms.V1;
 
 import com.qualcomm.robotcore.eventloop.opmode.Autonomous;
+import com.qualcomm.robotcore.eventloop.opmode.Disabled;
 import com.qualcomm.robotcore.eventloop.opmode.OpMode;
 import com.qualcomm.robotcore.hardware.DcMotor;
 import com.qualcomm.robotcore.hardware.DcMotorSimple;
@@ -37,8 +38,8 @@ import com.qualcomm.robotcore.hardware.Servo;
 import org.firstinspires.ftc.teamcode.Subsystems.DriveTrain;
 import org.firstinspires.ftc.teamcode.Subsystems.FoundationV1;
 
-//@Autonomous(name = "Blue FoundationV1 Park")
-//@Disabled                            // Comment this out to add to the opmode list
+//@Autonomous(name = "Blue Foundation Park")
+@Disabled                          // Comment this out to add to the opmode list
 public class BlueFoundationParkOld extends OpMode {
 
     public Servo lArm, rArm, lGrab, rGrab, lFound, rFound;

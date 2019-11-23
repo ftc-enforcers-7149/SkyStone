@@ -1,6 +1,5 @@
 package org.firstinspires.ftc.teamcode;
 
-import com.qualcomm.hardware.rev.Rev2mDistanceSensor;
 import com.qualcomm.robotcore.eventloop.opmode.OpMode;
 import com.qualcomm.robotcore.eventloop.opmode.TeleOp;
 import com.qualcomm.robotcore.hardware.DcMotor;
@@ -8,8 +7,6 @@ import com.qualcomm.robotcore.hardware.DcMotorSimple;
 import com.qualcomm.robotcore.hardware.Servo;
 
 import org.firstinspires.ftc.teamcode.Subsystems.DriveSystems.Headless;
-
-import java.util.FormatFlagsConversionMismatchException;
 
 @TeleOp(name = "TeleOp v2")
 public class TeleOpV2 extends OpMode {
@@ -21,12 +18,16 @@ public class TeleOpV2 extends OpMode {
     Servo lArm, rArm, lGrab, rGrab;
     DcMotor fRight,fLeft,bRight,bLeft, lift;
 
+    //Prevents lag in color sensor?
+    /*ColorSensor colorSensor;
+    DistanceSensor distL, distR, distC;*/
+
     //
-    boolean armUp, armDown;
+    float armUp;
     boolean isBreak=false;
     float liftUp,liftDown;
     boolean lFoundationDown, rFoundationDown;
-    float rightG, leftG;
+    float grab;
 
     public void init(){
         //Servos
@@ -39,6 +40,12 @@ public class TeleOpV2 extends OpMode {
         lGrab = hardwareMap.servo.get("lGrab");
         rGrab = hardwareMap.servo.get("rGrab");
 
+        //Inits to combat lag
+        /*colorSensor = hardwareMap.colorSensor.get("color");
+        distL = hardwareMap.get(DistanceSensor.class, "distanceL");
+        distR = hardwareMap.get(DistanceSensor.class, "distanceR");
+        distC = hardwareMap.get(DistanceSensor.class, "distanceC");*/
+
         //Drive motors
         fLeft = hardwareMap.dcMotor.get("fLeft");
         fRight = hardwareMap.dcMotor.get("fRight");
@@ -46,15 +53,15 @@ public class TeleOpV2 extends OpMode {
         bRight = hardwareMap.dcMotor.get("bRight");
         lift = hardwareMap.dcMotor.get("lift");
 
-        //Initialize drive train
-        driveSystem = new Headless(hardwareMap, telemetry, "fLeft", "fRight", "bLeft", "bRight");
-
         //Motor directions
         fLeft.setDirection(DcMotorSimple.Direction.REVERSE);
         fRight.setDirection(DcMotorSimple.Direction.FORWARD);
         bRight.setDirection(DcMotorSimple.Direction.FORWARD);
         bLeft.setDirection(DcMotorSimple.Direction.REVERSE);
         lift.setDirection(DcMotorSimple.Direction.FORWARD);
+
+        //Initialize drive train
+        driveSystem = new Headless(hardwareMap, telemetry, fLeft, fRight, bLeft, bRight);
 
         //Servo directions
         fLFound.setDirection(Servo.Direction.REVERSE);
@@ -72,22 +79,21 @@ public class TeleOpV2 extends OpMode {
     }
     public void loop(){
         //Inputs
-        armUp = gamepad2.y;
-        armDown = gamepad2.a;
-        rightG = gamepad2.right_trigger;
-        leftG = gamepad2.left_trigger;
+        armUp = gamepad2.left_trigger;
+        grab = gamepad2.right_trigger;
         liftUp=gamepad1.right_trigger;
         liftDown=gamepad1.left_trigger;
-        lFoundationDown = gamepad1.x;
-        rFoundationDown = gamepad1.b;
+        lFoundationDown = gamepad1.left_bumper || gamepad2.x;
+        rFoundationDown = gamepad1.right_bumper || gamepad2.b;
+
 
         //Drive
         driveSystem.drive(gamepad1);
 
         //FoundationV1 grabbers
         if (lFoundationDown) {
-            fLFound.setPosition(0.45);
-            bLFound.setPosition(0.45);
+            fLFound.setPosition(0.46);
+            bLFound.setPosition(0.46);
         }
         else {
             fLFound.setPosition(1);
@@ -95,8 +101,8 @@ public class TeleOpV2 extends OpMode {
         }
 
         if (rFoundationDown) {
-            fRFound.setPosition(0.45);
-            bRFound.setPosition(0.45);
+            fRFound.setPosition(0.40);
+            bRFound.setPosition(0.40);
         }
         else {
             fRFound.setPosition(1);
@@ -104,32 +110,35 @@ public class TeleOpV2 extends OpMode {
         }
 
         //Arms and block grabbers
-        if (armUp) {
-            lArm.setPosition(0);
-            rArm.setPosition(0);
-        }
-        else if(armDown){
+        if (armUp > 0.1) {
             lArm.setPosition(0.95);
             rArm.setPosition(0.81);
         }
+        else {
 
-        if(rightG>0.1){
-            rGrab.setPosition(0.44);
+            lArm.setPosition(0);
+            rArm.setPosition(0);
+        }
+
+        if(grab > 0.1){
+            rGrab.setPosition(0.26);//.41
+            lGrab.setPosition(0.65);//.45
         }
         else{
-            rGrab.setPosition(1);
+            rGrab.setPosition(0.3);//.6
+            lGrab.setPosition(1);//1
         }
 
-        if(leftG>0.1){
+        /*if(leftG>0.1){
             lGrab.setPosition(0.45);
         }
         else{
            lGrab.setPosition(1);
-        }
+        }*/
 
         //Lift
         if(liftUp>0.1){
-            lift.setPower(0.7);
+            lift.setPower(0.8);
             isBreak=true;
         }
         else if(liftDown>0.1){

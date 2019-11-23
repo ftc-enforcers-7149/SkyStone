@@ -1,3 +1,4 @@
+/*
 package org.firstinspires.ftc.teamcode.KrishnaSaysKilljoysNeverDie.Intake;
 
 import com.qualcomm.robotcore.eventloop.opmode.OpMode;
@@ -19,7 +20,7 @@ public class IntakeTest extends OpMode {
         intake = new IntakeVer0(hardwareMap, "intakeL", "intakeR", true, false);
 
         //Initialize drive train
-        driveSystem = new Headless(hardwareMap, telemetry, "fLeft", "fRight", "bLeft", "bRight");
+        //driveSystem = new Headless(hardwareMap, telemetry, "fLeft", "fRight", "bLeft", "bRight");
     }
 
     public void loop() {
@@ -32,3 +33,4 @@ public class IntakeTest extends OpMode {
 
 
 }
+*/

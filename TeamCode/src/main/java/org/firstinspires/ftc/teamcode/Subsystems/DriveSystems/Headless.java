@@ -36,12 +36,12 @@ public class Headless {
     //Telemetry object
     private Telemetry telemetry;
 
-    public Headless(HardwareMap hardwareMap, Telemetry telemetry, String fl, String fr, String bl, String br) {
+    public Headless(HardwareMap hardwareMap, Telemetry telemetry, DcMotor fl, DcMotor fr, DcMotor bl, DcMotor br) {
         //Hardware mapping the motors
-        fLeft = hardwareMap.dcMotor.get(fl);
-        fRight = hardwareMap.dcMotor.get(fr);
-        bLeft = hardwareMap.dcMotor.get(bl);
-        bRight = hardwareMap.dcMotor.get(br);
+        fLeft = fl;
+        fRight = fr;
+        bLeft = bl;
+        bRight = br;
 
         //Reversing left motors
         fLeft.setDirection(DcMotorSimple.Direction.REVERSE);
@@ -92,8 +92,6 @@ public class Headless {
         rightX = gamepad1.right_stick_x;
         changeMode = gamepad1.a;
 
-        telemetry.addLine("Mode is headless");
-
         //Specific inputs
         angle = angles.firstAngle;
         resetAngle = gamepad1.y;
@@ -120,10 +118,6 @@ public class Headless {
             offset = angle;
         }
 
-        //Telemetry for angles
-        telemetry.addData("Angle: ", angle - offset);
-        telemetry.addData("Converted angle: ", cvtDegrees(angle - offset));
-
         //r is used to scale the power of the motors depending on how much the joysticks are pushed
         //robotAngle is the directional angle (radians) that the robot wants to go in terms of itself.
         //45 degrees is adding in radians because that is the small angle on a right triangle.
@@ -148,12 +142,6 @@ public class Headless {
             v3 /= max * (1 / lim);
             v4 /= max * (1 / lim);
         }
-
-        //Telemetry for the motor velocities
-        telemetry.addData("fLeft: ", v1);
-        telemetry.addData("fRight: ", v2);
-        telemetry.addData("bLeft: ", v3);
-        telemetry.addData("bRight: ", v4);
 
         //Setting each velocity to its respective motor
         fLeft.setPower(v1);

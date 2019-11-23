@@ -1,3 +1,4 @@
+/*
 package org.firstinspires.ftc.teamcode;
 
 import com.qualcomm.robotcore.eventloop.opmode.OpMode;
@@ -8,7 +9,7 @@ import com.qualcomm.robotcore.hardware.Servo;
 
 import org.firstinspires.ftc.teamcode.Subsystems.DriveSystems.Headless;
 
-@TeleOp(name = "TeleOp")
+//@TeleOp(name = "TeleOp")
 public class TeleOpV1 extends OpMode {
     //Drive train
     Headless driveSystem;
@@ -38,7 +39,7 @@ public class TeleOpV1 extends OpMode {
         lift = hardwareMap.dcMotor.get("lift");
 
         //Initialize drive train
-        driveSystem = new Headless(hardwareMap, telemetry, "fLeft", "fRight", "bLeft", "bRight");
+        //driveSystem = new Headless(hardwareMap, telemetry, "fLeft", "fRight", "bLeft", "bRight");
 
         fLeft.setDirection(DcMotorSimple.Direction.REVERSE);
         fRight.setDirection(DcMotorSimple.Direction.FORWARD);
@@ -112,23 +113,27 @@ public class TeleOpV1 extends OpMode {
             lFound.setPosition(0);
             rFound.setPosition(0);
         }
-        /*if(gGrab){
+        */
+/*if(gGrab){
             lGrab.setPosition(0.1);
             rGrab.setPosition(0.1);
         }
         else if(gRelease){
             lGrab.setPosition(0.2);
             rGrab.setPosition(0.25);
-        }*/
+        }*//*
 
-        /*if(liftMove<-0.1){
+
+        */
+/*if(liftMove<-0.1){
             lift.setPower(0.7);
             isBreak=true;
         }
         else if(liftMove>0.1){
             lift.setPower(-0.05);
             isBreak=false;
-        }*/
+        }*//*
+
 
         if(liftUp>0.1){
             lift.setPower(0.7);
@@ -155,3 +160,4 @@ public class TeleOpV1 extends OpMode {
         bLeft.setPower(0);
     }
 }
+*/

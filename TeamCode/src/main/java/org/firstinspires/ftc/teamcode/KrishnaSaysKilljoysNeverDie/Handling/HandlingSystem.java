@@ -39,10 +39,10 @@ public class HandlingSystem {
 
     //TODO: FIX DIS STUFF. MAKE IT MOTORS.
 
-    public HandlingSystem(HardwareMap hardwareMap, SamplePath samplePath, String fL, String fR, String bL, String bR, String encX, String encY, String imumap, double posX, double posY, String distC, String distR, String distL) {
+    public HandlingSystem(HardwareMap hardwareMap, SamplePath samplePath, String encX, String encY, String imumap, double posX, double posY, String distC, String distR, String distL) {
 
-        odometryEncoder = new OdometryEncoder(hardwareMap, fL, fR, bL, bR, encX, encY, imumap, posX, posY);
-        odometryPosition = new OdometryPosition(hardwareMap, fL, fR, bL, bR, encX, encY, imumap, posX, posY);
+        odometryEncoder = new OdometryEncoder(hardwareMap, encX, encY, imumap, posX, posY);
+        odometryPosition = new OdometryPosition(hardwareMap, encX, encY, imumap, posX, posY);
 
         odometryEncoder.startOdometry();
 

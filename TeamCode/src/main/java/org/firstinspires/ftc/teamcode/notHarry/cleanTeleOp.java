@@ -1,3 +1,4 @@
+/*
 package org.firstinspires.ftc.teamcode.notHarry;
 
 import com.qualcomm.robotcore.hardware.DcMotor;
@@ -22,7 +23,7 @@ public class cleanTeleOp extends ParentInit {
     public void init() {
     claw = new Claw(lArm,rArm,lGrab,rGrab);
     foundationV1 = new FoundationV1(lFound,rFound);
-    driveSystem = new Headless(hardwareMap, telemetry, "fLeft", "fRight", "bLeft", "bRight");
+    //driveSystem = new Headless(hardwareMap, telemetry, "fLeft", "fRight", "bLeft", "bRight");
     }
     public void loop() {
         armUp = gamepad2.y;
@@ -61,14 +62,16 @@ public class cleanTeleOp extends ParentInit {
         else {
             foundationV1.down();
         }
-        /*if(gGrab){
+        */
+/*if(gGrab){
             lGrab.setPosition(0.1);
             rGrab.setPosition(0.1);
         }
         else if(gRelease){
             lGrab.setPosition(0.2);
             rGrab.setPosition(0.25);
-        }*/
+        }*//*
+
 
         if(liftUp>0.1){
             lift.setPower(0.7);
@@ -95,3 +98,4 @@ public class cleanTeleOp extends ParentInit {
     }
 }
 
+*/

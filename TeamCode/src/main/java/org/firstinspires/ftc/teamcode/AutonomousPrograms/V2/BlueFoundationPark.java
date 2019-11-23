@@ -30,6 +30,7 @@ package org.firstinspires.ftc.teamcode.AutonomousPrograms.V2;
 
 import com.qualcomm.robotcore.eventloop.opmode.Autonomous;
 import com.qualcomm.robotcore.eventloop.opmode.OpMode;
+import com.qualcomm.robotcore.hardware.ColorSensor;
 import com.qualcomm.robotcore.hardware.DcMotor;
 import com.qualcomm.robotcore.hardware.DcMotorSimple;
 import com.qualcomm.robotcore.hardware.Servo;
@@ -39,16 +40,17 @@ import org.firstinspires.ftc.teamcode.Subsystems.DriveTrain;
 import org.firstinspires.ftc.teamcode.Subsystems.FoundationV1;
 import org.firstinspires.ftc.teamcode.Subsystems.FoundationV2;
 
-@Autonomous(name = "Blue FoundationV1 Park")
+@Autonomous(name = "Blue Foundation ParkV2")
 //@Disabled                            // Comment this out to add to the opmode list
 public class BlueFoundationPark extends OpMode {
 
     public Servo lArm, rArm, lGrab, rGrab;
     Servo fLFound, fRFound, bLFound, bRFound;
     public DcMotor fRight,fLeft,bRight,bLeft,lift;
+    ColorSensor color;
 
     DriveTrain driveTrain;
-    FoundationV2 foundationV2;
+    FoundationV2 foundation;
     Claw claw;
 
     int step=0;
@@ -71,6 +73,9 @@ public class BlueFoundationPark extends OpMode {
         bRight = hardwareMap.dcMotor.get("bRight");
         lift = hardwareMap.dcMotor.get("lift");
 
+        //Color sensor
+        color = hardwareMap.colorSensor.get("color");
+
         //direction of motors
         fLeft.setDirection(DcMotorSimple.Direction.FORWARD);
         fRight.setDirection(DcMotorSimple.Direction.REVERSE);
@@ -89,10 +94,19 @@ public class BlueFoundationPark extends OpMode {
 
         lift.setZeroPowerBehavior(DcMotor.ZeroPowerBehavior.BRAKE);
 
+        lArm.setPosition(0.95);
+        rArm.setPosition(0.81);
+
+        fLFound.setPosition(1);
+        bLFound.setPosition(1);
+
+        fRFound.setPosition(1);
+        bRFound.setPosition(1);
+
     }
     public void start(){
         driveTrain=new DriveTrain(hardwareMap,telemetry,fLeft,fRight,bLeft,bRight);
-        foundationV2 =new FoundationV2(fLFound,fRFound,bLFound,bRFound);
+        foundation =new FoundationV2(fLFound,fRFound,bLFound,bRFound);
         claw=new Claw(lArm,rArm,lGrab,rGrab);
     }
 
@@ -100,8 +114,7 @@ public class BlueFoundationPark extends OpMode {
     public void loop() {
         switch(step){
             case 1:
-                lArm.setPosition(0.1);
-                rArm.setPosition(0.05);
+                //foundation.lDown();
                 break;
             case 2:
                 driveTrain.driveStraight("backward",47);//50
@@ -110,23 +123,23 @@ public class BlueFoundationPark extends OpMode {
                 driveTrain.strafeSeconds(750,"right");
                 break;
             case 4:
-                foundationV2.lDown();
+                foundation.rDown();
                 break;
             case 5:
                 driveTrain.delay(1000);
                 break;
             case 6:
-               // driveTrain.driveStraight("forward",3);
+
             case 7:
                 driveTrain.strafeSeconds(250,"left");
             case 8:
                 driveTrain.simpleTurn(45,0.45);//0.45
-                //driveTrain.driveStraight("backward", 35, 0.7,0.7);
+                //was already commented out: driveTrain.driveStraight("backward", 35, 0.7,0.7);
                 break;
             case 9:
                 driveTrain.strafeSeconds(3000,"right");
             case 10:
-                foundationV2.lUp();
+                foundation.rUp();
                 break;
             case 11:
                 driveTrain.strafeSeconds(250,"left");
@@ -135,12 +148,13 @@ public class BlueFoundationPark extends OpMode {
                 driveTrain.driveStraight("forward", 28);
                 break;
             case 13:
-                driveTrain.rotation(270);
+                driveTrain.rotation(90);
                 break;
             case 14:
-                driveTrain.driveStraight("backward", 12);
+                driveTrain.driveToLine(color, "blue", "forward");
                 break;
         }
         step++;
+        //Kpop = jMetal
     }
 }

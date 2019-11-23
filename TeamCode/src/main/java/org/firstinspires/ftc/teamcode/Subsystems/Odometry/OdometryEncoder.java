@@ -6,8 +6,6 @@ import com.qualcomm.robotcore.hardware.HardwareMap;
 //TODO: write in better error handling
 public class OdometryEncoder {
 
-    //Declaring hardware
-    DcMotor fLeft, fRight, bLeft, bRight;
 
 
     //Initializing position
@@ -18,14 +16,14 @@ public class OdometryEncoder {
 
 
     //Our constructor requires: hardware map, 4 motors, 2 encoders, an imu, and 2 positions.
-    public OdometryEncoder(HardwareMap hardwareMap, String fL, String fR, String bL, String bR, String encX, String encY, String imumap, double posX, double posY){
+    public OdometryEncoder(HardwareMap hardwareMap, String encX, String encY, String imumap, double posX, double posY){
 
         //Initializes start x
         x = posX;
         y = posY;
 
         //Initializes odometry pos class
-        odometryPositionClass = new OdometryPosition(hardwareMap, fL, fR, bL, bR, encX, encY, imumap, posX, posY);
+        odometryPositionClass = new OdometryPosition(hardwareMap, encX, encY, imumap, posX, posY);
 
         //Starts our odometry tracking
         startOdometry();
