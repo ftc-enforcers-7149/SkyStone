@@ -112,6 +112,41 @@ public class DriveTrain {
         bRight.setPower(0);
     }
 
+    /**
+     * drives inputted distance(inches)
+     * @param direction direction of driving. "backward" to go backward
+     * @param distance distance driving in inches
+     * @param power of drive wheels
+     */
+    public void driveStraight(String direction, double distance,double power) {
+        resetEncoderWithoutEncoder();
+        //sets direction of motors
+        int mDirection = 1;
+        if (direction.equals("backward")) {
+            mDirection = -1;
+        }
+        power=power*mDirection;
+
+        //converts current position into inches
+        double cPosition=fRight.getCurrentPosition()/COUNTS_PER_INCH*mDirection;
+
+        while(cPosition < distance){
+            cPosition=fRight.getCurrentPosition()/COUNTS_PER_INCH*mDirection;
+            if(distance-Math.abs(cPosition)<20){
+                power=0.4*mDirection;
+            }
+            fLeft.setPower(power);
+            fRight.setPower(power);
+            bLeft.setPower(power);
+            bRight.setPower(power);
+        }
+
+        fLeft.setPower(0);
+        fRight.setPower(0);
+        bLeft.setPower(0);
+        bRight.setPower(0);
+    }
+
 
     /**
      * Resets drive encoders without running using encoders
