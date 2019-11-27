@@ -4,6 +4,7 @@ import com.qualcomm.robotcore.eventloop.opmode.OpMode;
 import com.qualcomm.robotcore.eventloop.opmode.TeleOp;
 import com.qualcomm.robotcore.hardware.DcMotor;
 import com.qualcomm.robotcore.hardware.DcMotorSimple;
+import com.qualcomm.robotcore.hardware.Gamepad;
 import com.qualcomm.robotcore.hardware.Servo;
 
 import org.firstinspires.ftc.teamcode.Subsystems.DriveSystems.Headless;
@@ -28,6 +29,7 @@ public class TeleOpV2 extends OpMode {
     float liftUp,liftDown;
     boolean lFoundationDown, rFoundationDown;
     float grab;
+    boolean startAccel;
 
     public void init(){
         //Servos
@@ -77,6 +79,7 @@ public class TeleOpV2 extends OpMode {
         //Lift brake
         lift.setZeroPowerBehavior(DcMotor.ZeroPowerBehavior.BRAKE);
     }
+
     public void loop(){
         //Inputs
         armUp = gamepad2.left_trigger;
@@ -85,7 +88,7 @@ public class TeleOpV2 extends OpMode {
         liftDown=gamepad1.left_trigger;
         lFoundationDown = gamepad1.left_bumper || gamepad2.x;
         rFoundationDown = gamepad1.right_bumper || gamepad2.b;
-
+        startAccel = gamepad1.x;
 
         //Drive
         driveSystem.drive(gamepad1);
@@ -156,6 +159,13 @@ public class TeleOpV2 extends OpMode {
                 lift.setPower(0.0);
             }
         }*/
+
+        if (startAccel) {
+            driveSystem.setAccel();
+        }
+        else {
+            driveSystem.setLim(isBreak);
+        }
 
         telemetry.addData("fL servo pos: ", fLFound.getPosition());
         telemetry.addData("fR servo pos: ", fRFound.getPosition());
