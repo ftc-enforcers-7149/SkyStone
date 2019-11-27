@@ -1,10 +1,7 @@
 package org.firstinspires.ftc.teamcode.Subsystems;
 
-import android.annotation.SuppressLint;
 import android.graphics.Bitmap;
 import android.graphics.Color;
-import android.graphics.ColorSpace;
-import android.os.Build;
 import android.util.Log;
 
 import com.qualcomm.robotcore.hardware.HardwareMap;
@@ -13,6 +10,7 @@ import com.qualcomm.robotcore.util.ThreadPool;
 import com.vuforia.Frame;
 import com.vuforia.Image;
 import com.vuforia.PIXEL_FORMAT;
+import com.vuforia.Vuforia;
 
 import org.firstinspires.ftc.robotcore.external.ClassFactory;
 import org.firstinspires.ftc.robotcore.external.Telemetry;
@@ -31,7 +29,6 @@ import org.firstinspires.ftc.robotcore.internal.system.AppUtil;
 import java.io.File;
 import java.io.FileOutputStream;
 import java.io.IOException;
-import java.nio.ByteBuffer;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Locale;
@@ -107,7 +104,7 @@ public class Webcam {
     Image rgb = null;
     Bitmap bitmap = null;
 
-    int cAlpha, rAlpha;
+    int cRed, rRed, cGreen, rGreen;
 
     public static final String TAG = "Vuforia Navigation Sample";
 
@@ -306,6 +303,80 @@ public class Webcam {
     }
 
     /**
+     * Gets a frame from vuforia's queue.
+     * Creates a bitmap from that frame.
+     * Then, gets alpha values of two points, one on the right and one on the left.
+     * Sets the position accordingly, defaulting to left.
+     * @return the position of the skystone
+     */
+    public String getQueuePos(final Telemetry telemetry) {
+        targetsSkyStone.activate();
+        Vuforia.setFrameFormat(PIXEL_FORMAT.RGB565, true);
+        VuforiaLocalizer.CloseableFrame frame = null;
+        vuforia.setFrameQueueCapacity(1);
+        rgb = null;
+
+        while (rgb == null) {
+            try {
+                frame = vuforia.getFrameQueue().take();
+
+                for (int i = 0; i < frame.getNumImages(); i++) {
+                    if (frame.getImage(i).getFormat() == PIXEL_FORMAT.RGB565) {
+                        if (frame.getImage(i) != null) {
+                            rgb = frame.getImage(i);
+                            if (rgb != null) {
+                                break;
+                            }
+                        }
+                    }
+                }
+            }
+            catch (InterruptedException e) {
+                e.printStackTrace();
+            }
+            finally {
+                if (frame != null) {
+                    frame.close();
+                }
+            }
+        }
+
+        bitmap = Bitmap.createBitmap(rgb.getWidth(), rgb.getHeight(), Bitmap.Config.RGB_565);
+        bitmap.copyPixelsFromBuffer(rgb.getPixels());
+
+        //int darkVal = 255;
+
+        if (bitmap != null) {
+            //Width is 640. Height is 480
+            cRed = Color.red(bitmap.getPixel(240, 440));
+            rRed = Color.red(bitmap.getPixel(400, 440));
+
+            cGreen = Color.green(bitmap.getPixel(240, 440));
+            rGreen = Color.green(bitmap.getPixel(400, 440));
+        }
+
+        telemetry.addData("Red center", cRed);
+        telemetry.addData("Green center", cGreen);
+        telemetry.addData("Red right", rRed);
+        telemetry.addData("Green right", rGreen);
+        telemetry.update();
+
+        int cRedGreen = cRed + cGreen;
+        int rRedGreen = rRed + rGreen;
+
+        if (rRedGreen < 100) {
+            position = "right";
+        } else if (cRedGreen < 100) {
+            position = "center";
+        }
+        else {
+            position = "left";
+        }
+
+        return position;
+    }
+
+    /**
      * Sample one frame from the Vuforia stream and write it to a .PNG image file on the robot
      * controller in the /sdcard/FIRST/data directory. The images can be downloaded using Android
      * Studio's Device File Explorer, ADB, or the Media Transfer Protocol (MTP) integration into
@@ -370,8 +441,8 @@ public class Webcam {
         if (bitmap != null) {
 
             //Width is 640. Height is 480
-            cAlpha = Color.red(bitmap.getPixel(240, 440));
-            rAlpha = Color.red(bitmap.getPixel(400, 440));
+            cRed = Color.red(bitmap.getPixel(240, 440));
+            rRed = Color.red(bitmap.getPixel(400, 440));
             /*for (int i = 0; i < rgb.getWidth(); i++) {
                 if (i < 300 || i > 340) {
                     if (Color.red(bitmap.getPixel(i, 450)) < darkVal) {
@@ -395,13 +466,13 @@ public class Webcam {
             }*/
         }
 
-        telemetry.addData("Red center", cAlpha);
-        telemetry.addData("Red right", rAlpha);
+        telemetry.addData("Red center", cRed);
+        telemetry.addData("Red right", rRed);
         telemetry.update();
 
-        if (rAlpha < 100) {
+        if (rRed < 100) {
             position = "right";
-        } else if (cAlpha < 100) {
+        } else if (cRed < 100) {
             position = "center";
         }
         else {
@@ -437,10 +508,10 @@ public class Webcam {
 
         if (bitmap != null) {
             //Width is 640. Height is 480
-            cAlpha = Color.red(bitmap.getPixel(10, 440));
+            cRed = Color.red(bitmap.getPixel(10, 440));
         }
 
-        return cAlpha;
+        return cRed;
     }
 
     public void deactivate() {

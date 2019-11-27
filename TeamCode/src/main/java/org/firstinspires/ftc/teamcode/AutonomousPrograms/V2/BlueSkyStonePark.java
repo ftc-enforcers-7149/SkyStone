@@ -101,8 +101,8 @@ public class BlueSkyStonePark extends OpMode {
                 driveTrain.driveRange(distanceR,65,"right");
             case 2:
                 webcam.captureFrameToFile();
-                double iTIme=System.currentTimeMillis();
-                while(System.currentTimeMillis()<iTIme+4000) {
+                double iTime=System.currentTimeMillis();
+                while(System.currentTimeMillis()<iTime+4000) {
                     position = webcam.getBitmapPos(telemetry);
                 }
                 webcam.deactivate();
@@ -119,7 +119,7 @@ public class BlueSkyStonePark extends OpMode {
                 }
                 break;
             case 4:
-                claw.down();;
+                claw.down();
                 claw.release();
                 break;
             case 5:driveTrain.delay(500);
