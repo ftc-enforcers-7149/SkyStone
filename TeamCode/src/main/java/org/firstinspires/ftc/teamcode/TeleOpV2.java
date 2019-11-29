@@ -4,6 +4,7 @@ import com.qualcomm.robotcore.eventloop.opmode.OpMode;
 import com.qualcomm.robotcore.eventloop.opmode.TeleOp;
 import com.qualcomm.robotcore.hardware.DcMotor;
 import com.qualcomm.robotcore.hardware.DcMotorSimple;
+import com.qualcomm.robotcore.hardware.Gamepad;
 import com.qualcomm.robotcore.hardware.Servo;
 
 import org.firstinspires.ftc.teamcode.Subsystems.DriveSystems.Headless;
@@ -18,16 +19,12 @@ public class TeleOpV2 extends OpMode {
     Servo lArm, rArm, lGrab, rGrab;
     DcMotor fRight,fLeft,bRight,bLeft, lift;
 
-    //Prevents lag in color sensor?
-    /*ColorSensor colorSensor;
-    DistanceSensor distL, distR, distC;*/
-
-    //
     float armUp;
     boolean isBreak=false;
     float liftUp,liftDown;
     boolean lFoundationDown, rFoundationDown;
     float grab;
+    boolean startAccel;
 
     public void init(){
         //Servos
@@ -77,6 +74,7 @@ public class TeleOpV2 extends OpMode {
         //Lift brake
         lift.setZeroPowerBehavior(DcMotor.ZeroPowerBehavior.BRAKE);
     }
+
     public void loop(){
         //Inputs
         armUp = gamepad2.left_trigger;
@@ -85,7 +83,7 @@ public class TeleOpV2 extends OpMode {
         liftDown=gamepad1.left_trigger;
         lFoundationDown = gamepad1.left_bumper || gamepad2.x;
         rFoundationDown = gamepad1.right_bumper || gamepad2.b;
-
+        startAccel = gamepad1.x;
 
         //Drive
         driveSystem.drive(gamepad1);
@@ -121,12 +119,12 @@ public class TeleOpV2 extends OpMode {
         }
 
         if(grab > 0.1){
-            rGrab.setPosition(0.26);//.41
-            lGrab.setPosition(0.65);//.45
+            rGrab.setPosition(.20);//.41
+            lGrab.setPosition(0.28);//.45
         }
         else{
-            rGrab.setPosition(0.3);//.6
-            lGrab.setPosition(1);//1
+            rGrab.setPosition(.13);//.6
+            lGrab.setPosition(0.21);//1
         }
 
         /*if(leftG>0.1){
@@ -156,6 +154,13 @@ public class TeleOpV2 extends OpMode {
                 lift.setPower(0.0);
             }
         }*/
+
+        if (startAccel) {
+            driveSystem.setAccel();
+        }
+        else {
+            driveSystem.setLim(isBreak);
+        }
 
         telemetry.addData("fL servo pos: ", fLFound.getPosition());
         telemetry.addData("fR servo pos: ", fRFound.getPosition());

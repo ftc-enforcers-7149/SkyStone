@@ -32,6 +32,8 @@ public class Headless {
 
     //Power limit
     private double lim;
+    private double slowTime;
+    private boolean accel;
 
     //Telemetry object
     private Telemetry telemetry;
@@ -148,6 +150,30 @@ public class Headless {
         fRight.setPower(v2);
         bLeft.setPower(v3);
         bRight.setPower(v4);
+
+        if (lim < 1 && accel) {
+            lim = 0.5 * Math.pow(1.14869836, (System.currentTimeMillis() - slowTime));
+            if (lim > 1) {
+                lim = 1;
+                accel = false;
+            }
+        }
+    }
+
+    public void setAccel() {
+        lim = 0.5;
+        slowTime = System.currentTimeMillis();
+        accel = true;
+    }
+
+    public void setLim(boolean  up) {
+        if (!accel) {
+            if (up) {
+                lim = 0.5;
+            } else {
+                lim = 1;
+            }
+        }
     }
 
     //This converts degrees to work with sine and cosine.

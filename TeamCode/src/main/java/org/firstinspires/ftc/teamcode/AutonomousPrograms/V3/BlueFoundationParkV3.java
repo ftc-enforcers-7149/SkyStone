@@ -130,10 +130,16 @@ public class BlueFoundationParkV3 extends OpMode {
             case 6:
 
             case 7:
-                driveTrain.strafeSeconds(250,"left");
+                driveTrain.strafeSeconds(700,"left");
             case 8:
-                driveTrain.simpleTurn(90,0.45);//0.45
+                driveTrain.simpleTurn(20,0.45);//0.45
                 //was already commented out: driveTrain.driveStraight("backward", 35, 0.7,0.7);
+                break;
+            case 9:
+                driveTrain.strafeSeconds(2000, "right");
+                break;
+            case 10:
+                driveTrain.simpleTurn(50, .45);
                 break;
             /*case 9:
                 driveTrain.strafeSeconds(3000,"right");
