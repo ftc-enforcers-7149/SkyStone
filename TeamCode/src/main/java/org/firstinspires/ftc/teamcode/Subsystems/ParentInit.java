@@ -25,18 +25,18 @@ import java.util.Locale;
  * class used as the init that all files can inherit
  */
 public class ParentInit extends OpMode {
-    Servo lArm, rArm, lGrab, rGrab;
-    Servo fLFound, fRFound, bLFound, bRFound;
-    DcMotor fRight,fLeft,bRight,bLeft,lift;
+    protected Servo lArm, rArm, lGrab, rGrab;
+    protected Servo fLFound, fRFound, bLFound, bRFound;
+    protected DcMotor fRight,fLeft,bRight,bLeft,lift;
 
-    Webcam webcam;
-    DriveTrain driveTrain;
-    FoundationV2 foundation;
-    Claw claw;
+    protected Webcam webcam;
+    protected DriveTrain driveTrain;
+    protected FoundationV2 foundation;
+    protected Claw claw;
 
     //Distance Sensors
-    DistanceSensor distanceL, distanceR, distanceC;
-    ColorSensor color;
+    protected DistanceSensor distanceL, distanceR, distanceC;
+    protected ColorSensor color;
 
     public void init(){
         //Servos

@@ -429,6 +429,13 @@ public class DriveTrain {
     }
 
     /**
+     * returns raw yaw value from gyro
+     * @return
+     */
+    public double getRawYaw(){
+        return angles.firstAngle;
+    }
+    /**
      * method needed for gyro
      * @param angleUnit
      * @param angle
