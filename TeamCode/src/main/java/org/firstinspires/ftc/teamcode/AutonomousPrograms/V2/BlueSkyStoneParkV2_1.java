@@ -70,7 +70,7 @@ public class BlueSkyStoneParkV2_1 extends ParentInit {
                 claw.release();
                 claw.up();
                 break;
-            case 14:
+            case 14://
                 driveTrain.strafeToLine(color,"blue","right");
             case 15:
                 if(position.equals("right")){
