@@ -158,9 +158,6 @@ public class TeleOpV2 extends OpMode {
         if (startAccel) {
             driveSystem.setAccel();
         }
-        else {
-            driveSystem.setLim(isBreak);
-        }
 
         telemetry.addData("fL servo pos: ", fLFound.getPosition());
         telemetry.addData("fR servo pos: ", fRFound.getPosition());

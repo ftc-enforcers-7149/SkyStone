@@ -1,7 +1,10 @@
 package org.firstinspires.ftc.teamcode.Subsystems;
 
 import android.graphics.Bitmap;
+import android.graphics.BitmapFactory;
 import android.graphics.Color;
+import android.media.MediaMetadataRetriever;
+import android.os.Environment;
 import android.util.Log;
 
 import com.qualcomm.robotcore.hardware.HardwareMap;
@@ -27,6 +30,7 @@ import org.firstinspires.ftc.robotcore.external.navigation.VuforiaTrackables;
 import org.firstinspires.ftc.robotcore.internal.system.AppUtil;
 
 import java.io.File;
+import java.io.FileNotFoundException;
 import java.io.FileOutputStream;
 import java.io.IOException;
 import java.util.ArrayList;
@@ -344,12 +348,33 @@ public class Webcam {
         bitmap = Bitmap.createBitmap(rgb.getWidth(), rgb.getHeight(), Bitmap.Config.RGB_565);
         bitmap.copyPixelsFromBuffer(rgb.getPixels());
 
-        //int darkVal = 255;
+        FileOutputStream output = null;
+
+        try {
+            File file = new File(Environment.getExternalStorageDirectory().toString(), "bitmap.png");
+            output = new FileOutputStream(file);
+            bitmap.compress(Bitmap.CompressFormat.PNG, 100, output);
+        } catch (FileNotFoundException e) {
+            e.printStackTrace();
+        }
+        finally {
+            try {
+                if (output != null) {
+                    output.flush();
+                    output.close();
+                }
+            }
+            catch (Exception e) {
+                e.printStackTrace();
+            }
+        }
+
+        bitmap = Bitmap.createBitmap(bitmap, 0, 400, bitmap.getWidth(), bitmap.getHeight());
 
         if (bitmap != null) {
             //Width is 640. Height is 480
-            cRed = Color.red(bitmap.getPixel(240, 440));
-            rRed = Color.red(bitmap.getPixel(400, 440));
+            cRed = Color.red(bitmap.getPixel(240, 40));
+            rRed = Color.red(bitmap.getPixel(400, 40));
 
             cGreen = Color.green(bitmap.getPixel(240, 440));
             rGreen = Color.green(bitmap.getPixel(400, 440));

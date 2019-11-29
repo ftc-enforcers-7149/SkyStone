@@ -305,7 +305,7 @@ public class DriveTrain {
      */
     public void simpleTurn(double distance,double power){
         telemetry.addData("angle",angles.firstAngle);
-        if(distance<0){
+        if(distance<angles.firstAngle){
             while(distance<angles.firstAngle){
                 telemetry.update();
                 fLeft.setPower(power);
@@ -428,6 +428,13 @@ public class DriveTrain {
         }
     }
 
+    /**
+     * returns raw yaw value from gyro
+     * @return
+     */
+    public double getRawYaw(){
+        return angles.firstAngle;
+    }
     /**
      * method needed for gyro
      * @param angleUnit
