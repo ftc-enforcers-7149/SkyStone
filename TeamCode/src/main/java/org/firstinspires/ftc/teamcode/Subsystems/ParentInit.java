@@ -15,6 +15,7 @@ import org.firstinspires.ftc.robotcore.external.navigation.AxesReference;
 import org.firstinspires.ftc.robotcore.external.navigation.Orientation;
 import org.firstinspires.ftc.robotcore.external.navigation.Position;
 import org.firstinspires.ftc.robotcore.external.navigation.Velocity;
+import org.firstinspires.ftc.teamcode.Subsystems.DriveSystems.Headless;
 
 import java.util.Locale;
 
@@ -22,22 +23,37 @@ import java.util.Locale;
  * class used as the init that all files can inherit
  */
 public class ParentInit extends OpMode {
-    // The IMU sensor object
-    public BNO055IMU imu;
-    // State used for updating telemetry
-    public Orientation angles;
-    public Acceleration gravity;
+    //Drive train
+    Headless driveSystem;
 
-    public Servo lArm, rArm, lGrab, rGrab, lFound, rFound;
-    public DcMotor fRight,fLeft,bRight,bLeft,lift;
-    public void init() {
+    //Hardware
+    Servo fLFound, fRFound, bLFound, bRFound;
+    Servo lArm, rArm, lGrab, rGrab;
+    DcMotor fRight,fLeft,bRight,bLeft, lift;
+
+    float armUp;
+    boolean isBreak=false;
+    float liftUp,liftDown;
+    boolean lFoundationDown, rFoundationDown;
+    float grab;
+
+    public void init(){
         //Servos
+        fLFound = hardwareMap.servo.get("fLFound");
+        fRFound = hardwareMap.servo.get("fRFound");
+        bLFound = hardwareMap.servo.get("bLFound");
+        bRFound = hardwareMap.servo.get("bRFound");
         lArm = hardwareMap.servo.get("lArm");
         rArm = hardwareMap.servo.get("rArm");
         lGrab = hardwareMap.servo.get("lGrab");
         rGrab = hardwareMap.servo.get("rGrab");
-        lFound = hardwareMap.servo.get("lFound");
-        rFound = hardwareMap.servo.get("rFound");
+
+        //Inits to combat lag
+        /*colorSensor = hardwareMap.colorSensor.get("color");
+        distL = hardwareMap.get(DistanceSensor.class, "distanceL");
+        distR = hardwareMap.get(DistanceSensor.class, "distanceR");
+        distC = hardwareMap.get(DistanceSensor.class, "distanceC");*/
+
         //Drive motors
         fLeft = hardwareMap.dcMotor.get("fLeft");
         fRight = hardwareMap.dcMotor.get("fRight");
@@ -45,43 +61,29 @@ public class ParentInit extends OpMode {
         bRight = hardwareMap.dcMotor.get("bRight");
         lift = hardwareMap.dcMotor.get("lift");
 
-        //direction of motors
-        fLeft.setDirection(DcMotorSimple.Direction.FORWARD);
-        fRight.setDirection(DcMotorSimple.Direction.REVERSE);
-        bRight.setDirection(DcMotorSimple.Direction.REVERSE);
-        bLeft.setDirection(DcMotorSimple.Direction.FORWARD);
+        //Motor directions
+        fLeft.setDirection(DcMotorSimple.Direction.REVERSE);
+        fRight.setDirection(DcMotorSimple.Direction.FORWARD);
+        bRight.setDirection(DcMotorSimple.Direction.FORWARD);
+        bLeft.setDirection(DcMotorSimple.Direction.REVERSE);
         lift.setDirection(DcMotorSimple.Direction.FORWARD);
-        //direction of servos
-        lArm.setDirection(Servo.Direction.REVERSE);
-        rArm.setDirection(Servo.Direction.FORWARD);
+
+        //Initialize drive train
+        driveSystem = new Headless(hardwareMap, telemetry, fLeft, fRight, bLeft, bRight);
+
+        //Servo directions
+        fLFound.setDirection(Servo.Direction.REVERSE);
+        fRFound.setDirection(Servo.Direction.FORWARD);
+        bLFound.setDirection(Servo.Direction.FORWARD);
+        bRFound.setDirection(Servo.Direction.REVERSE);
+
+        lArm.setDirection(Servo.Direction.FORWARD);
+        rArm.setDirection(Servo.Direction.REVERSE);
         lGrab.setDirection(Servo.Direction.REVERSE);
         rGrab.setDirection(Servo.Direction.FORWARD);
-        lFound.setDirection(Servo.Direction.REVERSE);
-        rFound.setDirection(Servo.Direction.FORWARD);
 
-        //setting safe positions for servos
-        lArm.setPosition(0.1);
-        rArm.setPosition(0.05);
-        lGrab.setPosition(0.2);
-        rGrab.setPosition(0.25);
-
+        //Lift brake
         lift.setZeroPowerBehavior(DcMotor.ZeroPowerBehavior.BRAKE);
-
-        //initializing imu
-        BNO055IMU.Parameters parameters = new BNO055IMU.Parameters();
-        parameters.angleUnit           = BNO055IMU.AngleUnit.DEGREES;
-        parameters.accelUnit           = BNO055IMU.AccelUnit.METERS_PERSEC_PERSEC;
-        parameters.calibrationDataFile = "BNO055IMUCalibration.json"; // see the calibration sample opmode
-        parameters.loggingEnabled      = true;
-        parameters.loggingTag          = "IMU";
-        parameters.accelerationIntegrationAlgorithm = new JustLoggingAccelerationIntegrator();
-
-        imu = hardwareMap.get(BNO055IMU.class, "imu");
-        imu.initialize(parameters);
-
-        composeTelemetry();
-
-        imu.startAccelerationIntegration(new Position(), new Velocity(), 1000);
     }
 
     public void loop(){}
