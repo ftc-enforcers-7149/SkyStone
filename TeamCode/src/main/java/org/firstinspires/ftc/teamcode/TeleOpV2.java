@@ -19,11 +19,6 @@ public class TeleOpV2 extends OpMode {
     Servo lArm, rArm, lGrab, rGrab;
     DcMotor fRight,fLeft,bRight,bLeft, lift;
 
-    //Prevents lag in color sensor?
-    /*ColorSensor colorSensor;
-    DistanceSensor distL, distR, distC;*/
-
-    //
     float armUp;
     boolean isBreak=false;
     float liftUp,liftDown;
