@@ -96,10 +96,8 @@ public class towerLevelTest extends OpMode {
                 pressM = false;
             }
         }
-
-
-
     }
+
     public void goLevel(String dir) {
         if (dir.equals("up")) {
             switch (level) {
@@ -133,13 +131,48 @@ public class towerLevelTest extends OpMode {
                     }
                     lift.setPower(0);
                     break;
+            }
 
-
+        }
+        if(dir.equals("down")) {
+            switch (level) {
+                case 1:
+                    while (distanceLift.getDistance(DistanceUnit.CM) > 40.5) {
+                        lift.setPower(-0.4);
+                    }
+                    lift.setPower(0);
+                    break;
+                case 2:
+                    while (distanceLift.getDistance(DistanceUnit.CM) > 30.5) {
+                        lift.setPower(-0.4);
+                    }
+                    lift.setPower(0);
+                    break;
+                case 3:
+                    while (distanceLift.getDistance(DistanceUnit.CM) > 20) {
+                        lift.setPower(-0.4);
+                    }
+                    lift.setPower(0);
+                    break;
+                case 4:
+                    while (distanceLift.getDistance(DistanceUnit.CM) > 10.5) {
+                        lift.setPower(-0.4);
+                    }
+                    lift.setPower(0);
+                    break;
+                case 5:
+                    while (distanceLift.getDistance(DistanceUnit.CM) > 3) {
+                        lift.setPower(-0.4);
+                    }
+                    lift.setPower(0);
+                    break;
 
             }
         }
     }
-    public void stop(){
+
+    public void stop()
+    {
         lift.setPower(0);
     }
 }
