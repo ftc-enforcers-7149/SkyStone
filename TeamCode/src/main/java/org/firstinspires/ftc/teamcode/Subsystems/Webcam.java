@@ -369,7 +369,7 @@ public class Webcam {
             }
         }
 
-        bitmap = Bitmap.createBitmap(bitmap, 0, 400, bitmap.getWidth(), 80);
+        bitmap = Bitmap.createBitmap(bitmap, 0, 400, bitmap.getWidth(), bitmap.getHeight());
 
         if (bitmap != null) {
             //Width is 640. Height is 480
