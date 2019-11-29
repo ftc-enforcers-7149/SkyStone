@@ -19,11 +19,6 @@ public class TeleOpV2 extends OpMode {
     Servo lArm, rArm, lGrab, rGrab;
     DcMotor fRight,fLeft,bRight,bLeft, lift;
 
-    //Prevents lag in color sensor?
-    /*ColorSensor colorSensor;
-    DistanceSensor distL, distR, distC;*/
-
-    //
     float armUp;
     boolean isBreak=false;
     float liftUp,liftDown;
@@ -124,12 +119,12 @@ public class TeleOpV2 extends OpMode {
         }
 
         if(grab > 0.1){
-            rGrab.setPosition(0.26);//.41
-            lGrab.setPosition(0.65);//.45
+            rGrab.setPosition(.20);//.41
+            lGrab.setPosition(0.28);//.45
         }
         else{
-            rGrab.setPosition(0.3);//.6
-            lGrab.setPosition(1);//1
+            rGrab.setPosition(.13);//.6
+            lGrab.setPosition(0.21);//1
         }
 
         /*if(leftG>0.1){
@@ -162,9 +157,6 @@ public class TeleOpV2 extends OpMode {
 
         if (startAccel) {
             driveSystem.setAccel();
-        }
-        else {
-            driveSystem.setLim(isBreak);
         }
 
         telemetry.addData("fL servo pos: ", fLFound.getPosition());
