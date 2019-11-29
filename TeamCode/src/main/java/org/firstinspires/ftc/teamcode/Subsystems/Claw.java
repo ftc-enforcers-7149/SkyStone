@@ -31,6 +31,14 @@ public class Claw {
     }
 
     /**
+     * raises arm half way
+     */
+    public void halfUp(){
+        lArm.setPosition(0.47);
+        rArm.setPosition(0.4);
+    }
+
+    /**
      * Makes claw go down
      */
     public void up(){
@@ -77,10 +85,11 @@ public class Claw {
     }
 
     /**
-     * claw positions to grab skystone
+     * grabs stone vertically
      */
-    public void skyStoneGrab(){
-
+    public void grabVertical() {
+        rGrab.setPosition(0.29);
+        lGrab.setPosition(0.39);
     }
 
 }

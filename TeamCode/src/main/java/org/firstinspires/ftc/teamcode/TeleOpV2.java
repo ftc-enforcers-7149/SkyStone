@@ -119,8 +119,8 @@ public class TeleOpV2 extends OpMode {
         }
 
         if(grab > 0.1){
-            rGrab.setPosition(.20);//.41
-            lGrab.setPosition(0.28);//.45
+            rGrab.setPosition(.2);//.2
+            lGrab.setPosition(0.28);//.28
         }
         else{
             rGrab.setPosition(.13);//.6

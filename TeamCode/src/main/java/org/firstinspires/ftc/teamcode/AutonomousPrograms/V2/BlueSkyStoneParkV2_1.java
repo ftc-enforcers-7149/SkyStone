@@ -1,21 +1,12 @@
 package org.firstinspires.ftc.teamcode.AutonomousPrograms.V2;
 
 import com.qualcomm.robotcore.eventloop.opmode.Autonomous;
-import com.qualcomm.robotcore.eventloop.opmode.OpMode;
-import com.qualcomm.robotcore.hardware.ColorSensor;
-import com.qualcomm.robotcore.hardware.DcMotor;
-import com.qualcomm.robotcore.hardware.DcMotorSimple;
-import com.qualcomm.robotcore.hardware.DistanceSensor;
-import com.qualcomm.robotcore.hardware.Servo;
 
 import org.firstinspires.ftc.robotcore.external.navigation.DistanceUnit;
-import org.firstinspires.ftc.teamcode.Subsystems.Claw;
-import org.firstinspires.ftc.teamcode.Subsystems.DriveTrain;
 import org.firstinspires.ftc.teamcode.Subsystems.ParentInit;
-import org.firstinspires.ftc.teamcode.Subsystems.Webcam;
 
-@Autonomous(name="Blue SkyStone ParkV2")
-public class BlueSkyStonePark extends ParentInit {
+@Autonomous(name="Blue SkyStone ParkV2_1")
+public class BlueSkyStoneParkV2_1 extends ParentInit {
     int step=0;
 
     String position="";
@@ -64,42 +55,24 @@ public class BlueSkyStonePark extends ParentInit {
                 driveTrain.delay(500);
                 break;
             case 9:
-                claw.up();
+                //claw.up();
                 break;
             case 10:
                driveTrain.driveStraight("backward",17);
                 break;
             case 11:
-                driveTrain.rotation(90);
-                telemetry.addData("angle",driveTrain.getRawYaw());
+                driveTrain.strafeToLine(color, "blue", "left");
                 break;
             case 12:
-                claw.down();
+                driveTrain.strafeSeconds(2000,"left");
                 break;
             case 13:
-                driveTrain.driveToLine(color, "blue", "forward");
-                break;
-            case 14:
-                driveTrain.driveStraight("forward",20);
-                break;
-            case 15:
                 claw.release();
                 claw.up();
                 break;
-            case 16:
-                driveTrain.driveToLine(color, "blue", "backward");
-                break;
-            case 17:
-                telemetry.addData("angle",driveTrain.getRawYaw());
-                driveTrain.rotation(80);
-                break;
-            case 18:
-                driveTrain.driveRange(distanceC,40,"center");
-                break;
-            case 19:
-                driveTrain.simpleTurn(0,0.2);
-                break;
-            case 20:
+            case 14:
+                driveTrain.strafeToLine(color,"blue","right");
+            case 15:
                 if(position.equals("right")){
                     driveTrain.driveRange(distanceR,10,"right");
                 }
@@ -110,18 +83,24 @@ public class BlueSkyStonePark extends ParentInit {
                     driveTrain.driveRange(distanceR,20,"right");
                 }
                 break;
-            case 21:
+            case 16:
                 claw.down();
                 claw.setState(true,false);
                 break;
-            case 22:driveTrain.delay(500);
+            case 17:driveTrain.delay(500);
                 break;
-            case 23:
+            case 18:
                 driveTrain.driveStraight("forward", 25);
                 break;
-            case 24:
-                claw.grabVertical();
+            case 19:
+                if(position.equals("right")){
+                    claw.grabVertical();
+                }
+                else{
+                    claw.grab();
+                }
                 break;
+
 
         }
         step++;
