@@ -1,5 +1,7 @@
 package org.firstinspires.ftc.teamcode.notHarry;
 
+import android.graphics.Path;
+
 import com.qualcomm.robotcore.eventloop.opmode.OpMode;
 import com.qualcomm.robotcore.eventloop.opmode.TeleOp;
 import com.qualcomm.robotcore.hardware.DcMotor;
@@ -8,6 +10,9 @@ import com.qualcomm.robotcore.hardware.DistanceSensor;
 import com.qualcomm.robotcore.hardware.Servo;
 
 import org.firstinspires.ftc.robotcore.external.navigation.DistanceUnit;
+import org.firstinspires.ftc.teamcode.Subsystems.Claw;
+import org.firstinspires.ftc.teamcode.Subsystems.DriveSystems.Headless;
+
 //fish in a tube
 @TeleOp(name = "towerLevelTest")
 public class towerLevelTest extends OpMode {
@@ -17,33 +22,40 @@ public class towerLevelTest extends OpMode {
 
     float liftUp, liftDown, grab,liftL;
     boolean levelPlus, levelMinus, pressP, pressM;
+    Claw claw;
 
     int level;
     public void init(){
-        lift = hardwareMap.dcMotor.get("lift");
-        distanceLift = hardwareMap.get(DistanceSensor.class,"distanceLift");
+        //Servos
         lArm = hardwareMap.servo.get("lArm");
         rArm = hardwareMap.servo.get("rArm");
         lGrab = hardwareMap.servo.get("lGrab");
         rGrab = hardwareMap.servo.get("rGrab");
 
+        lift = hardwareMap.dcMotor.get("lift");
+
+        distanceLift = hardwareMap.get(DistanceSensor.class, "distanceLift");
+
+        //Motor directions
         lift.setDirection(DcMotorSimple.Direction.FORWARD);
+
         lArm.setDirection(Servo.Direction.FORWARD);
         rArm.setDirection(Servo.Direction.REVERSE);
         lGrab.setDirection(Servo.Direction.REVERSE);
         rGrab.setDirection(Servo.Direction.FORWARD);
 
+        //Lift brake
         lift.setZeroPowerBehavior(DcMotor.ZeroPowerBehavior.BRAKE);
-
-        lArm.setPosition(0);
-        rArm.setPosition(0);
+        claw = new Claw(lArm, rArm, lGrab, rGrab);
     }
+
     public void loop(){
         grab = gamepad1.right_trigger;
         liftDown = gamepad1.left_trigger;
         liftL = gamepad1.left_stick_y;
 
         levelPlus = gamepad1.dpad_up;
+        levelMinus = gamepad1.dpad_down;
 
         telemetry.addData("distanceLift",distanceLift.getDeviceName() );
         telemetry.addData("range", distanceLift.getDistance(DistanceUnit.CM));
@@ -60,17 +72,17 @@ public class towerLevelTest extends OpMode {
 
 
         if(grab > 0.1){
-            rGrab.setPosition(0.26);//.41
-            lGrab.setPosition(0.65);//.45
+            claw.grab();
         }
         else{
-            rGrab.setPosition(0.3);//.6
-            lGrab.setPosition(1);//1
+            claw.release();
         }
+
         if(!pressP){
             if (levelPlus) {
                 if (level < 5){
                     level++;
+                    goLevel("up");
                 }
                 pressP = true;
             }
@@ -86,6 +98,7 @@ public class towerLevelTest extends OpMode {
             if (levelMinus) {
                 if(level > 0){
                     level--;
+                    goLevel("down");
                 }
                 pressM = true;
             }
@@ -96,6 +109,8 @@ public class towerLevelTest extends OpMode {
                 pressM = false;
             }
         }
+
+
     }
 
     public void goLevel(String dir) {
