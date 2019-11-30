@@ -305,10 +305,10 @@ public class DriveTrain {
         theD = dir.equals("left") ? 1 : -1;
 
         while(color.red()<35&&color.blue()<35){
-            fLeft.setPower(-0.5*theD);
-            bLeft.setPower(0.5*theD);
-            bRight.setPower(-0.5*theD);
-            fRight.setPower(0.5*theD);
+            fLeft.setPower(-0.7*theD);
+            bLeft.setPower(0.7*theD);
+            bRight.setPower(-0.7*theD);
+            fRight.setPower(0.7*theD);
         }
         fLeft.setPower(0);
         bLeft.setPower(0);
@@ -404,18 +404,35 @@ public class DriveTrain {
 
             if(distance>dSensor.getDistance(DistanceUnit.CM)){
                 while (distance>dSensor.getDistance(DistanceUnit.CM)) {
-                    fLeft.setPower(0.4*dir);
-                    fRight.setPower(-0.4*dir);
-                    bLeft.setPower(-0.4*dir);
-                    bRight.setPower(0.4*dir);
+                    if(Math.abs(distance-dSensor.getDistance(DistanceUnit.CM))>20){
+                        fLeft.setPower(0.7*dir);
+                        fRight.setPower(-0.7*dir);
+                        bLeft.setPower(-0.7*dir);
+                        bRight.setPower(0.7*dir);
+                    }
+                    else{
+                        fLeft.setPower(0.4*dir);
+                        fRight.setPower(-0.4*dir);
+                        bLeft.setPower(-0.4*dir);
+                        bRight.setPower(0.4*dir);
+                    }
+
                 }
             }
             else{
                 while (distance<dSensor.getDistance(DistanceUnit.CM)) {
-                    fLeft.setPower(-0.4*dir);
-                    fRight.setPower(0.4*dir);
-                    bLeft.setPower(0.4*dir);
-                    bRight.setPower(-0.4*dir);
+                    if(Math.abs(distance-dSensor.getDistance(DistanceUnit.CM))>20){
+                        fLeft.setPower(-0.7*dir);
+                        fRight.setPower(0.7*dir);
+                        bLeft.setPower(0.7*dir);
+                        bRight.setPower(-0.7*dir);
+                    }
+                    else{
+                        fLeft.setPower(-0.4*dir);
+                        fRight.setPower(0.4*dir);
+                        bLeft.setPower(0.4*dir);
+                        bRight.setPower(-0.4*dir);
+                    }
                 }
             }
         }

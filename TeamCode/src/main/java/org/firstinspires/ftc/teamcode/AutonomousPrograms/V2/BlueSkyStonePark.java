@@ -32,7 +32,7 @@ public class BlueSkyStonePark extends ParentInit {
                 driveTrain.driveStraight("forward",20,0.2);
                 break;
             case 1:
-                driveTrain.driveRange(distanceR,65,"right");
+                //driveTrain.driveRange(distanceR,65,"right");
             case 2:
                 position = "center";
                 webcam.deactivate();
