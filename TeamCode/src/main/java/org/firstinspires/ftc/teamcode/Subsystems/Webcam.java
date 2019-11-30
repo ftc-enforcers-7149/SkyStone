@@ -380,20 +380,22 @@ public class Webcam {
         rRed = 0;
         rGreen = 0;
 
-        for (int y = 0; y < bitmap.getHeight(); y++) {
-            for (int x = 90; x < 110; x++) {
-                lRed += Color.red(bitmap.getPixel(x, y));
-                lGreen += Color.green(bitmap.getPixel(x, y));
-            }
+        if (bitmap != null) {
+            for (int y = 0; y < bitmap.getHeight(); y++) {
+                for (int x = 90; x < 110; x++) {
+                    lRed += Color.red(bitmap.getPixel(x, y));
+                    lGreen += Color.green(bitmap.getPixel(x, y));
+                }
 
-            for (int x = 240; x < 260; x++) {
-                cRed += Color.red(bitmap.getPixel(x, y));
-                cGreen += Color.green(bitmap.getPixel(x, y));
-            }
+                for (int x = 240; x < 260; x++) {
+                    cRed += Color.red(bitmap.getPixel(x, y));
+                    cGreen += Color.green(bitmap.getPixel(x, y));
+                }
 
-            for (int x = 440; x < 460; x++) {
-                rRed += Color.red(bitmap.getPixel(x, y));
-                cGreen += Color.green(bitmap.getPixel(x, y));
+                for (int x = 440; x < 460; x++) {
+                    rRed += Color.red(bitmap.getPixel(x, y));
+                    cGreen += Color.green(bitmap.getPixel(x, y));
+                }
             }
         }
 
@@ -405,10 +407,10 @@ public class Webcam {
         telemetry.addData("Center color", cRedGreen);
         telemetry.addData("Right color", rRedGreen);
 
-        if (rRedGreen > cRedGreen && rRedGreen > lRedGreen) {
+        if (rRedGreen < cRedGreen && rRedGreen < lRedGreen) {
             position = "right";
         }
-        else if (cRedGreen > lRedGreen) {
+        else if (cRedGreen < lRedGreen) {
             position = "center";
         }
         else {
