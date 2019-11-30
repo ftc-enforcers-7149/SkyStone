@@ -124,7 +124,7 @@ public class BlueFoundationPark extends OpMode {
                 break;
             case 4:
                 foundation.rDown();
-                break;
+            break;
             case 5:
                 driveTrain.delay(1000);
                 break;
