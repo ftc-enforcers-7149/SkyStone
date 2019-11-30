@@ -13,17 +13,21 @@ public class VuForiaTest extends OpMode {
     public void init(){
         webcam=new Webcam(hardwareMap);
     }
-    public void start(){
 
-    }
-    public void loop(){
+    public void init_loop() {
+
         switch(step){
             case 0:position=webcam.getQueuePos(telemetry);
-            break;
+                break;
         }
         telemetry.addData("position",position);
+    }
+
+    public void loop(){
+
     }
     public void stop(){
 
     }
+
 }

@@ -309,11 +309,11 @@ public class Webcam {
     /**
      * Gets a frame from vuforia's queue.
      * Creates a bitmap from that frame.
-     * Then, gets alpha values of two points, one on the right and one on the left.
+     * Then, gets red and green values of three columns, one for each possible skystone position
      * Sets the position accordingly, defaulting to left.
      * @return the position of the skystone
      */
-    public String getQueuePos(final Telemetry telemetry) {
+    public String getQueuePos(Telemetry telemetry) {
         targetsSkyStone.activate();
         Vuforia.setFrameFormat(PIXEL_FORMAT.RGB565, true);
         VuforiaLocalizer.CloseableFrame frame = null;
@@ -370,7 +370,7 @@ public class Webcam {
         }
 
         //Width is 640. Height is 480
-        bitmap = Bitmap.createBitmap(bitmap, 0, 350, bitmap.getWidth(), 130);
+        bitmap = Bitmap.createBitmap(bitmap, 0, 150, bitmap.getWidth(), 200);
         //Width is 640. Height is now 130
 
         lRed = 0;
@@ -382,7 +382,7 @@ public class Webcam {
 
         if (bitmap != null) {
             for (int y = 0; y < bitmap.getHeight(); y++) {
-                for (int x = 90; x < 110; x++) {
+                for (int x = 60; x < 80; x++) {
                     lRed += Color.red(bitmap.getPixel(x, y));
                     lGreen += Color.green(bitmap.getPixel(x, y));
                 }
@@ -392,9 +392,9 @@ public class Webcam {
                     cGreen += Color.green(bitmap.getPixel(x, y));
                 }
 
-                for (int x = 440; x < 460; x++) {
+                for (int x = 400; x < 420; x++) {
                     rRed += Color.red(bitmap.getPixel(x, y));
-                    cGreen += Color.green(bitmap.getPixel(x, y));
+                    rGreen += Color.green(bitmap.getPixel(x, y));
                 }
             }
         }
