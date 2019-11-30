@@ -298,6 +298,24 @@ public class DriveTrain {
         fRight.setPower(0);
     }
 
+    public void strafeToLine(ColorSensor color, String lineColor, String dir){
+
+        int theD;
+
+        theD = dir.equals("left") ? 1 : -1;
+
+        while(color.red()<35&&color.blue()<35){
+            fLeft.setPower(-0.5*theD);
+            bLeft.setPower(0.5*theD);
+            bRight.setPower(-0.5*theD);
+            fRight.setPower(0.5*theD);
+        }
+        fLeft.setPower(0);
+        bLeft.setPower(0);
+        bRight.setPower(0);
+        fRight.setPower(0);
+    }
+
     /**
      * turns to given angle without correction
      * @param distance angle destination
@@ -323,6 +341,10 @@ public class DriveTrain {
                 fRight.setPower(power);
             }
         }
+        fLeft.setPower(0);
+        bLeft.setPower(0);
+        bRight.setPower(0);
+        fRight.setPower(0);
     }
 
     /**
