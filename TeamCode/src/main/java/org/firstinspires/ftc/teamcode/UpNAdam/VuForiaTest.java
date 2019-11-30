@@ -29,4 +29,5 @@ public class VuForiaTest extends OpMode {
     public void stop(){
 
     }
+
 }
