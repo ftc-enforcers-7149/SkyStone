@@ -108,7 +108,7 @@ public class Webcam {
     Image rgb = null;
     Bitmap bitmap = null;
 
-    int cRed, rRed, cGreen, rGreen;
+    int cRed, rRed, lRed, cGreen, rGreen, lGreen;
 
     public static final String TAG = "Vuforia Navigation Sample";
 
@@ -369,29 +369,48 @@ public class Webcam {
             }
         }
 
-        bitmap = Bitmap.createBitmap(bitmap, 0, 400, bitmap.getWidth(), bitmap.getHeight());
+        //Width is 640. Height is 480
+        bitmap = Bitmap.createBitmap(bitmap, 0, 350, bitmap.getWidth(), 130);
+        //Width is 640. Height is now 130
+
+        lRed = 0;
+        lGreen = 0;
+        cRed = 0;
+        cGreen = 0;
+        rRed = 0;
+        rGreen = 0;
 
         if (bitmap != null) {
-            //Width is 640. Height is 480
-            cRed = Color.red(bitmap.getPixel(240, 40));
-            rRed = Color.red(bitmap.getPixel(400, 40));
+            for (int y = 0; y < bitmap.getHeight(); y++) {
+                for (int x = 90; x < 110; x++) {
+                    lRed += Color.red(bitmap.getPixel(x, y));
+                    lGreen += Color.green(bitmap.getPixel(x, y));
+                }
 
-            cGreen = Color.green(bitmap.getPixel(240, 440));
-            rGreen = Color.green(bitmap.getPixel(400, 440));
+                for (int x = 240; x < 260; x++) {
+                    cRed += Color.red(bitmap.getPixel(x, y));
+                    cGreen += Color.green(bitmap.getPixel(x, y));
+                }
+
+                for (int x = 440; x < 460; x++) {
+                    rRed += Color.red(bitmap.getPixel(x, y));
+                    cGreen += Color.green(bitmap.getPixel(x, y));
+                }
+            }
         }
-
-        telemetry.addData("Red center", cRed);
-        telemetry.addData("Green center", cGreen);
-        telemetry.addData("Red right", rRed);
-        telemetry.addData("Green right", rGreen);
-        telemetry.update();
 
         int cRedGreen = cRed + cGreen;
         int rRedGreen = rRed + rGreen;
+        int lRedGreen = lRed + lGreen;
 
-        if (rRedGreen < 100) {
+        telemetry.addData("Left color", lRedGreen);
+        telemetry.addData("Center color", cRedGreen);
+        telemetry.addData("Right color", rRedGreen);
+
+        if (rRedGreen < cRedGreen && rRedGreen < lRedGreen) {
             position = "right";
-        } else if (cRedGreen < 100) {
+        }
+        else if (cRedGreen < lRedGreen) {
             position = "center";
         }
         else {
