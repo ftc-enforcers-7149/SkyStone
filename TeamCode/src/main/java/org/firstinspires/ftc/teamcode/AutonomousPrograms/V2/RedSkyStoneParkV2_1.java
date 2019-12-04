@@ -7,6 +7,7 @@ import org.firstinspires.ftc.teamcode.Subsystems.ParentInit;
 
 @Autonomous(name="Red SkyStone ParkV2_1")
 public class RedSkyStoneParkV2_1 extends ParentInit {
+
     int step=0;
 
     String position="";
@@ -14,9 +15,11 @@ public class RedSkyStoneParkV2_1 extends ParentInit {
     public void init(){
        super.init();
     }
+
     public void start(){
         super.start();
     }
+
     public void loop(){
         switch(step){
             case 0:
@@ -103,12 +106,14 @@ public class RedSkyStoneParkV2_1 extends ParentInit {
 
 
         }
+
         step++;
         telemetry.addData("position",position);
         telemetry.addData("range",distanceR.getDistance(DistanceUnit.CM));
         telemetry.addData("Step: ", step);
     }
-    public void stop(){
 
+    public void stop(){
+        driveTrain.stop();
     }
 }

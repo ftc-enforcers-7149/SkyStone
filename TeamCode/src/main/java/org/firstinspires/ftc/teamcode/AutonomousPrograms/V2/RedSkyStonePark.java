@@ -171,6 +171,6 @@ public class RedSkyStonePark extends OpMode {
         telemetry.addData("Step: ", step);
     }
     public void stop(){
-
+        driveTrain.stop();
     }
 }

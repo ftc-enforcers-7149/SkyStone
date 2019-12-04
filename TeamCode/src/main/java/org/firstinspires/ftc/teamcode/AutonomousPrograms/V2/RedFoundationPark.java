@@ -170,4 +170,8 @@ public class RedFoundationPark extends OpMode {
         step++;
     }
 
+    public void stop() {
+        driveTrain.stop();
+    }
+
 }

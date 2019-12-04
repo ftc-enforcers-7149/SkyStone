@@ -157,4 +157,8 @@ public class BlueFoundationPark extends OpMode {
         step++;
         //Kpop = jMetal
     }
+
+    public void stop() {
+        driveTrain.stop();
+    }
 }
