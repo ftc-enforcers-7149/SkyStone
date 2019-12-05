@@ -26,27 +26,32 @@
  * OR TORT (INCLUDING NEGLIGENCE OR OTHERWISE) ARISING IN ANY WAY OUT OF THE USE
  * OF THIS SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
  */
-package org.firstinspires.ftc.teamcode.AutonomousPrograms.V1;
+package org.firstinspires.ftc.teamcode.AutonomousPrograms.V2;
 
 import com.qualcomm.robotcore.eventloop.opmode.Autonomous;
-import com.qualcomm.robotcore.eventloop.opmode.Disabled;
 import com.qualcomm.robotcore.eventloop.opmode.OpMode;
+import com.qualcomm.robotcore.hardware.ColorSensor;
 import com.qualcomm.robotcore.hardware.DcMotor;
 import com.qualcomm.robotcore.hardware.DcMotorSimple;
 import com.qualcomm.robotcore.hardware.Servo;
 
+import org.firstinspires.ftc.teamcode.Subsystems.Claw;
 import org.firstinspires.ftc.teamcode.Subsystems.DriveTrain;
 import org.firstinspires.ftc.teamcode.Subsystems.FoundationV1;
+import org.firstinspires.ftc.teamcode.Subsystems.FoundationV2;
 
-//@Autonomous(name = "Red FoundationV1 Park")
-@Disabled                       // Comment this out to add to the opmode list
-public class RedFoundationParkOld extends OpMode {
+@Autonomous(name = "Blue Foundation ParkV2")
+//@Disabled                            // Comment this out to add to the opmode list
+public class BlueFoundationParkV2 extends OpMode {
 
-    public Servo lArm, rArm, lGrab, rGrab, lFound, rFound;
+    public Servo lArm, rArm, lGrab, rGrab;
+    Servo fLFound, fRFound, bLFound, bRFound;
     public DcMotor fRight,fLeft,bRight,bLeft,lift;
+    ColorSensor color;
 
     DriveTrain driveTrain;
-    FoundationV1 foundationV1;
+    FoundationV2 foundation;
+    Claw claw;
 
     int step=0;
 
@@ -57,14 +62,19 @@ public class RedFoundationParkOld extends OpMode {
         rArm = hardwareMap.servo.get("rArm");
         lGrab = hardwareMap.servo.get("lGrab");
         rGrab = hardwareMap.servo.get("rGrab");
-        lFound = hardwareMap.servo.get("lFound");
-        rFound = hardwareMap.servo.get("rFound");
+        fLFound = hardwareMap.servo.get("fLFound");
+        fRFound = hardwareMap.servo.get("fRFound");
+        bLFound = hardwareMap.servo.get("bLFound");
+        bRFound = hardwareMap.servo.get("bRFound");
         //Drive motors
         fLeft = hardwareMap.dcMotor.get("fLeft");
         fRight = hardwareMap.dcMotor.get("fRight");
         bLeft = hardwareMap.dcMotor.get("bLeft");
         bRight = hardwareMap.dcMotor.get("bRight");
         lift = hardwareMap.dcMotor.get("lift");
+
+        //Color sensor
+        color = hardwareMap.colorSensor.get("color");
 
         //direction of motors
         fLeft.setDirection(DcMotorSimple.Direction.FORWARD);
@@ -73,82 +83,82 @@ public class RedFoundationParkOld extends OpMode {
         bLeft.setDirection(DcMotorSimple.Direction.FORWARD);
         lift.setDirection(DcMotorSimple.Direction.FORWARD);
         //direction of servos
-        lArm.setDirection(Servo.Direction.REVERSE);
-        rArm.setDirection(Servo.Direction.FORWARD);
+        lArm.setDirection(Servo.Direction.FORWARD);
+        rArm.setDirection(Servo.Direction.REVERSE);
         lGrab.setDirection(Servo.Direction.REVERSE);
         rGrab.setDirection(Servo.Direction.FORWARD);
-        lFound.setDirection(Servo.Direction.REVERSE);
-        rFound.setDirection(Servo.Direction.FORWARD);
-
-        //Servos up
-        rFound.setPosition(0);
-        lFound.setPosition(0);
+        fLFound.setDirection(Servo.Direction.REVERSE);
+        fRFound.setDirection(Servo.Direction.FORWARD);
+        bLFound.setDirection(Servo.Direction.FORWARD);
+        bRFound.setDirection(Servo.Direction.REVERSE);
 
         lift.setZeroPowerBehavior(DcMotor.ZeroPowerBehavior.BRAKE);
+
+        lArm.setPosition(0.95);
+        rArm.setPosition(0.81);
+
+        fLFound.setPosition(1);
+        bLFound.setPosition(1);
+
+        fRFound.setPosition(1);
+        bRFound.setPosition(1);
+
     }
     public void start(){
         driveTrain=new DriveTrain(hardwareMap,telemetry,fLeft,fRight,bLeft,bRight);
-        foundationV1 =new FoundationV1(lFound,rFound);
+        foundation =new FoundationV2(fLFound,fRFound,bLFound,bRFound);
+        claw=new Claw(lArm,rArm,lGrab,rGrab);
     }
 
-    // Loop and update the dashboard//
+    // Loop and update the dashboard
     public void loop() {
         switch(step){
-            case 0://driveTrain.delay(3000);
+            case 1:
+                //foundation.lDown();
                 break;
-            case 1://driveTrain.delay(3000);
+            case 2:
+                driveTrain.driveStraight("backward",47);//50
                 break;
-            case 2://driveTrain.delay(4000);
-                break;
-            case 3://driveTrain.delay(3000);
+            case 3:
+                driveTrain.strafeSeconds(750,"right");
                 break;
             case 4:
-                lArm.setPosition(0.1);
-                rArm.setPosition(0.05);
+                foundation.rDown();
                 break;
             case 5:
-                driveTrain.driveStraight("forward",47);//50
-                break;
-            case 6:
-                driveTrain.strafeSeconds(500,"right");
-                break;
-            case 7:
-                foundationV1.down();
-                break;
-            case 8:
                 driveTrain.delay(1000);
                 break;
-            case 9:
-                //driveTrain.driveStraight("backward",3);
-            case 10:
+            case 6:
+
+            case 7:
                 driveTrain.strafeSeconds(250,"left");
+            case 8:
+                driveTrain.simpleTurn(45,0.45);//0.45
+                //was already commented out: driveTrain.driveStraight("backward", 35, 0.7,0.7);
+                break;
+            case 9:
+                driveTrain.strafeSeconds(3000,"right");
+            case 10:
+                foundation.rUp();
+                break;
             case 11:
-                driveTrain.simpleTurn(-45,0.45);//driveTrain.simpleRotateRed(295,0.35);//0.45
-                //driveTrain.driveStraight("backward", 35, 0.7,0.7);
+                driveTrain.strafeSeconds(250,"left");
                 break;
             case 12:
-                driveTrain.strafeSeconds(3000,"right");
+                driveTrain.driveStraight("forward", 28);
+                break;
             case 13:
-                foundationV1.up();
+                driveTrain.rotation(90);
                 break;
             case 14:
-                driveTrain.strafeSeconds(250,"left");
+                driveTrain.driveToLine(color, "blue", "forward");
                 break;
-            case 15:
-                driveTrain.driveStraight("backward", 28);
-                break;
-            case 16:
-                driveTrain.rotation(270);
-                break;
-            case 17:
-                driveTrain.driveStraight("backward", 12);
-                break;
-            case 18:
-                //driveTrain.rotation(180);
-                break;
-
         }
         step++;
+        //Kpop = jMetal
     }
 
+    public void stop() {
+        driveTrain.stop();
+    }
 }

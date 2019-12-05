@@ -40,7 +40,7 @@ import org.firstinspires.ftc.teamcode.Subsystems.FoundationV1;
 
 //@Autonomous(name = "Blue Foundation Park")
 @Disabled                          // Comment this out to add to the opmode list
-public class BlueFoundationParkOld extends OpMode {
+public class BlueFoundationParkOldV1 extends OpMode {
 
     public Servo lArm, rArm, lGrab, rGrab, lFound, rFound;
     public DcMotor fRight,fLeft,bRight,bLeft,lift;

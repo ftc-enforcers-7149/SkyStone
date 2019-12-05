@@ -37,12 +37,11 @@ import com.qualcomm.robotcore.hardware.Servo;
 
 import org.firstinspires.ftc.teamcode.Subsystems.Claw;
 import org.firstinspires.ftc.teamcode.Subsystems.DriveTrain;
-import org.firstinspires.ftc.teamcode.Subsystems.FoundationV1;
 import org.firstinspires.ftc.teamcode.Subsystems.FoundationV2;
 
-@Autonomous(name = "Blue Foundation ParkV2")
+//@Autonomous(name = "Blue Foundation ParkV3")
 //@Disabled                            // Comment this out to add to the opmode list
-public class BlueFoundationPark extends OpMode {
+public class BlueFoundationParkV2_1 extends OpMode {
 
     public Servo lArm, rArm, lGrab, rGrab;
     Servo fLFound, fRFound, bLFound, bRFound;
@@ -131,12 +130,18 @@ public class BlueFoundationPark extends OpMode {
             case 6:
 
             case 7:
-                driveTrain.strafeSeconds(250,"left");
+                driveTrain.strafeSeconds(700,"left");
             case 8:
-                driveTrain.simpleTurn(45,0.45);//0.45
+                driveTrain.simpleTurn(20,0.45);//0.45
                 //was already commented out: driveTrain.driveStraight("backward", 35, 0.7,0.7);
                 break;
             case 9:
+                driveTrain.strafeSeconds(2000, "right");
+                break;
+            case 10:
+                driveTrain.simpleTurn(50, .45);
+                break;
+            /*case 9:
                 driveTrain.strafeSeconds(3000,"right");
             case 10:
                 foundation.rUp();
@@ -152,13 +157,10 @@ public class BlueFoundationPark extends OpMode {
                 break;
             case 14:
                 driveTrain.driveToLine(color, "blue", "forward");
-                break;
+                break;*/
         }
         step++;
         //Kpop = jMetal
-    }
-
-    public void stop() {
-        driveTrain.stop();
+        //JOE MATER
     }
 }

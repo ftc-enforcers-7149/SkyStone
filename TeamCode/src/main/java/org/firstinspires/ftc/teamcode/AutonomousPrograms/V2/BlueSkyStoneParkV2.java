@@ -14,8 +14,8 @@ import org.firstinspires.ftc.teamcode.Subsystems.DriveTrain;
 import org.firstinspires.ftc.teamcode.Subsystems.ParentInit;
 import org.firstinspires.ftc.teamcode.Subsystems.Webcam;
 
-@Autonomous(name="Blue SkyStone ParkV2")
-public class BlueSkyStonePark extends ParentInit {
+//@Autonomous(name="Blue SkyStone ParkV2")
+public class BlueSkyStoneParkV2 extends ParentInit {
     int step=0;
 
     String position="";

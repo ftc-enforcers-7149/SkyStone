@@ -5,7 +5,7 @@ import com.qualcomm.robotcore.eventloop.opmode.Autonomous;
 import org.firstinspires.ftc.robotcore.external.navigation.DistanceUnit;
 import org.firstinspires.ftc.teamcode.Subsystems.ParentInit;
 
-@Autonomous(name="Blue SkyStone ParkV2_1!")
+@Autonomous(name="Blue SkyStone ParkV2_1")
 public class BlueSkyStoneParkV2_1 extends ParentInit {
 
     int step=0;
@@ -41,7 +41,7 @@ public class BlueSkyStoneParkV2_1 extends ParentInit {
                     driveTrain.driveRange(distanceR,92,"right");
                 }
                 else{
-                    driveTrain.driveRange(distanceR,75,"right");
+                    driveTrain.driveRange(distanceR,83,"right");
                 }
                 break;
             case 3:
@@ -60,7 +60,7 @@ public class BlueSkyStoneParkV2_1 extends ParentInit {
                 driveTrain.delay(500);
                 break;
             case 8:
-               driveTrain.driveStraight("backward",26);
+               driveTrain.driveStraight("backward",18);
                 break;
             case 9:
                 driveTrain.strafeToLine(color, "blue", "left");
@@ -69,12 +69,14 @@ public class BlueSkyStoneParkV2_1 extends ParentInit {
                 driveTrain.strafeSeconds(1000,"left");
                 break;
             case 11:
+                claw.down();
+                driveTrain.delay(750);
                 claw.release();
                 claw.up();
                 break;
             case 12:
                 driveTrain.strafeToLine(color,"blue","right");
-            case 13:
+            /*case 13:
                 if(position.equals("right")){
                     driveTrain.driveRange(distanceR,10,"right");
                 }
@@ -101,7 +103,7 @@ public class BlueSkyStoneParkV2_1 extends ParentInit {
                 else{
                     claw.grab();
                 }
-                break;
+                break;*/
         }
 
         step++;

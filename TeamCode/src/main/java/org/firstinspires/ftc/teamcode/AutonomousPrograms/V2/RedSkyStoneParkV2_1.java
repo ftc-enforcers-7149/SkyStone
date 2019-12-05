@@ -27,15 +27,13 @@ public class RedSkyStoneParkV2_1 extends ParentInit {
     public void loop(){
         switch(step){
             case 0:
-                driveTrain.driveStraight("forward",20,0.2);
-                break;
-            case 1:
-                //driveTrain.driveRange(distanceR,65,"right");
-            case 2:
-                position = "center";
+                position = webcam.getQueuePos(telemetry);
                 webcam.deactivate();
                 break;
-            case 3:
+            case 1:
+                driveTrain.driveStraight("forward",20,0.2);
+                break;
+            case 2:
                 if(position.equals("left")){
                     driveTrain.driveRange(distanceL,60,"left");
                 }
@@ -43,72 +41,69 @@ public class RedSkyStoneParkV2_1 extends ParentInit {
                     driveTrain.driveRange(distanceL,92,"left");
                 }
                 else{
-                    driveTrain.driveRange(distanceL,75,"left");
+                    driveTrain.driveRange(distanceL,83,"left");
                 }
                 break;
-            case 4:
+            case 3:
                 claw.down();
                 claw.release();
                 break;
-            case 5:driveTrain.delay(500);
+            case 4:driveTrain.delay(500);
                 break;
-            case 6:
+            case 5:
                 driveTrain.driveStraight("forward", 25);
                 break;//
-            case 7:
+            case 6:
                 claw.grab();
                 break;
-            case 8:
+            case 7:
                 driveTrain.delay(500);
                 break;
+            case 8:
+               driveTrain.driveStraight("backward",18);
+                break;
             case 9:
-                //claw.up();
-                break;
-            case 10:
-               driveTrain.driveStraight("backward",17);
-                break;
-            case 11:
                 driveTrain.strafeToLine(color, "red", "right");
                 break;
-            case 12:
-                driveTrain.strafeSeconds(2000,"right");
+            case 10:
+                driveTrain.strafeSeconds(1000,"right");
                 break;
-            case 13:
+            case 11:
+                claw.down();
+                driveTrain.delay(750);
                 claw.release();
                 claw.up();
                 break;
-            case 14://
+            case 12:
                 driveTrain.strafeToLine(color,"red","left");
-            case 15:
-                if(position.equals("left")){
-                    driveTrain.driveRange(distanceL,10,"left");
+            /*case 13:
+                if(position.equals("right")){
+                    driveTrain.driveRange(distanceR,10,"right");
                 }
-                else if(position.equals("right")){
-                    driveTrain.driveRange(distanceL,30,"left");
+                else if(position.equals("left")){
+                    driveTrain.driveRange(distanceR,30,"right");
                 }
                 else{
-                    driveTrain.driveRange(distanceL,20,"left");
-                }//
+                    driveTrain.driveRange(distanceR,20,"right");
+                }
                 break;
-            case 16:
+            case 14:
                 claw.down();
                 claw.setState(true,false);
                 break;
-            case 17:driveTrain.delay(500);
+            case 15:driveTrain.delay(500);
                 break;
-            case 18:
+            case 16:
                 driveTrain.driveStraight("forward", 25);
                 break;
-            case 19:
+            case 17:
                 if(position.equals("right")){
                     claw.grabVertical();
                 }
                 else{
                     claw.grab();
                 }
-                break;
-
-
+                break;*/
         }
 
         step++;

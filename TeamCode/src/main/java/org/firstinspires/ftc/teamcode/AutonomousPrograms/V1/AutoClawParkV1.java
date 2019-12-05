@@ -8,7 +8,7 @@ import com.qualcomm.robotcore.hardware.Servo;
 
 //@Autonomous(name="auto claw park")
 @Disabled
-public class AutoClawPark extends OpMode {
+public class AutoClawParkV1 extends OpMode {
     Servo lArm, rArm, lGrab, rGrab, lFound, rFound;
 
     public void init(){
