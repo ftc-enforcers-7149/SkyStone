@@ -38,6 +38,8 @@ public class ParentInit extends OpMode {
     protected DistanceSensor distanceL, distanceR, distanceC;
     protected ColorSensor color;
 
+    private boolean initialize = true;
+
     public void init(){
         //Servos
         lArm = hardwareMap.servo.get("lArm");
@@ -93,14 +95,19 @@ public class ParentInit extends OpMode {
         bRight.setZeroPowerBehavior(DcMotor.ZeroPowerBehavior.BRAKE);
 
         telemetry.addData("sensor:",distanceC.getDeviceName());
+    }
 
-        webcam=new Webcam(hardwareMap);
+    public void init_loop() {
+        if (initialize) {
+            webcam=new Webcam(hardwareMap);
+            foundation =new FoundationV2(fLFound,fRFound,bLFound,bRFound);
+            claw=new Claw(lArm,rArm,lGrab,rGrab);
+            initialize = false;
+        }
     }
 
     public void start(){
         driveTrain=new DriveTrain(hardwareMap,telemetry,fLeft,fRight,bLeft,bRight);
-        foundation =new FoundationV2(fLFound,fRFound,bLFound,bRFound);
-        claw=new Claw(lArm,rArm,lGrab,rGrab);
     }
 
     public void loop(){}

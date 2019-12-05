@@ -16,6 +16,10 @@ public class RedSkyStoneParkV2_1 extends ParentInit {
        super.init();
     }
 
+    public void init_loop() {
+        super.init_loop();
+    }
+
     public void start(){
         super.start();
     }
