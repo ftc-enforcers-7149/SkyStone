@@ -5,8 +5,8 @@ import com.qualcomm.robotcore.eventloop.opmode.Autonomous;
 import org.firstinspires.ftc.robotcore.external.navigation.DistanceUnit;
 import org.firstinspires.ftc.teamcode.Subsystems.ParentInit;
 
-@Autonomous(name="Blue SkyStone ParkV2_1")
-public class BlueSkyStoneParkV2_1 extends ParentInit {
+@Autonomous(name="Red SkyStone ParkV2_1")
+public class RedSkyStoneParkV2_1 extends ParentInit {
 
     int step=0;
 
@@ -34,14 +34,14 @@ public class BlueSkyStoneParkV2_1 extends ParentInit {
                 driveTrain.driveStraight("forward",20,0.2);
                 break;
             case 2:
-                if(position.equals("right")){
-                    driveTrain.driveRange(distanceR,60,"right");
+                if(position.equals("left")){
+                    driveTrain.driveRange(distanceL,60,"left");
                 }
-                else if(position.equals("left")){
-                    driveTrain.driveRange(distanceR,92,"right");
+                else if(position.equals("right")){
+                    driveTrain.driveRange(distanceL,92,"left");
                 }
                 else{
-                    driveTrain.driveRange(distanceR,83,"right");
+                    driveTrain.driveRange(distanceL,83,"left");
                 }
                 break;
             case 3:
@@ -63,10 +63,10 @@ public class BlueSkyStoneParkV2_1 extends ParentInit {
                driveTrain.driveStraight("backward",18);
                 break;
             case 9:
-                driveTrain.strafeToLine(color, "blue", "left");
+                driveTrain.strafeToLine(color, "red", "right");
                 break;
             case 10:
-                driveTrain.strafeSeconds(1000,"left");
+                driveTrain.strafeSeconds(1000,"right");
                 break;
             case 11:
                 claw.down();
@@ -75,7 +75,7 @@ public class BlueSkyStoneParkV2_1 extends ParentInit {
                 claw.up();
                 break;
             case 12:
-                driveTrain.strafeToLine(color,"blue","right");
+                driveTrain.strafeToLine(color,"red","left");
             /*case 13:
                 if(position.equals("right")){
                     driveTrain.driveRange(distanceR,10,"right");

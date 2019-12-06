@@ -14,8 +14,8 @@ import org.firstinspires.ftc.teamcode.Subsystems.DriveTrain;
 import org.firstinspires.ftc.teamcode.Subsystems.ParentInit;
 import org.firstinspires.ftc.teamcode.Subsystems.Webcam;
 
-@Autonomous(name="Blue SkyStone ParkV2")
-public class BlueSkyStonePark extends ParentInit {
+//@Autonomous(name="Blue SkyStone ParkV2")
+public class BlueSkyStoneParkV2 extends ParentInit {
     int step=0;
 
     String position="";
@@ -32,7 +32,7 @@ public class BlueSkyStonePark extends ParentInit {
                 driveTrain.driveStraight("forward",20,0.2);
                 break;
             case 1:
-                driveTrain.driveRange(distanceR,65,"right");
+                //driveTrain.driveRange(distanceR,65,"right");
             case 2:
                 position = "center";
                 webcam.deactivate();
@@ -130,6 +130,6 @@ public class BlueSkyStonePark extends ParentInit {
         telemetry.addData("Step: ", step);
     }
     public void stop(){
-
+        driveTrain.stop();
     }
 }
