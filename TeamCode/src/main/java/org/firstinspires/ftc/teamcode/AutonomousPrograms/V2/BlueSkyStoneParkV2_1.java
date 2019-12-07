@@ -120,6 +120,5 @@ public class BlueSkyStoneParkV2_1 extends ParentInit {
     }
 
     public void stop(){
-        driveTrain.stop();
     }
 }
