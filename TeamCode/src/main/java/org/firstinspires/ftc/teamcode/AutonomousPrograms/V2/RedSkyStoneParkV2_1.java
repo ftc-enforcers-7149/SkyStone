@@ -113,6 +113,6 @@ public class RedSkyStoneParkV2_1 extends ParentInit {
     }
 
     public void stop(){
-        driveTrain.stop();
+
     }
 }

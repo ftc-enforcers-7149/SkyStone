@@ -130,6 +130,6 @@ public class BlueSkyStoneParkV2 extends ParentInit {
         telemetry.addData("Step: ", step);
     }
     public void stop(){
-        driveTrain.stop();
+
     }
 }

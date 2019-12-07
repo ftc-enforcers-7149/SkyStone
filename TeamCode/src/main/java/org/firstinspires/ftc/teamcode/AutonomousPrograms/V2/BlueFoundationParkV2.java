@@ -159,6 +159,5 @@ public class BlueFoundationParkV2 extends OpMode {
     }
 
     public void stop() {
-        driveTrain.stop();
     }
 }

@@ -492,14 +492,4 @@ public class DriveTrain {
         return String.format(Locale.getDefault(), "%.1f", AngleUnit.DEGREES.normalize(degrees));
     }
 
-    /**
-     * Stop the motors
-     */
-    public void stop() {
-        fLeft.setPower(0);
-        fRight.setPower(0);
-        bLeft.setPower(0);
-        bRight.setPower(0);
-    }
-
 }
