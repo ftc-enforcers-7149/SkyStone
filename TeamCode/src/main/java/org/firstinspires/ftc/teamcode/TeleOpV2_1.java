@@ -10,7 +10,7 @@ import org.firstinspires.ftc.teamcode.Subsystems.Claw;
 import org.firstinspires.ftc.teamcode.Subsystems.DriveSystems.Headless;
 import org.firstinspires.ftc.teamcode.Subsystems.FoundationV2;
 
-@TeleOp(name = "TeleOp v2")
+//@TeleOp(name = "TeleOp v2")
 public class TeleOpV2_1 extends OpMode {
     //Drive train
     Headless driveSystem;

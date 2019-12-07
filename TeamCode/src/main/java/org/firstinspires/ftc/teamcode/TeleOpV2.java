@@ -25,6 +25,7 @@ public class TeleOpV2 extends OpMode {
     boolean lFoundationDown, rFoundationDown;
     float grab;
     boolean startAccel;
+    boolean armsDown=false;
 
     public void init(){
         //Servos
@@ -108,14 +109,18 @@ public class TeleOpV2 extends OpMode {
         }
 
         //Arms and block grabbers
-        if (armUp > 0.1) {
-            lArm.setPosition(0.95);
-            rArm.setPosition(0.81);
-        }
-        else {
+        if (armsDown) {
+            if (armUp > 0.1) {
+                lArm.setPosition(0.95);
+                rArm.setPosition(0.81);
+            } else {
 
-            lArm.setPosition(0);
-            rArm.setPosition(0);
+                lArm.setPosition(0);
+                rArm.setPosition(0);
+            }
+        }
+        else if (armUp > 0.1) {
+            armsDown=true;
         }
 
         if(grab > 0.1){
