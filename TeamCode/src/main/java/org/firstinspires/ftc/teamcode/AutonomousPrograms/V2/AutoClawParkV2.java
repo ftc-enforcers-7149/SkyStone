@@ -22,7 +22,7 @@ public class AutoClawParkV2 extends OpMode {
         lArm.setDirection(Servo.Direction.REVERSE);
         rArm.setDirection(Servo.Direction.FORWARD);
         lGrab.setDirection(Servo.Direction.REVERSE);
-        rGrab.setDirection(Servo.Direction.FORWARD);
+        rGrab.setDirection(Servo.Direction.FORWARD);//
 
         claw=new Claw(lArm,rArm,lGrab,rGrab);
         claw.up();
