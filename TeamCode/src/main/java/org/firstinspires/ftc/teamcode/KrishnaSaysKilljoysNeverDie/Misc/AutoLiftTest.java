@@ -134,7 +134,7 @@ public class AutoLiftTest extends OpMode {
 
         if(!pressP){
             if (levelPlus) {
-                if (level < 5){
+                if (level < 8){
                     level++;
                     liftPress=true;
                 }
@@ -165,8 +165,20 @@ public class AutoLiftTest extends OpMode {
             }
         }
 
-        /*if(liftPress) {
+        if(liftPress) {
             switch (level) {
+                case 0:
+                    if (distanceLift.getDistance(DistanceUnit.CM) < 3) {
+                        lift.setPower(0.8);
+                    }
+                    else if(distanceLift.getDistance(DistanceUnit.CM) > 3) {
+                        lift.setPower(-0.4);
+                    }
+                    else{
+                        lift.setPower(0);
+                        liftPress = false;
+                    }
+                    break;
                 case 1:
                     if (distanceLift.getDistance(DistanceUnit.CM) < 10.5) {
                         lift.setPower(0.8);
@@ -227,8 +239,44 @@ public class AutoLiftTest extends OpMode {
                         liftPress = false;
                     }
                     break;
+                case 6:
+                    if (distanceLift.getDistance(DistanceUnit.CM) < 62) {
+                        lift.setPower(0.8);
+                    }
+                    else if(distanceLift.getDistance(DistanceUnit.CM) > 62) {
+                        lift.setPower(-0.4);
+                    }
+                    else{
+                        lift.setPower(0);
+                        liftPress = false;
+                    }
+                    break;
+                case 7:
+                    if (distanceLift.getDistance(DistanceUnit.CM) < 72) {
+                        lift.setPower(0.8);
+                    }
+                    else if(distanceLift.getDistance(DistanceUnit.CM) > 72) {
+                        lift.setPower(-0.4);
+                    }
+                    else{
+                        lift.setPower(0);
+                        liftPress = false;
+                    }
+                    break;
+                case 8:
+                    if (distanceLift.getDistance(DistanceUnit.CM) < 81) {
+                        lift.setPower(0.8);
+                    }
+                    else if(distanceLift.getDistance(DistanceUnit.CM) > 81) {
+                        lift.setPower(-0.4);
+                    }
+                    else{
+                        lift.setPower(0);
+                        liftPress = false;
+                    }
+                    break;
             }
-        }*/
+        }
 
         telemetry.addData("Level: ", level);
         telemetry.addData("Lift height: ", distanceLift.getDistance(DistanceUnit.CM));
