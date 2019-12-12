@@ -10,8 +10,7 @@ import com.qualcomm.robotcore.hardware.Servo;
 import org.firstinspires.ftc.robotcore.external.navigation.DistanceUnit;
 import org.firstinspires.ftc.teamcode.Subsystems.DriveSystems.Headless;
 
-@TeleOp(name = "Auto Lift" +
-        "")
+@TeleOp(name = "Auto Lift")
 public class AutoLiftTest extends OpMode {
 
     //Drive train
@@ -104,7 +103,6 @@ public class AutoLiftTest extends OpMode {
             rArm.setPosition(0.81);
         }
         else {
-
             lArm.setPosition(0);
             rArm.setPosition(0);
         }
@@ -118,6 +116,17 @@ public class AutoLiftTest extends OpMode {
             lGrab.setPosition(0.21);//1
         }
 
+        if(liftUp>0.1){
+            lift.setPower(0.8);
+            isBreak=true;
+        }
+        else if(liftDown>0.1){
+            lift.setPower(-0.4);
+            isBreak=false;
+        }
+        else{
+            lift.setPower(0);
+        }
 
         if (startAccel) {
             driveSystem.setAccel();
@@ -156,7 +165,7 @@ public class AutoLiftTest extends OpMode {
             }
         }
 
-        if(liftPress) {
+        /*if(liftPress) {
             switch (level) {
                 case 1:
                     if (distanceLift.getDistance(DistanceUnit.CM) < 10.5) {
@@ -167,6 +176,7 @@ public class AutoLiftTest extends OpMode {
                     }
                     else{
                         lift.setPower(0);
+                        liftPress = false;
                     }
                     break;
                 case 2:
@@ -178,8 +188,8 @@ public class AutoLiftTest extends OpMode {
                     }
                     else{
                         lift.setPower(0);
+                        liftPress = false;
                     }
-                    lift.setPower(0);
                     break;
                 case 3:
                     if (distanceLift.getDistance(DistanceUnit.CM) < 30.5) {
@@ -190,6 +200,7 @@ public class AutoLiftTest extends OpMode {
                     }
                     else{
                         lift.setPower(0);
+                        liftPress = false;
                     }
                     break;
                 case 4:
@@ -201,6 +212,7 @@ public class AutoLiftTest extends OpMode {
                     }
                     else{
                         lift.setPower(0);
+                        liftPress = false;
                     }
                     break;
                 case 5:
@@ -212,15 +224,14 @@ public class AutoLiftTest extends OpMode {
                     }
                     else{
                         lift.setPower(0);
+                        liftPress = false;
                     }
                     break;
             }
-        }
+        }*/
 
-        telemetry.addData("fL servo pos: ", fLFound.getPosition());
-        telemetry.addData("fR servo pos: ", fRFound.getPosition());
-        telemetry.addData("bL servo pos: ", bLFound.getPosition());
-        telemetry.addData("bR servo pos: ", bRFound.getPosition());
+        telemetry.addData("Level: ", level);
+        telemetry.addData("Lift height: ", distanceLift.getDistance(DistanceUnit.CM));
 
 
     }
@@ -299,12 +310,12 @@ public class AutoLiftTest extends OpMode {
                     }
                     lift.setPower(0);
                     break;
-                case 5:
+                /*case 5:
                     if (distanceLift.getDistance(DistanceUnit.CM) > 3) {
                         lift.setPower(-0.4);
                     }
                     lift.setPower(0);
-                    break;
+                    break;*/
 
             }
         }
