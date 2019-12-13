@@ -33,13 +33,15 @@ public class OdometryPosition extends Position {
 
 
     //Used for encoders
-    //TODO: THIS IS REALLY WRONG. FIX IT
-    static final double     EXTERNAL_GEARING        = 1;
-    static final double     COUNTS_PER_ODOM = 360; // eg: Our encoders duh
-    static final double     DRIVE_GEAR_REDUCTION    = 1;     // This is < 1.0 if geared UP
-    static final double     WHEEL_DIAMETER_INCHES   = 1.49606;     // For figuring circumference
-    public static final double     COUNTS_PER_INCH         = ((COUNTS_PER_ODOM * DRIVE_GEAR_REDUCTION) /
-            (WHEEL_DIAMETER_INCHES * 3.1415))/EXTERNAL_GEARING;
+
+    //used for encoders
+    private static final double     EXTERNAL_GEARING        = 1;
+    private static final double     COUNTS_PER_MOTOR_REV    = 360 ;  //28  // eg: AndyMark NeverRest40 Motor Encoder
+    private static final double     DRIVE_GEAR_REDUCTION    = 1 ;     // This is < 1.0 if geared UP
+    private static final double     WHEEL_DIAMETER_INCHES   = 1.49606299d ;     // For figuring circumference
+    public static final double     COUNTS_PER_INCH         = ((COUNTS_PER_MOTOR_REV * DRIVE_GEAR_REDUCTION) /
+            (WHEEL_DIAMETER_INCHES * Math.PI))/EXTERNAL_GEARING;
+
 
 
 

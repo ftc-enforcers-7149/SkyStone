@@ -138,14 +138,17 @@ public class RedFoundationParkV2 extends OpMode {
                 break;
             case 9:
                 //driveTrain.driveStraight("backward",3);
+                break;
             case 10:
                 driveTrain.strafeSeconds(500,"right");
+                break;
             case 11:
                 driveTrain.simpleTurn(-45,0.45);//driveTrain.simpleRotateRed(295,0.35);//0.45
                 //driveTrain.driveStraight("backward", 35, 0.7,0.7);
                 break;
             case 12:
                 driveTrain.strafeSeconds(3000,"left");
+                break;
             case 13:
                 foundation.lUp();
                 break;
