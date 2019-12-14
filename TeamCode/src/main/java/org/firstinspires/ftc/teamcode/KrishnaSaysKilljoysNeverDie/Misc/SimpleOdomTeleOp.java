@@ -4,35 +4,33 @@ import com.qualcomm.robotcore.eventloop.opmode.OpMode;
 import com.qualcomm.robotcore.eventloop.opmode.TeleOp;
 import com.qualcomm.robotcore.hardware.DcMotor;
 import com.qualcomm.robotcore.hardware.DcMotorSimple;
-import com.qualcomm.robotcore.hardware.DistanceSensor;
-import com.qualcomm.robotcore.hardware.Servo;
 
-import org.firstinspires.ftc.robotcore.external.navigation.DistanceUnit;
 import org.firstinspires.ftc.teamcode.Subsystems.DriveSystems.Headless;
-import org.firstinspires.ftc.teamcode.Subsystems.Odometry.OdometryPosition;
 
-@TeleOp(name = "OdomTeleOp")
-public class OdomTeleOp extends OpMode {
+@TeleOp(name="simple odom")
+public class SimpleOdomTeleOp extends OpMode {
+
+    //used for encoders
+    private static final double     COUNTS_PER_MOTOR_REV    = 1440; //360 CPR
+    private static final double     WHEEL_DIAMETER_INCHES   = 1.49606299d ;     // For figuring circumference
+    public static final double     COUNTS_PER_INCH         = COUNTS_PER_MOTOR_REV /(WHEEL_DIAMETER_INCHES * Math.PI);
 
     //Drive train
     Headless driveSystem;
 
-    //O do met ry
-    OdometryPosition oP;
 
-    DcMotor fRight, fLeft, bRight, bLeft;
+    DcMotor fRight, fLeft, bRight, bLeft, encX;
 
 
     boolean startAccel;
 
-
     public void init() {
-
         //Drive motors
         fLeft = hardwareMap.dcMotor.get("fLeft");
         fRight = hardwareMap.dcMotor.get("fRight");
         bLeft = hardwareMap.dcMotor.get("bLeft");
         bRight = hardwareMap.dcMotor.get("bRight");
+        encX = hardwareMap.dcMotor.get("encX");
 
         //Motor directions
         fLeft.setDirection(DcMotorSimple.Direction.REVERSE);
@@ -42,13 +40,9 @@ public class OdomTeleOp extends OpMode {
 
         //Initialize drive train
         driveSystem = new Headless(hardwareMap, telemetry, fLeft, fRight, bLeft, bRight);
+        encX.setMode(DcMotor.RunMode.STOP_AND_RESET_ENCODER);
+        encX.setMode(DcMotor.RunMode.RUN_WITHOUT_ENCODER);
 
-    }
-
-
-    public void start() {
-        oP = new OdometryPosition(hardwareMap, "encX", "encY", "imu", 0, 0);
-        oP.reverseX();
     }
 
     public void loop() {
@@ -60,18 +54,7 @@ public class OdomTeleOp extends OpMode {
 
         driveSystem.drive(gamepad1);
 
-        oP.updatePosition(OdometryPosition.Direction.FORWARD);
-        telemetry.addData("encoder x: ", oP.positionX);
-
-        telemetry.addLine("WATCH STAR WARS TROS IN THEATERS DEC 20");
-
-    }
-
-    public void stop() {
-        fRight.setPower(0);
-        bRight.setPower(0);
-        fLeft.setPower(0);
-        bLeft.setPower(0);
+        telemetry.addData("Encoder x: ", encX.getCurrentPosition()/COUNTS_PER_INCH);
     }
 
 }
