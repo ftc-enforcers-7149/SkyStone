@@ -3,6 +3,7 @@ package org.firstinspires.ftc.teamcode.Subsystems.Odometry;
 import com.qualcomm.hardware.bosch.BNO055IMU;
 import com.qualcomm.hardware.bosch.JustLoggingAccelerationIntegrator;
 import com.qualcomm.robotcore.hardware.DcMotor;
+import com.qualcomm.robotcore.hardware.DcMotorSimple;
 import com.qualcomm.robotcore.hardware.HardwareMap;
 
 import org.firstinspires.ftc.robotcore.external.navigation.AngleUnit;
@@ -35,12 +36,9 @@ public class OdometryPosition extends Position {
     //Used for encoders
 
     //used for encoders
-    private static final double     EXTERNAL_GEARING        = 1;
-    private static final double     COUNTS_PER_MOTOR_REV    = 360 ;  //28  // eg: AndyMark NeverRest40 Motor Encoder
-    private static final double     DRIVE_GEAR_REDUCTION    = 1 ;     // This is < 1.0 if geared UP
+    private static final double     COUNTS_PER_MOTOR_REV    = 360;  //28  // eg: AndyMark NeverRest40 Motor Encoder
     private static final double     WHEEL_DIAMETER_INCHES   = 1.49606299d ;     // For figuring circumference
-    public static final double     COUNTS_PER_INCH         = ((COUNTS_PER_MOTOR_REV * DRIVE_GEAR_REDUCTION) /
-            (WHEEL_DIAMETER_INCHES * Math.PI))/EXTERNAL_GEARING;
+    public static final double     COUNTS_PER_INCH         = COUNTS_PER_MOTOR_REV /(WHEEL_DIAMETER_INCHES * Math.PI);
 
 
 
@@ -232,5 +230,12 @@ public class OdometryPosition extends Position {
         return String.format(Locale.getDefault(), "%.1f", AngleUnit.DEGREES.normalize(degrees));
     }
 
+    public void reverseX() {
+        encoderX.setDirection(DcMotorSimple.Direction.REVERSE);
+    }
+
+    public void reverseY() {
+        encoderY.setDirection(DcMotorSimple.Direction.REVERSE);
+    }
 
 }
