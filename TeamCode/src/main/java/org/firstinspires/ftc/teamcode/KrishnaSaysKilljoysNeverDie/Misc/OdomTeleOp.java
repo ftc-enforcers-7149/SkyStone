@@ -1,5 +1,6 @@
 package org.firstinspires.ftc.teamcode.KrishnaSaysKilljoysNeverDie.Misc;
 
+import com.qualcomm.hardware.bosch.BNO055IMU;
 import com.qualcomm.robotcore.eventloop.opmode.OpMode;
 import com.qualcomm.robotcore.eventloop.opmode.TeleOp;
 import com.qualcomm.robotcore.hardware.DcMotor;
@@ -54,14 +55,24 @@ public class OdomTeleOp extends OpMode {
     public void loop() {
         startAccel = gamepad1.x;
 
+        OdometryPosition.Direction direction;
+
+        if(gamepad1.y) {
+            direction = OdometryPosition.Direction.TURNING;
+        }
+        else {
+            direction = OdometryPosition.Direction.FORWARD;
+        }
+
         if (startAccel) {
             driveSystem.setAccel();
         }
 
         driveSystem.drive(gamepad1);
 
-        oP.updatePosition(OdometryPosition.Direction.FORWARD);
+        oP.updatePosition(direction);
         telemetry.addData("encoder x: ", oP.positionX);
+        telemetry.addData("heading: ", oP.getHeading());
 
         telemetry.addLine("WATCH STAR WARS TROS IN THEATERS DEC 20");
 
