@@ -11,7 +11,7 @@ import org.firstinspires.ftc.teamcode.Subsystems.DriveSystems.Headless;
 public class SimpleOdomTeleOp extends OpMode {
 
     //used for encoders
-    private static final double     COUNTS_PER_MOTOR_REV    = 360; //360 CPR
+    private static final double     COUNTS_PER_MOTOR_REV    = 1440; //360 CPR
     private static final double     WHEEL_DIAMETER_INCHES   = 1.49606299d ;     // For figuring circumference
     public static final double     COUNTS_PER_INCH         = COUNTS_PER_MOTOR_REV /(WHEEL_DIAMETER_INCHES * Math.PI);
 
@@ -54,7 +54,7 @@ public class SimpleOdomTeleOp extends OpMode {
 
         driveSystem.drive(gamepad1);
 
-        telemetry.addData("Encoder x: ", encX.getCurrentPosition());
+        telemetry.addData("Encoder x: ", encX.getCurrentPosition()/COUNTS_PER_INCH);
     }
 
 }
