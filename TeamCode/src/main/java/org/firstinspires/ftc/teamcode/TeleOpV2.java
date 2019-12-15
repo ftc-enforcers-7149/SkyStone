@@ -91,12 +91,12 @@ public class TeleOpV2 extends OpMode {
 
         //FoundationV1 grabbers
         if (lFoundationDown) {
-            fLFound.setPosition(0.46);
-            bLFound.setPosition(0.46);
+            fLFound.setPosition(0.46);//0.46
+            bLFound.setPosition(0.46);//0.46
         }
         else {
-            fLFound.setPosition(1);
-            bLFound.setPosition(1);
+            fLFound.setPosition(1);//1
+            bLFound.setPosition(1);//1
         }
 
         if (rFoundationDown) {
