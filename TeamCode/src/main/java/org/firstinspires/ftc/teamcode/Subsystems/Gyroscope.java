@@ -1,0 +1,99 @@
+package org.firstinspires.ftc.teamcode.Subsystems;
+
+import com.qualcomm.hardware.bosch.BNO055IMU;
+import com.qualcomm.hardware.bosch.JustLoggingAccelerationIntegrator;
+import com.qualcomm.robotcore.hardware.HardwareMap;
+
+import org.firstinspires.ftc.robotcore.external.Telemetry;
+import org.firstinspires.ftc.robotcore.external.navigation.AngleUnit;
+import org.firstinspires.ftc.robotcore.external.navigation.AxesOrder;
+import org.firstinspires.ftc.robotcore.external.navigation.AxesReference;
+import org.firstinspires.ftc.robotcore.external.navigation.Orientation;
+import org.firstinspires.ftc.robotcore.external.navigation.Position;
+import org.firstinspires.ftc.robotcore.external.navigation.Velocity;
+
+import java.util.Locale;
+
+public class Gyroscope {
+    //IMU variables
+    private BNO055IMU imu;
+    private Orientation angles;
+    private Telemetry telemetry;
+
+    /**
+     *Gyro constructor. initializes imu
+     * @param telemetry telemetry
+     * @param hardwareMap hardwareMap
+     */
+    public Gyroscope(Telemetry telemetry, HardwareMap hardwareMap){
+        //Set up imu parameters
+        BNO055IMU.Parameters parameters = new BNO055IMU.Parameters();
+        parameters.angleUnit = BNO055IMU.AngleUnit.DEGREES;
+        parameters.accelUnit = BNO055IMU.AccelUnit.METERS_PERSEC_PERSEC;
+        parameters.calibrationDataFile = "BNO055IMUCalibration.json"; // see the calibration sample opmode
+        parameters.loggingEnabled = true;
+        parameters.loggingTag = "IMU";
+        parameters.accelerationIntegrationAlgorithm = new JustLoggingAccelerationIntegrator();
+
+        this.telemetry = telemetry;
+
+        /*this.telemetry.addAction(new Runnable() {
+            @Override
+            public void run() {
+                angles = imu.getAngularOrientation(AxesReference.INTRINSIC, AxesOrder.ZYX, AngleUnit.DEGREES);
+            }
+        });*/
+
+        imu = hardwareMap.get(BNO055IMU.class, "imu");
+        imu.initialize(parameters);
+
+        imu.startAccelerationIntegration(new Position(), new Velocity(), 1000);
+    }
+
+    /**
+     * converts gyro degrees from -180 to 180 to be 0 to 360
+     * @param heading
+     * @return
+     */
+    public double cvtDegrees(double heading) {
+        if (heading <0 ) {
+            return 360 + heading;
+        } else {
+            return heading;
+        }
+    }
+
+    /**
+     * returns raw yaw value from gyro
+     * @return
+     */
+    public double getRawYaw(){
+        return imu.getAngularOrientation(AxesReference.INTRINSIC, AxesOrder.ZYX, AngleUnit.DEGREES).firstAngle;
+    }
+
+    /**
+     * returns degrees in 0-360 degree format
+     * @return
+     */
+    public double getYaw() {return cvtDegrees(imu.getAngularOrientation(AxesReference.INTRINSIC, AxesOrder.ZYX, AngleUnit.DEGREES).firstAngle);}
+
+
+    /**
+     * method needed for gyro
+     * @param angleUnit
+     * @param angle
+     * @return
+     */
+    String formatAngle(AngleUnit angleUnit, double angle) {
+        return formatDegrees(AngleUnit.DEGREES.fromUnit(angleUnit, angle));
+    }
+
+    /**
+     * method needed for gyro
+     * @param degrees
+     * @return
+     */
+    String formatDegrees(double degrees){
+        return String.format(Locale.getDefault(), "%.1f", AngleUnit.DEGREES.normalize(degrees));
+    }
+}
