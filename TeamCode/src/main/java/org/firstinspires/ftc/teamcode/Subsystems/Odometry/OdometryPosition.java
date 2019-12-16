@@ -36,7 +36,7 @@ public class OdometryPosition extends Position {
     //Used for encoders
 
     //used for encoders
-    private static final double     COUNTS_PER_MOTOR_REV    = 360;  //28  // eg: AndyMark NeverRest40 Motor Encoder
+    private static final double     COUNTS_PER_MOTOR_REV    = 1440;  //28  // eg: AndyMark NeverRest40 Motor Encoder
     private static final double     WHEEL_DIAMETER_INCHES   = 1.49606299d ;     // For figuring circumference
     public static final double     COUNTS_PER_INCH         = COUNTS_PER_MOTOR_REV /(WHEEL_DIAMETER_INCHES * Math.PI);
 
