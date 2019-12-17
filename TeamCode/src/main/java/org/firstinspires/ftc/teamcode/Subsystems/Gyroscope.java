@@ -64,6 +64,18 @@ public class Gyroscope {
     }
 
     /**
+     * Converts degrees to work with sine and cosine
+     * @param heading
+     * @return
+     */
+    public double cvtTrigAng(double heading) {
+        if (heading >= 0 && heading < 90) {
+            return -heading + 90;
+        }
+        return -heading + 450;
+    }
+
+    /**
      * returns raw yaw value from gyro
      * @return
      */

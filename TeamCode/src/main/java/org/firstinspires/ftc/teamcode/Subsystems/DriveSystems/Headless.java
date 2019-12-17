@@ -146,6 +146,10 @@ public class Headless {
         }
     }
 
+    public Gyroscope getIMU() {
+        return gyro;
+    }
+
     //This converts degrees to work with sine and cosine.
     //The equations were made in Desmos by plotting certain points (input, output)
     //Equation 1: y = -x + 90

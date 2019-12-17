@@ -8,8 +8,13 @@ import com.qualcomm.robotcore.hardware.DcMotorSimple;
 import com.qualcomm.robotcore.hardware.DistanceSensor;
 import com.qualcomm.robotcore.hardware.Servo;
 
+import org.firstinspires.ftc.robotcore.external.navigation.AngleUnit;
+import org.firstinspires.ftc.robotcore.external.navigation.AxesOrder;
+import org.firstinspires.ftc.robotcore.external.navigation.AxesReference;
 import org.firstinspires.ftc.robotcore.external.navigation.DistanceUnit;
+import org.firstinspires.ftc.teamcode.Subsystems.DriveSystems.Arcade;
 import org.firstinspires.ftc.teamcode.Subsystems.DriveSystems.Headless;
+import org.firstinspires.ftc.teamcode.Subsystems.Gyroscope;
 import org.firstinspires.ftc.teamcode.Subsystems.Odometry.OdometryPosition;
 
 @TeleOp(name = "OdomTeleOp")
@@ -22,6 +27,8 @@ public class OdomTeleOp extends OpMode {
     OdometryPosition oP;
 
     DcMotor fRight, fLeft, bRight, bLeft;
+
+    Gyroscope gyroscope;
 
 
     boolean startAccel;
@@ -41,15 +48,14 @@ public class OdomTeleOp extends OpMode {
         bRight.setDirection(DcMotorSimple.Direction.FORWARD);
         bLeft.setDirection(DcMotorSimple.Direction.REVERSE);
 
+        gyroscope = new Gyroscope(telemetry, hardwareMap);
         //Initialize drive train
-        driveSystem = new Headless(hardwareMap, telemetry, fLeft, fRight, bLeft, bRight);
-
+        driveSystem = new Headless(gyroscope, fLeft, fRight, bLeft, bRight);
     }
 
-
     public void start() {
-        oP = new OdometryPosition(hardwareMap, "encX", "encY", "imu", 0, 0);
-        oP.reverseX();
+        oP = new OdometryPosition(hardwareMap, "encX", "encY", "imu", 0, 0, gyroscope);
+        oP.reverseY();
     }
 
     public void loop() {
@@ -62,10 +68,6 @@ public class OdomTeleOp extends OpMode {
         }
         else {
             direction = OdometryPosition.Direction.FORWARD;
-        }
-
-        if (startAccel) {
-            driveSystem.setAccel();
         }
 
         driveSystem.drive(gamepad1);

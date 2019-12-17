@@ -9,6 +9,7 @@ import com.qualcomm.robotcore.hardware.Servo;
 import org.firstinspires.ftc.teamcode.Subsystems.Claw;
 import org.firstinspires.ftc.teamcode.Subsystems.DriveSystems.Headless;
 import org.firstinspires.ftc.teamcode.Subsystems.FoundationV2;
+import org.firstinspires.ftc.teamcode.Subsystems.Gyroscope;
 
 //@TeleOp(name = "TeleOp v2")
 public class TeleOpV2_1 extends OpMode {
@@ -61,7 +62,8 @@ public class TeleOpV2_1 extends OpMode {
         lift.setDirection(DcMotorSimple.Direction.FORWARD);
 
         //Initialize drive train
-        driveSystem = new Headless(hardwareMap, telemetry, fLeft, fRight, bLeft, bRight);
+        Gyroscope gyroscope = new Gyroscope(telemetry, hardwareMap);
+        driveSystem = new Headless(gyroscope, fLeft, fRight, bLeft, bRight);
 
         //Servo directions
         fLFound.setDirection(Servo.Direction.REVERSE);

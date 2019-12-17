@@ -7,6 +7,7 @@ import com.qualcomm.robotcore.hardware.DcMotorSimple;
 import com.qualcomm.robotcore.hardware.Servo;
 
 import org.firstinspires.ftc.teamcode.Subsystems.DriveSystems.Headless;
+import org.firstinspires.ftc.teamcode.Subsystems.Gyroscope;
 
 @TeleOp(name = "Encoder Testing")
 public class EncoderTest extends OpMode {
@@ -49,7 +50,8 @@ public class EncoderTest extends OpMode {
         lift.setDirection(DcMotorSimple.Direction.FORWARD);
 
         //Initialize drive train
-        driveSystem = new Headless(hardwareMap, telemetry, fLeft, fRight, bLeft, bRight);
+        Gyroscope gyroscope = new Gyroscope(telemetry, hardwareMap);
+        driveSystem = new Headless(gyroscope, fLeft, fRight, bLeft, bRight);
 
         //Lift brake
         lift.setZeroPowerBehavior(DcMotor.ZeroPowerBehavior.BRAKE);

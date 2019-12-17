@@ -9,6 +9,7 @@ import com.qualcomm.robotcore.hardware.Servo;
 
 import org.firstinspires.ftc.robotcore.external.navigation.DistanceUnit;
 import org.firstinspires.ftc.teamcode.Subsystems.DriveSystems.Headless;
+import org.firstinspires.ftc.teamcode.Subsystems.Gyroscope;
 
 @TeleOp(name = "Auto Lift")
 public class AutoLiftTest extends OpMode {
@@ -22,6 +23,7 @@ public class AutoLiftTest extends OpMode {
     DcMotor fRight,fLeft,bRight,bLeft, lift;
 
     DistanceSensor distanceLift;
+    Gyroscope gyroscope;
 
     float armUp;
     float liftUp,liftDown;
@@ -66,7 +68,8 @@ public class AutoLiftTest extends OpMode {
         lift.setDirection(DcMotorSimple.Direction.FORWARD);
 
         //Initialize drive train
-        driveSystem = new Headless(hardwareMap, telemetry, fLeft, fRight, bLeft, bRight);
+        gyroscope = new Gyroscope(telemetry, hardwareMap);
+        driveSystem = new Headless(gyroscope, fLeft, fRight, bLeft, bRight);
 
         //Servo directions
         fLFound.setDirection(Servo.Direction.REVERSE);

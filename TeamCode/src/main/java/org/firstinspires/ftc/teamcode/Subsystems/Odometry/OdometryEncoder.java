@@ -3,6 +3,8 @@ package org.firstinspires.ftc.teamcode.Subsystems.Odometry;
 import com.qualcomm.robotcore.hardware.DcMotor;
 import com.qualcomm.robotcore.hardware.HardwareMap;
 
+import org.firstinspires.ftc.teamcode.Subsystems.Gyroscope;
+
 //TODO: write in better error handling
 public class OdometryEncoder {
 
@@ -16,14 +18,14 @@ public class OdometryEncoder {
 
 
     //Our constructor requires: hardware map, 4 motors, 2 encoders, an imu, and 2 positions.
-    public OdometryEncoder(HardwareMap hardwareMap, String encX, String encY, String imumap, double posX, double posY){
+    public OdometryEncoder(HardwareMap hardwareMap, String encX, String encY, String imumap, double posX, double posY, Gyroscope gyroscope){
 
         //Initializes start x
         x = posX;
         y = posY;
 
         //Initializes odometry pos class
-        odometryPositionClass = new OdometryPosition(hardwareMap, encX, encY, imumap, posX, posY);
+        odometryPositionClass = new OdometryPosition(hardwareMap, encX, encY, imumap, posX, posY, gyroscope);
 
         //Starts our odometry tracking
         startOdometry();

@@ -6,12 +6,14 @@ import com.qualcomm.robotcore.hardware.DcMotor;
 import com.qualcomm.robotcore.hardware.DcMotorSimple;
 import com.qualcomm.robotcore.hardware.HardwareMap;
 
+import org.firstinspires.ftc.robotcore.external.Telemetry;
 import org.firstinspires.ftc.robotcore.external.navigation.AngleUnit;
 import org.firstinspires.ftc.robotcore.external.navigation.AxesOrder;
 import org.firstinspires.ftc.robotcore.external.navigation.AxesReference;
 import org.firstinspires.ftc.robotcore.external.navigation.Orientation;
 import org.firstinspires.ftc.robotcore.external.navigation.Velocity;
 import org.firstinspires.ftc.teamcode.KrishnaSaysKilljoysNeverDie.Misc.Position;
+import org.firstinspires.ftc.teamcode.Subsystems.Gyroscope;
 
 import java.util.Locale;
 
@@ -24,8 +26,7 @@ public class OdometryPosition extends Position {
     //Declaring motors
     DcMotor encoderY, encoderX;
 
-    BNO055IMU imu;
-    private Orientation angles;
+    private Gyroscope gyro;
 
 
 
@@ -60,9 +61,8 @@ public class OdometryPosition extends Position {
         positionY = 0;
     }
 
-    public OdometryPosition(HardwareMap hardwareMap, String encX, String encY, String imumap, double posX, double posY) {
+    public OdometryPosition(HardwareMap hardwareMap, String encX, String encY, String imumap, double posX, double posY, Gyroscope gyro) {
 
-        imu = hardwareMap.get(BNO055IMU.class, imumap);
         encoderX = hardwareMap.dcMotor.get(encX);
         encoderY = hardwareMap.dcMotor.get(encY);
 
@@ -70,27 +70,7 @@ public class OdometryPosition extends Position {
         positionX = posX;
         positionY = posY;
 
-
-        //Set up imu parameters
-        BNO055IMU.Parameters parameters = new BNO055IMU.Parameters();
-        parameters.angleUnit = BNO055IMU.AngleUnit.DEGREES;
-        parameters.accelUnit = BNO055IMU.AccelUnit.METERS_PERSEC_PERSEC;
-        parameters.calibrationDataFile = "BNO055IMUCalibration.json"; // see the calibration sample opmode
-        parameters.loggingEnabled = true;
-        parameters.loggingTag = "IMU";
-        parameters.accelerationIntegrationAlgorithm = new JustLoggingAccelerationIntegrator();
-
-        angles = imu.getAngularOrientation(AxesReference.INTRINSIC, AxesOrder.ZYX, AngleUnit.DEGREES);
-
-
-        // Retrieve and initialize the IMU. We expect the IMU to be attached to an I2C port
-        // on a Core Device Interface Module, configured to be a sensor of type "AdaFruit IMU",
-        // and named "imu".
-        imu = hardwareMap.get(BNO055IMU.class, "imu");
-        imu.initialize(parameters);
-
-        // Start the logging of measured acceleration
-        imu.startAccelerationIntegration(new org.firstinspires.ftc.robotcore.external.navigation.Position(), new Velocity(), 1000);
+        this.gyro = gyro;
 
     }
 
@@ -110,7 +90,7 @@ public class OdometryPosition extends Position {
     }
 
     public double getHeading() {
-        return cvtDegrees(angles.firstAngle);
+        return gyro.getRawYaw();
     }
 
     public void manualUpdatePosition(double newPosX, double newPosY) {
@@ -145,8 +125,8 @@ public class OdometryPosition extends Position {
         encoderY.setMode(DcMotor.RunMode.STOP_AND_RESET_ENCODER);
 
         //Sets our encoders to run again
-        encoderX.setMode(DcMotor.RunMode.RUN_USING_ENCODER);
-        encoderY.setMode(DcMotor.RunMode.RUN_USING_ENCODER);
+        encoderX.setMode(DcMotor.RunMode.RUN_WITHOUT_ENCODER);
+        encoderY.setMode(DcMotor.RunMode.RUN_WITHOUT_ENCODER);
 
         //Gets our heading
         double heading = getHeading();
@@ -156,7 +136,7 @@ public class OdometryPosition extends Position {
         //Calculates whether the robot is facing forwards or backwards. Note that all calculations are based on
         //The assumption we are facing straight out from the wall
         if (dir != Direction.TURNING) {
-            if (heading % 180 == 0) {
+            /*if (heading % 180 == 0) {
 
                 if (heading == 0) {
                         positionX += getMotorDistIn(xPos);
@@ -181,19 +161,21 @@ public class OdometryPosition extends Position {
             //Uses some reeeeeeeeally (not) complicated trig to calculate the distance.
             else {
                 if (heading > 0 && heading < 90) {
-                    positionY -= getMotorDistIn(xPos) * Math.sin(360 - heading);
-                    positionX += getMotorDistIn(xPos) * Math.cos(360 - heading);
+                    positionY += getMotorDistIn(xPos) * Math.sin(gyro.cvtTrigAng(heading));
+                    positionX += getMotorDistIn(xPos) * Math.cos(gyro.cvtTrigAng(heading));
                 } else if (heading > 90 && heading < 180) {
-                    positionY -= getMotorDistIn(xPos) * Math.sin(360 - heading);
-                    positionX -= getMotorDistIn(xPos) * Math.cos(360 - heading);
-                } else if (heading > 180 && heading < 270) {
-                    positionY += getMotorDistIn(xPos) * Math.sin(360 - heading);
-                    positionX -= getMotorDistIn(xPos) * Math.cos(360 - heading);
-                } else if (heading > 270 && heading < 360) {
-                    positionY += getMotorDistIn(xPos) * Math.sin(360 - heading);
-                    positionX += getMotorDistIn(xPos) * Math.cos(360 - heading);
+                    positionY += getMotorDistIn(xPos) * Math.sin(gyro.cvtTrigAng(heading));
+                    positionX += getMotorDistIn(xPos) * Math.cos(gyro.cvtTrigAng(heading));
+                } else if (heading < 0 && heading > -90) {
+                    positionY += getMotorDistIn(xPos) * Math.sin(gyro.cvtTrigAng(heading));
+                    positionX += getMotorDistIn(xPos) * Math.cos(gyro.cvtTrigAng(heading));
+                } else if (heading < -90 && heading > -180) {
+                    positionY += getMotorDistIn(xPos) * Math.sin(gyro.cvtTrigAng(heading));
+                    positionX += getMotorDistIn(xPos) * Math.cos(gyro.cvtTrigAng(heading));
                 }
-            }
+            }*/
+            positionY += getMotorDistIn(xPos) * Math.sin(Math.toRadians(gyro.cvtTrigAng(heading)));
+            positionX += getMotorDistIn(xPos) * Math.cos(Math.toRadians(gyro.cvtTrigAng(heading)));
 
         }
     }
