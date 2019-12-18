@@ -111,13 +111,13 @@ public class TeleOpV2_1 extends OpMode {
             foundation.rUp();
         }
 
-            //Arms and block grabbers
-            if (armUp > 0.1) {
-            claw.grab();
+        //Arms and block grabbers
+        if (armUp > 0.1) {
+            claw.up();
         }
         else {
 
-            claw.release();
+            claw.down();
         }
 
         if(grab > 0.1){
@@ -126,13 +126,6 @@ public class TeleOpV2_1 extends OpMode {
         else{
             claw.release();
         }
-
-        /*if(leftG>0.1){
-            lGrab.setPosition(0.45);
-        }
-        else{
-           lGrab.setPosition(1);
-        }*/
 
         //Lift
         if(liftUp>0.1){
@@ -146,20 +139,9 @@ public class TeleOpV2_1 extends OpMode {
         else{
             lift.setPower(0);
         }
-        /*else{
-            if(isBreak){
-                lift.setPower(0.3);
-            }
-            else{
-                lift.setPower(0.0);
-            }
-        }*/
 
         if (startAccel) {
             driveSystem.setAccel();
-        }
-        else {
-            driveSystem.setLim(isBreak);
         }
 
         telemetry.addData("fL servo pos: ", fLFound.getPosition());
