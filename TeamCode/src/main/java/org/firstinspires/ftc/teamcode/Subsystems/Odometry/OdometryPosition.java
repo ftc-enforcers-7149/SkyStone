@@ -142,6 +142,9 @@ public class OdometryPosition extends Position {
             positionY += getMotorDistIn(yPos) * Math.sin(Math.toRadians(gyro.cvtTrigAng(heading)));
             positionX += getMotorDistIn(yPos) * Math.cos(Math.toRadians(gyro.cvtTrigAng(heading)));
         }
+
+        positionY = Math.ceil(positionY * 10000) / 10000;
+        positionX = Math.ceil(positionX * 10000) / 10000;
     }
 
 
