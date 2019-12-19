@@ -61,7 +61,7 @@ public class OdometryPosition extends Position {
         positionY = 0;
     }
 
-    public OdometryPosition(HardwareMap hardwareMap, String encX, String encY, String imumap, double posX, double posY, Gyroscope gyro) {
+    public OdometryPosition(HardwareMap hardwareMap, String encX, String encY, double posX, double posY, Gyroscope gyro) {
 
         encoderX = hardwareMap.dcMotor.get(encX);
         encoderY = hardwareMap.dcMotor.get(encY);
@@ -136,47 +136,11 @@ public class OdometryPosition extends Position {
         //Calculates whether the robot is facing forwards or backwards. Note that all calculations are based on
         //The assumption we are facing straight out from the wall
         if (dir != Direction.TURNING) {
-            /*if (heading % 180 == 0) {
+            positionY += getMotorDistIn(xPos) * Math.cos(Math.toRadians(gyro.cvtTrigAng(heading)));
+            positionX += getMotorDistIn(xPos) * Math.sin(Math.toRadians(gyro.cvtTrigAng(heading)));
 
-                if (heading == 0) {
-                        positionX += getMotorDistIn(xPos);
-                } else {
-                        positionX -= getMotorDistIn(xPos);
-                }
-
-            }
-            //This time, we calculate if we are facing up or not. If we are not forwards/backwards or up/down, we move on.
-            else if ((heading - 90) % 90 == 0) {
-                if (heading == 90) {
-                        positionY -= getMotorDistIn(yPos);
-
-                } else {
-                    if (dir == Direction.FORWARD) {
-                        positionY += getMotorDistIn(yPos);
-                    } else {
-                        positionY -= getMotorDistIn(yPos);
-                    }
-                }
-            }
-            //Uses some reeeeeeeeally (not) complicated trig to calculate the distance.
-            else {
-                if (heading > 0 && heading < 90) {
-                    positionY += getMotorDistIn(xPos) * Math.sin(gyro.cvtTrigAng(heading));
-                    positionX += getMotorDistIn(xPos) * Math.cos(gyro.cvtTrigAng(heading));
-                } else if (heading > 90 && heading < 180) {
-                    positionY += getMotorDistIn(xPos) * Math.sin(gyro.cvtTrigAng(heading));
-                    positionX += getMotorDistIn(xPos) * Math.cos(gyro.cvtTrigAng(heading));
-                } else if (heading < 0 && heading > -90) {
-                    positionY += getMotorDistIn(xPos) * Math.sin(gyro.cvtTrigAng(heading));
-                    positionX += getMotorDistIn(xPos) * Math.cos(gyro.cvtTrigAng(heading));
-                } else if (heading < -90 && heading > -180) {
-                    positionY += getMotorDistIn(xPos) * Math.sin(gyro.cvtTrigAng(heading));
-                    positionX += getMotorDistIn(xPos) * Math.cos(gyro.cvtTrigAng(heading));
-                }
-            }*/
-            positionY += getMotorDistIn(xPos) * Math.sin(Math.toRadians(gyro.cvtTrigAng(heading)));
-            positionX += getMotorDistIn(xPos) * Math.cos(Math.toRadians(gyro.cvtTrigAng(heading)));
-
+            positionY += getMotorDistIn(yPos) * Math.sin(Math.toRadians(gyro.cvtTrigAng(heading)));
+            positionX += getMotorDistIn(yPos) * Math.cos(Math.toRadians(gyro.cvtTrigAng(heading)));
         }
     }
 
