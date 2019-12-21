@@ -15,7 +15,7 @@ public class TeleOpV1 extends OpMode {
     Headless driveSystem;
 
     Servo lArm, rArm, lGrab, rGrab, lFound, rFound;
-    DcMotor fRight,fLeft,bRight,bLeft,lift;
+    DcMotor fRight,fLeft,bRight,bLeft,liftMotor;
 
     boolean armUp, armDown;
     boolean isBreak=false;
@@ -36,7 +36,7 @@ public class TeleOpV1 extends OpMode {
         fRight = hardwareMap.dcMotor.get("fRight");
         bLeft = hardwareMap.dcMotor.get("bLeft");
         bRight = hardwareMap.dcMotor.get("bRight");
-        lift = hardwareMap.dcMotor.get("lift");
+        liftMotor = hardwareMap.dcMotor.get("liftMotor");
 
         //Initialize drive train
         //driveSystem = new Headless(hardwareMap, telemetry, "fLeft", "fRight", "bLeft", "bRight");
@@ -45,7 +45,7 @@ public class TeleOpV1 extends OpMode {
         fRight.setDirection(DcMotorSimple.Direction.FORWARD);
         bRight.setDirection(DcMotorSimple.Direction.FORWARD);
         bLeft.setDirection(DcMotorSimple.Direction.REVERSE);
-        lift.setDirection(DcMotorSimple.Direction.FORWARD);
+        liftMotor.setDirection(DcMotorSimple.Direction.FORWARD);
 
         lArm.setDirection(Servo.Direction.REVERSE);
         rArm.setDirection(Servo.Direction.FORWARD);
@@ -62,7 +62,7 @@ public class TeleOpV1 extends OpMode {
         lFound.setPosition(0);
         rFound.setPosition(0);
 
-        lift.setZeroPowerBehavior(DcMotor.ZeroPowerBehavior.BRAKE);
+        liftMotor.setZeroPowerBehavior(DcMotor.ZeroPowerBehavior.BRAKE);
 
     }//
     public void loop(){
@@ -126,29 +126,29 @@ public class TeleOpV1 extends OpMode {
 
         */
 /*if(liftMove<-0.1){
-            lift.setPower(0.7);
+            liftMotor.setPower(0.7);
             isBreak=true;
         }
         else if(liftMove>0.1){
-            lift.setPower(-0.05);
+            liftMotor.setPower(-0.05);
             isBreak=false;
         }*//*
 
 
         if(liftUp>0.1){
-            lift.setPower(0.7);
+            liftMotor.setPower(0.7);
             isBreak=true;
         }
         else if(liftDown>0.1){
-            lift.setPower(-0.05);
+            liftMotor.setPower(-0.05);
            isBreak=false;
         }
         else{
             if(isBreak){
-                lift.setPower(0.3);
+                liftMotor.setPower(0.3);
             }
             else{
-                lift.setPower(0.0);
+                liftMotor.setPower(0.0);
             }
         }
 
