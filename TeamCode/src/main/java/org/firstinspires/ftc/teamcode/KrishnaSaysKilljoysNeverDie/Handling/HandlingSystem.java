@@ -3,7 +3,7 @@ package org.firstinspires.ftc.teamcode.KrishnaSaysKilljoysNeverDie.Handling;
 import com.qualcomm.robotcore.hardware.HardwareMap;
 
 import org.firstinspires.ftc.teamcode.CollisionAvoidance.MovementDetectionClass;
-import org.firstinspires.ftc.teamcode.Subsystems.DriveTrain;
+import org.firstinspires.ftc.teamcode.Subsystems.DriveTrainV1;
 import org.firstinspires.ftc.teamcode.Subsystems.Gyroscope;
 import org.firstinspires.ftc.teamcode.Subsystems.Odometry.OdometryEncoder;
 import org.firstinspires.ftc.teamcode.Subsystems.Odometry.OdometryPosition;
@@ -18,7 +18,7 @@ public class HandlingSystem {
     MovementDetectionClass movementDetectionClass;
     SamplePath sPath;
     Gyroscope gyroscope;
-    DriveTrain driveTrain;
+    DriveTrainV1 driveTrainV1;
 
 
 
@@ -45,7 +45,7 @@ public class HandlingSystem {
 
         this.gyroscope = gyroscope;
         odometryEncoder = new OdometryEncoder(hardwareMap, encX, encY, imumap, posX, posY, gyroscope);
-        odometryPosition = new OdometryPosition(hardwareMap, encX, encY, imumap, posX, posY, gyroscope);
+        odometryPosition = new OdometryPosition(hardwareMap, encX, encY, posX, posY, gyroscope);
 
         odometryEncoder.startOdometry();
 

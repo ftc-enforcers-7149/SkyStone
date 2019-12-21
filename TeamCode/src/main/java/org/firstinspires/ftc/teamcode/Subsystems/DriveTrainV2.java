@@ -1,31 +1,17 @@
 package org.firstinspires.ftc.teamcode.Subsystems;
 
-import android.util.Log;
-
-import com.qualcomm.hardware.bosch.BNO055IMU;
-import com.qualcomm.hardware.bosch.JustLoggingAccelerationIntegrator;
 import com.qualcomm.robotcore.hardware.ColorSensor;
 import com.qualcomm.robotcore.hardware.DcMotor;
 import com.qualcomm.robotcore.hardware.DistanceSensor;
-import com.qualcomm.robotcore.hardware.HardwareMap;
 
 import org.firstinspires.ftc.robotcore.external.Telemetry;
-import org.firstinspires.ftc.robotcore.external.navigation.AngleUnit;
-import org.firstinspires.ftc.robotcore.external.navigation.AxesOrder;
-import org.firstinspires.ftc.robotcore.external.navigation.AxesReference;
 import org.firstinspires.ftc.robotcore.external.navigation.DistanceUnit;
-import org.firstinspires.ftc.robotcore.external.navigation.Orientation;
-import org.firstinspires.ftc.robotcore.external.navigation.Position;
-import org.firstinspires.ftc.robotcore.external.navigation.Velocity;
 import org.firstinspires.ftc.teamcode.CollisionAvoidance.MovementDetectionClass;
 
-import java.util.Locale;
-
-public class DriveTrain {
+public class DriveTrainV2 {
     private DcMotor fLeft, fRight, bLeft, bRight;
     //IMU variables
-    private BNO055IMU imu;
-    private Orientation angles;
+    private Gyroscope gyro;
 
     MovementDetectionClass detection;
 
@@ -39,43 +25,24 @@ public class DriveTrain {
     public static final double     COUNTS_PER_INCH         = ((COUNTS_PER_MOTOR_REV * DRIVE_GEAR_REDUCTION) /
             (WHEEL_DIAMETER_INCHES * 3.1415))/EXTERNAL_GEARING;
 
+    double stopTime;
+
     /**
      * Main constructor
-     * @param hardwareMap hardwareMap
      * @param telemetry telemetry
      * @param fLeft fLeft
      * @param fRight fRight
      * @param bLeft bLeft
      * @param bRight bRight
+     * @param gyro gyro
      */
-    public DriveTrain(HardwareMap hardwareMap , Telemetry telemetry, DcMotor fLeft, DcMotor fRight, DcMotor bLeft, DcMotor bRight){
-        //Set up imu parameters
-        BNO055IMU.Parameters parameters = new BNO055IMU.Parameters();
-        parameters.angleUnit = BNO055IMU.AngleUnit.DEGREES;
-        parameters.accelUnit = BNO055IMU.AccelUnit.METERS_PERSEC_PERSEC;
-        parameters.calibrationDataFile = "BNO055IMUCalibration.json"; // see the calibration sample opmode
-        parameters.loggingEnabled = true;
-        parameters.loggingTag = "IMU";
-        parameters.accelerationIntegrationAlgorithm = new JustLoggingAccelerationIntegrator();
-
-        this.telemetry = telemetry;
-
-        this.telemetry.addAction(new Runnable() {
-            @Override
-            public void run() {
-                angles = imu.getAngularOrientation(AxesReference.INTRINSIC, AxesOrder.ZYX, AngleUnit.DEGREES);
-            }
-        });
-
-        imu = hardwareMap.get(BNO055IMU.class, "imu");
-        imu.initialize(parameters);
-
-        imu.startAccelerationIntegration(new Position(), new Velocity(), 1000);
-
+    public DriveTrainV2(Telemetry telemetry, DcMotor fLeft, DcMotor fRight, DcMotor bLeft, DcMotor bRight, Gyroscope gyro){
         this.fLeft = fLeft;
         this.fRight = fRight;
         this.bLeft = bLeft;
         this.bRight = bRight;
+        this.gyro=gyro;
+        this.telemetry=telemetry;
     }
 
     /**
@@ -95,7 +62,7 @@ public class DriveTrain {
         //converts current position into inches
         double cPosition=fRight.getCurrentPosition()/COUNTS_PER_INCH*mDirection;
 
-        while(cPosition < distance){
+        if(cPosition < distance){
             cPosition=fRight.getCurrentPosition()/COUNTS_PER_INCH*mDirection;
             if(distance-Math.abs(cPosition)<20){
                 power=0.4*mDirection;
@@ -105,11 +72,13 @@ public class DriveTrain {
             bLeft.setPower(power);
             bRight.setPower(power);
         }
+        else {
+            fLeft.setPower(0);
+            fRight.setPower(0);
+            bLeft.setPower(0);
+            bRight.setPower(0);
+        }
 
-        fLeft.setPower(0);
-        fRight.setPower(0);
-        bLeft.setPower(0);
-        bRight.setPower(0);
     }
 
     /**
@@ -165,28 +134,39 @@ public class DriveTrain {
 
     /**
      * strafes for a given time
-     * @param time time strafing(in milliseconds)
      * @param direction "left" for left "right" for right
      */
-    public void strafeSeconds(double time, String direction){
-        double stopTime=time+System.currentTimeMillis();
+    public boolean strafeSeconds(String direction){
         //sets direction strafing
         int mDirection=1;
-        if(direction.equals("left")){
+        if(direction.equals("right")){
             mDirection=-1;
         }
 
-        while(System.currentTimeMillis()<stopTime){
+        if (System.currentTimeMillis()<stopTime){
             fLeft.setPower(0.45*mDirection);
             fRight.setPower(-0.45*mDirection);
             bLeft.setPower(-0.45*mDirection);
             bRight.setPower(0.45*mDirection);
         }
+        else {
+            fLeft.setPower(0);
+            fRight.setPower(0);
+            bLeft.setPower(0);
+            bRight.setPower(0);
 
-        fLeft.setPower(0);
-        fRight.setPower(0);
-        bLeft.setPower(0);
-        bRight.setPower(0);
+            return true;
+        }
+
+        return false;
+    }
+
+    /**
+     * Sets end time for entire class' use
+     * @param time
+     */
+    public void setTime (double time) {
+        stopTime=time+System.currentTimeMillis();
     }
 
 
@@ -195,7 +175,7 @@ public class DriveTrain {
      * 0-360 in a clockwise format
      * @param destination
      */
-    public void rotation(double destination) {
+    public boolean rotation(double destination) {
         fRight.setMode(DcMotor.RunMode.RUN_WITHOUT_ENCODER);
         fLeft.setMode(DcMotor.RunMode.RUN_WITHOUT_ENCODER);
         bRight.setMode(DcMotor.RunMode.RUN_WITHOUT_ENCODER);
@@ -207,7 +187,7 @@ public class DriveTrain {
         double iTime=System.currentTimeMillis();
 
         //standard current angle
-        double heading = cvtDegrees(angles.firstAngle);
+        double heading = gyro.getYaw();
 
         //check if over 360
         if (Math.abs(destination)>360) {
@@ -235,12 +215,12 @@ public class DriveTrain {
         }
 
         //main phase of method
-        while (heading < destination - 0.5 || heading > destination + 0.5) {
+        if (heading < destination - 0.5 || heading > destination + 0.5) {
             telemetry.addData("heading",heading);
             telemetry.addData("speed",speed);
             telemetry.update();
             double delta = destination-heading; //the difference between destination and heading
-            heading = cvtDegrees(angles.firstAngle);
+            heading = gyro.getYaw();
             //decreases speed as robot approaches destination
             speed = (1 - ((heading) / destination)) * ((destination - heading) * 0.01);
 
@@ -270,50 +250,65 @@ public class DriveTrain {
                 bRight.setPower(0);
                 fRight.setPower(0);
             }
-            if(System.currentTimeMillis()>iTime+4500){//prevents method from going over 5 seconds
-                break;
-            }
         }
-        fLeft.setPower(0);
-        bLeft.setPower(0);
-        bRight.setPower(0);
-        fRight.setPower(0);
+        else {
+            fLeft.setPower(0);
+            bLeft.setPower(0);
+            bRight.setPower(0);
+            fRight.setPower(0);
+
+            return true;
+        }
+
+        return false;
     }
 
-    public void driveToLine(ColorSensor color, String lineColor, String dir){
+    public boolean driveToLine(ColorSensor color, String dir){
 
         int theD;
 
-        theD = dir.equals("forward") ? 1 : -1;
+        theD = dir.equals("forward") ? -1 : 1;
 
-        while(color.red()<35&&color.blue()<35){
-            fLeft.setPower(0.5*theD);
-            bLeft.setPower(0.5*theD);
-            bRight.setPower(0.5*theD);
-            fRight.setPower(0.5*theD);
+        if (color.red()<35&&color.blue()<35){
+            fLeft.setPower(0.3*theD);
+            bLeft.setPower(0.3*theD);
+            bRight.setPower(0.3*theD);
+            fRight.setPower(0.3*theD);
         }
-        fLeft.setPower(0);
-        bLeft.setPower(0);
-        bRight.setPower(0);
-        fRight.setPower(0);
+        else{
+            fLeft.setPower(0);
+            bLeft.setPower(0);
+            bRight.setPower(0);
+            fRight.setPower(0);
+
+            return true;
+        }
+
+        return false;
     }
 
-    public void strafeToLine(ColorSensor color, String lineColor, String dir){
+    public boolean strafeToLine(ColorSensor color, String dir){
 
         int theD;
 
-        theD = dir.equals("left") ? 1 : -1;
+        theD = dir.equals("right") ? 1 : -1;
 
-        while(color.red()<35&&color.blue()<35){
-            fLeft.setPower(-0.7*theD);
-            bLeft.setPower(0.7*theD);
-            bRight.setPower(-0.7*theD);
-            fRight.setPower(0.7*theD);
+        if (color.red()<35&&color.blue()<35){
+            fLeft.setPower(-0.6*theD);
+            bLeft.setPower(0.6*theD);
+            bRight.setPower(-0.6*theD);
+            fRight.setPower(0.6*theD);
         }
-        fLeft.setPower(0);
-        bLeft.setPower(0);
-        bRight.setPower(0);
-        fRight.setPower(0);
+        else {
+            fLeft.setPower(0);
+            bLeft.setPower(0);
+            bRight.setPower(0);
+            fRight.setPower(0);
+
+            return true;
+        }
+
+        return false;
     }
 
     /**
@@ -321,30 +316,32 @@ public class DriveTrain {
      * @param distance angle destination
      * @param power drive power
      */
-    public void simpleTurn(double distance,double power){
-        telemetry.addData("angle",angles.firstAngle);
-        if(distance<angles.firstAngle){
-            while(distance<angles.firstAngle){
-                telemetry.update();
-                fLeft.setPower(power);
-                bLeft.setPower(power);
-                bRight.setPower(-power);
-                fRight.setPower(-power);
-            }
+    public boolean simpleTurn(double distance,double power){
+        telemetry.addData("angle",gyro.getRawYaw());
+        if(distance<gyro.getRawYaw()) {
+            telemetry.update();
+            fLeft.setPower(-power);
+            bLeft.setPower(-power);
+            bRight.setPower(power);
+            fRight.setPower(power);
         }
-        else{
-            while(distance>angles.firstAngle){
-                telemetry.update();
-                fLeft.setPower(-power);
-                bLeft.setPower(-power);
-                bRight.setPower(power);
-                fRight.setPower(power);
-            }
+        else if (distance > gyro.getRawYaw()) {
+            telemetry.update();
+            fLeft.setPower(power);
+            bLeft.setPower(power);
+            bRight.setPower(-power);
+            fRight.setPower(-power);
         }
-        fLeft.setPower(0);
-        bLeft.setPower(0);
-        bRight.setPower(0);
-        fRight.setPower(0);
+        else {
+            fLeft.setPower(0);
+            bLeft.setPower(0);
+            bRight.setPower(0);
+            fRight.setPower(0);
+
+            return true;
+        }
+
+        return false;
     }
 
     /**
@@ -354,7 +351,7 @@ public class DriveTrain {
      * @param distance distance driving to
      * @param sLocal location of sensor(center,right,left)
      */
-    public void driveRange(DistanceSensor dSensor, double distance, String sLocal){
+    public boolean driveRange(DistanceSensor dSensor, double distance, String sLocal){
         double cDistance=0;
         if(dSensor.getDistance(DistanceUnit.CM)>150){
             cDistance=150;
@@ -365,95 +362,86 @@ public class DriveTrain {
         int dir;
         if(sLocal.equals("center")) {
             if(distance<cDistance){
-                while(distance<cDistance){
-                    if(dSensor.getDistance(DistanceUnit.CM)>150){
-                        cDistance=150;
-                    }
-                    else{
-                        cDistance=dSensor.getDistance(DistanceUnit.CM);
-                    }
-                    telemetry.update();
-                    fLeft.setPower(-0.4);
-                    fRight.setPower(-0.4);
-                    bLeft.setPower(-0.4);
-                    bRight.setPower(-0.4);
+                if(dSensor.getDistance(DistanceUnit.CM)>150){
+                    cDistance=150;
                 }
+                else{
+                    cDistance=dSensor.getDistance(DistanceUnit.CM);
+                }
+                telemetry.update();
+                fLeft.setPower(-0.4);
+                fRight.setPower(-0.4);
+                bLeft.setPower(-0.4);
+                bRight.setPower(-0.4);
             }
-            else{
-                while(distance>cDistance) {
-                    if(dSensor.getDistance(DistanceUnit.CM)>150){
-                        cDistance=150;
-                    }
-                    else{
-                        cDistance=dSensor.getDistance(DistanceUnit.CM);
-                    }
-                    fLeft.setPower(0.4);
-                    fRight.setPower(0.4);
-                    bLeft.setPower(0.4);
-                    bRight.setPower(0.4);
+            else if(distance>cDistance) {
+                if(dSensor.getDistance(DistanceUnit.CM)>150){
+                    cDistance=150;
                 }
+                else{
+                    cDistance=dSensor.getDistance(DistanceUnit.CM);
+                }
+                fLeft.setPower(0.4);
+                fRight.setPower(0.4);
+                bLeft.setPower(0.4);
+                bRight.setPower(0.4);
+            }
+            if (distance < cDistance + 0.75 && distance > cDistance - 0.75) {
+                fLeft.setPower(0);
+                bLeft.setPower(0);
+                bRight.setPower(0);
+                fRight.setPower(0);
+
+                return true;
             }
         }
         else{
             if(sLocal.equals("right")){
-                dir = -1;
-            }
-            else{
                 dir = 1;
             }
-
-            if(distance>dSensor.getDistance(DistanceUnit.CM)){
-                while (distance>dSensor.getDistance(DistanceUnit.CM)) {
-                    if(Math.abs(distance-dSensor.getDistance(DistanceUnit.CM))>20){
-                        fLeft.setPower(0.7*dir);
-                        fRight.setPower(-0.7*dir);
-                        bLeft.setPower(-0.7*dir);
-                        bRight.setPower(0.7*dir);
-                    }
-                    else{
-                        fLeft.setPower(0.4*dir);
-                        fRight.setPower(-0.4*dir);
-                        bLeft.setPower(-0.4*dir);
-                        bRight.setPower(0.4*dir);
-                    }
-
-                }
-            }
             else{
-                while (distance<dSensor.getDistance(DistanceUnit.CM)) {
-                    if(Math.abs(distance-dSensor.getDistance(DistanceUnit.CM))>20){
-                        fLeft.setPower(-0.7*dir);
-                        fRight.setPower(0.7*dir);
-                        bLeft.setPower(0.7*dir);
-                        bRight.setPower(-0.7*dir);
-                    }
-                    else{
-                        fLeft.setPower(-0.4*dir);
-                        fRight.setPower(0.4*dir);
-                        bLeft.setPower(0.4*dir);
-                        bRight.setPower(-0.4*dir);
-                    }
+                dir = -1;
+            }
+
+            if (distance>dSensor.getDistance(DistanceUnit.CM)) {
+                if(Math.abs(distance-dSensor.getDistance(DistanceUnit.CM))>20){
+                    fLeft.setPower(0.7*dir);
+                    fRight.setPower(-0.7*dir);
+                    bLeft.setPower(-0.7*dir);
+                    bRight.setPower(0.7*dir);
                 }
+                else{
+                    fLeft.setPower(0.4*dir);
+                    fRight.setPower(-0.4*dir);
+                    bLeft.setPower(-0.4*dir);
+                    bRight.setPower(0.4*dir);
+                }
+            }
+            else if (distance<dSensor.getDistance(DistanceUnit.CM)) {
+                if(Math.abs(distance-dSensor.getDistance(DistanceUnit.CM))>20){
+                    fLeft.setPower(-0.7*dir);
+                    fRight.setPower(0.7*dir);
+                    bLeft.setPower(0.7*dir);
+                    bRight.setPower(-0.7*dir);
+                }
+                else{
+                    fLeft.setPower(-0.4*dir);
+                    fRight.setPower(0.4*dir);
+                    bLeft.setPower(0.4*dir);
+                    bRight.setPower(-0.4*dir);
+                }
+            }
+            if (distance < dSensor.getDistance(DistanceUnit.CM) + 0.75 && distance > dSensor.getDistance(DistanceUnit.CM) - 0.75) {
+                fLeft.setPower(0);
+                bLeft.setPower(0);
+                bRight.setPower(0);
+                fRight.setPower(0);
+
+                return true;
             }
         }
 
-        fLeft.setPower(0);
-        bLeft.setPower(0);
-        bRight.setPower(0);
-        fRight.setPower(0);
-    }
-
-    /**
-     * converts gyro degrees from -180 to 180 to be 0 to 360
-     * @param heading
-     * @return
-     */
-    public double cvtDegrees(double heading) {
-        if (heading <0 ) {
-            return 360 + heading;
-        } else {
-            return heading;
-        }
+        return false;
     }
 
     /**
@@ -467,29 +455,5 @@ public class DriveTrain {
         }
     }
 
-    /**
-     * returns raw yaw value from gyro
-     * @return
-     */
-    public double getRawYaw(){
-        return angles.firstAngle;
-    }
-    /**
-     * method needed for gyro
-     * @param angleUnit
-     * @param angle
-     * @return
-     */
-    String formatAngle(AngleUnit angleUnit, double angle) {
-        return formatDegrees(AngleUnit.DEGREES.fromUnit(angleUnit, angle));
-    }
-    /**
-     * method needed for gyro
-     * @param degrees
-     * @return
-     */
-    String formatDegrees(double degrees){
-        return String.format(Locale.getDefault(), "%.1f", AngleUnit.DEGREES.normalize(degrees));
-    }
 
 }

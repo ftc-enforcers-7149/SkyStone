@@ -12,13 +12,15 @@ import org.firstinspires.ftc.robotcore.external.navigation.AxesReference;
 import org.firstinspires.ftc.robotcore.external.navigation.Orientation;
 import org.firstinspires.ftc.robotcore.external.navigation.Position;
 import org.firstinspires.ftc.robotcore.external.navigation.Velocity;
-import org.firstinspires.ftc.teamcode.Subsystems.DriveTrain;
+import org.firstinspires.ftc.teamcode.Subsystems.DriveTrainV1;
+import org.firstinspires.ftc.teamcode.Subsystems.Gyroscope;
 
 //@Autonomous(name = "auto 3 Skystone")
 public class FoundationSkystoneParkAuto extends OpMode {
     public DcMotor fLeft, fRight, bLeft, bRight;
     int step=0;
-    DriveTrain driveTrain;
+    DriveTrainV1 driveTrainV1;
+    Gyroscope gyro;
 
     BNO055IMU imu;
     Orientation angles;
@@ -69,26 +71,26 @@ public class FoundationSkystoneParkAuto extends OpMode {
 
     }
     public void start(){
-        driveTrain=new DriveTrain(hardwareMap, telemetry,fLeft,fRight,bLeft,bRight);
+        driveTrainV1 =new DriveTrainV1(telemetry,fLeft,fRight,bLeft,bRight,gyro);
 
     }
     public void loop() {
         switch (step) {
             //Change speed initially to make sure capstone does not dislocate
             case 0:
-                driveTrain.driveStraight("backward", 50);
+                driveTrainV1.driveStraight("backward", 50);
                 break;
             case 1:
-                driveTrain.driveStraight("forward", 24.5);
+                driveTrainV1.driveStraight("forward", 24.5);
                 break;
             case 2:
-                //driveTrain.rotation(270);
+                //driveTrainV1.rotation(270);
                 break;
             case 3:
-                driveTrain.driveStraight("forward", 56);
+                driveTrainV1.driveStraight("forward", 56);
                 break;
             case 4:
-                driveTrain.driveStraight("backward", 33);
+                driveTrainV1.driveStraight("backward", 33);
                 break;
         }
         step++;

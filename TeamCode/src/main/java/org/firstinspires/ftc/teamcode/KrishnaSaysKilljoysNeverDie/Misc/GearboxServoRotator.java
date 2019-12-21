@@ -17,10 +17,10 @@ public class GearboxServoRotator extends OpMode {
 
     public void loop() {
         if(gamepad1.a) {
-            drive.setPosition(.6);
+            drive.setPosition(.8);
         }
         else {
-            drive.setPosition(0);
+            drive.setPosition(0.2);
         }
     }
 

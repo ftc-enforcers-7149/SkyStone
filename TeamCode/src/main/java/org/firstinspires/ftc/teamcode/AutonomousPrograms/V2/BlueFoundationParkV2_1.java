@@ -28,7 +28,6 @@
  */
 package org.firstinspires.ftc.teamcode.AutonomousPrograms.V2;
 
-import com.qualcomm.robotcore.eventloop.opmode.Autonomous;
 import com.qualcomm.robotcore.eventloop.opmode.OpMode;
 import com.qualcomm.robotcore.hardware.ColorSensor;
 import com.qualcomm.robotcore.hardware.DcMotor;
@@ -36,8 +35,9 @@ import com.qualcomm.robotcore.hardware.DcMotorSimple;
 import com.qualcomm.robotcore.hardware.Servo;
 
 import org.firstinspires.ftc.teamcode.Subsystems.Claw;
-import org.firstinspires.ftc.teamcode.Subsystems.DriveTrain;
+import org.firstinspires.ftc.teamcode.Subsystems.DriveTrainV1;
 import org.firstinspires.ftc.teamcode.Subsystems.FoundationV2;
+import org.firstinspires.ftc.teamcode.Subsystems.Gyroscope;
 
 //@Autonomous(name = "Blue Foundation ParkV3")
 //@Disabled                            // Comment this out to add to the opmode list
@@ -47,8 +47,9 @@ public class BlueFoundationParkV2_1 extends OpMode {
     Servo fLFound, fRFound, bLFound, bRFound;
     public DcMotor fRight,fLeft,bRight,bLeft,lift;
     ColorSensor color;
+    Gyroscope gyro;
 
-    DriveTrain driveTrain;
+    DriveTrainV1 driveTrainV1;
     FoundationV2 foundation;
     Claw claw;
 
@@ -104,7 +105,7 @@ public class BlueFoundationParkV2_1 extends OpMode {
 
     }
     public void start(){
-        driveTrain=new DriveTrain(hardwareMap,telemetry,fLeft,fRight,bLeft,bRight);
+        driveTrainV1 =new DriveTrainV1(telemetry,fLeft,fRight,bLeft,bRight,gyro);
         foundation =new FoundationV2(fLFound,fRFound,bLFound,bRFound);
         claw=new Claw(lArm,rArm,lGrab,rGrab);
     }
@@ -116,47 +117,47 @@ public class BlueFoundationParkV2_1 extends OpMode {
                 //foundation.lDown();
                 break;
             case 2:
-                driveTrain.driveStraight("backward",47);//50
+                driveTrainV1.driveStraight("backward",47);//50
                 break;
             case 3:
-                driveTrain.strafeSeconds(750,"right");
+                driveTrainV1.strafeSeconds(750,"right");
                 break;
             case 4:
                 foundation.rDown();
                 break;
             case 5:
-                driveTrain.delay(1000);
+                driveTrainV1.delay(1000);
                 break;
             case 6:
 
             case 7:
-                driveTrain.strafeSeconds(700,"left");
+                driveTrainV1.strafeSeconds(700,"left");
             case 8:
-                driveTrain.simpleTurn(20,0.45);//0.45
-                //was already commented out: driveTrain.driveStraight("backward", 35, 0.7,0.7);
+                driveTrainV1.simpleTurn(20,0.45);//0.45
+                //was already commented out: driveTrainV1.driveStraight("backward", 35, 0.7,0.7);
                 break;
             case 9:
-                driveTrain.strafeSeconds(2000, "right");
+                driveTrainV1.strafeSeconds(2000, "right");
                 break;
             case 10:
-                driveTrain.simpleTurn(50, .45);
+                driveTrainV1.simpleTurn(50, .45);
                 break;
             /*case 9:
-                driveTrain.strafeSeconds(3000,"right");
+                driveTrainV1.strafeSeconds(3000,"right");
             case 10:
                 foundation.rUp();
                 break;
             case 11:
-                driveTrain.strafeSeconds(250,"left");
+                driveTrainV1.strafeSeconds(250,"left");
                 break;
             case 12:
-                driveTrain.driveStraight("forward", 28);
+                driveTrainV1.driveStraight("forward", 28);
                 break;
             case 13:
-                driveTrain.rotation(90);
+                driveTrainV1.rotation(90);
                 break;
             case 14:
-                driveTrain.driveToLine(color, "blue", "forward");
+                driveTrainV1.driveToLine(color, "blue", "forward");
                 break;*/
         }
         step++;
