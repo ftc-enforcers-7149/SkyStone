@@ -29,7 +29,9 @@ public class OdomToPoint extends OpMode {
     DcMotor fRight, fLeft, bRight, bLeft;
     Gyroscope gyroscope;
 
-    int state=0;
+    double refX, refY;
+
+    int state = 0;
 
 
     public void init() {
@@ -62,37 +64,54 @@ public class OdomToPoint extends OpMode {
 
         switch (state) {
             case 0:
-                if (!driveToPoint(3, 10, 0.6)) {
-                    fLeft.setPower(0);
-                    fRight.setPower(0);
-                    bLeft.setPower(0);
-                    bRight.setPower(0);
+                //This is the right format for driving to a point
+                //It will keep driving until at the point, then it will stop and move on
+                if (driveToPoint(3, 10, 0.6)) {
+                    motorStop();
+                    getRefPoint(-3, -5);
                     state++;
                 }
                 break;
-            case 1:
-                if (!driveInRef(-3, -5, 0.6)) {
-                    fLeft.setPower(0);
-                    fRight.setPower(0);
-                    bLeft.setPower(0);
-                    bRight.setPower(0);
+            case 2:
+                if (driveToPoint(refX, refY, 0.6)) {
+                    motorStop();
                     state++;
                 }
                 break;
         }
     }
 
-    public boolean driveInRef(double xDist, double yDist, double lim) {
-        return driveToPoint(oP.positionX + xDist, oP.positionY + yDist, lim);
+    /**
+     * Sets refX and refY to the point that is xDist from x and yDist from y
+     * @param xDist
+     * @param yDist
+     * @return
+     */
+    public double[] getRefPoint(double xDist, double yDist) {
+        refX = oP.positionX+xDist;
+        refY = oP.positionY+yDist;
+        return new double[]{oP.positionX+xDist, oP.positionY+yDist};
     }
 
+    /**
+     * Uses if statements to drive towards the point.
+     * Returns true if it still needs to run.
+     * Returns false if it is done
+     * @param x     X coord
+     * @param y     Y coord
+     * @param lim   Speed limit
+     * @return
+     */
     public boolean driveToPoint(double x, double y, double lim) {
+        //Gets the distance to the point
         double relativeX = x - oP.positionX;
         double relativeY = y - oP.positionY;
 
+        //Uses distance to calculate power and angle
         double r = Math.hypot(relativeX, relativeY);
         double robotAngle = Math.atan2(relativeY, relativeX) - Math.toRadians(cvtDegrees(oP.getHeading())) + Math.PI / 4;
 
+        //Calculates each motor power using trig
         double v1 = r * Math.sin(robotAngle);
         double v2 = r * Math.cos(robotAngle);
         double v3 = r * Math.cos(robotAngle);
@@ -109,47 +128,41 @@ public class OdomToPoint extends OpMode {
             v4 /= max * (1 / lim);
         }
 
-        if (Math.abs(relativeX) > Math.abs(relativeY)) {
-            if (oP.positionX < x) {
-                fLeft.setPower(v1);
-                fRight.setPower(v2);
-                bLeft.setPower(v3);
-                bRight.setPower(v4);
-            }
-            else {
-                fLeft.setPower(v1);
-                fRight.setPower(v2);
-                bLeft.setPower(v3);
-                bRight.setPower(v4);
-            }
-        }
-        else {
-            if (oP.positionY < y) {
-                fLeft.setPower(v1);
-                fRight.setPower(v2);
-                bLeft.setPower(v3);
-                bRight.setPower(v4);
-            }
-            else {
-                fLeft.setPower(v1);
-                fRight.setPower(v2);
-                bLeft.setPower(v3);
-                bRight.setPower(v4);
-            }
-        }
+        //Sets power to motors
+        fLeft.setPower(v1);
+        fRight.setPower(v2);
+        bLeft.setPower(v3);
+        bRight.setPower(v4);
 
+        //Returns true when the robot is close to the point
         if (Math.abs(relativeX) < 2 && Math.abs(relativeY) < 2) {
-            return false;
+            return true;
         }
 
-        return true;
+        //Returns false if the robot is not at the point yet
+        return false;
     }
 
+    /**
+     * Converts a normal circle of degrees (0 at top) to a unit circle (0 at right and goes counter-clockwise)
+     * @param heading
+     * @return
+     */
     private double cvtDegrees(double heading) {
         if (heading >= 0 && heading < 90) {
             return -heading + 90;
         }
         return -heading + 450;
+    }
+
+    /**
+     * Stops all motors without using actual OpMode stop method
+     */
+    public void motorStop() {
+        fRight.setPower(0);
+        bRight.setPower(0);
+        fLeft.setPower(0);
+        bLeft.setPower(0);
     }
 
     public void stop() {

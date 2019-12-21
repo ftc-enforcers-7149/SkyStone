@@ -271,6 +271,7 @@ public class AutoLiftTest extends OpMode {
         bRight.setPower(0);
         fLeft.setPower(0);
         bLeft.setPower(0);
+        lift.setPower(0);
     }
 
     public void goLevel(String dir) {

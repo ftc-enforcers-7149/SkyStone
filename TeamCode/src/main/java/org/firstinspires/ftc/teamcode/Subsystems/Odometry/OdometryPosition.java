@@ -29,11 +29,6 @@ public class OdometryPosition extends Position {
     private Gyroscope gyro;
 
 
-
-    //Class vars
-    public double positionX, positionY;
-
-
     //Used for encoders
 
     //used for encoders
@@ -93,28 +88,16 @@ public class OdometryPosition extends Position {
         return gyro.getRawYaw();
     }
 
-    public void manualUpdatePosition(double newPosX, double newPosY) {
-        manualUpdatePosition(newPosX, newPosY);
-    }
-
     //Returns the motor distance in inches
     private double getMotorDistIn(double input) {
         return input/COUNTS_PER_INCH;
     }
 
 
-
-
-
-
-
-
-
-
-
-
-
-    //Method that updates position (the big one!)
+    /**
+     * Updates the overall position of the robot based on the change in x odometer and y odometer
+     * @param dir
+     */
     public void updatePosition(Direction dir) {
 
         //Resets our encoders every time this is called. This is important because we
@@ -128,29 +111,35 @@ public class OdometryPosition extends Position {
         encoderX.setMode(DcMotor.RunMode.RUN_WITHOUT_ENCODER);
         encoderY.setMode(DcMotor.RunMode.RUN_WITHOUT_ENCODER);
 
-        //Gets our heading
+        //Gets our heading and change in x and y odometers
         double heading = getHeading();
-        double yPos = encoderY.getCurrentPosition();
-        double xPos = encoderX.getCurrentPosition();
+        double yDist = encoderY.getCurrentPosition();
+        double xDist = encoderX.getCurrentPosition();
 
-        //Calculates whether the robot is facing forwards or backwards. Note that all calculations are based on
-        //The assumption we are facing straight out from the wall
+        //When turning, the odometers are not accurate, so they must be ignored
         if (dir != Direction.TURNING) {
-            positionY += getMotorDistIn(xPos) * Math.cos(Math.toRadians(gyro.cvtTrigAng(heading)));
-            positionX += getMotorDistIn(xPos) * Math.sin(Math.toRadians(gyro.cvtTrigAng(heading)));
+            //Converts the robot's angle for use with sine and cosine
+            //Then uses that as a modifier for how much an odometer will effect that axis
 
-            positionY += getMotorDistIn(yPos) * Math.sin(Math.toRadians(gyro.cvtTrigAng(heading)));
-            positionX += getMotorDistIn(yPos) * Math.cos(Math.toRadians(gyro.cvtTrigAng(heading)));
+            //Apply the x odometer to the x and y axes
+            positionY += getMotorDistIn(xDist) * Math.cos(Math.toRadians(gyro.cvtTrigAng(heading)));
+            positionX += getMotorDistIn(xDist) * Math.sin(Math.toRadians(gyro.cvtTrigAng(heading)));
+
+            //Apply the y odometer to the x and y axes
+            positionY += getMotorDistIn(yDist) * Math.sin(Math.toRadians(gyro.cvtTrigAng(heading)));
+            positionX += getMotorDistIn(yDist) * Math.cos(Math.toRadians(gyro.cvtTrigAng(heading)));
         }
 
+        //Rounds the positions so you don't get numbers like 6.6278326e^-12678
         positionY = Math.ceil(positionY * 10000) / 10000;
         positionX = Math.ceil(positionX * 10000) / 10000;
     }
 
-
-
-
-    //Converts degrees
+    /**
+     * Converts a normal circle of degrees (0 at top) to a unit circle (0 at right and goes counter-clockwise)
+     * @param heading
+     * @return
+     */
     private double cvtDegrees(double heading) {
 
         if (heading <0 ) {
