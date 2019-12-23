@@ -13,14 +13,16 @@ import org.firstinspires.ftc.robotcore.external.navigation.AxesReference;
 import org.firstinspires.ftc.robotcore.external.navigation.Orientation;
 import org.firstinspires.ftc.robotcore.external.navigation.Position;
 import org.firstinspires.ftc.robotcore.external.navigation.Velocity;
-import org.firstinspires.ftc.teamcode.Subsystems.DriveTrain;
+import org.firstinspires.ftc.teamcode.Subsystems.DriveTrainV1;
+import org.firstinspires.ftc.teamcode.Subsystems.Gyroscope;
 
 //@Autonomous(name="auto foundation park")
 public class FoundationAutoRed extends OpMode {
 
     public DcMotor fLeft, fRight, bLeft, bRight;
     int step=0;
-    DriveTrain driveTrain;
+    DriveTrainV1 driveTrainV1;
+    Gyroscope gyro;
 
     Servo  lFound, rFound;;
     BNO055IMU imu;
@@ -77,20 +79,23 @@ public class FoundationAutoRed extends OpMode {
 
     }
     public void start(){
-        driveTrain=new DriveTrain(hardwareMap,telemetry,bLeft,bRight,fLeft,fRight);
+        driveTrainV1 =new DriveTrainV1(telemetry,bLeft,bRight,fLeft,fRight,gyro);
 
     }
     public void loop() {
         switch(step){
-            case 0:driveTrain.driveStraight("forward", 50);
+            case 0:
+                driveTrainV1.driveStraight("forward", 50);
                 break;
             case 1:lFound.setPosition(1);rFound.setPosition(1);
                 break;
-            case 2:driveTrain.driveStraight("backward", 34);
+            case 2:
+                driveTrainV1.driveStraight("backward", 34);
                 break;
-            case 3://driveTrain.rotation(270);
+            case 3://driveTrainV1.rotation(270);
                 break;
-            case 4:driveTrain.driveStraight("backward", 18);
+            case 4:
+                driveTrainV1.driveStraight("backward", 18);
                 break;
         }
         step++;

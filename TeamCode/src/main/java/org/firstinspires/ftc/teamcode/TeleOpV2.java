@@ -50,7 +50,7 @@ public class TeleOpV2 extends OpMode {
         fRight = hardwareMap.dcMotor.get("fRight");
         bLeft = hardwareMap.dcMotor.get("bLeft");
         bRight = hardwareMap.dcMotor.get("bRight");
-        lift = hardwareMap.dcMotor.get("lift");
+        lift = hardwareMap.dcMotor.get("liftMotor");
 
         //Motor directions
         fLeft.setDirection(DcMotorSimple.Direction.REVERSE);
@@ -93,8 +93,8 @@ public class TeleOpV2 extends OpMode {
 
         //FoundationV1 grabbers//
         if (lFoundationDown) {
-            fLFound.setPosition(0.46);//0.46
-            bLFound.setPosition(0.46);//0.46
+            fLFound.setPosition(0.79);//0.46
+            bLFound.setPosition(0.79);//0.46
         }
         else {
             fLFound.setPosition(1);//1
@@ -117,8 +117,8 @@ public class TeleOpV2 extends OpMode {
                 rArm.setPosition(0.81);
             } else {
 
-                lArm.setPosition(0);
-                rArm.setPosition(0);
+                lArm.setPosition(0.36);
+                rArm.setPosition(0.3);
             }
         }
         else if (armUp > 0.1) {
@@ -143,11 +143,11 @@ public class TeleOpV2 extends OpMode {
 
         //Lift
         if(liftUp>0.1){
-            lift.setPower(0.8);
+            lift.setPower(0.98);
             isBreak=true;
         }
         else if(liftDown>0.1){
-            lift.setPower(-0.4);
+            lift.setPower(-0.6);
             isBreak=false;
         }
         else{
@@ -155,10 +155,10 @@ public class TeleOpV2 extends OpMode {
         }
         /*else{
             if(isBreak){
-                lift.setPower(0.3);
+                liftMotor.setPower(0.3);
             }
             else{
-                lift.setPower(0.0);
+                liftMotor.setPower(0.0);
             }
         }*/
 

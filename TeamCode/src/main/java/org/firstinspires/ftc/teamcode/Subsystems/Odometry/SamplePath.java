@@ -1,13 +1,13 @@
 package org.firstinspires.ftc.teamcode.Subsystems.Odometry;
 
-import org.firstinspires.ftc.teamcode.Subsystems.DriveTrain;
+import org.firstinspires.ftc.teamcode.Subsystems.DriveTrainV1;
 
 
 //A sample classfile for a path.
 //TODO: write in better error handling
 public class SamplePath {
 
-    DriveTrain driveTrain;
+    DriveTrainV1 driveTrainV1;
 
     //Declaring object imports
     private OdometryPosition odometryPositionClass = new OdometryPosition();
@@ -30,14 +30,14 @@ public class SamplePath {
         switch(step) {
             case 1:
                 direction = OdometryPosition.Direction.FORWARD;
-                driveTrain.driveStraight("forward", 5);
+                driveTrainV1.driveStraight("forward", 5);
                 direction = OdometryPosition.Direction.TURNING;
-                //driveTrain.rotation(90,angles);
+                //driveTrainV1.rotation(90,angles);
                 step = 2;
                 break;
             case 2:
                 direction = OdometryPosition.Direction.FORWARD;
-                driveTrain.driveStraight("forward", 5);
+                driveTrainV1.driveStraight("forward", 5);
                 break;
 
         }

@@ -36,7 +36,7 @@ import com.qualcomm.robotcore.hardware.DcMotorSimple;
 import com.qualcomm.robotcore.hardware.Servo;
 
 import org.firstinspires.ftc.teamcode.Subsystems.Claw;
-import org.firstinspires.ftc.teamcode.Subsystems.DriveTrain;
+import org.firstinspires.ftc.teamcode.Subsystems.DriveTrainV1;
 import org.firstinspires.ftc.teamcode.Subsystems.FoundationV2;
 
 @Autonomous(name = "Red Foundation  ParkV3")
@@ -47,7 +47,7 @@ public class RedFoundationParkV3 extends OpMode {
     public Servo fLFound, fRFound, bLFound, bRFound;
     public DcMotor fRight,fLeft,bRight,bLeft,lift;
 
-    DriveTrain driveTrain;
+    DriveTrainV1 driveTrainV1;
     FoundationV2 foundation;
     Claw claw;
     ColorSensor color;
@@ -104,7 +104,7 @@ public class RedFoundationParkV3 extends OpMode {
         bRFound.setPosition(1);
     }
     public void start(){
-        driveTrain=new DriveTrain(hardwareMap,telemetry,fLeft,fRight,bLeft,bRight);
+        //driveTrainV1 =new DriveTrainV1(hardwareMap,telemetry,fLeft,fRight,bLeft,bRight);
         foundation =new FoundationV2(fLFound,fRFound,bLFound,bRFound);
         claw=new Claw(lArm,rArm,lGrab,rGrab);
     }
@@ -114,40 +114,40 @@ public class RedFoundationParkV3 extends OpMode {
         switch(step){
             //Move to and grab foundation
             case 1:
-                driveTrain.driveStraight("backward",47);//50
+                driveTrainV1.driveStraight("backward",47);//50
                 break;
             case 2:
-                driveTrain.strafeSeconds(500,"left");
+                driveTrainV1.strafeSeconds(500,"left");
                 break;
             case 3:
                 foundation.lDown();
                 break;
             case 4:
-                driveTrain.delay(1000);
+                driveTrainV1.delay(1000);
                 break;
             case 5:
-                driveTrain.strafeSeconds(500,"right");
+                driveTrainV1.strafeSeconds(500,"right");
                 break;
             //Move foundation into corner
             case 6:
-                driveTrain.simpleTurn(-45,0.45);
+                driveTrainV1.simpleTurn(-45,0.45);
                 break;
             case 7:
-                driveTrain.strafeSeconds(3000,"left");
+                driveTrainV1.strafeSeconds(3000,"left");
                 break;
             //Move foundation flush against wall
             case 8:
-                driveTrain.driveStraight("forward", 36);
+                driveTrainV1.driveStraight("forward", 36);
                 break;
             case 9:
-                driveTrain.strafeSeconds(500, "right");
+                driveTrainV1.strafeSeconds(500, "right");
                 break;
             case 10:
                 foundation.lUp();
                 break;
             //Navigate to line close to wall
             case 11:
-                driveTrain.strafeToLine(color, "red", "right");
+                driveTrainV1.strafeToLine(color, "red", "right");
                 break;
         }
         step++;

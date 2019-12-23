@@ -36,8 +36,7 @@ import com.qualcomm.robotcore.hardware.DcMotorSimple;
 import com.qualcomm.robotcore.hardware.Servo;
 
 import org.firstinspires.ftc.teamcode.Subsystems.Claw;
-import org.firstinspires.ftc.teamcode.Subsystems.DriveTrain;
-import org.firstinspires.ftc.teamcode.Subsystems.FoundationV1;
+import org.firstinspires.ftc.teamcode.Subsystems.DriveTrainV1;
 import org.firstinspires.ftc.teamcode.Subsystems.FoundationV2;
 
 @Autonomous(name = "Red Foundation  ParkV2")
@@ -48,7 +47,7 @@ public class RedFoundationParkV2 extends OpMode {
     public Servo fLFound, fRFound, bLFound, bRFound;
     public DcMotor fRight,fLeft,bRight,bLeft,lift;
 
-    DriveTrain driveTrain;
+    DriveTrainV1 driveTrainV1;
     FoundationV2 foundation;
     Claw claw;
     ColorSensor color;
@@ -105,7 +104,7 @@ public class RedFoundationParkV2 extends OpMode {
         bRFound.setPosition(1);
     }
     public void start(){
-        driveTrain=new DriveTrain(hardwareMap,telemetry,fLeft,fRight,bLeft,bRight);
+        //driveTrainV1 =new DriveTrainV1(hardwareMap,telemetry,fLeft,fRight,bLeft,bRight);
         foundation =new FoundationV2(fLFound,fRFound,bLFound,bRFound);
         claw=new Claw(lArm,rArm,lGrab,rGrab);
     }
@@ -113,59 +112,59 @@ public class RedFoundationParkV2 extends OpMode {
     // Loop and update the dashboard//
     public void loop() {
         switch(step){
-            case 0://driveTrain.delay(3000);
+            case 0://driveTrainV1.delay(3000);
                 break;
-            case 1://driveTrain.delay(3000);
+            case 1://driveTrainV1.delay(3000);
                 break;
-            case 2://driveTrain.delay(4000);
+            case 2://driveTrainV1.delay(4000);
                 break;
-            case 3://driveTrain.delay(3000);
+            case 3://driveTrainV1.delay(3000);
                 break;
             case 4:
 
                 break;
             case 5:
-                driveTrain.driveStraight("backward",47);//50
+                driveTrainV1.driveStraight("backward",47);//50
                 break;
             case 6:
-                driveTrain.strafeSeconds(500,"left");
+                driveTrainV1.strafeSeconds(500,"left");
                 break;
             case 7:
                 foundation.lDown();
                 break;
             case 8:
-                driveTrain.delay(1000);
+                driveTrainV1.delay(1000);
                 break;
             case 9:
-                //driveTrain.driveStraight("backward",3);
+                //driveTrainV1.driveStraight("backward",3);
                 break;
             case 10:
-                driveTrain.strafeSeconds(500,"right");
+                driveTrainV1.strafeSeconds(500,"right");
                 break;
             case 11:
-                driveTrain.simpleTurn(-45,0.45);//driveTrain.simpleRotateRed(295,0.35);//0.45
-                //driveTrain.driveStraight("backward", 35, 0.7,0.7);
+                driveTrainV1.simpleTurn(-45,0.45);//driveTrainV1.simpleRotateRed(295,0.35);//0.45
+                //driveTrainV1.driveStraight("backward", 35, 0.7,0.7);
                 break;
             case 12:
-                driveTrain.strafeSeconds(3000,"left");
+                driveTrainV1.strafeSeconds(3000,"left");
                 break;
             case 13:
                 foundation.lUp();
                 break;
             case 14:
-                driveTrain.strafeSeconds(250,"right");
+                driveTrainV1.strafeSeconds(250,"right");
                 break;
             case 15:
-                driveTrain.driveStraight("forward", 28);
+                driveTrainV1.driveStraight("forward", 28);
                 break;
             case 16:
-                driveTrain.rotation(270);
+                driveTrainV1.rotation(270);
                 break;
             case 17:
-                driveTrain.driveToLine(color, "red", "forward");
+                driveTrainV1.driveToLine(color, "red", "forward");
                 break;
             case 18:
-                //driveTrain.rotation(180);
+                //driveTrainV1.rotation(180);
                 break;
 
         }

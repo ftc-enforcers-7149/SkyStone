@@ -1,6 +1,5 @@
 package org.firstinspires.ftc.teamcode.AutonomousPrograms.V1;
 
-import com.qualcomm.robotcore.eventloop.opmode.Autonomous;
 import com.qualcomm.robotcore.eventloop.opmode.Disabled;
 import com.qualcomm.robotcore.eventloop.opmode.OpMode;
 import com.qualcomm.robotcore.hardware.ColorSensor;
@@ -10,7 +9,7 @@ import com.qualcomm.robotcore.hardware.DistanceSensor;
 import com.qualcomm.robotcore.hardware.Servo;
 
 import org.firstinspires.ftc.robotcore.external.navigation.DistanceUnit;
-import org.firstinspires.ftc.teamcode.Subsystems.DriveTrain;
+import org.firstinspires.ftc.teamcode.Subsystems.DriveTrainV1;
 import org.firstinspires.ftc.teamcode.Subsystems.Webcam;
 
 //@Autonomous(name="Blue SkyStone Park")
@@ -22,7 +21,7 @@ public class BlueSkyStoneParkOldV1 extends OpMode {
     int step=0;
 
     Webcam webcam;
-    DriveTrain driveTrain;
+    DriveTrainV1 driveTrainV1;
 
     String position="";
 
@@ -82,25 +81,25 @@ public class BlueSkyStoneParkOldV1 extends OpMode {
         webcam=new Webcam(hardwareMap);
     }
     public void start(){
-        driveTrain=new DriveTrain(hardwareMap,telemetry,fLeft,fRight,bLeft,bRight);
+        //driveTrainV1 =new DriveTrainV1(hardwareMap,telemetry,fLeft,fRight,bLeft,bRight);
     }
     public void loop(){
         switch(step){
             case 0:
-                driveTrain.driveStraight("forward",17);
+                driveTrainV1.driveStraight("forward",17);
                 break;
             case 1:
                 position=webcam.getPosition();
                 break;
             case 2:
                 if(position.equals("right")){
-                    driveTrain.driveRange(distanceR,60,"right");
+                    driveTrainV1.driveRange(distanceR,60,"right");
                 }
                 else if(position.equals("left")){
-                    driveTrain.driveRange(distanceR,90,"right");
+                    driveTrainV1.driveRange(distanceR,90,"right");
                 }
                 else{
-                    driveTrain.driveRange(distanceR,70,"right");
+                    driveTrainV1.driveRange(distanceR,70,"right");
                 }
                 break;
             case 3:
@@ -109,48 +108,49 @@ public class BlueSkyStoneParkOldV1 extends OpMode {
                 lGrab.setPosition(0);
                 rGrab.setPosition(0.15);
 
-            case 4:driveTrain.delay(500);
+            case 4:
+                driveTrainV1.delay(500);
                 break;
             case 5:
-                driveTrain.driveStraight("forward", 25);
+                driveTrainV1.driveStraight("forward", 25);
                 break;
             case 6:
                 lGrab.setPosition(0.16);
                 rGrab.setPosition(0.16);
                 break;
             case 7:
-                driveTrain.delay(500);
+                driveTrainV1.delay(500);
                 break;
             case 8:
                 lArm.setPosition(0.25);
                 rArm.setPosition(0.25);
                 break;
             case 9:
-                driveTrain.driveStraight("backward",17);
+                driveTrainV1.driveStraight("backward",17);
                 break;
             case 10:
-                driveTrain.rotation(83);
+                driveTrainV1.rotation(83);
                 break;
             case 11:
                 lArm.setPosition(1);
                 rArm.setPosition(1);
             case 12:
-                //driveTrain.driveToLine(color);
+                //driveTrainV1.driveToLine(color);
                 break;
             case 13:
-                driveTrain.driveStraight("forward",28);
+                driveTrainV1.driveStraight("forward",28);
                 break;
             case 14:
                 lGrab.setPosition(0);
                 rGrab.setPosition(0);
                 break;
             case 15:
-                driveTrain.driveRange(distanceC,20,"center");
+                driveTrainV1.driveRange(distanceC,20,"center");
                 lArm.setPosition(0.25);
                 rArm.setPosition(0.25);
                 break;
             case 16:
-                driveTrain.simpleTurn(0,0.4);
+                driveTrainV1.simpleTurn(0,0.4);
                 break;
 
         }

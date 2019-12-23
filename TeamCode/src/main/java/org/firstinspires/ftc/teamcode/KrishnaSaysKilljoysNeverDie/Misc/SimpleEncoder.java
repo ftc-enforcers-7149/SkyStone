@@ -17,7 +17,7 @@ public class SimpleEncoder extends OpMode {
     public void init(){}
 
     public void start() {
-        oP = new OdometryPosition(hardwareMap, "encX", "encY", "imu", 0, 0, gyroscope);
+        oP = new OdometryPosition(hardwareMap, "encX", "encY", 0, 0, gyroscope);
     }
 
     public void loop() {

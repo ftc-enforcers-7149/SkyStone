@@ -1,25 +1,11 @@
 package org.firstinspires.ftc.teamcode.Subsystems;
 
-import com.qualcomm.hardware.bosch.BNO055IMU;
-import com.qualcomm.hardware.bosch.JustLoggingAccelerationIntegrator;
 import com.qualcomm.robotcore.eventloop.opmode.OpMode;
 import com.qualcomm.robotcore.hardware.ColorSensor;
 import com.qualcomm.robotcore.hardware.DcMotor;
 import com.qualcomm.robotcore.hardware.DcMotorSimple;
 import com.qualcomm.robotcore.hardware.DistanceSensor;
 import com.qualcomm.robotcore.hardware.Servo;
-
-import org.firstinspires.ftc.robotcore.external.Func;
-import org.firstinspires.ftc.robotcore.external.navigation.Acceleration;
-import org.firstinspires.ftc.robotcore.external.navigation.AngleUnit;
-import org.firstinspires.ftc.robotcore.external.navigation.AxesOrder;
-import org.firstinspires.ftc.robotcore.external.navigation.AxesReference;
-import org.firstinspires.ftc.robotcore.external.navigation.Orientation;
-import org.firstinspires.ftc.robotcore.external.navigation.Position;
-import org.firstinspires.ftc.robotcore.external.navigation.Velocity;
-import org.firstinspires.ftc.teamcode.Subsystems.DriveSystems.Headless;
-
-import java.util.Locale;
 
 /**
  * class used as the init that all files can inherit
@@ -30,9 +16,10 @@ public class ParentInit extends OpMode {
     protected DcMotor fRight,fLeft,bRight,bLeft,lift;
 
     protected Webcam webcam;
-    protected DriveTrain driveTrain;
+    protected DriveTrainV1 driveTrainV1;
     protected FoundationV2 foundation;
     protected Claw claw;
+    protected Gyroscope gyro;
 
     //Distance Sensors
     protected DistanceSensor distanceL, distanceR, distanceC;
@@ -107,7 +94,7 @@ public class ParentInit extends OpMode {
     }
 
     public void start(){
-        driveTrain=new DriveTrain(hardwareMap,telemetry,fLeft,fRight,bLeft,bRight);
+        driveTrainV1 =new DriveTrainV1(telemetry,fLeft,fRight,bLeft,bRight,gyro);
     }
 
     public void loop(){}

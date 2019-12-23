@@ -54,7 +54,7 @@ public class OdomTeleOp extends OpMode {
     }
 
     public void start() {
-        oP = new OdometryPosition(hardwareMap, "encX", "encY", "imu", 0, 0, gyroscope);
+        oP = new OdometryPosition(hardwareMap, "encX", "encY", 0, 0, gyroscope);
         oP.reverseY();
     }
 
