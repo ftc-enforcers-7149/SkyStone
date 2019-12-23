@@ -8,83 +8,99 @@ import com.qualcomm.robotcore.hardware.Servo;
 
 import org.firstinspires.ftc.teamcode.Subsystems.DriveSystems.Headless;
 import org.firstinspires.ftc.teamcode.Subsystems.Gyroscope;
+import org.firstinspires.ftc.teamcode.Subsystems.Odometry.OdometryPosition;
 
 @TeleOp(name = "Encoder Testing")
 public class EncoderTest extends OpMode {
     //Drive train
     Headless driveSystem;
 
-    DcMotor fRight,fLeft,bRight,bLeft, lift;
+    //O do met ry
+    OdometryPosition oP;
+
+    DcMotor fRight, fLeft, bRight, bLeft;
+
+    //Declaring motors
+    DcMotor encoderY, encoderX;
+
+    Gyroscope gyroscope;
+
+    double positionY,positionX;
 
     boolean startAccel;
+    boolean isTurning = false;
 
+    //used for encoders (y)
+    private static final double     COUNTS_PER_MOTOR_REVY    = 400;  //1440 for 1 enc //512 for another(x) 400 for (y) //
+    private static final double     WHEEL_DIAMETER_INCHESY  = 1.49606299d ;     // For figuring circumference
+    public static final double     COUNTS_PER_INCHY        = COUNTS_PER_MOTOR_REVY /(WHEEL_DIAMETER_INCHESY * Math.PI);
 
-    //used for encoders
-    private static final double     EXTERNAL_GEARING        = 1;
-    private static final double     COUNTS_PER_MOTOR_REV    = 753.2 ;  //28  // eg: AndyMark NeverRest40 Motor Encoder
-    private static final double     DRIVE_GEAR_REDUCTION    = 1 ;     // This is < 1.0 if geared UP
-    private static final double     WHEEL_DIAMETER_INCHES   = 3.937 ;     // For figuring circumference
-    public static final double     COUNTS_PER_INCH         = ((COUNTS_PER_MOTOR_REV * DRIVE_GEAR_REDUCTION) /
-            (WHEEL_DIAMETER_INCHES * 3.1415))/EXTERNAL_GEARING;
+    //used for encoders (x)
+    private static final double     COUNTS_PER_MOTOR_REVX    = 400;  //1440 for 1 enc //512 for another(x) 400 for (y) //
+    private static final double     WHEEL_DIAMETER_INCHESX  = 1.49606299d ;     // For figuring circumference
+    public static final double     COUNTS_PER_INCHX      = COUNTS_PER_MOTOR_REVX /(WHEEL_DIAMETER_INCHESX * Math.PI);
 
     public void init(){
-
-        //Inits to combat lag
-        /*colorSensor = hardwareMap.colorSensor.get("color");
-        distL = hardwareMap.get(DistanceSensor.class, "distanceL");
-        distR = hardwareMap.get(DistanceSensor.class, "distanceR");
-        distC = hardwareMap.get(DistanceSensor.class, "distanceC");*/
-
-        //Drive motors
+//Drive motors
         fLeft = hardwareMap.dcMotor.get("fLeft");
         fRight = hardwareMap.dcMotor.get("fRight");
         bLeft = hardwareMap.dcMotor.get("bLeft");
         bRight = hardwareMap.dcMotor.get("bRight");
-        lift = hardwareMap.dcMotor.get("lift");
+
+        encoderX = hardwareMap.dcMotor.get("encX");
+        encoderY = hardwareMap.dcMotor.get("encY");
 
         //Motor directions
         fLeft.setDirection(DcMotorSimple.Direction.REVERSE);
         fRight.setDirection(DcMotorSimple.Direction.FORWARD);
         bRight.setDirection(DcMotorSimple.Direction.FORWARD);
         bLeft.setDirection(DcMotorSimple.Direction.REVERSE);
-        lift.setDirection(DcMotorSimple.Direction.FORWARD);
 
+        gyroscope = new Gyroscope(telemetry, hardwareMap);
         //Initialize drive train
-        Gyroscope gyroscope = new Gyroscope(telemetry, hardwareMap);
         driveSystem = new Headless(gyroscope, fLeft, fRight, bLeft, bRight);
 
-        //Lift brake
-        lift.setZeroPowerBehavior(DcMotor.ZeroPowerBehavior.BRAKE);
+        encoderX.setMode(DcMotor.RunMode.STOP_AND_RESET_ENCODER);
+        encoderY.setMode(DcMotor.RunMode.STOP_AND_RESET_ENCODER);
 
-        bRight.setMode(DcMotor.RunMode.STOP_AND_RESET_ENCODER);
-        bLeft.setMode(DcMotor.RunMode.STOP_AND_RESET_ENCODER);
-        fLeft.setMode(DcMotor.RunMode.STOP_AND_RESET_ENCODER);
-        fRight.setMode(DcMotor.RunMode.STOP_AND_RESET_ENCODER);
-
-        fRight.setMode(DcMotor.RunMode.RUN_WITHOUT_ENCODER);
-        fLeft.setMode(DcMotor.RunMode.RUN_WITHOUT_ENCODER);
-        bRight.setMode(DcMotor.RunMode.RUN_WITHOUT_ENCODER);
-        bLeft.setMode(DcMotor.RunMode.RUN_WITHOUT_ENCODER);
+        //Sets our encoders to run again
+        encoderX.setMode(DcMotor.RunMode.RUN_WITHOUT_ENCODER);
+        encoderY.setMode(DcMotor.RunMode.RUN_WITHOUT_ENCODER);
     }
 
     public void loop(){
-
-        startAccel = gamepad1.x;
-
-        //Drive
         driveSystem.drive(gamepad1);
 
+        if (gamepad1.a && !isTurning) {
+            isTurning = true;
+        } else if (gamepad1.a && isTurning){
+            isTurning = false;
+        }
+        //Gets our heading and change in x and y odometers
+        double heading = gyroscope.getRawYaw();
+        double yDist = encoderY.getCurrentPosition();
+        double xDist = encoderX.getCurrentPosition();
 
-        if (startAccel) {
-            driveSystem.setAccel();
+        //When turning, the odometers are not accurate, so they must be ignored
+        if (!isTurning) {
+            //Converts the robot's angle for use with sine and cosine
+            //Then uses that as a modifier for how much an odometer will effect that axis
+
+            //Apply the x odometer to the x and y axes
+            positionY += yDist/COUNTS_PER_INCHY* Math.cos(Math.toRadians(gyroscope.cvtTrigAng(heading)));
+            positionX += xDist/COUNTS_PER_INCHX * Math.sin(Math.toRadians(gyroscope.cvtTrigAng(heading)));
+
+            //Apply the y odometer to the x and y axes
+            positionY += yDist/COUNTS_PER_INCHY * Math.sin(Math.toRadians(gyroscope.cvtTrigAng(heading)));
+            positionX += xDist/COUNTS_PER_INCHX * Math.cos(Math.toRadians(gyroscope.cvtTrigAng(heading)));
         }
 
-        telemetry.addData("fLeft",fLeft.getCurrentPosition()/COUNTS_PER_INCH);
-        telemetry.addData("fRight",fRight.getCurrentPosition()/COUNTS_PER_INCH);
-        telemetry.addData("bLeft",bLeft.getCurrentPosition()/COUNTS_PER_INCH);
-        telemetry.addData("bRight",bRight.getCurrentPosition()/COUNTS_PER_INCH);
+        //Rounds the positions so you don't get numbers like 6.6278326e^-12678
+        positionY = Math.ceil(positionY * 10000) / 10000;
+        positionX = Math.ceil(positionX * 10000) / 10000;
 
-
+        telemetry.addData("posX:",positionX);
+        telemetry.addData("posY:",positionY);
 
     }
     public void stop(){
