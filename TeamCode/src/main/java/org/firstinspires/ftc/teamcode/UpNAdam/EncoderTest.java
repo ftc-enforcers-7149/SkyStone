@@ -27,16 +27,19 @@ public class EncoderTest extends OpMode {
 
     double positionY,positionX;
 
+    double yDisp;
+    double xDisp;
+
     boolean startAccel;
     boolean isTurning = false;
 
     //used for encoders (y)
-    private static final double     COUNTS_PER_MOTOR_REVY    = 400;  //1440 for 1 enc //512 for another(x) 400 for (y) //
+    private static final double     COUNTS_PER_MOTOR_REVY    = 1440;  //1440 for 1 enc //512 for another(x) 400 for (y) //
     private static final double     WHEEL_DIAMETER_INCHESY  = 1.49606299d ;     // For figuring circumference
     public static final double     COUNTS_PER_INCHY        = COUNTS_PER_MOTOR_REVY /(WHEEL_DIAMETER_INCHESY * Math.PI);
 
     //used for encoders (x)
-    private static final double     COUNTS_PER_MOTOR_REVX    = 400;  //1440 for 1 enc //512 for another(x) 400 for (y) //
+    private static final double     COUNTS_PER_MOTOR_REVX    = 1440;  //1440 for 1 enc //512 for another(x) 400 for (y) //
     private static final double     WHEEL_DIAMETER_INCHESX  = 1.49606299d ;     // For figuring circumference
     public static final double     COUNTS_PER_INCHX      = COUNTS_PER_MOTOR_REVX /(WHEEL_DIAMETER_INCHESX * Math.PI);
 
@@ -55,6 +58,7 @@ public class EncoderTest extends OpMode {
         fRight.setDirection(DcMotorSimple.Direction.FORWARD);
         bRight.setDirection(DcMotorSimple.Direction.FORWARD);
         bLeft.setDirection(DcMotorSimple.Direction.REVERSE);
+        encoderY.setDirection(DcMotorSimple.Direction.REVERSE);
 
         gyroscope = new Gyroscope(telemetry, hardwareMap);
         //Initialize drive train
@@ -71,15 +75,22 @@ public class EncoderTest extends OpMode {
     public void loop(){
         driveSystem.drive(gamepad1);
 
-        if (gamepad1.a && !isTurning) {
+        if (gamepad1.a) {
             isTurning = true;
-        } else if (gamepad1.a && isTurning){
+        } else if (gamepad1.b){
             isTurning = false;
+
+            encoderX.setMode(DcMotor.RunMode.STOP_AND_RESET_ENCODER);
+            encoderY.setMode(DcMotor.RunMode.STOP_AND_RESET_ENCODER);
+
+            //Sets our encoders to run again
+            encoderX.setMode(DcMotor.RunMode.RUN_WITHOUT_ENCODER);
+            encoderY.setMode(DcMotor.RunMode.RUN_WITHOUT_ENCODER);
         }
         //Gets our heading and change in x and y odometers
         double heading = gyroscope.getRawYaw();
-        double yDist = encoderY.getCurrentPosition();
-        double xDist = encoderX.getCurrentPosition();
+        yDisp = encoderY.getCurrentPosition();
+        xDisp = encoderX.getCurrentPosition();
 
         //When turning, the odometers are not accurate, so they must be ignored
         if (!isTurning) {
@@ -87,12 +98,10 @@ public class EncoderTest extends OpMode {
             //Then uses that as a modifier for how much an odometer will effect that axis
 
             //Apply the x odometer to the x and y axes
-            positionY += yDist/COUNTS_PER_INCHY* Math.cos(Math.toRadians(gyroscope.cvtTrigAng(heading)));
-            positionX += xDist/COUNTS_PER_INCHX * Math.sin(Math.toRadians(gyroscope.cvtTrigAng(heading)));
+            positionX = ((xDisp/COUNTS_PER_INCHX) * Math.sin(Math.toRadians(gyroscope.cvtTrigAng(heading)))) + ((yDisp/COUNTS_PER_INCHY)* Math.cos(Math.toRadians(gyroscope.cvtTrigAng(heading))));
 
             //Apply the y odometer to the x and y axes
-            positionY += yDist/COUNTS_PER_INCHY * Math.sin(Math.toRadians(gyroscope.cvtTrigAng(heading)));
-            positionX += xDist/COUNTS_PER_INCHX * Math.cos(Math.toRadians(gyroscope.cvtTrigAng(heading)));
+            positionY = ((yDisp/COUNTS_PER_INCHY) * Math.sin(Math.toRadians(gyroscope.cvtTrigAng(heading)))) + ((xDisp/COUNTS_PER_INCHX) * Math.cos(Math.toRadians(gyroscope.cvtTrigAng(heading))));
         }
 
         //Rounds the positions so you don't get numbers like 6.6278326e^-12678
@@ -100,7 +109,11 @@ public class EncoderTest extends OpMode {
         positionX = Math.ceil(positionX * 10000) / 10000;
 
         telemetry.addData("posX:",positionX);
-        telemetry.addData("posY:",positionY);
+        telemetry.addData("posY:",(positionY));
+        telemetry.addData("isTurning:",isTurning);
+        telemetry.addData("heading:" ,heading);
+        telemetry.addData("cos: ",Math.cos(Math.toRadians(gyroscope.cvtTrigAng(heading))));
+        telemetry.addData("sin: ",Math.sin(Math.toRadians(gyroscope.cvtTrigAng(heading))));
 
     }
     public void stop(){

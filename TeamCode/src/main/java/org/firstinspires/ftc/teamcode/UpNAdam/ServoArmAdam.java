@@ -1,12 +1,11 @@
-package org.firstinspires.ftc.teamcode.KrishnaSaysKilljoysNeverDie.Misc;
+package org.firstinspires.ftc.teamcode.UpNAdam;
 
 import com.qualcomm.robotcore.eventloop.opmode.OpMode;
 import com.qualcomm.robotcore.eventloop.opmode.TeleOp;
 import com.qualcomm.robotcore.hardware.Servo;
-import com.qualcomm.robotcore.hardware.ServoController;
 
-@TeleOp(name="GearboxServoRotator")
-public class GearboxServoRotator extends OpMode {
+@TeleOp(name="ServoArmAdam")
+public class ServoArmAdam extends OpMode {
 
     Servo drive;
 
@@ -20,7 +19,7 @@ public class GearboxServoRotator extends OpMode {
             drive.setPosition(.6);
         }
         else {
-            drive.setPosition(0.2);
+            drive.setPosition(0.5);
         }
     }
 
