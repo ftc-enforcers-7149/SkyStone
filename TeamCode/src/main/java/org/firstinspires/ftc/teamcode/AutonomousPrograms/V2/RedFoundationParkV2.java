@@ -104,7 +104,7 @@ public class RedFoundationParkV2 extends OpMode {
         bRFound.setPosition(1);
     }
     public void start(){
-        //driveTrainV1 =new DriveTrainV1(hardwareMap,telemetry,fLeft,fRight,bLeft,bRight);
+        //driveTrain =new DriveTrainV1(hardwareMap,telemetry,fLeft,fRight,bLeft,bRight);
         foundation =new FoundationV2(fLFound,fRFound,bLFound,bRFound);
         claw=new Claw(lArm,rArm,lGrab,rGrab);
     }
@@ -112,13 +112,13 @@ public class RedFoundationParkV2 extends OpMode {
     // Loop and update the dashboard//
     public void loop() {
         switch(step){
-            case 0://driveTrainV1.delay(3000);
+            case 0://driveTrain.delay(3000);
                 break;
-            case 1://driveTrainV1.delay(3000);
+            case 1://driveTrain.delay(3000);
                 break;
-            case 2://driveTrainV1.delay(4000);
+            case 2://driveTrain.delay(4000);
                 break;
-            case 3://driveTrainV1.delay(3000);
+            case 3://driveTrain.delay(3000);
                 break;
             case 4:
 
@@ -136,14 +136,14 @@ public class RedFoundationParkV2 extends OpMode {
                 driveTrainV1.delay(1000);
                 break;
             case 9:
-                //driveTrainV1.driveStraight("backward",3);
+                //driveTrain.driveStraight("backward",3);
                 break;
             case 10:
                 driveTrainV1.strafeSeconds(500,"right");
                 break;
             case 11:
-                driveTrainV1.simpleTurn(-45,0.45);//driveTrainV1.simpleRotateRed(295,0.35);//0.45
-                //driveTrainV1.driveStraight("backward", 35, 0.7,0.7);
+                driveTrainV1.simpleTurn(-45,0.45);//driveTrain.simpleRotateRed(295,0.35);//0.45
+                //driveTrain.driveStraight("backward", 35, 0.7,0.7);
                 break;
             case 12:
                 driveTrainV1.strafeSeconds(3000,"left");
@@ -164,7 +164,7 @@ public class RedFoundationParkV2 extends OpMode {
                 driveTrainV1.driveToLine(color, "red", "forward");
                 break;
             case 18:
-                //driveTrainV1.rotation(180);
+                //driveTrain.rotation(180);
                 break;
 
         }

@@ -50,7 +50,7 @@ public class TeleOpV2 extends OpMode {
         fRight = hardwareMap.dcMotor.get("fRight");
         bLeft = hardwareMap.dcMotor.get("bLeft");
         bRight = hardwareMap.dcMotor.get("bRight");
-        lift = hardwareMap.dcMotor.get("liftMotor");
+        lift = hardwareMap.dcMotor.get("lift");
 
         //Motor directions
         fLeft.setDirection(DcMotorSimple.Direction.REVERSE);

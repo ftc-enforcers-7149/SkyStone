@@ -13,6 +13,7 @@ import org.firstinspires.ftc.robotcore.external.navigation.AngleUnit;
 import org.firstinspires.ftc.robotcore.external.navigation.Orientation;
 import org.firstinspires.ftc.teamcode.Subsystems.DriveTrainV1;
 import org.firstinspires.ftc.teamcode.Subsystems.DriveTrainV2;
+import org.firstinspires.ftc.teamcode.Subsystems.Enums.Directions;
 import org.firstinspires.ftc.teamcode.Subsystems.Gyroscope;
 
 import java.util.Locale;
@@ -52,26 +53,48 @@ public class ClassTest extends OpMode {
         bRight.setDirection(DcMotorSimple.Direction.FORWARD);
         bLeft.setDirection(DcMotorSimple.Direction.REVERSE);
 
+        fLeft.setZeroPowerBehavior(DcMotor.ZeroPowerBehavior.BRAKE);
+        fRight.setZeroPowerBehavior(DcMotor.ZeroPowerBehavior.BRAKE);
+        bLeft.setZeroPowerBehavior(DcMotor.ZeroPowerBehavior.BRAKE);
+        bRight.setZeroPowerBehavior(DcMotor.ZeroPowerBehavior.BRAKE);
     }
-public void start(){
-    gyro=new Gyroscope(telemetry,hardwareMap);
-    driveTrain =new DriveTrainV2(telemetry,fLeft,fRight,bLeft,bRight,gyro);
 
-}
+    public void start(){
+        gyro=new Gyroscope(telemetry,hardwareMap);
+        driveTrain = new DriveTrainV2(telemetry,fLeft,fRight,bLeft,bRight,gyro);
+    }
+
     public void loop() {
-        telemetry.addData("degree",gyro.getRawYaw());
+        telemetry.addData("Degree: ",gyro.getRawYaw());
 
         switch (step) {
             case 0:
-                if (driveTrain.driveRange(distanceL, 20, "left")) {
+                driveTrain.setTime(1000);
+                step++;
+                break;
+            case 1:
+                if (driveTrain.delay()) {
+                    driveTrain.setDist(24);
                     step++;
                 }
                 break;
+            case 2:
+                if (driveTrain.driveStraight(Directions.FORWARD, 0.2)) {
+                    step++;
+                }
+                break;
+            case 3:
+                telemetry.addLine("Finished");
+                break;
         }
+
+        telemetry.addData("Step: ", step);
     }
 
     public void stop() {
+        fLeft.setPower(0);
+        fRight.setPower(0);
+        bLeft.setPower(0);
+        bRight.setPower(0);
     }
-
-
 }
