@@ -33,6 +33,16 @@ public class OdomTeleOp extends OpMode {
 
     boolean startAccel;
 
+    //used for encoders (y)
+    private static final double     COUNTS_PER_MOTOR_REVY    = 400;  //1440 for 1 enc //512 for another(x) 400 for (y) //
+    private static final double     WHEEL_DIAMETER_INCHESY  = 1.49606299d ;     // For figuring circumference
+    public static final double     COUNTS_PER_INCHY        = COUNTS_PER_MOTOR_REVY /(WHEEL_DIAMETER_INCHESY * Math.PI);
+
+    //used for encoders (x)
+    private static final double     COUNTS_PER_MOTOR_REVX    = 400;  //1440 for 1 enc //512 for another(x) 400 for (y) //
+    private static final double     WHEEL_DIAMETER_INCHESX  = 1.49606299d ;     // For figuring circumference
+    public static final double     COUNTS_PER_INCHX      = COUNTS_PER_MOTOR_REVX /(WHEEL_DIAMETER_INCHESX * Math.PI);
+
 
     public void init() {
 
@@ -51,6 +61,8 @@ public class OdomTeleOp extends OpMode {
         gyroscope = new Gyroscope(telemetry, hardwareMap);
         //Initialize drive train
         driveSystem = new Headless(gyroscope, fLeft, fRight, bLeft, bRight);
+
+
     }
 
     public void start() {
@@ -74,6 +86,7 @@ public class OdomTeleOp extends OpMode {
 
         oP.updatePosition(direction);
         telemetry.addData("encoder x: ", oP.positionX);
+        telemetry.addData("encoder y:",oP.positionY);
         telemetry.addData("heading: ", oP.getHeading());
 
         telemetry.addLine("WATCH STAR WARS TROS IN THEATERS DEC 20");

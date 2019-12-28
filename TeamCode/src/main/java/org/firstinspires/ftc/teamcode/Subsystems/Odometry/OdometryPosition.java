@@ -31,10 +31,15 @@ public class OdometryPosition extends Position {
 
     //Used for encoders
 
-    //used for encoders
-    private static final double     COUNTS_PER_MOTOR_REV    = 1440;  //28  // eg: AndyMark NeverRest40 Motor Encoder
-    private static final double     WHEEL_DIAMETER_INCHES   = 1.49606299d ;     // For figuring circumference
-    public static final double     COUNTS_PER_INCH         = COUNTS_PER_MOTOR_REV /(WHEEL_DIAMETER_INCHES * Math.PI);
+    //used for encoders (y)
+    private static final double     COUNTS_PER_MOTOR_REVY    = 400;  //1440 for 1 enc //512 for another(x) 400 for (y) //
+    private static final double     WHEEL_DIAMETER_INCHESY  = 1.49606299d ;     // For figuring circumference
+    public static final double     COUNTS_PER_INCHY        = COUNTS_PER_MOTOR_REVY /(WHEEL_DIAMETER_INCHESY * Math.PI);
+
+    //used for encoders (x)
+    private static final double     COUNTS_PER_MOTOR_REVX    = 400;  //1440 for 1 enc //512 for another(x) 400 for (y) //
+    private static final double     WHEEL_DIAMETER_INCHESX  = 1.49606299d ;     // For figuring circumference
+    public static final double     COUNTS_PER_INCHX      = COUNTS_PER_MOTOR_REVX /(WHEEL_DIAMETER_INCHESX * Math.PI);
 
 
 
@@ -88,9 +93,14 @@ public class OdometryPosition extends Position {
         return gyro.getRawYaw();
     }
 
-    //Returns the motor distance in inches
-    private double getMotorDistIn(double input) {
-        return input/COUNTS_PER_INCH;
+    //Returns the motor distance in inches for Y
+    private double getMotorDistInY(double input) {
+        return input/COUNTS_PER_INCHY;
+    }
+
+    //Returns the motor distance in inches for Y
+    private double getMotorDistInX(double input) {
+        return input/COUNTS_PER_INCHX;
     }
 
 
@@ -122,12 +132,12 @@ public class OdometryPosition extends Position {
             //Then uses that as a modifier for how much an odometer will effect that axis
 
             //Apply the x odometer to the x and y axes
-            positionY += getMotorDistIn(xDist) * Math.cos(Math.toRadians(gyro.cvtTrigAng(heading)));
-            positionX += getMotorDistIn(xDist) * Math.sin(Math.toRadians(gyro.cvtTrigAng(heading)));
+            positionY += getMotorDistInY(xDist) * Math.cos(Math.toRadians(gyro.cvtTrigAng(heading)));
+            positionX += getMotorDistInX(xDist) * Math.sin(Math.toRadians(gyro.cvtTrigAng(heading)));
 
             //Apply the y odometer to the x and y axes
-            positionY += getMotorDistIn(yDist) * Math.sin(Math.toRadians(gyro.cvtTrigAng(heading)));
-            positionX += getMotorDistIn(yDist) * Math.cos(Math.toRadians(gyro.cvtTrigAng(heading)));
+            positionY += getMotorDistInY(yDist) * Math.sin(Math.toRadians(gyro.cvtTrigAng(heading)));
+            positionX += getMotorDistInX(yDist) * Math.cos(Math.toRadians(gyro.cvtTrigAng(heading)));
         }
 
         //Rounds the positions so you don't get numbers like 6.6278326e^-12678

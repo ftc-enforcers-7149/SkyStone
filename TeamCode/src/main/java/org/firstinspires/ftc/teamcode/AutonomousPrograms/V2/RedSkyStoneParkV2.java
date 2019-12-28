@@ -86,7 +86,7 @@ public class RedSkyStoneParkV2 extends OpMode {
         webcam=new Webcam(hardwareMap);
     }
     public void start(){
-        //driveTrainV1 =new DriveTrainV1(hardwareMap,telemetry,fLeft,fRight,bLeft,bRight);
+        //driveTrain =new DriveTrainV1(hardwareMap,telemetry,fLeft,fRight,bLeft,bRight);
     }
     public void loop(){
         switch(step){
@@ -161,7 +161,7 @@ public class RedSkyStoneParkV2 extends OpMode {
                 rArm.setPosition(0.81);
                 break;
             case 16:
-                //driveTrainV1.simpleTurn(0,0.4);
+                //driveTrain.simpleTurn(0,0.4);
                 break;
 
         }

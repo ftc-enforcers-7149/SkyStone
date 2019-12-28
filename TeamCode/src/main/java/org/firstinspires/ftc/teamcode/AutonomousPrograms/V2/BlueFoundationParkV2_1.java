@@ -134,7 +134,7 @@ public class BlueFoundationParkV2_1 extends OpMode {
                 driveTrainV1.strafeSeconds(700,"left");
             case 8:
                 driveTrainV1.simpleTurn(20,0.45);//0.45
-                //was already commented out: driveTrainV1.driveStraight("backward", 35, 0.7,0.7);
+                //was already commented out: driveTrain.driveStraight("backward", 35, 0.7,0.7);
                 break;
             case 9:
                 driveTrainV1.strafeSeconds(2000, "right");
@@ -143,21 +143,21 @@ public class BlueFoundationParkV2_1 extends OpMode {
                 driveTrainV1.simpleTurn(50, .45);
                 break;
             /*case 9:
-                driveTrainV1.strafeSeconds(3000,"right");
+                driveTrain.strafeSeconds(3000,"right");
             case 10:
                 foundation.rUp();
                 break;
             case 11:
-                driveTrainV1.strafeSeconds(250,"left");
+                driveTrain.strafeSeconds(250,"left");
                 break;
             case 12:
-                driveTrainV1.driveStraight("forward", 28);
+                driveTrain.driveStraight("forward", 28);
                 break;
             case 13:
-                driveTrainV1.rotation(90);
+                driveTrain.rotation(90);
                 break;
             case 14:
-                driveTrainV1.driveToLine(color, "blue", "forward");
+                driveTrain.driveToLine(color, "blue", "forward");
                 break;*/
         }
         step++;

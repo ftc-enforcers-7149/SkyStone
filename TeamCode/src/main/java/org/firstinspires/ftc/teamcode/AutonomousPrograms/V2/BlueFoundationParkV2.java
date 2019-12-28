@@ -104,7 +104,7 @@ public class BlueFoundationParkV2 extends OpMode {
 
     }
     public void start(){
-        //driveTrainV1 =new DriveTrainV1(hardwareMap,telemetry,fLeft,fRight,bLeft,bRight);
+        //driveTrain =new DriveTrainV1(hardwareMap,telemetry,fLeft,fRight,bLeft,bRight);
         foundation =new FoundationV2(fLFound,fRFound,bLFound,bRFound);
         claw=new Claw(lArm,rArm,lGrab,rGrab);
     }
@@ -133,7 +133,7 @@ public class BlueFoundationParkV2 extends OpMode {
                 driveTrainV1.strafeSeconds(250,"left");
             case 8:
                 driveTrainV1.simpleTurn(45,0.45);//0.45
-                //was already commented out: driveTrainV1.driveStraight("backward", 35, 0.7,0.7);
+                //was already commented out: driveTrain.driveStraight("backward", 35, 0.7,0.7);
                 break;
             case 9:
                 driveTrainV1.strafeSeconds(3000,"right");

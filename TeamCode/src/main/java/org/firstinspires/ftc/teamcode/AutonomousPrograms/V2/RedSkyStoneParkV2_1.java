@@ -84,23 +84,23 @@ public class RedSkyStoneParkV2_1 extends ParentInit {
                 driveTrainV1.strafeToLine(color,"red","left");
             /*case 13:
                 if(position.equals("right")){
-                    driveTrainV1.driveRange(distanceR,10,"right");
+                    driveTrain.driveRange(distanceR,10,"right");
                 }
                 else if(position.equals("left")){
-                    driveTrainV1.driveRange(distanceR,30,"right");
+                    driveTrain.driveRange(distanceR,30,"right");
                 }
                 else{
-                    driveTrainV1.driveRange(distanceR,20,"right");
+                    driveTrain.driveRange(distanceR,20,"right");
                 }
                 break;
             case 14:
                 claw.down();
                 claw.setState(true,false);
                 break;
-            case 15:driveTrainV1.delay(500);
+            case 15:driveTrain.delay(500);
                 break;
             case 16:
-                driveTrainV1.driveStraight("forward", 25);
+                driveTrain.driveStraight("forward", 25);
                 break;
             case 17:
                 if(position.equals("right")){
