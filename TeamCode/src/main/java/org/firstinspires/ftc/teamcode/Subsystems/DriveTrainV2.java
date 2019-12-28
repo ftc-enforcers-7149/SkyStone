@@ -27,7 +27,8 @@ public class DriveTrainV2 {
     public static final double     COUNTS_PER_INCH         = ((COUNTS_PER_MOTOR_REV * DRIVE_GEAR_REDUCTION) /
             (WHEEL_DIAMETER_INCHES * 3.1415))/EXTERNAL_GEARING;
 
-    double stopTime, stopDist;
+    double endTime, last_time=0;
+    double last_dist=0;
 
     /**
      * Main constructor
@@ -47,16 +48,16 @@ public class DriveTrainV2 {
         this.telemetry=telemetry;
     }
 
-    public void setDist(double dist) {
-        resetEncoderWithoutEncoder();
-        stopDist = dist;
-    }
-
     /**
      * drives inputted distance(inches)
      * @param direction direction of driving.
+     * @param dist distance to drive.
      */
-    public boolean driveStraight(Directions direction) {
+    public boolean driveStraight(Directions direction, double dist) {
+        if (last_dist != dist) {
+            last_dist = dist;
+            resetEncoderWithoutEncoder();
+        }
         //sets direction of motors
         int mDirection = 1;
         if (direction == Directions.FORWARD) {
@@ -67,9 +68,9 @@ public class DriveTrainV2 {
         //converts current position into inches
         double cPosition=fRight.getCurrentPosition()/COUNTS_PER_INCH*mDirection;
 
-        if(cPosition < stopDist){
+        if(cPosition < last_dist){
             cPosition=fRight.getCurrentPosition()/COUNTS_PER_INCH*mDirection;
-            if(stopDist-Math.abs(cPosition)<20){
+            if(last_dist-Math.abs(cPosition)<20){
                 power=0.4*mDirection;
             }
             fLeft.setPower(power);
@@ -83,6 +84,7 @@ public class DriveTrainV2 {
             bLeft.setPower(0);
             bRight.setPower(0);
 
+            last_dist = 0;
             return true;
         }
 
@@ -92,9 +94,14 @@ public class DriveTrainV2 {
     /**
      * drives inputted distance(inches)
      * @param direction direction of driving.
+     * @param dist distance to drive
      * @param power of drive wheels
      */
-    public boolean driveStraight(Directions direction, double power) {
+    public boolean driveStraight(Directions direction, double dist, double power) {
+        if (last_dist != dist) {
+            last_dist = dist;
+            resetEncoderWithoutEncoder();
+        }
         //sets direction of motors
         int mDirection = 1;
         if (direction == Directions.FORWARD) {
@@ -105,7 +112,7 @@ public class DriveTrainV2 {
         //converts current position into inches
         double cPosition=fRight.getCurrentPosition()/COUNTS_PER_INCH*mDirection;
 
-        if (cPosition < stopDist){
+        if (cPosition < last_dist){
             cPosition=fRight.getCurrentPosition()/COUNTS_PER_INCH*mDirection;
             fLeft.setPower(power);
             fRight.setPower(power);
@@ -144,14 +151,18 @@ public class DriveTrainV2 {
      * strafes for a given time
      * @param direction "left" for left "right" for right
      */
-    public boolean strafeSeconds(Directions direction){
+    public boolean strafeSeconds(Directions direction, double time){
+        if (last_time != time) {
+            last_time = time;
+            endTime = System.currentTimeMillis() + time;
+        }
         //sets direction strafing
         int mDirection=1;
         if(direction == Directions.RIGHT){
             mDirection=-1;
         }
 
-        if (System.currentTimeMillis()<stopTime){
+        if (System.currentTimeMillis()<endTime){
             fLeft.setPower(0.45*mDirection);
             fRight.setPower(-0.45*mDirection);
             bLeft.setPower(-0.45*mDirection);
@@ -167,14 +178,6 @@ public class DriveTrainV2 {
         }
 
         return false;
-    }
-
-    /**
-     * Sets end time for entire class' use
-     * @param time
-     */
-    public void setTime (double time) {
-        stopTime=time+System.currentTimeMillis();
     }
 
     /**
@@ -450,8 +453,13 @@ public class DriveTrainV2 {
     /**
      * Waits until the set time passes
      */
-    public boolean delay(){
-        if (System.currentTimeMillis() >= stopTime) {
+    public boolean delay(double time){
+        if (last_time != time) {
+            last_time = time;
+            endTime = System.currentTimeMillis() + time;
+        }
+        if (System.currentTimeMillis() >= endTime) {
+            last_time = 0;
             return true;
         }
 

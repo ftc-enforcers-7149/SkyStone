@@ -92,62 +92,55 @@ public class RedFoundationParkV3 extends OpMode {
     public void loop() {
         switch(step){
             //Move to and grab foundation
-            case 0:
-                driveTrain.setDist(47);
-                break;
             case 1:
-                if (driveTrain.driveStraight(Directions.BACKWARD)) {
-                    driveTrain.setTime(500);
+                if (driveTrain.driveStraight(Directions.BACKWARD, 47)) {
                     step++;
                 }
                 break;
             case 2:
-                if (driveTrain.strafeSeconds(Directions.LEFT)) {
+                if (driveTrain.strafeSeconds(Directions.LEFT, 500)) {
                     step++;
                 }
                 break;
             case 3:
                 foundation.lDown();
-                driveTrain.setTime(1000);
+                step++;
                 break;
             case 4:
-                if (driveTrain.delay()) {
-                    driveTrain.setTime(500);
+                if (driveTrain.delay(1000)) {
                     step++;
                 }
                 break;
             case 5:
-                if (driveTrain.strafeSeconds(Directions.RIGHT)) {
+                if (driveTrain.strafeSeconds(Directions.RIGHT, 500)) {
                     step++;
                 }
                 break;
             //Move foundation into corner
             case 6:
                 if (driveTrain.simpleTurn(-45,0.45)) {
-                    driveTrain.setTime(3000);
                     step++;
                 }
                 break;
             case 7:
-                if (driveTrain.strafeSeconds(Directions.LEFT)) {
-                    driveTrain.setDist(36);
+                if (driveTrain.strafeSeconds(Directions.LEFT, 3000)) {
                     step++;
                 }
                 break;
             //Move foundation flush against wall
             case 8:
-                if (driveTrain.driveStraight(Directions.FORWARD)) {
-                    driveTrain.setTime(500);
+                if (driveTrain.driveStraight(Directions.FORWARD, 36)) {
                     step++;
                 }
                 break;
             case 9:
-                if (driveTrain.strafeSeconds(Directions.RIGHT)) {
+                if (driveTrain.strafeSeconds(Directions.RIGHT, 500)) {
                     step++;
                 }
                 break;
             case 10:
                 foundation.lUp();
+                step++;
                 break;
             //Navigate to line close to wall
             case 11:
