@@ -9,6 +9,7 @@ import com.qualcomm.robotcore.hardware.Servo;
 
 import org.firstinspires.ftc.robotcore.external.navigation.DistanceUnit;
 import org.firstinspires.ftc.teamcode.Subsystems.DriveSystems.Headless;
+import org.firstinspires.ftc.teamcode.Subsystems.Gyroscope;
 
 @TeleOp(name = "Auto Lift")
 public class AutoLiftTest extends OpMode {
@@ -22,9 +23,9 @@ public class AutoLiftTest extends OpMode {
     DcMotor fRight,fLeft,bRight,bLeft, lift;
 
     DistanceSensor distanceLift;
+    Gyroscope gyroscope;
 
     float armUp;
-    boolean isBreak=false;
     float liftUp,liftDown;
     boolean lFoundationDown, rFoundationDown;
     float grab;
@@ -67,7 +68,8 @@ public class AutoLiftTest extends OpMode {
         lift.setDirection(DcMotorSimple.Direction.FORWARD);
 
         //Initialize drive train
-        driveSystem = new Headless(hardwareMap, telemetry, fLeft, fRight, bLeft, bRight);
+        gyroscope = new Gyroscope(telemetry, hardwareMap);
+        driveSystem = new Headless(gyroscope, fLeft, fRight, bLeft, bRight);
 
         //Servo directions
         fLFound.setDirection(Servo.Direction.REVERSE);
@@ -103,8 +105,8 @@ public class AutoLiftTest extends OpMode {
             rArm.setPosition(0.81);
         }
         else {
-            lArm.setPosition(0);
-            rArm.setPosition(0);
+            lArm.setPosition(0.36); //0
+            rArm.setPosition(0.3);  //0
         }
 
         if(grab > 0.1){
@@ -114,22 +116,6 @@ public class AutoLiftTest extends OpMode {
         else{
             rGrab.setPosition(.13);//.6
             lGrab.setPosition(0.21);//1
-        }
-
-        if(liftUp>0.1){
-            lift.setPower(0.8);
-            isBreak=true;
-        }
-        else if(liftDown>0.1){
-            lift.setPower(-0.4);
-            isBreak=false;
-        }
-        else{
-            lift.setPower(0);
-        }
-
-        if (startAccel) {
-            driveSystem.setAccel();
         }
 
         if(!pressP){
@@ -168,10 +154,7 @@ public class AutoLiftTest extends OpMode {
         if(liftPress) {
             switch (level) {
                 case 0:
-                    if (distanceLift.getDistance(DistanceUnit.CM) < 3) {
-                        lift.setPower(0.8);
-                    }
-                    else if(distanceLift.getDistance(DistanceUnit.CM) > 3) {
+                    if(distanceLift.getDistance(DistanceUnit.CM) > 3) { //3
                         lift.setPower(-0.4);
                     }
                     else{
@@ -180,98 +163,98 @@ public class AutoLiftTest extends OpMode {
                     }
                     break;
                 case 1:
-                    if (distanceLift.getDistance(DistanceUnit.CM) < 10.5) {
+                    if (distanceLift.getDistance(DistanceUnit.CM) < 10) {  //10.5
                         lift.setPower(0.8);
                     }
-                    else if(distanceLift.getDistance(DistanceUnit.CM) > 10.5) {
+                    else if(distanceLift.getDistance(DistanceUnit.CM) > 11) {
                         lift.setPower(-0.4);
                     }
                     else{
-                        lift.setPower(0);
+                        lift.setPower(0.1);
                         liftPress = false;
                     }
                     break;
                 case 2:
-                    if (distanceLift.getDistance(DistanceUnit.CM) < 20) {
+                    if (distanceLift.getDistance(DistanceUnit.CM) < 20) { //20.5
                         lift.setPower(0.8);
                     }
-                    else if(distanceLift.getDistance(DistanceUnit.CM) > 20) {
+                    else if(distanceLift.getDistance(DistanceUnit.CM) > 21) {
                         lift.setPower(-0.4);
                     }
                     else{
-                        lift.setPower(0);
+                        lift.setPower(0.1);
                         liftPress = false;
                     }
                     break;
                 case 3:
-                    if (distanceLift.getDistance(DistanceUnit.CM) < 30.5) {
+                    if (distanceLift.getDistance(DistanceUnit.CM) < 30) { //30.5
                         lift.setPower(0.8);
                     }
-                    else if(distanceLift.getDistance(DistanceUnit.CM) > 30.5) {
+                    else if(distanceLift.getDistance(DistanceUnit.CM) > 31) {
                         lift.setPower(-0.4);
                     }
                     else{
-                        lift.setPower(0);
+                        lift.setPower(0.1);
                         liftPress = false;
                     }
                     break;
                 case 4:
-                    if (distanceLift.getDistance(DistanceUnit.CM) < 40.5) {
+                    if (distanceLift.getDistance(DistanceUnit.CM) < 40) { //40.5
                         lift.setPower(0.8);
                     }
-                    else if(distanceLift.getDistance(DistanceUnit.CM) > 40.5) {
+                    else if(distanceLift.getDistance(DistanceUnit.CM) > 41) {
                         lift.setPower(-0.4);
                     }
                     else{
-                        lift.setPower(0);
+                        lift.setPower(0.1);
                         liftPress = false;
                     }
                     break;
                 case 5:
-                    if (distanceLift.getDistance(DistanceUnit.CM) < 54) {
+                    if (distanceLift.getDistance(DistanceUnit.CM) < 55) {   //54
                         lift.setPower(0.8);
                     }
-                    else if(distanceLift.getDistance(DistanceUnit.CM) > 54) {
+                    else if(distanceLift.getDistance(DistanceUnit.CM) > 56) {
                         lift.setPower(-0.4);
                     }
                     else{
-                        lift.setPower(0);
+                        lift.setPower(0.1);
                         liftPress = false;
                     }
                     break;
                 case 6:
-                    if (distanceLift.getDistance(DistanceUnit.CM) < 62) {
+                    if (distanceLift.getDistance(DistanceUnit.CM) < 63) {   //62
                         lift.setPower(0.8);
                     }
-                    else if(distanceLift.getDistance(DistanceUnit.CM) > 62) {
+                    else if(distanceLift.getDistance(DistanceUnit.CM) > 64) {
                         lift.setPower(-0.4);
                     }
                     else{
-                        lift.setPower(0);
+                        lift.setPower(0.1);
                         liftPress = false;
                     }
                     break;
                 case 7:
-                    if (distanceLift.getDistance(DistanceUnit.CM) < 72) {
+                    if (distanceLift.getDistance(DistanceUnit.CM) < 73) {   //72
                         lift.setPower(0.8);
                     }
-                    else if(distanceLift.getDistance(DistanceUnit.CM) > 72) {
+                    else if(distanceLift.getDistance(DistanceUnit.CM) > 74) {
                         lift.setPower(-0.4);
                     }
                     else{
-                        lift.setPower(0);
+                        lift.setPower(0.1);
                         liftPress = false;
                     }
                     break;
                 case 8:
-                    if (distanceLift.getDistance(DistanceUnit.CM) < 81) {
+                    if (distanceLift.getDistance(DistanceUnit.CM) < 82) {   //81
                         lift.setPower(0.8);
                     }
-                    else if(distanceLift.getDistance(DistanceUnit.CM) > 81) {
+                    else if(distanceLift.getDistance(DistanceUnit.CM) > 83) {
                         lift.setPower(-0.4);
                     }
                     else{
-                        lift.setPower(0);
+                        lift.setPower(0.1);
                         liftPress = false;
                     }
                     break;
@@ -288,6 +271,7 @@ public class AutoLiftTest extends OpMode {
         bRight.setPower(0);
         fLeft.setPower(0);
         bLeft.setPower(0);
+        lift.setPower(0);
     }
 
     public void goLevel(String dir) {

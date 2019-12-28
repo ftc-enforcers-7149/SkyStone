@@ -18,7 +18,7 @@ public class TeleOpV1_1 extends OpMode {
 
     //Servos and motors not used for driving
     Servo lArm, rArm, lGrab, rGrab, lFound, rFound;
-    DcMotor lift;
+    DcMotor liftMotor;
 
     //Input variables
     boolean armUp, armDown;
@@ -39,9 +39,9 @@ public class TeleOpV1_1 extends OpMode {
         lFound = hardwareMap.servo.get("fLFound");
         rFound = hardwareMap.servo.get("fRFound");
         //Lift
-        lift = hardwareMap.dcMotor.get("lift");
-        lift.setDirection(DcMotorSimple.Direction.REVERSE);
-        lift.setZeroPowerBehavior(DcMotor.ZeroPowerBehavior.BRAKE);
+        liftMotor = hardwareMap.dcMotor.get("liftMotor");
+        liftMotor.setDirection(DcMotorSimple.Direction.REVERSE);
+        liftMotor.setZeroPowerBehavior(DcMotor.ZeroPowerBehavior.BRAKE);
 
         //Servo directions
         lArm.setDirection(Servo.Direction.REVERSE);
@@ -120,21 +120,21 @@ public class TeleOpV1_1 extends OpMode {
             foundationV1.down();
         }
 
-        //Do lift function
+        //Do liftMotor function
         if(liftUp > 0.1){
-            lift.setPower(0.7);
+            liftMotor.setPower(0.7);
             isBreak = true;
         }
         else if(liftDown > 0.1){
-            lift.setPower(-0.05);
+            liftMotor.setPower(-0.05);
             isBreak = false;
         }
         else{
             if (isBreak) {
-                lift.setPower(0.3);
+                liftMotor.setPower(0.3);
             }
             else {
-                lift.setPower(0);
+                liftMotor.setPower(0);
             }
         }
 
@@ -142,7 +142,7 @@ public class TeleOpV1_1 extends OpMode {
         telemetry.addData("Left Grabber Closed: ", lGrab.getPosition() == 0.1);
         telemetry.addData("Right Grabber Closed: ", rGrab.getPosition() == 0.15);
         telemetry.addLine("Arms are " + (lArm.getPosition() == 0.65 ? "down" : "up"));
-        telemetry.addLine("Lift " + (lift.getPower() == 0.7 ? "is " : "isn't ") + "going up");
+        telemetry.addLine("Lift " + (liftMotor.getPower() == 0.7 ? "is " : "isn't ") + "going up");
         telemetry.addLine("FoundationV1 grabbers are" + (lFound.getPosition() == 0.95 ? "down" : "up"));
 
         //Drive

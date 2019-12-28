@@ -1,7 +1,5 @@
 package org.firstinspires.ftc.teamcode.AutonomousPrograms.V2;
 
-import com.qualcomm.robotcore.eventloop.opmode.Autonomous;
-
 import org.firstinspires.ftc.robotcore.external.navigation.DistanceUnit;
 import org.firstinspires.ftc.teamcode.Subsystems.ParentInit;
 
@@ -31,58 +29,59 @@ public class RedSkyStoneParkV2_1 extends ParentInit {
                 webcam.deactivate();
                 break;
             case 1:
-                driveTrain.driveStraight("forward",20,0.2);
+                driveTrainV1.driveStraight("forward",20,0.2);
                 break;
             case 2:
                 if(position.equals("left")){
-                    driveTrain.driveRange(distanceL,66,"left");
+                    driveTrainV1.driveRange(distanceL,66,"left");
                 }
                 else if(position.equals("right")){
-                    driveTrain.driveRange(distanceL,104,"left");
+                    driveTrainV1.driveRange(distanceL,104,"left");
                 }
                 else{
-                    driveTrain.driveRange(distanceL,86,"left");
+                    driveTrainV1.driveRange(distanceL,86,"left");
                 }
                 break;
             case 3:
                 claw.down();
                 claw.release();
                 break;
-            case 4:driveTrain.delay(500);
+            case 4:
+                driveTrainV1.delay(500);
                 break;
             case 5:
-                driveTrain.driveStraight("forward", 12);
+                driveTrainV1.driveStraight("forward", 12);
                 break;//
             case 6:
                 claw.grab();
                 break;
             case 7:
-                driveTrain.delay(500);
+                driveTrainV1.delay(500);
                 claw.up();
                 break;
             case 8:
-               driveTrain.driveStraight("backward",6);
+               driveTrainV1.driveStraight("backward",6);
                 break;
             case 9:
-                driveTrain.simpleTurn(0,0.2);
+                driveTrainV1.simpleTurn(0,0.2);
                 break;
             case 10:
-                driveTrain.strafeToLine(color, "red", "right");
+                driveTrainV1.strafeToLine(color, "red", "right");
                 break;
             case 11:
-                driveTrain.strafeSeconds(1000,"right");
+                driveTrainV1.strafeSeconds(1000,"right");
                 break;
             case 12:
-                driveTrain.simpleTurn(0,0.2);
+                driveTrainV1.simpleTurn(0,0.2);
                 break;
             case 13:
                 claw.down();
-                driveTrain.delay(750);
+                driveTrainV1.delay(750);
                 claw.release();
                 claw.up();
                 break;
             case 14:
-                driveTrain.strafeToLine(color,"red","left");
+                driveTrainV1.strafeToLine(color,"red","left");
             /*case 13:
                 if(position.equals("right")){
                     driveTrain.driveRange(distanceR,10,"right");

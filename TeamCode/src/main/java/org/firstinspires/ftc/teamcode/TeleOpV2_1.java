@@ -1,14 +1,16 @@
 package org.firstinspires.ftc.teamcode;
 
 import com.qualcomm.robotcore.eventloop.opmode.OpMode;
-import com.qualcomm.robotcore.eventloop.opmode.TeleOp;
 import com.qualcomm.robotcore.hardware.DcMotor;
 import com.qualcomm.robotcore.hardware.DcMotorSimple;
+import com.qualcomm.robotcore.hardware.DistanceSensor;
 import com.qualcomm.robotcore.hardware.Servo;
 
 import org.firstinspires.ftc.teamcode.Subsystems.Claw;
 import org.firstinspires.ftc.teamcode.Subsystems.DriveSystems.Headless;
 import org.firstinspires.ftc.teamcode.Subsystems.FoundationV2;
+import org.firstinspires.ftc.teamcode.Subsystems.Gyroscope;
+import org.firstinspires.ftc.teamcode.Subsystems.Lift;
 
 //@TeleOp(name = "TeleOp v2")
 public class TeleOpV2_1 extends OpMode {
@@ -18,9 +20,12 @@ public class TeleOpV2_1 extends OpMode {
     //Hardware
     Servo fLFound, fRFound, bLFound, bRFound;
     Servo lArm, rArm, lGrab, rGrab;
-    DcMotor fRight,fLeft,bRight,bLeft, lift;
+    DcMotor fRight,fLeft,bRight,bLeft, liftMotor;
+    DistanceSensor distanceLift;
+
     Claw claw;
     FoundationV2 foundation;
+    Lift lift;
 
     float armUp;
     boolean isBreak=false;
@@ -46,22 +51,25 @@ public class TeleOpV2_1 extends OpMode {
         distR = hardwareMap.get(DistanceSensor.class, "distanceR");
         distC = hardwareMap.get(DistanceSensor.class, "distanceC");*/
 
+        distanceLift = hardwareMap.get(DistanceSensor.class, "distanceLift");
+
         //Drive motors
         fLeft = hardwareMap.dcMotor.get("fLeft");
         fRight = hardwareMap.dcMotor.get("fRight");
         bLeft = hardwareMap.dcMotor.get("bLeft");
         bRight = hardwareMap.dcMotor.get("bRight");
-        lift = hardwareMap.dcMotor.get("lift");
+        liftMotor = hardwareMap.dcMotor.get("lift");
 
         //Motor directions
         fLeft.setDirection(DcMotorSimple.Direction.REVERSE);
         fRight.setDirection(DcMotorSimple.Direction.FORWARD);
         bRight.setDirection(DcMotorSimple.Direction.FORWARD);
         bLeft.setDirection(DcMotorSimple.Direction.REVERSE);
-        lift.setDirection(DcMotorSimple.Direction.FORWARD);
+        liftMotor.setDirection(DcMotorSimple.Direction.FORWARD);
 
         //Initialize drive train
-        driveSystem = new Headless(hardwareMap, telemetry, fLeft, fRight, bLeft, bRight);
+        Gyroscope gyroscope = new Gyroscope(telemetry, hardwareMap);
+        driveSystem = new Headless(gyroscope, fLeft, fRight, bLeft, bRight);
 
         //Servo directions
         fLFound.setDirection(Servo.Direction.REVERSE);
@@ -75,10 +83,11 @@ public class TeleOpV2_1 extends OpMode {
         rGrab.setDirection(Servo.Direction.FORWARD);
 
         //Lift brake
-        lift.setZeroPowerBehavior(DcMotor.ZeroPowerBehavior.BRAKE);
+        liftMotor.setZeroPowerBehavior(DcMotor.ZeroPowerBehavior.BRAKE);
 
         foundation =new FoundationV2(fLFound,fRFound,bLFound,bRFound);
         claw=new Claw(lArm,rArm,lGrab,rGrab);
+        lift = new Lift(liftMotor, distanceLift);
     }
 
     public void loop(){
@@ -109,13 +118,13 @@ public class TeleOpV2_1 extends OpMode {
             foundation.rUp();
         }
 
-            //Arms and block grabbers
-            if (armUp > 0.1) {
-            claw.grab();
+        //Arms and block grabbers
+        if (armUp > 0.1) {
+            claw.up();
         }
         else {
 
-            claw.release();
+            claw.down();
         }
 
         if(grab > 0.1){
@@ -125,52 +134,33 @@ public class TeleOpV2_1 extends OpMode {
             claw.release();
         }
 
-        /*if(leftG>0.1){
-            lGrab.setPosition(0.45);
-        }
-        else{
-           lGrab.setPosition(1);
-        }*/
-
         //Lift
-        if(liftUp>0.1){
-            lift.setPower(0.8);
+        lift.liftSet(gamepad1);
+
+        /*if(liftUp>0.1){
+            liftMotor.setPower(0.8);
             isBreak=true;
         }
         else if(liftDown>0.1){
-            lift.setPower(-0.4);
+            liftMotor.setPower(-0.4);
             isBreak=false;
         }
         else{
-            lift.setPower(0);
-        }
-        /*else{
-            if(isBreak){
-                lift.setPower(0.3);
-            }
-            else{
-                lift.setPower(0.0);
-            }
+            liftMotor.setPower(0);
         }*/
 
         if (startAccel) {
             driveSystem.setAccel();
         }
-        else {
-            driveSystem.setLim(isBreak);
-        }
 
-        telemetry.addData("fL servo pos: ", fLFound.getPosition());
-        telemetry.addData("fR servo pos: ", fRFound.getPosition());
-        telemetry.addData("bL servo pos: ", bLFound.getPosition());
-        telemetry.addData("bR servo pos: ", bRFound.getPosition());
-
-
+        telemetry.addData("Lift Level", lift.getLevel());
     }
+
     public void stop(){
         fRight.setPower(0);
         bRight.setPower(0);
         fLeft.setPower(0);
         bLeft.setPower(0);
+        liftMotor.setPower(0);
     }
 }

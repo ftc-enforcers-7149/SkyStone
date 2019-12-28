@@ -1,6 +1,5 @@
 package org.firstinspires.ftc.teamcode.AutonomousPrograms.V2;
 
-import com.qualcomm.robotcore.eventloop.opmode.Autonomous;
 import com.qualcomm.robotcore.eventloop.opmode.OpMode;
 import com.qualcomm.robotcore.hardware.ColorSensor;
 import com.qualcomm.robotcore.hardware.DcMotor;
@@ -9,7 +8,7 @@ import com.qualcomm.robotcore.hardware.DistanceSensor;
 import com.qualcomm.robotcore.hardware.Servo;
 
 import org.firstinspires.ftc.robotcore.external.navigation.DistanceUnit;
-import org.firstinspires.ftc.teamcode.Subsystems.DriveTrain;
+import org.firstinspires.ftc.teamcode.Subsystems.DriveTrainV1;
 import org.firstinspires.ftc.teamcode.Subsystems.Webcam;
 
 //@Autonomous(name="Red SkyStone ParkV2")
@@ -21,7 +20,7 @@ public class RedSkyStoneParkV2 extends OpMode {
     int step=0;
 
     Webcam webcam;
-    DriveTrain driveTrain;
+    DriveTrainV1 driveTrainV1;
 
     String position="";
 
@@ -87,12 +86,12 @@ public class RedSkyStoneParkV2 extends OpMode {
         webcam=new Webcam(hardwareMap);
     }
     public void start(){
-        driveTrain=new DriveTrain(hardwareMap,telemetry,fLeft,fRight,bLeft,bRight);
+        //driveTrain =new DriveTrainV1(hardwareMap,telemetry,fLeft,fRight,bLeft,bRight);
     }
     public void loop(){
         switch(step){
             case 0:
-                driveTrain.driveStraight("forward",20);
+                driveTrainV1.driveStraight("forward",20);
                 break;
             case 1:
                 double startTime = System.currentTimeMillis();
@@ -103,13 +102,13 @@ public class RedSkyStoneParkV2 extends OpMode {
                 break;
             case 2:
                 if(position.equals("right")){
-                    driveTrain.driveRange(distanceL,106,"left");
+                    driveTrainV1.driveRange(distanceL,106,"left");
                 }
                 else if(position.equals("left")){
-                    driveTrain.driveRange(distanceL,75,"left");
+                    driveTrainV1.driveRange(distanceL,75,"left");
                 }
                 else{
-                    driveTrain.driveRange(distanceL,90,"left");
+                    driveTrainV1.driveRange(distanceL,90,"left");
                 }
                 break;
             case 3:
@@ -119,44 +118,45 @@ public class RedSkyStoneParkV2 extends OpMode {
                 rGrab.setPosition(0.43);
                 break;
 
-            case 4:driveTrain.delay(500);
+            case 4:
+                driveTrainV1.delay(500);
                 break;
             case 5:
-                driveTrain.driveStraight("forward", 25);
+                driveTrainV1.driveStraight("forward", 25);
                 break;
             case 6:
                 lGrab.setPosition(0.45);
                 rGrab.setPosition(0.43);
                 break;
             case 7:
-                driveTrain.delay(500);
+                driveTrainV1.delay(500);
                 break;
             case 8:
                 lArm.setPosition(0.95);
                 rArm.setPosition(0.81);
                 break;
             case 9:
-               driveTrain.driveStraight("backward",17);
+               driveTrainV1.driveStraight("backward",17);
                 break;
             case 10:
-                driveTrain.rotation(272);
+                driveTrainV1.rotation(272);
                 break;
             case 11:
                 lArm.setPosition(0);
                 rArm.setPosition(0);
                 break;
             case 12:
-                driveTrain.driveToLine(color, "red", "forward");
+                driveTrainV1.driveToLine(color, "red", "forward");
                 break;
             case 13:
-                driveTrain.driveStraight("forward",20);
+                driveTrainV1.driveStraight("forward",20);
                 break;
             case 14:
                 rGrab.setPosition(0.6);
                 lGrab.setPosition(1);
                 break;
             case 15:
-                driveTrain.driveToLine(color, "red", "backward");
+                driveTrainV1.driveToLine(color, "red", "backward");
                 lArm.setPosition(0.95);
                 rArm.setPosition(0.81);
                 break;

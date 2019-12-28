@@ -4,6 +4,7 @@ import com.qualcomm.robotcore.eventloop.opmode.OpMode;
 import com.qualcomm.robotcore.eventloop.opmode.TeleOp;
 import com.qualcomm.robotcore.hardware.DcMotor;
 
+import org.firstinspires.ftc.teamcode.Subsystems.Gyroscope;
 import org.firstinspires.ftc.teamcode.Subsystems.Odometry.OdometryEncoder;
 import org.firstinspires.ftc.teamcode.Subsystems.Odometry.OdometryPosition;
 
@@ -11,11 +12,12 @@ import org.firstinspires.ftc.teamcode.Subsystems.Odometry.OdometryPosition;
 public class SimpleEncoder extends OpMode {
 
     OdometryPosition oP;
+    Gyroscope gyroscope;
 
     public void init(){}
 
     public void start() {
-        oP = new OdometryPosition(hardwareMap, "encX", "encY", "imu", 0, 0);
+        oP = new OdometryPosition(hardwareMap, "encX", "encY", 0, 0, gyroscope);
     }
 
     public void loop() {

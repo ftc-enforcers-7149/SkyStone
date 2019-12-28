@@ -8,8 +8,13 @@ import com.qualcomm.robotcore.hardware.DcMotorSimple;
 import com.qualcomm.robotcore.hardware.DistanceSensor;
 import com.qualcomm.robotcore.hardware.Servo;
 
+import org.firstinspires.ftc.robotcore.external.navigation.AngleUnit;
+import org.firstinspires.ftc.robotcore.external.navigation.AxesOrder;
+import org.firstinspires.ftc.robotcore.external.navigation.AxesReference;
 import org.firstinspires.ftc.robotcore.external.navigation.DistanceUnit;
+import org.firstinspires.ftc.teamcode.Subsystems.DriveSystems.Arcade;
 import org.firstinspires.ftc.teamcode.Subsystems.DriveSystems.Headless;
+import org.firstinspires.ftc.teamcode.Subsystems.Gyroscope;
 import org.firstinspires.ftc.teamcode.Subsystems.Odometry.OdometryPosition;
 
 @TeleOp(name = "OdomTeleOp")
@@ -23,8 +28,20 @@ public class OdomTeleOp extends OpMode {
 
     DcMotor fRight, fLeft, bRight, bLeft;
 
+    Gyroscope gyroscope;
+
 
     boolean startAccel;
+
+    //used for encoders (y)
+    private static final double     COUNTS_PER_MOTOR_REVY    = 400;  //1440 for 1 enc //512 for another(x) 400 for (y) //
+    private static final double     WHEEL_DIAMETER_INCHESY  = 1.49606299d ;     // For figuring circumference
+    public static final double     COUNTS_PER_INCHY        = COUNTS_PER_MOTOR_REVY /(WHEEL_DIAMETER_INCHESY * Math.PI);
+
+    //used for encoders (x)
+    private static final double     COUNTS_PER_MOTOR_REVX    = 400;  //1440 for 1 enc //512 for another(x) 400 for (y) //
+    private static final double     WHEEL_DIAMETER_INCHESX  = 1.49606299d ;     // For figuring circumference
+    public static final double     COUNTS_PER_INCHX      = COUNTS_PER_MOTOR_REVX /(WHEEL_DIAMETER_INCHESX * Math.PI);
 
 
     public void init() {
@@ -41,15 +58,16 @@ public class OdomTeleOp extends OpMode {
         bRight.setDirection(DcMotorSimple.Direction.FORWARD);
         bLeft.setDirection(DcMotorSimple.Direction.REVERSE);
 
+        gyroscope = new Gyroscope(telemetry, hardwareMap);
         //Initialize drive train
-        driveSystem = new Headless(hardwareMap, telemetry, fLeft, fRight, bLeft, bRight);
+        driveSystem = new Headless(gyroscope, fLeft, fRight, bLeft, bRight);
+
 
     }
 
-
     public void start() {
-        oP = new OdometryPosition(hardwareMap, "encX", "encY", "imu", 0, 0);
-        oP.reverseX();
+        oP = new OdometryPosition(hardwareMap, "encX", "encY", 0, 0, gyroscope);
+        oP.reverseY();
     }
 
     public void loop() {
@@ -64,14 +82,11 @@ public class OdomTeleOp extends OpMode {
             direction = OdometryPosition.Direction.FORWARD;
         }
 
-        if (startAccel) {
-            driveSystem.setAccel();
-        }
-
         driveSystem.drive(gamepad1);
 
         oP.updatePosition(direction);
         telemetry.addData("encoder x: ", oP.positionX);
+        telemetry.addData("encoder y:",oP.positionY);
         telemetry.addData("heading: ", oP.getHeading());
 
         telemetry.addLine("WATCH STAR WARS TROS IN THEATERS DEC 20");

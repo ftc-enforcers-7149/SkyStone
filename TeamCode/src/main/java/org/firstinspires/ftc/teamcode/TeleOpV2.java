@@ -8,6 +8,7 @@ import com.qualcomm.robotcore.hardware.Gamepad;
 import com.qualcomm.robotcore.hardware.Servo;
 
 import org.firstinspires.ftc.teamcode.Subsystems.DriveSystems.Headless;
+import org.firstinspires.ftc.teamcode.Subsystems.Gyroscope;
 
 @TeleOp(name = "TeleOp v2")
 public class TeleOpV2 extends OpMode {
@@ -59,7 +60,8 @@ public class TeleOpV2 extends OpMode {
         lift.setDirection(DcMotorSimple.Direction.FORWARD);
 
         //Initialize drive train
-        driveSystem = new Headless(hardwareMap, telemetry, fLeft, fRight, bLeft, bRight);
+        Gyroscope gyroscope = new Gyroscope(telemetry, hardwareMap);
+        driveSystem = new Headless(gyroscope, fLeft, fRight, bLeft, bRight);
 
         //Servo directions
         fLFound.setDirection(Servo.Direction.REVERSE);
@@ -89,14 +91,14 @@ public class TeleOpV2 extends OpMode {
         //Drive
         driveSystem.drive(gamepad1);
 
-        //FoundationV1 grabbers
+        //FoundationV1 grabbers//
         if (lFoundationDown) {
-            fLFound.setPosition(0.46);
-            bLFound.setPosition(0.46);
+            fLFound.setPosition(0.79);//0.46
+            bLFound.setPosition(0.79);//0.46
         }
         else {
-            fLFound.setPosition(1);
-            bLFound.setPosition(1);
+            fLFound.setPosition(1);//1
+            bLFound.setPosition(1);//1
         }
 
         if (rFoundationDown) {
@@ -115,8 +117,8 @@ public class TeleOpV2 extends OpMode {
                 rArm.setPosition(0.81);
             } else {
 
-                lArm.setPosition(0);
-                rArm.setPosition(0);
+                lArm.setPosition(0.36);
+                rArm.setPosition(0.3);
             }
         }
         else if (armUp > 0.1) {
@@ -141,11 +143,11 @@ public class TeleOpV2 extends OpMode {
 
         //Lift
         if(liftUp>0.1){
-            lift.setPower(0.8);
+            lift.setPower(0.98);
             isBreak=true;
         }
         else if(liftDown>0.1){
-            lift.setPower(-0.4);
+            lift.setPower(-0.6);
             isBreak=false;
         }
         else{
@@ -153,10 +155,10 @@ public class TeleOpV2 extends OpMode {
         }
         /*else{
             if(isBreak){
-                lift.setPower(0.3);
+                liftMotor.setPower(0.3);
             }
             else{
-                lift.setPower(0.0);
+                liftMotor.setPower(0.0);
             }
         }*/
 

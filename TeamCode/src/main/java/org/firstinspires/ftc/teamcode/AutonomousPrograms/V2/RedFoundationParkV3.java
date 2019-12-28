@@ -1,31 +1,3 @@
-/* Copyright (c) 2017 FIRST. All rights reserved.
- *
- * Redistribution and use in source and binary forms, with or without modification,
- * are permitted (subject to the limitations in the disclaimer below) provided that
- * the following conditions are met:
- *
- * Redistributions of source code must retain the above copyright notice, this list
- * of conditions and the following disclaimer.
- *
- * Redistributions in binary form must reproduce the above copyright notice, this
- * list of conditions and the following disclaimer in the documentation and/or
- * other materials provided with the distribution.
- *
- * Neither the name of FIRST nor the names of its contributors may be used to endorse or
- * promote products derived from this software without specific prior written permission.
- *
- * NO EXPRESS OR IMPLIED LICENSES TO ANY PARTY'S PATENT RIGHTS ARE GRANTED BY THIS
- * LICENSE. THIS SOFTWARE IS PROVIDED BY THE COPYRIGHT HOLDERS AND CONTRIBUTORS
- * "AS IS" AND ANY EXPRESS OR IMPLIED WARRANTIES, INCLUDING, BUT NOT LIMITED TO,
- * THE IMPLIED WARRANTIES OF MERCHANTABILITY AND FITNESS FOR A PARTICULAR PURPOSE
- * ARE DISCLAIMED. IN NO EVENT SHALL THE COPYRIGHT OWNER OR CONTRIBUTORS BE LIABLE
- * FOR ANY DIRECT, INDIRECT, INCIDENTAL, SPECIAL, EXEMPLARY, OR CONSEQUENTIAL
- * DAMAGES (INCLUDING, BUT NOT LIMITED TO, PROCUREMENT OF SUBSTITUTE GOODS OR
- * SERVICES; LOSS OF USE, DATA, OR PROFITS; OR BUSINESS INTERRUPTION) HOWEVER
- * CAUSED AND ON ANY THEORY OF LIABILITY, WHETHER IN CONTRACT, STRICT LIABILITY,
- * OR TORT (INCLUDING NEGLIGENCE OR OTHERWISE) ARISING IN ANY WAY OUT OF THE USE
- * OF THIS SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
- */
 package org.firstinspires.ftc.teamcode.AutonomousPrograms.V2;
 
 import com.qualcomm.robotcore.eventloop.opmode.Autonomous;
@@ -37,17 +9,23 @@ import com.qualcomm.robotcore.hardware.Servo;
 
 import org.firstinspires.ftc.teamcode.Subsystems.Claw;
 import org.firstinspires.ftc.teamcode.Subsystems.DriveTrainV1;
+import org.firstinspires.ftc.teamcode.Subsystems.DriveTrainV2;
+import org.firstinspires.ftc.teamcode.Subsystems.Enums.Directions;
+import org.firstinspires.ftc.teamcode.Subsystems.Enums.Positions;
 import org.firstinspires.ftc.teamcode.Subsystems.FoundationV2;
+import org.firstinspires.ftc.teamcode.Subsystems.Gyroscope;
 
-@Autonomous(name = "Red Foundation  ParkV2")
+@Autonomous(name = "Red Foundation  ParkV3")
 //@Disabled                            // Comment this out to add to the opmode list
-public class RedFoundationParkV2 extends OpMode {
+public class RedFoundationParkV3 extends OpMode {
 
     public Servo lArm, rArm, lGrab, rGrab;
     public Servo fLFound, fRFound, bLFound, bRFound;
     public DcMotor fRight,fLeft,bRight,bLeft,lift;
 
-    DriveTrainV1 driveTrainV1;
+    DriveTrainV2 driveTrain;
+    Gyroscope gyro;
+
     FoundationV2 foundation;
     Claw claw;
     ColorSensor color;
@@ -104,7 +82,8 @@ public class RedFoundationParkV2 extends OpMode {
         bRFound.setPosition(1);
     }
     public void start(){
-        //driveTrain =new DriveTrainV1(hardwareMap,telemetry,fLeft,fRight,bLeft,bRight);
+        gyro = new Gyroscope(telemetry,hardwareMap);
+        driveTrain = new DriveTrainV2(telemetry,fLeft,fRight,bLeft,bRight,gyro);
         foundation =new FoundationV2(fLFound,fRFound,bLFound,bRFound);
         claw=new Claw(lArm,rArm,lGrab,rGrab);
     }
@@ -112,66 +91,78 @@ public class RedFoundationParkV2 extends OpMode {
     // Loop and update the dashboard//
     public void loop() {
         switch(step){
-            case 0://driveTrain.delay(3000);
+            //Move to and grab foundation
+            case 0:
+                driveTrain.setDist(47);
                 break;
-            case 1://driveTrain.delay(3000);
+            case 1:
+                if (driveTrain.driveStraight(Directions.BACKWARD)) {
+                    driveTrain.setTime(500);
+                    step++;
+                }
                 break;
-            case 2://driveTrain.delay(4000);
+            case 2:
+                if (driveTrain.strafeSeconds(Directions.LEFT)) {
+                    step++;
+                }
                 break;
-            case 3://driveTrain.delay(3000);
+            case 3:
+                foundation.lDown();
+                driveTrain.setTime(1000);
                 break;
             case 4:
-
+                if (driveTrain.delay()) {
+                    driveTrain.setTime(500);
+                    step++;
+                }
                 break;
             case 5:
-                driveTrainV1.driveStraight("backward",47);//50
+                if (driveTrain.strafeSeconds(Directions.RIGHT)) {
+                    step++;
+                }
                 break;
+            //Move foundation into corner
             case 6:
-                driveTrainV1.strafeSeconds(500,"left");
+                if (driveTrain.simpleTurn(-45,0.45)) {
+                    driveTrain.setTime(3000);
+                    step++;
+                }
                 break;
             case 7:
-                foundation.lDown();
+                if (driveTrain.strafeSeconds(Directions.LEFT)) {
+                    driveTrain.setDist(36);
+                    step++;
+                }
                 break;
+            //Move foundation flush against wall
             case 8:
-                driveTrainV1.delay(1000);
+                if (driveTrain.driveStraight(Directions.FORWARD)) {
+                    driveTrain.setTime(500);
+                    step++;
+                }
                 break;
             case 9:
-                //driveTrain.driveStraight("backward",3);
+                if (driveTrain.strafeSeconds(Directions.RIGHT)) {
+                    step++;
+                }
                 break;
             case 10:
-                driveTrainV1.strafeSeconds(500,"right");
-                break;
-            case 11:
-                driveTrainV1.simpleTurn(-45,0.45);//driveTrain.simpleRotateRed(295,0.35);//0.45
-                //driveTrain.driveStraight("backward", 35, 0.7,0.7);
-                break;
-            case 12:
-                driveTrainV1.strafeSeconds(3000,"left");
-                break;
-            case 13:
                 foundation.lUp();
                 break;
-            case 14:
-                driveTrainV1.strafeSeconds(250,"right");
+            //Navigate to line close to wall
+            case 11:
+                if (driveTrain.strafeToLine(color, Directions.RIGHT)) {
+                    step++;
+                }
                 break;
-            case 15:
-                driveTrainV1.driveStraight("forward", 28);
-                break;
-            case 16:
-                driveTrainV1.rotation(270);
-                break;
-            case 17:
-                driveTrainV1.driveToLine(color, "red", "forward");
-                break;
-            case 18:
-                //driveTrain.rotation(180);
-                break;
-
         }
-        step++;
     }
 
     public void stop() {
+        fLeft.setPower(0);
+        fRight.setPower(0);
+        bLeft.setPower(0);
+        bRight.setPower(0);
     }
 
 }

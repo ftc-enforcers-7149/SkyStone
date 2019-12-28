@@ -14,6 +14,7 @@ import org.firstinspires.ftc.robotcore.external.navigation.AxesReference;
 import org.firstinspires.ftc.robotcore.external.navigation.Orientation;
 import org.firstinspires.ftc.robotcore.external.navigation.Position;
 import org.firstinspires.ftc.robotcore.external.navigation.Velocity;
+import org.firstinspires.ftc.teamcode.Subsystems.Gyroscope;
 
 public class Headless {
 
@@ -22,7 +23,7 @@ public class Headless {
     private double v1, v2, v3, v4; //In same order as motors
 
     //IMU variables
-    private BNO055IMU imu;
+    private Gyroscope gyro;
     private Orientation angles;
     private double angle, offset;
 
@@ -35,10 +36,7 @@ public class Headless {
     private double slowTime;
     private boolean accel;
 
-    //Telemetry object
-    private Telemetry telemetry;
-
-    public Headless(HardwareMap hardwareMap, Telemetry telemetry, DcMotor fl, DcMotor fr, DcMotor bl, DcMotor br) {
+    public Headless(Gyroscope gyro, DcMotor fl, DcMotor fr, DcMotor bl, DcMotor br) {
         //Hardware mapping the motors
         fLeft = fl;
         fRight = fr;
@@ -49,35 +47,7 @@ public class Headless {
         fLeft.setDirection(DcMotorSimple.Direction.REVERSE);
         bLeft.setDirection(DcMotorSimple.Direction.REVERSE);
 
-        //Set up imu parameters
-        BNO055IMU.Parameters parameters = new BNO055IMU.Parameters();
-        parameters.angleUnit = BNO055IMU.AngleUnit.DEGREES;
-        parameters.accelUnit = BNO055IMU.AccelUnit.METERS_PERSEC_PERSEC;
-        parameters.calibrationDataFile = "BNO055IMUCalibration.json"; // see the calibration sample opmode
-        parameters.loggingEnabled = true;
-        parameters.loggingTag = "IMU";
-        parameters.accelerationIntegrationAlgorithm = new JustLoggingAccelerationIntegrator();
-
-        this.telemetry = telemetry;
-
-        this.telemetry.addAction(new Runnable() {
-            @Override
-            public void run() {
-                // Acquiring the angles is relatively expensive; we don't want
-                // to do that in each of the three items that need that info, as that's
-                // three times the necessary expense.
-                angles = imu.getAngularOrientation(AxesReference.INTRINSIC, AxesOrder.ZYX, AngleUnit.DEGREES);
-            }
-        });
-
-        // Retrieve and initialize the IMU. We expect the IMU to be attached to an I2C port
-        // on a Core Device Interface Module, configured to be a sensor of type "AdaFruit IMU",
-        // and named "imu".
-        imu = hardwareMap.get(BNO055IMU.class, "imu");
-        imu.initialize(parameters);
-
-        // Start the logging of measured acceleration
-        imu.startAccelerationIntegration(new Position(), new Velocity(), 1000);
+        this.gyro = gyro;
 
         //Initialize variables
         lim = 1;
@@ -95,7 +65,7 @@ public class Headless {
         changeMode = gamepad1.a;
 
         //Specific inputs
-        angle = angles.firstAngle;
+        angle = gyro.getRawYaw();
         resetAngle = gamepad1.y;
 
         //Fixing inputs
@@ -174,6 +144,10 @@ public class Headless {
                 lim = 1;
             }
         }
+    }
+
+    public Gyroscope getIMU() {
+        return gyro;
     }
 
     //This converts degrees to work with sine and cosine.

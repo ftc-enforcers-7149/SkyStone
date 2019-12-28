@@ -41,6 +41,27 @@ public class Arcade {
         v4 = 0;
     }
 
+    public Arcade(Telemetry telemetry, DcMotor fl, DcMotor fr, DcMotor bl, DcMotor br) {
+        //Hardware mapping the motors
+        fLeft = fl;
+        fRight = fr;
+        bLeft = bl;
+        bRight = br;
+
+        //Reversing left motors
+        fLeft.setDirection(DcMotorSimple.Direction.REVERSE);
+        bLeft.setDirection(DcMotorSimple.Direction.REVERSE);
+
+        this.telemetry = telemetry;
+
+        //Initialize variables
+        lim = 0.8;
+        v1 = 0;
+        v2 = 0;
+        v3 = 0;
+        v4 = 0;
+    }
+
     public void drive(Gamepad gamepad1) {
         //Getting inputs
         leftY = gamepad1.left_stick_y;

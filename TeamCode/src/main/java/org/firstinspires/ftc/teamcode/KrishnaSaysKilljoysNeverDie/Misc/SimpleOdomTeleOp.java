@@ -6,6 +6,7 @@ import com.qualcomm.robotcore.hardware.DcMotor;
 import com.qualcomm.robotcore.hardware.DcMotorSimple;
 
 import org.firstinspires.ftc.teamcode.Subsystems.DriveSystems.Headless;
+import org.firstinspires.ftc.teamcode.Subsystems.Gyroscope;
 
 @TeleOp(name="simple odom")
 public class SimpleOdomTeleOp extends OpMode {
@@ -17,6 +18,7 @@ public class SimpleOdomTeleOp extends OpMode {
 
     //Drive train
     Headless driveSystem;
+    Gyroscope gyroscope;
 
 
     DcMotor fRight, fLeft, bRight, bLeft, encX;
@@ -39,7 +41,8 @@ public class SimpleOdomTeleOp extends OpMode {
         bLeft.setDirection(DcMotorSimple.Direction.REVERSE);
 
         //Initialize drive train
-        driveSystem = new Headless(hardwareMap, telemetry, fLeft, fRight, bLeft, bRight);
+        gyroscope = new Gyroscope(telemetry, hardwareMap);
+        driveSystem = new Headless(gyroscope, fLeft, fRight, bLeft, bRight);
         encX.setMode(DcMotor.RunMode.STOP_AND_RESET_ENCODER);
         encX.setMode(DcMotor.RunMode.RUN_WITHOUT_ENCODER);
 

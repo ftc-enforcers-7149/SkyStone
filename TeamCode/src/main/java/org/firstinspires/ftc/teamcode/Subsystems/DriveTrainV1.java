@@ -21,11 +21,10 @@ import org.firstinspires.ftc.teamcode.CollisionAvoidance.MovementDetectionClass;
 
 import java.util.Locale;
 
-public class DriveTrain {
+public class DriveTrainV1 {
     private DcMotor fLeft, fRight, bLeft, bRight;
     //IMU variables
-    private BNO055IMU imu;
-    private Orientation angles;
+    private Gyroscope gyro;
 
     MovementDetectionClass detection;
 
@@ -41,41 +40,20 @@ public class DriveTrain {
 
     /**
      * Main constructor
-     * @param hardwareMap hardwareMap
      * @param telemetry telemetry
      * @param fLeft fLeft
      * @param fRight fRight
      * @param bLeft bLeft
      * @param bRight bRight
+     * @param gyro gyro
      */
-    public DriveTrain(HardwareMap hardwareMap , Telemetry telemetry, DcMotor fLeft, DcMotor fRight, DcMotor bLeft, DcMotor bRight){
-        //Set up imu parameters
-        BNO055IMU.Parameters parameters = new BNO055IMU.Parameters();
-        parameters.angleUnit = BNO055IMU.AngleUnit.DEGREES;
-        parameters.accelUnit = BNO055IMU.AccelUnit.METERS_PERSEC_PERSEC;
-        parameters.calibrationDataFile = "BNO055IMUCalibration.json"; // see the calibration sample opmode
-        parameters.loggingEnabled = true;
-        parameters.loggingTag = "IMU";
-        parameters.accelerationIntegrationAlgorithm = new JustLoggingAccelerationIntegrator();
-
-        this.telemetry = telemetry;
-
-        this.telemetry.addAction(new Runnable() {
-            @Override
-            public void run() {
-                angles = imu.getAngularOrientation(AxesReference.INTRINSIC, AxesOrder.ZYX, AngleUnit.DEGREES);
-            }
-        });
-
-        imu = hardwareMap.get(BNO055IMU.class, "imu");
-        imu.initialize(parameters);
-
-        imu.startAccelerationIntegration(new Position(), new Velocity(), 1000);
-
+    public DriveTrainV1(Telemetry telemetry, DcMotor fLeft, DcMotor fRight, DcMotor bLeft, DcMotor bRight, Gyroscope gyro){
         this.fLeft = fLeft;
         this.fRight = fRight;
         this.bLeft = bLeft;
         this.bRight = bRight;
+        this.gyro=gyro;
+        this.telemetry=telemetry;
     }
 
     /**
@@ -207,7 +185,7 @@ public class DriveTrain {
         double iTime=System.currentTimeMillis();
 
         //standard current angle
-        double heading = cvtDegrees(angles.firstAngle);
+        double heading = gyro.getYaw();
 
         //check if over 360
         if (Math.abs(destination)>360) {
@@ -240,7 +218,7 @@ public class DriveTrain {
             telemetry.addData("speed",speed);
             telemetry.update();
             double delta = destination-heading; //the difference between destination and heading
-            heading = cvtDegrees(angles.firstAngle);
+            heading = gyro.getYaw();
             //decreases speed as robot approaches destination
             speed = (1 - ((heading) / destination)) * ((destination - heading) * 0.01);
 
@@ -322,9 +300,9 @@ public class DriveTrain {
      * @param power drive power
      */
     public void simpleTurn(double distance,double power){
-        telemetry.addData("angle",angles.firstAngle);
-        if(distance<angles.firstAngle){
-            while(distance<angles.firstAngle){
+        telemetry.addData("angle",gyro.getRawYaw());
+        if(distance<gyro.getRawYaw()){
+            while(distance<gyro.getRawYaw()){
                 telemetry.update();
                 fLeft.setPower(power);
                 bLeft.setPower(power);
@@ -333,7 +311,7 @@ public class DriveTrain {
             }
         }
         else{
-            while(distance>angles.firstAngle){
+            while(distance>gyro.getRawYaw()){
                 telemetry.update();
                 fLeft.setPower(-power);
                 bLeft.setPower(-power);
@@ -444,19 +422,6 @@ public class DriveTrain {
     }
 
     /**
-     * converts gyro degrees from -180 to 180 to be 0 to 360
-     * @param heading
-     * @return
-     */
-    public double cvtDegrees(double heading) {
-        if (heading <0 ) {
-            return 360 + heading;
-        } else {
-            return heading;
-        }
-    }
-
-    /**
      * wait time. Can't be more than 5 seconds
      * @param wTime time delayed in milliseconds
      */
@@ -467,29 +432,5 @@ public class DriveTrain {
         }
     }
 
-    /**
-     * returns raw yaw value from gyro
-     * @return
-     */
-    public double getRawYaw(){
-        return angles.firstAngle;
-    }
-    /**
-     * method needed for gyro
-     * @param angleUnit
-     * @param angle
-     * @return
-     */
-    String formatAngle(AngleUnit angleUnit, double angle) {
-        return formatDegrees(AngleUnit.DEGREES.fromUnit(angleUnit, angle));
-    }
-    /**
-     * method needed for gyro
-     * @param degrees
-     * @return
-     */
-    String formatDegrees(double degrees){
-        return String.format(Locale.getDefault(), "%.1f", AngleUnit.DEGREES.normalize(degrees));
-    }
 
 }

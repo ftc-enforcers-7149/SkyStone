@@ -6,12 +6,14 @@ import com.qualcomm.robotcore.hardware.DcMotor;
 import com.qualcomm.robotcore.hardware.DcMotorSimple;
 import com.qualcomm.robotcore.hardware.HardwareMap;
 
+import org.firstinspires.ftc.robotcore.external.Telemetry;
 import org.firstinspires.ftc.robotcore.external.navigation.AngleUnit;
 import org.firstinspires.ftc.robotcore.external.navigation.AxesOrder;
 import org.firstinspires.ftc.robotcore.external.navigation.AxesReference;
 import org.firstinspires.ftc.robotcore.external.navigation.Orientation;
 import org.firstinspires.ftc.robotcore.external.navigation.Velocity;
 import org.firstinspires.ftc.teamcode.KrishnaSaysKilljoysNeverDie.Misc.Position;
+import org.firstinspires.ftc.teamcode.Subsystems.Gyroscope;
 
 import java.util.Locale;
 
@@ -24,21 +26,20 @@ public class OdometryPosition extends Position {
     //Declaring motors
     DcMotor encoderY, encoderX;
 
-    BNO055IMU imu;
-    private Orientation angles;
-
-
-
-    //Class vars
-    public double positionX, positionY;
+    private Gyroscope gyro;
 
 
     //Used for encoders
 
-    //used for encoders
-    private static final double     COUNTS_PER_MOTOR_REV    = 1440;  //28  // eg: AndyMark NeverRest40 Motor Encoder
-    private static final double     WHEEL_DIAMETER_INCHES   = 1.49606299d ;     // For figuring circumference
-    public static final double     COUNTS_PER_INCH         = COUNTS_PER_MOTOR_REV /(WHEEL_DIAMETER_INCHES * Math.PI);
+    //used for encoders (y)
+    private static final double     COUNTS_PER_MOTOR_REVY    = 400;  //1440 for 1 enc //512 for another(x) 400 for (y) //
+    private static final double     WHEEL_DIAMETER_INCHESY  = 1.49606299d ;     // For figuring circumference
+    public static final double     COUNTS_PER_INCHY        = COUNTS_PER_MOTOR_REVY /(WHEEL_DIAMETER_INCHESY * Math.PI);
+
+    //used for encoders (x)
+    private static final double     COUNTS_PER_MOTOR_REVX    = 400;  //1440 for 1 enc //512 for another(x) 400 for (y) //
+    private static final double     WHEEL_DIAMETER_INCHESX  = 1.49606299d ;     // For figuring circumference
+    public static final double     COUNTS_PER_INCHX      = COUNTS_PER_MOTOR_REVX /(WHEEL_DIAMETER_INCHESX * Math.PI);
 
 
 
@@ -60,9 +61,8 @@ public class OdometryPosition extends Position {
         positionY = 0;
     }
 
-    public OdometryPosition(HardwareMap hardwareMap, String encX, String encY, String imumap, double posX, double posY) {
+    public OdometryPosition(HardwareMap hardwareMap, String encX, String encY, double posX, double posY, Gyroscope gyro) {
 
-        imu = hardwareMap.get(BNO055IMU.class, imumap);
         encoderX = hardwareMap.dcMotor.get(encX);
         encoderY = hardwareMap.dcMotor.get(encY);
 
@@ -70,27 +70,7 @@ public class OdometryPosition extends Position {
         positionX = posX;
         positionY = posY;
 
-
-        //Set up imu parameters
-        BNO055IMU.Parameters parameters = new BNO055IMU.Parameters();
-        parameters.angleUnit = BNO055IMU.AngleUnit.DEGREES;
-        parameters.accelUnit = BNO055IMU.AccelUnit.METERS_PERSEC_PERSEC;
-        parameters.calibrationDataFile = "BNO055IMUCalibration.json"; // see the calibration sample opmode
-        parameters.loggingEnabled = true;
-        parameters.loggingTag = "IMU";
-        parameters.accelerationIntegrationAlgorithm = new JustLoggingAccelerationIntegrator();
-
-        angles = imu.getAngularOrientation(AxesReference.INTRINSIC, AxesOrder.ZYX, AngleUnit.DEGREES);
-
-
-        // Retrieve and initialize the IMU. We expect the IMU to be attached to an I2C port
-        // on a Core Device Interface Module, configured to be a sensor of type "AdaFruit IMU",
-        // and named "imu".
-        imu = hardwareMap.get(BNO055IMU.class, "imu");
-        imu.initialize(parameters);
-
-        // Start the logging of measured acceleration
-        imu.startAccelerationIntegration(new org.firstinspires.ftc.robotcore.external.navigation.Position(), new Velocity(), 1000);
+        this.gyro = gyro;
 
     }
 
@@ -110,31 +90,24 @@ public class OdometryPosition extends Position {
     }
 
     public double getHeading() {
-        return cvtDegrees(angles.firstAngle);
+        return gyro.getRawYaw();
     }
 
-    public void manualUpdatePosition(double newPosX, double newPosY) {
-        manualUpdatePosition(newPosX, newPosY);
+    //Returns the motor distance in inches for Y
+    private double getMotorDistInY(double input) {
+        return input/COUNTS_PER_INCHY;
     }
 
-    //Returns the motor distance in inches
-    private double getMotorDistIn(double input) {
-        return input/COUNTS_PER_INCH;
+    //Returns the motor distance in inches for Y
+    private double getMotorDistInX(double input) {
+        return input/COUNTS_PER_INCHX;
     }
 
 
-
-
-
-
-
-
-
-
-
-
-
-    //Method that updates position (the big one!)
+    /**
+     * Updates the overall position of the robot based on the change in x odometer and y odometer
+     * @param dir
+     */
     public void updatePosition(Direction dir) {
 
         //Resets our encoders every time this is called. This is important because we
@@ -145,63 +118,38 @@ public class OdometryPosition extends Position {
         encoderY.setMode(DcMotor.RunMode.STOP_AND_RESET_ENCODER);
 
         //Sets our encoders to run again
-        encoderX.setMode(DcMotor.RunMode.RUN_USING_ENCODER);
-        encoderY.setMode(DcMotor.RunMode.RUN_USING_ENCODER);
+        encoderX.setMode(DcMotor.RunMode.RUN_WITHOUT_ENCODER);
+        encoderY.setMode(DcMotor.RunMode.RUN_WITHOUT_ENCODER);
 
-        //Gets our heading
+        //Gets our heading and change in x and y odometers
         double heading = getHeading();
-        double yPos = encoderY.getCurrentPosition();
-        double xPos = encoderX.getCurrentPosition();
+        double yDist = encoderY.getCurrentPosition();
+        double xDist = encoderX.getCurrentPosition();
 
-        //Calculates whether the robot is facing forwards or backwards. Note that all calculations are based on
-        //The assumption we are facing straight out from the wall
+        //When turning, the odometers are not accurate, so they must be ignored
         if (dir != Direction.TURNING) {
-            if (heading % 180 == 0) {
+            //Converts the robot's angle for use with sine and cosine
+            //Then uses that as a modifier for how much an odometer will effect that axis
 
-                if (heading == 0) {
-                        positionX += getMotorDistIn(xPos);
-                } else {
-                        positionX -= getMotorDistIn(xPos);
-                }
+            //Apply the x odometer to the x and y axes
+            positionY += getMotorDistInY(xDist) * Math.cos(Math.toRadians(gyro.cvtTrigAng(heading)));
+            positionX += getMotorDistInX(xDist) * Math.sin(Math.toRadians(gyro.cvtTrigAng(heading)));
 
-            }
-            //This time, we calculate if we are facing up or not. If we are not forwards/backwards or up/down, we move on.
-            else if ((heading - 90) % 90 == 0) {
-                if (heading == 90) {
-                        positionY -= getMotorDistIn(yPos);
-
-                } else {
-                    if (dir == Direction.FORWARD) {
-                        positionY += getMotorDistIn(yPos);
-                    } else {
-                        positionY -= getMotorDistIn(yPos);
-                    }
-                }
-            }
-            //Uses some reeeeeeeeally (not) complicated trig to calculate the distance.
-            else {
-                if (heading > 0 && heading < 90) {
-                    positionY -= getMotorDistIn(xPos) * Math.sin(360 - heading);
-                    positionX += getMotorDistIn(xPos) * Math.cos(360 - heading);
-                } else if (heading > 90 && heading < 180) {
-                    positionY -= getMotorDistIn(xPos) * Math.sin(360 - heading);
-                    positionX -= getMotorDistIn(xPos) * Math.cos(360 - heading);
-                } else if (heading > 180 && heading < 270) {
-                    positionY += getMotorDistIn(xPos) * Math.sin(360 - heading);
-                    positionX -= getMotorDistIn(xPos) * Math.cos(360 - heading);
-                } else if (heading > 270 && heading < 360) {
-                    positionY += getMotorDistIn(xPos) * Math.sin(360 - heading);
-                    positionX += getMotorDistIn(xPos) * Math.cos(360 - heading);
-                }
-            }
-
+            //Apply the y odometer to the x and y axes
+            positionY += getMotorDistInY(yDist) * Math.sin(Math.toRadians(gyro.cvtTrigAng(heading)));
+            positionX += getMotorDistInX(yDist) * Math.cos(Math.toRadians(gyro.cvtTrigAng(heading)));
         }
+
+        //Rounds the positions so you don't get numbers like 6.6278326e^-12678
+        positionY = Math.ceil(positionY * 10000) / 10000;
+        positionX = Math.ceil(positionX * 10000) / 10000;
     }
 
-
-
-
-    //Converts degrees
+    /**
+     * Converts a normal circle of degrees (0 at top) to a unit circle (0 at right and goes counter-clockwise)
+     * @param heading
+     * @return
+     */
     private double cvtDegrees(double heading) {
 
         if (heading <0 ) {

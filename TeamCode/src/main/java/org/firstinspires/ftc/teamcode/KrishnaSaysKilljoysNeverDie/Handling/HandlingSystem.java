@@ -3,7 +3,8 @@ package org.firstinspires.ftc.teamcode.KrishnaSaysKilljoysNeverDie.Handling;
 import com.qualcomm.robotcore.hardware.HardwareMap;
 
 import org.firstinspires.ftc.teamcode.CollisionAvoidance.MovementDetectionClass;
-import org.firstinspires.ftc.teamcode.Subsystems.DriveTrain;
+import org.firstinspires.ftc.teamcode.Subsystems.DriveTrainV1;
+import org.firstinspires.ftc.teamcode.Subsystems.Gyroscope;
 import org.firstinspires.ftc.teamcode.Subsystems.Odometry.OdometryEncoder;
 import org.firstinspires.ftc.teamcode.Subsystems.Odometry.OdometryPosition;
 import org.firstinspires.ftc.teamcode.Subsystems.Odometry.SamplePath;
@@ -16,7 +17,8 @@ public class HandlingSystem {
     OdometryEncoder odometryEncoder;
     MovementDetectionClass movementDetectionClass;
     SamplePath sPath;
-    DriveTrain driveTrain;
+    Gyroscope gyroscope;
+    DriveTrainV1 driveTrainV1;
 
 
 
@@ -39,10 +41,11 @@ public class HandlingSystem {
 
     //TODO: FIX DIS STUFF. MAKE IT MOTORS.
 
-    public HandlingSystem(HardwareMap hardwareMap, SamplePath samplePath, String encX, String encY, String imumap, double posX, double posY, String distC, String distR, String distL) {
+    public HandlingSystem(HardwareMap hardwareMap, SamplePath samplePath, Gyroscope gyroscope, String encX, String encY, String imumap, double posX, double posY, String distC, String distR, String distL) {
 
-        odometryEncoder = new OdometryEncoder(hardwareMap, encX, encY, imumap, posX, posY);
-        odometryPosition = new OdometryPosition(hardwareMap, encX, encY, imumap, posX, posY);
+        this.gyroscope = gyroscope;
+        odometryEncoder = new OdometryEncoder(hardwareMap, encX, encY, imumap, posX, posY, gyroscope);
+        odometryPosition = new OdometryPosition(hardwareMap, encX, encY, posX, posY, gyroscope);
 
         odometryEncoder.startOdometry();
 
