@@ -64,7 +64,7 @@ public class Lift {
         if(liftPress) {
             switch (level) {
                 case 0:
-                    if(distanceLift.getDistance(DistanceUnit.CM) > 3) { //3
+                    if(distanceLift.getDistance(DistanceUnit.CM) > 1) { //3
                         lift.setPower(-0.4);
                     }
                     else{
