@@ -80,6 +80,7 @@ public class LEDTest extends OpMode {
     {
         displayKind = DisplayKind.MANUAL;
 
+
         blinkinLedDriver = hardwareMap.get(RevBlinkinLedDriver.class, "blinkin");
         pattern = RevBlinkinLedDriver.BlinkinPattern.RAINBOW_RAINBOW_PALETTE;
         blinkinLedDriver.setPattern(pattern);

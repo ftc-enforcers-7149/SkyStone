@@ -1,41 +1,46 @@
-package org.firstinspires.ftc.teamcode;
+package org.firstinspires.ftc.teamcode.notHarry;
 
+import com.qualcomm.hardware.rev.RevBlinkinLedDriver;
 import com.qualcomm.robotcore.eventloop.opmode.OpMode;
+import com.qualcomm.robotcore.eventloop.opmode.TeleOp;
 import com.qualcomm.robotcore.hardware.DcMotor;
 import com.qualcomm.robotcore.hardware.DcMotorSimple;
 import com.qualcomm.robotcore.hardware.DistanceSensor;
 import com.qualcomm.robotcore.hardware.Servo;
 
+import org.firstinspires.ftc.robotcore.external.navigation.DistanceUnit;
 import org.firstinspires.ftc.teamcode.Subsystems.Claw;
 import org.firstinspires.ftc.teamcode.Subsystems.DriveSystems.Headless;
 import org.firstinspires.ftc.teamcode.Subsystems.FoundationV2;
 import org.firstinspires.ftc.teamcode.Subsystems.Gyroscope;
-import org.firstinspires.ftc.teamcode.Subsystems.Lift;
 
-//@TeleOp(name = "TeleOp v2")
-public class TeleOpV2_1 extends OpMode {
+@TeleOp(name = "ledTeleOpTest")
+public class LedTeleOpTest extends OpMode {
     //Drive train
     Headless driveSystem;
 
     //Hardware
     Servo fLFound, fRFound, bLFound, bRFound;
     Servo lArm, rArm, lGrab, rGrab;
-    DcMotor fRight,fLeft,bRight,bLeft, liftMotor;
+    DcMotor fRight, fLeft, bRight, bLeft, liftMotor;
     DistanceSensor distanceLift;
 
     Claw claw;
     FoundationV2 foundation;
-    Lift lift;
+    ledLiftTest ledLift;
 
+    double dL;
     float armUp;
-    boolean isBreak=false;
-    float liftUp,liftDown;
+    boolean isBreak = false;
+    float liftUp, liftDown;
     boolean lFoundationDown, rFoundationDown;
     float grab;
     boolean startAccel;
+    RevBlinkinLedDriver blinkinLedDriver;
+    RevBlinkinLedDriver.BlinkinPattern pattern;
 
 
-    public void init(){
+    public void init() {
         //Servos
         fLFound = hardwareMap.servo.get("fLFound");
         fRFound = hardwareMap.servo.get("fRFound");
@@ -60,6 +65,9 @@ public class TeleOpV2_1 extends OpMode {
         bLeft = hardwareMap.dcMotor.get("bLeft");
         bRight = hardwareMap.dcMotor.get("bRight");
         liftMotor = hardwareMap.dcMotor.get("lift");
+
+        //Led Blinkin driver
+        blinkinLedDriver = hardwareMap.get(RevBlinkinLedDriver.class, "blinkin");
 
         //Motor directions
         fLeft.setDirection(DcMotorSimple.Direction.REVERSE);
@@ -86,17 +94,23 @@ public class TeleOpV2_1 extends OpMode {
         //Lift brake
         liftMotor.setZeroPowerBehavior(DcMotor.ZeroPowerBehavior.BRAKE);
 
-        foundation =new FoundationV2(fLFound,fRFound,bLFound,bRFound);
-        claw=new Claw(lArm,rArm,lGrab,rGrab);
-        lift = new Lift(liftMotor, distanceLift);
+        foundation = new FoundationV2(fLFound, fRFound, bLFound, bRFound);
+        claw = new Claw(lArm, rArm, lGrab, rGrab);
+        ledLift = new ledLiftTest(liftMotor, distanceLift);
+        blinkinLedDriver.setPattern(pattern);
+        pattern = RevBlinkinLedDriver.BlinkinPattern.GREEN;
     }
 
-    public void loop(){
+    public void loop() {
+
+        blinkinLedDriver.setPattern(pattern);
+
+        dL = distanceLift.getDistance(DistanceUnit.CM);
         //Inputs
         armUp = gamepad2.left_trigger;
         grab = gamepad2.right_trigger;
-        liftUp=gamepad1.right_trigger;
-        liftDown=gamepad1.left_trigger;
+        liftUp = gamepad1.right_trigger;
+        liftDown = gamepad1.left_trigger;
         lFoundationDown = gamepad1.left_bumper || gamepad2.x;
         rFoundationDown = gamepad1.right_bumper || gamepad2.b;
         startAccel = gamepad1.x;
@@ -104,6 +118,22 @@ public class TeleOpV2_1 extends OpMode {
 
         //Drive
         driveSystem.drive(gamepad1);
+
+        //LEDs
+        if (dL <= 3) {
+            pattern = RevBlinkinLedDriver.BlinkinPattern.GREEN;
+        } else if (dL > 10 && dL < 11) {
+            pattern = RevBlinkinLedDriver.BlinkinPattern.YELLOW;
+        }else if (dL > 20 && dL < 21) {
+            pattern = RevBlinkinLedDriver.BlinkinPattern.ORANGE;
+        }else if (dL > 30 && dL < 31) {
+            pattern = RevBlinkinLedDriver.BlinkinPattern.RED;
+        }else if (dL > 40 && dL < 41) {
+            pattern = RevBlinkinLedDriver.BlinkinPattern.GRAY;
+        }
+
+
+
 
         //FoundationV1 grabbers
         if (lFoundationDown) {
@@ -137,7 +167,7 @@ public class TeleOpV2_1 extends OpMode {
         }
 
         //Lift
-        lift.liftSet(gamepad1);
+        ledLift.liftSet(gamepad1);
 
         /*if(liftUp>0.1){
             liftMotor.setPower(0.8);
@@ -155,7 +185,8 @@ public class TeleOpV2_1 extends OpMode {
             driveSystem.setAccel();
         }
 
-        telemetry.addData("Lift Level", lift.getLevel());
+        telemetry.addData("Lift Level", ledLift.getLevel());
+
     }
 
     public void stop(){
