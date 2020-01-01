@@ -1,20 +1,11 @@
 package org.firstinspires.ftc.teamcode.Mattu;
 
-import com.qualcomm.hardware.bosch.BNO055IMU;
 import com.qualcomm.robotcore.eventloop.opmode.Autonomous;
 import com.qualcomm.robotcore.eventloop.opmode.OpMode;
-import com.qualcomm.robotcore.eventloop.opmode.TeleOp;
 import com.qualcomm.robotcore.hardware.DcMotor;
 import com.qualcomm.robotcore.hardware.DcMotorSimple;
-import com.qualcomm.robotcore.hardware.DistanceSensor;
-import com.qualcomm.robotcore.hardware.Servo;
 
-import org.firstinspires.ftc.robotcore.external.navigation.AngleUnit;
-import org.firstinspires.ftc.robotcore.external.navigation.AxesOrder;
-import org.firstinspires.ftc.robotcore.external.navigation.AxesReference;
-import org.firstinspires.ftc.robotcore.external.navigation.DistanceUnit;
-import org.firstinspires.ftc.teamcode.Subsystems.DriveSystems.Arcade;
-import org.firstinspires.ftc.teamcode.Subsystems.DriveSystems.Headless;
+import org.firstinspires.ftc.teamcode.Subsystems.DriveTrainV2;
 import org.firstinspires.ftc.teamcode.Subsystems.Gyroscope;
 import org.firstinspires.ftc.teamcode.Subsystems.Odometry.OdometryPosition;
 
@@ -25,13 +16,15 @@ public class OdomToPoint extends OpMode {
     OdometryPosition oP;
     OdometryPosition.Direction direction = OdometryPosition.Direction.FORWARD;
 
+    DriveTrainV2 driveTrain;
+
     //Motors and imu
     DcMotor fRight, fLeft, bRight, bLeft;
     Gyroscope gyroscope;
 
     double refX, refY;
 
-    int state = 0;
+    int step = 0;
 
 
     public void init() {
@@ -52,6 +45,7 @@ public class OdomToPoint extends OpMode {
     }
 
     public void start() {
+        driveTrain = new DriveTrainV2(telemetry, fLeft, fRight, bLeft, bRight, gyroscope);
         oP = new OdometryPosition(hardwareMap, "encX", "encY", 0, 0, gyroscope);
         oP.reverseY();
     }
@@ -62,20 +56,25 @@ public class OdomToPoint extends OpMode {
         telemetry.addData("Encoder X: ", oP.positionX);
         telemetry.addData("Heading: ", oP.getHeading());
 
-        switch (state) {
+        switch (step) {
             case 0:
                 //This is the right format for driving to a point
                 //It will keep driving until at the point, then it will stop and move on
                 if (driveToPoint(3, 10, 0.6)) {
-                    motorStop();
+                    direction = OdometryPosition.Direction.TURNING;
+                    step++;
+                }
+                break;
+            case 1:
+                if (driveTrain.rotate(90)) {
                     getRefPoint(-3, -5);
-                    state++;
+                    direction = OdometryPosition.Direction.FORWARD;
+                    step++;
                 }
                 break;
             case 2:
                 if (driveToPoint(refX, refY, 0.6)) {
-                    motorStop();
-                    state++;
+                    step++;
                 }
                 break;
         }
@@ -136,6 +135,7 @@ public class OdomToPoint extends OpMode {
 
         //Returns true when the robot is close to the point
         if (Math.abs(relativeX) < 2 && Math.abs(relativeY) < 2) {
+            motorStop();
             return true;
         }
 

@@ -16,7 +16,6 @@ import org.firstinspires.ftc.teamcode.Subsystems.Lift;
 public class TeleOpV2 extends OpMode {
     //Drive train
     Headless driveSystem;
-    Lift lift;
 
     //Hardware
     Servo fLFound, fRFound, bLFound, bRFound;
@@ -28,7 +27,7 @@ public class TeleOpV2 extends OpMode {
     float liftUp, last_liftUp=0, liftDown, last_liftDown=0;
     boolean lFoundationDown, last_lFoundationDown=false, rFoundationDown, last_rFoundationDown=false;
     float grab, last_grab=0;
-    boolean startAccel, last_startAccel=false;
+    boolean startAccel;
     boolean armsDown=false;
 
     public void init(){
@@ -39,7 +38,7 @@ public class TeleOpV2 extends OpMode {
         bRFound = hardwareMap.servo.get("bRFound");
         lArm = hardwareMap.servo.get("lArm");
         rArm = hardwareMap.servo.get("rArm");
-        lGrab = hardwareMap.servo.get("lGrab");
+        //lGrab = hardwareMap.servo.get("lGrab");
         rGrab = hardwareMap.servo.get("rGrab");
 
         //Inits to combat lag
@@ -74,7 +73,7 @@ public class TeleOpV2 extends OpMode {
 
         lArm.setDirection(Servo.Direction.FORWARD);
         rArm.setDirection(Servo.Direction.REVERSE);
-        lGrab.setDirection(Servo.Direction.REVERSE);
+        //lGrab.setDirection(Servo.Direction.REVERSE);
         rGrab.setDirection(Servo.Direction.FORWARD);
 
         //Lift brake
@@ -136,11 +135,11 @@ public class TeleOpV2 extends OpMode {
         //Grabber
         if (grab != last_grab) {
             if (grab > 0.1) {
-                rGrab.setPosition(.2);//.2
-                lGrab.setPosition(0.28);//.28
+                rGrab.setPosition(.4);//.2
+                //lGrab.setPosition(0.28);//.28
             } else {
-                rGrab.setPosition(.13);//.6
-                lGrab.setPosition(0.21);//1
+                rGrab.setPosition(.2);//.13
+                //lGrab.setPosition(0.21);//0.21
             }
         }
 
@@ -158,10 +157,8 @@ public class TeleOpV2 extends OpMode {
         }
 
         //Accelerates from slow
-        if (startAccel != last_startAccel) {
-            if (startAccel) {
-                driveSystem.setAccel();
-            }
+        if (startAccel) {
+            driveSystem.setAccel();
         }
 
         //Telemetry
@@ -177,7 +174,6 @@ public class TeleOpV2 extends OpMode {
         last_grab = grab;
         last_liftUp = liftUp;
         last_liftDown = liftDown;
-        last_startAccel = startAccel;
     }
 
     public void stop(){

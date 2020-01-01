@@ -15,9 +15,6 @@ public class DriveTrainV2 {
     //IMU variables
     private Gyroscope gyro;
 
-    MovementDetectionClass detection;
-
-
     Telemetry telemetry;
     //used for encoders
     private static final double     EXTERNAL_GEARING        = 1.5;    //From sprockets
@@ -69,7 +66,6 @@ public class DriveTrainV2 {
         double cPosition=fRight.getCurrentPosition()/COUNTS_PER_INCH*mDirection;
 
         if(cPosition < last_dist){
-            cPosition=fRight.getCurrentPosition()/COUNTS_PER_INCH*mDirection;
             if(last_dist-Math.abs(cPosition)<20){
                 power=0.4*mDirection;
             }
@@ -113,7 +109,6 @@ public class DriveTrainV2 {
         double cPosition=fRight.getCurrentPosition()/COUNTS_PER_INCH*mDirection;
 
         if (cPosition < last_dist){
-            cPosition=fRight.getCurrentPosition()/COUNTS_PER_INCH*mDirection;
             fLeft.setPower(power);
             fRight.setPower(power);
             bLeft.setPower(power);
@@ -181,6 +176,65 @@ public class DriveTrainV2 {
     }
 
     /**
+     * Gets the shortest distance to destAngle
+     * and drives motors at a proportional speed
+     * to slow down as it gets closer
+     * Min Speed = 0.1
+     * Max Speed = 0.8
+     * @param destAngle Destination angle
+     * @return
+     */
+    public boolean rotate(double destAngle) {
+        double speed=0, min=0.2;
+
+        //Get current heading
+        double heading = gyro.getYaw();
+
+        //If heading is not at destination
+        if (heading < destAngle - 0.5 || heading > destAngle + 0.5) {
+            //Get shortest distance to angle
+            double delta = gyro.getDelta(destAngle, heading);
+
+            //Calculate speed (Linear calculation)
+            //Farthest (180 away) : 0.8
+            //Closest (0 away) : 0.1
+            if (delta > 0) {
+                speed = (delta / 257.144) + 0.1;
+            }
+            else {
+                speed = (-delta / 257.144) + 0.1;
+                speed = -speed;
+            }
+
+            if (speed > 0 && speed < min) {
+                speed = min;
+            }
+            else if (speed < 0 && speed > -min) {
+                speed = -min;
+            }
+
+            telemetry.addData("Angle: ", heading);
+            telemetry.addData("Speed: ", speed);
+
+            //Drive the motors so the robot turns
+            fLeft.setPower(speed);
+            fRight.setPower(-speed);
+            bLeft.setPower(speed);
+            bRight.setPower(-speed);
+        }
+        else {
+            fLeft.setPower(0);
+            fRight.setPower(0);
+            bLeft.setPower(0);
+            bRight.setPower(0);
+
+            return true;
+        }
+
+        return false;
+    }
+
+    /**
      * turns to the desired angle
      * 0-360 in a clockwise format
      * @param destination
@@ -194,7 +248,6 @@ public class DriveTrainV2 {
         double speed = 0;
         double min = 0.18;
         double max = 0.8;
-        double iTime=System.currentTimeMillis();
 
         //standard current angle
         double heading = gyro.getYaw();
