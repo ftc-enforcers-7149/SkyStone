@@ -134,7 +134,7 @@ public class OdomToPoint extends OpMode {
         bRight.setPower(v4);
 
         //Returns true when the robot is close to the point
-        if (Math.abs(relativeX) < 2 && Math.abs(relativeY) < 2) {
+        if (Math.abs(relativeX) < 1 && Math.abs(relativeY) < 1) {
             motorStop();
             return true;
         }
