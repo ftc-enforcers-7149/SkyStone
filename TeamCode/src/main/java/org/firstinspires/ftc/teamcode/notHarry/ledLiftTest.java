@@ -34,7 +34,7 @@ public class ledLiftTest {
      * @param gamepad1
      */
     public void liftSet(Gamepad gamepad1) {
-        blinkinLedDriver.setPattern(pattern);
+
         levelPlus = gamepad1.dpad_up;
         levelMinus = gamepad1.dpad_down;
 

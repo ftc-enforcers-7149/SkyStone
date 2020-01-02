@@ -29,7 +29,6 @@ public class LedTeleOpTest extends OpMode {
     FoundationV2 foundation;
     ledLiftTest ledLift;
 
-    double dL;
     float armUp;
     boolean isBreak = false;
     float liftUp, liftDown;
@@ -41,55 +40,16 @@ public class LedTeleOpTest extends OpMode {
 
 
     public void init() {
-        //Servos
-        fLFound = hardwareMap.servo.get("fLFound");
-        fRFound = hardwareMap.servo.get("fRFound");
-        bLFound = hardwareMap.servo.get("bLFound");
-        bRFound = hardwareMap.servo.get("bRFound");
-        lArm = hardwareMap.servo.get("lArm");
-        rArm = hardwareMap.servo.get("rArm");
-        lGrab = hardwareMap.servo.get("lGrab");
-        rGrab = hardwareMap.servo.get("rGrab");
 
-        //Inits to combat lag
-        /*colorSensor = hardwareMap.colorSensor.get("color");
-        distL = hardwareMap.get(DistanceSensor.class, "distanceL");
-        distR = hardwareMap.get(DistanceSensor.class, "distanceR");
-        distC = hardwareMap.get(DistanceSensor.class, "distanceC");*/
 
         distanceLift = hardwareMap.get(DistanceSensor.class, "distanceLift");
 
-        //Drive motors
-        fLeft = hardwareMap.dcMotor.get("fLeft");
-        fRight = hardwareMap.dcMotor.get("fRight");
-        bLeft = hardwareMap.dcMotor.get("bLeft");
-        bRight = hardwareMap.dcMotor.get("bRight");
+
         liftMotor = hardwareMap.dcMotor.get("lift");
 
         //Led Blinkin driver
         blinkinLedDriver = hardwareMap.get(RevBlinkinLedDriver.class, "blinkin");
 
-        //Motor directions
-        fLeft.setDirection(DcMotorSimple.Direction.REVERSE);
-        fRight.setDirection(DcMotorSimple.Direction.FORWARD);
-        bRight.setDirection(DcMotorSimple.Direction.FORWARD);
-        bLeft.setDirection(DcMotorSimple.Direction.REVERSE);
-        liftMotor.setDirection(DcMotorSimple.Direction.FORWARD);
-
-        //Initialize drive train
-        Gyroscope gyroscope = new Gyroscope(telemetry, hardwareMap);
-        driveSystem = new Headless(gyroscope, fLeft, fRight, bLeft, bRight);
-
-        //Servo directions
-        fLFound.setDirection(Servo.Direction.REVERSE);
-        fRFound.setDirection(Servo.Direction.FORWARD);
-        bLFound.setDirection(Servo.Direction.FORWARD);
-        bRFound.setDirection(Servo.Direction.REVERSE);
-
-        lArm.setDirection(Servo.Direction.FORWARD);
-        rArm.setDirection(Servo.Direction.REVERSE);
-        lGrab.setDirection(Servo.Direction.REVERSE);
-        rGrab.setDirection(Servo.Direction.FORWARD);
 
         //Lift brake
         liftMotor.setZeroPowerBehavior(DcMotor.ZeroPowerBehavior.BRAKE);
@@ -105,10 +65,9 @@ public class LedTeleOpTest extends OpMode {
 
         blinkinLedDriver.setPattern(pattern);
 
-        dL = distanceLift.getDistance(DistanceUnit.CM);
+
         //Inputs
-        armUp = gamepad2.left_trigger;
-        grab = gamepad2.right_trigger;
+
         liftUp = gamepad1.right_trigger;
         liftDown = gamepad1.left_trigger;
         lFoundationDown = gamepad1.left_bumper || gamepad2.x;
@@ -120,70 +79,28 @@ public class LedTeleOpTest extends OpMode {
         driveSystem.drive(gamepad1);
 
         //LEDs
-        if (dL <= 3) {
+        if (distanceLift.getDistance(DistanceUnit.CM) <= 3) {
             pattern = RevBlinkinLedDriver.BlinkinPattern.GREEN;
-        } else if (dL > 10 && dL < 11) {
+        } else if (distanceLift.getDistance(DistanceUnit.CM) > 10 && distanceLift.getDistance(DistanceUnit.CM) < 11) {
             pattern = RevBlinkinLedDriver.BlinkinPattern.YELLOW;
-        }else if (dL > 20 && dL < 21) {
+        }else if (distanceLift.getDistance(DistanceUnit.CM) > 20 && distanceLift.getDistance(DistanceUnit.CM) < 21) {
             pattern = RevBlinkinLedDriver.BlinkinPattern.ORANGE;
-        }else if (dL > 30 && dL < 31) {
+        }else if (distanceLift.getDistance(DistanceUnit.CM) > 30 && distanceLift.getDistance(DistanceUnit.CM) < 31) {
             pattern = RevBlinkinLedDriver.BlinkinPattern.RED;
-        }else if (dL > 40 && dL < 41) {
+        }else if (distanceLift.getDistance(DistanceUnit.CM) > 40 && distanceLift.getDistance(DistanceUnit.CM) < 41) {
             pattern = RevBlinkinLedDriver.BlinkinPattern.GRAY;
+        }else{
+            pattern = RevBlinkinLedDriver.BlinkinPattern.BEATS_PER_MINUTE_RAINBOW_PALETTE;
         }
 
 
 
 
-        //FoundationV1 grabbers
-        if (lFoundationDown) {
-            foundation.lDown();
-        }
-        else {
-            foundation.lUp();
-        }
-
-        if (rFoundationDown) {
-            foundation.rDown();
-        }
-        else {
-            foundation.rUp();
-        }
-
-        //Arms and block grabbers
-        if (armUp > 0.1) {
-            claw.up();
-        }
-        else {
-
-            claw.down();
-        }
-
-        if(grab > 0.1){
-            claw.grab();
-        }
-        else{
-            claw.release();
-        }
 
         //Lift
         ledLift.liftSet(gamepad1);
 
-        /*if(liftUp>0.1){
-            liftMotor.setPower(0.8);
-            isBreak=true;
-        }
-        else if(liftDown>0.1){
-            liftMotor.setPower(-0.4);
-            isBreak=false;
-        }
-        else{
-            liftMotor.setPower(0);
-        }*/
 
-        if (startAccel) {
-            driveSystem.setAccel();
-        }
 
         telemetry.addData("Lift Level", ledLift.getLevel());
 
