@@ -16,7 +16,6 @@ import org.firstinspires.ftc.teamcode.Subsystems.Lift;
 public class TeleOpV2 extends OpMode {
     //Drive train
     Headless driveSystem;
-    Lift lift;
 
     //Hardware
     Servo fLFound, fRFound, bLFound, bRFound;
@@ -28,7 +27,6 @@ public class TeleOpV2 extends OpMode {
     float liftUp, last_liftUp=0, liftDown, last_liftDown=0;
     boolean lFoundationDown, last_lFoundationDown=false, rFoundationDown, last_rFoundationDown=false;
     float grab, last_grab=0;
-    boolean startAccel, last_startAccel=false;
     boolean armsDown=false;
 
     public void init(){
@@ -39,8 +37,8 @@ public class TeleOpV2 extends OpMode {
         bRFound = hardwareMap.servo.get("bRFound");
         lArm = hardwareMap.servo.get("lArm");
         rArm = hardwareMap.servo.get("rArm");
-        lGrab = hardwareMap.servo.get("lGrab");
-        rGrab = hardwareMap.servo.get("rGrab");
+        lGrab = hardwareMap.servo.get("rGrab");
+        rGrab = hardwareMap.servo.get("lGrab");
 
         //Inits to combat lag
         /*colorSensor = hardwareMap.colorSensor.get("color");
@@ -89,7 +87,6 @@ public class TeleOpV2 extends OpMode {
         liftDown=gamepad1.left_trigger;
         lFoundationDown = gamepad1.left_bumper || gamepad2.x;
         rFoundationDown = gamepad1.right_bumper || gamepad2.b;
-        startAccel = gamepad1.x;
 
         //Drive
         driveSystem.drive(gamepad1);
@@ -136,11 +133,11 @@ public class TeleOpV2 extends OpMode {
         //Grabber
         if (grab != last_grab) {
             if (grab > 0.1) {
-                rGrab.setPosition(.2);//.2
+                rGrab.setPosition(0.2);//.2
                 lGrab.setPosition(0.28);//.28
             } else {
-                rGrab.setPosition(.13);//.6
-                lGrab.setPosition(0.21);//1
+                rGrab.setPosition(0.13);//.13
+                lGrab.setPosition(0.23);//0.21
             }
         }
 
@@ -157,13 +154,6 @@ public class TeleOpV2 extends OpMode {
             }
         }
 
-        //Accelerates from slow
-        if (startAccel != last_startAccel) {
-            if (startAccel) {
-                driveSystem.setAccel();
-            }
-        }
-
         //Telemetry
         telemetry.addData("fL servo pos: ", fLFound.getPosition());
         telemetry.addData("fR servo pos: ", fRFound.getPosition());
@@ -177,7 +167,6 @@ public class TeleOpV2 extends OpMode {
         last_grab = grab;
         last_liftUp = liftUp;
         last_liftDown = liftDown;
-        last_startAccel = startAccel;
     }
 
     public void stop(){

@@ -16,10 +16,10 @@ public class TestSavox extends OpMode {
 
     public void loop() {
         if (gamepad1.a) {
-            testServo.setPosition(1);
+            testServo.setPosition(0.4);
         }
         if (gamepad1.b) {
-            testServo.setPosition(0);
+            testServo.setPosition(0.2);
         }
 
         telemetry.addData("Servo Pos: ", testServo.getPosition());

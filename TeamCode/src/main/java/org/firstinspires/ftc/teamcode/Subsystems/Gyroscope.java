@@ -51,12 +51,31 @@ public class Gyroscope {
     }
 
     /**
+     * Gets the shortest distance between two angles.
+     * @param destAngle Destination angle
+     * @param heading   Current angle
+     * @return
+     */
+    public double getDelta(double destAngle, double heading) {
+        if (Math.abs(heading-destAngle) < 180) {
+            return -heading + destAngle;
+        }
+        else {
+            if (heading > 180) {
+                return -heading + (destAngle - 360);
+            }
+
+            return -heading + (destAngle + 360);
+        }
+    }
+
+    /**
      * converts gyro degrees from -180 to 180 to be 0 to 360
      * @param heading
      * @return
      */
     public double cvtDegrees(double heading) {
-        if (heading <0 ) {
+        if (heading < 0) {
             return 360 + heading;
         } else {
             return heading;
