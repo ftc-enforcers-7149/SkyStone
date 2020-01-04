@@ -1,19 +1,9 @@
 package org.firstinspires.ftc.teamcode.Subsystems.DriveSystems;
 
-import com.qualcomm.hardware.bosch.BNO055IMU;
-import com.qualcomm.hardware.bosch.JustLoggingAccelerationIntegrator;
 import com.qualcomm.robotcore.hardware.DcMotor;
 import com.qualcomm.robotcore.hardware.DcMotorSimple;
 import com.qualcomm.robotcore.hardware.Gamepad;
-import com.qualcomm.robotcore.hardware.HardwareMap;
 
-import org.firstinspires.ftc.robotcore.external.Telemetry;
-import org.firstinspires.ftc.robotcore.external.navigation.AngleUnit;
-import org.firstinspires.ftc.robotcore.external.navigation.AxesOrder;
-import org.firstinspires.ftc.robotcore.external.navigation.AxesReference;
-import org.firstinspires.ftc.robotcore.external.navigation.Orientation;
-import org.firstinspires.ftc.robotcore.external.navigation.Position;
-import org.firstinspires.ftc.robotcore.external.navigation.Velocity;
 import org.firstinspires.ftc.teamcode.Subsystems.Gyroscope;
 
 public class Headless {
@@ -24,12 +14,11 @@ public class Headless {
 
     //IMU variables
     private Gyroscope gyro;
-    private Orientation angles;
     private double angle, offset;
 
     //Variables for inputs
-    private double leftX, leftY, rightX;
-    private boolean resetAngle, changeMode;
+    private double leftX, last_leftX=0, leftY, last_leftY=0, rightX, last_rightX=0;
+    private boolean resetAngle;
 
     //Power limit
     private double lim;
@@ -62,7 +51,6 @@ public class Headless {
         leftY = gamepad1.left_stick_y;
         leftX = gamepad1.left_stick_x;
         rightX = gamepad1.right_stick_x;
-        changeMode = gamepad1.a;
 
         //Specific inputs
         angle = gyro.getRawYaw();
@@ -71,55 +59,57 @@ public class Headless {
         //Fixing inputs
         rightX = -rightX;
 
-        //Only set brakes if no inputs are given from the joysticks
-        //this makes it easier for the robot to move diagonally
-        if (leftY == 0 && leftX == 0 && rightX == 0) {
-            bLeft.setZeroPowerBehavior(DcMotor.ZeroPowerBehavior.BRAKE);
-            bRight.setZeroPowerBehavior(DcMotor.ZeroPowerBehavior.BRAKE);
-            fLeft.setZeroPowerBehavior(DcMotor.ZeroPowerBehavior.BRAKE);
-            fRight.setZeroPowerBehavior(DcMotor.ZeroPowerBehavior.BRAKE);
-        } else {
-            bLeft.setZeroPowerBehavior(DcMotor.ZeroPowerBehavior.FLOAT);
-            bRight.setZeroPowerBehavior(DcMotor.ZeroPowerBehavior.FLOAT);
-            fLeft.setZeroPowerBehavior(DcMotor.ZeroPowerBehavior.FLOAT);
-            fRight.setZeroPowerBehavior(DcMotor.ZeroPowerBehavior.FLOAT);
-        }
-
         //Offset the angle if the imu is incorrect
         if (resetAngle) {
             offset = angle;
         }
 
-        //r is used to scale the power of the motors depending on how much the joysticks are pushed
-        //robotAngle is the directional angle (radians) that the robot wants to go in terms of itself.
-        //45 degrees is adding in radians because that is the small angle on a right triangle.
-        //v1 - v4 are the velocities for each motor. r is multiplied here.
-        //Sine and cosine are applied to their respective diagonal's wheels.
-        //rightX is added to and subtracted from their respective side's wheels.
-        double r = Math.hypot(leftX, leftY);
-        double robotAngle = Math.atan2(leftY, leftX) - Math.toRadians(cvtDegrees(angle - offset)) + Math.PI / 4;
+        if (last_leftX != leftX || last_leftY != leftY || last_rightX != rightX) {
+            //Only set brakes if no inputs are given from the joysticks
+            //this makes it easier for the robot to move diagonally
+            if (leftY == 0 && leftX == 0 && rightX == 0) {
+                bLeft.setZeroPowerBehavior(DcMotor.ZeroPowerBehavior.BRAKE);
+                bRight.setZeroPowerBehavior(DcMotor.ZeroPowerBehavior.BRAKE);
+                fLeft.setZeroPowerBehavior(DcMotor.ZeroPowerBehavior.BRAKE);
+                fRight.setZeroPowerBehavior(DcMotor.ZeroPowerBehavior.BRAKE);
+            } else {
+                bLeft.setZeroPowerBehavior(DcMotor.ZeroPowerBehavior.FLOAT);
+                bRight.setZeroPowerBehavior(DcMotor.ZeroPowerBehavior.FLOAT);
+                fLeft.setZeroPowerBehavior(DcMotor.ZeroPowerBehavior.FLOAT);
+                fRight.setZeroPowerBehavior(DcMotor.ZeroPowerBehavior.FLOAT);
+            }
 
-        v1 = r * Math.sin(robotAngle) + rightX;
-        v2 = r * Math.cos(robotAngle) - rightX;
-        v3 = r * Math.cos(robotAngle) + rightX;
-        v4 = r * Math.sin(robotAngle) - rightX;
+            //r is used to scale the power of the motors depending on how much the joysticks are pushed
+            //robotAngle is the directional angle (radians) that the robot wants to go in terms of itself.
+            //45 degrees is adding in radians because that is the small angle on a right triangle.
+            //v1 - v4 are the velocities for each motor. r is multiplied here.
+            //Sine and cosine are applied to their respective diagonal's wheels.
+            //rightX is added to and subtracted from their respective side's wheels.
+            double r = Math.hypot(leftX, leftY);
+            double robotAngle = Math.atan2(leftY, leftX) - Math.toRadians(cvtDegrees(angle - offset)) + Math.PI / 4;
 
-        //Getting the max value can assure that no motor will be set to a value above a certain point.
-        double max = Math.max(Math.max(Math.abs(v1), Math.abs(v2)), Math.max(Math.abs(v3), Math.abs(v4)));
+            v1 = r * Math.sin(robotAngle) + rightX;
+            v2 = r * Math.cos(robotAngle) - rightX;
+            v3 = r * Math.cos(robotAngle) + rightX;
+            v4 = r * Math.sin(robotAngle) - rightX;
 
-        //In this case, no motor can go above lim power by scaling them all down if such a thing might occur.
-        if (max > lim) {
-            v1 /= max * (1 / lim);
-            v2 /= max * (1 / lim);
-            v3 /= max * (1 / lim);
-            v4 /= max * (1 / lim);
+            //Getting the max value can assure that no motor will be set to a value above a certain point.
+            double max = Math.max(Math.max(Math.abs(v1), Math.abs(v2)), Math.max(Math.abs(v3), Math.abs(v4)));
+
+            //In this case, no motor can go above lim power by scaling them all down if such a thing might occur.
+            if (max > lim) {
+                v1 /= max * (1 / lim);
+                v2 /= max * (1 / lim);
+                v3 /= max * (1 / lim);
+                v4 /= max * (1 / lim);
+            }
+
+            //Setting each velocity to its respective motor
+            fLeft.setPower(v1);
+            fRight.setPower(v2);
+            bLeft.setPower(v3);
+            bRight.setPower(v4);
         }
-
-        //Setting each velocity to its respective motor
-        fLeft.setPower(v1);
-        fRight.setPower(v2);
-        bLeft.setPower(v3);
-        bRight.setPower(v4);
 
         if (lim < 1 && accel) {
             lim = 0.5 * Math.pow(1.14869836, (System.currentTimeMillis() - slowTime));
@@ -128,26 +118,16 @@ public class Headless {
                 accel = false;
             }
         }
+
+        last_leftX = leftX;
+        last_leftY = leftY;
+        last_rightX = rightX;
     }
 
     public void setAccel() {
         lim = 0.5;
         slowTime = System.currentTimeMillis();
         accel = true;
-    }
-
-    public void setLim(boolean  up) {
-        if (!accel) {
-            if (up) {
-                lim = 0.5;
-            } else {
-                lim = 1;
-            }
-        }
-    }
-
-    public Gyroscope getIMU() {
-        return gyro;
     }
 
     //This converts degrees to work with sine and cosine.
@@ -167,5 +147,4 @@ public class Headless {
         bLeft.setPower(0);
         bRight.setPower(0);
     }
-
 }

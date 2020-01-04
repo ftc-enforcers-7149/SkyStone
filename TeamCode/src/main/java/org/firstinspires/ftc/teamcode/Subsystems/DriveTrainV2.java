@@ -7,25 +7,25 @@ import com.qualcomm.robotcore.hardware.DistanceSensor;
 import org.firstinspires.ftc.robotcore.external.Telemetry;
 import org.firstinspires.ftc.robotcore.external.navigation.DistanceUnit;
 import org.firstinspires.ftc.teamcode.CollisionAvoidance.MovementDetectionClass;
+import org.firstinspires.ftc.teamcode.Subsystems.Enums.Directions;
+import org.firstinspires.ftc.teamcode.Subsystems.Enums.Positions;
 
 public class DriveTrainV2 {
     private DcMotor fLeft, fRight, bLeft, bRight;
     //IMU variables
     private Gyroscope gyro;
 
-    MovementDetectionClass detection;
-
-
     Telemetry telemetry;
     //used for encoders
-    private static final double     EXTERNAL_GEARING        = 1;
+    private static final double     EXTERNAL_GEARING        = 1.5;    //From sprockets
     private static final double     COUNTS_PER_MOTOR_REV    = 753.2 ;  //28  // eg: AndyMark NeverRest40 Motor Encoder
     private static final double     DRIVE_GEAR_REDUCTION    = 1 ;     // This is < 1.0 if geared UP
     private static final double     WHEEL_DIAMETER_INCHES   = 3.937 ;     // For figuring circumference
     public static final double     COUNTS_PER_INCH         = ((COUNTS_PER_MOTOR_REV * DRIVE_GEAR_REDUCTION) /
             (WHEEL_DIAMETER_INCHES * 3.1415))/EXTERNAL_GEARING;
 
-    double stopTime;
+    double endTime, last_time=0;
+    double last_dist=0;
 
     /**
      * Main constructor
@@ -47,14 +47,17 @@ public class DriveTrainV2 {
 
     /**
      * drives inputted distance(inches)
-     * @param direction direction of driving. "backward" to go backward
-     * @param distance distance driving in inches
+     * @param direction direction of driving.
+     * @param dist distance to drive.
      */
-    public void driveStraight(String direction, double distance) {
-        resetEncoderWithoutEncoder();
+    public boolean driveStraight(Directions direction, double dist) {
+        if (last_dist != dist) {
+            last_dist = dist;
+            resetEncoderWithoutEncoder();
+        }
         //sets direction of motors
         int mDirection = 1;
-        if (direction.equals("backward")) {
+        if (direction == Directions.FORWARD) {
             mDirection = -1;
         }
         double power=0.6*mDirection;
@@ -62,9 +65,8 @@ public class DriveTrainV2 {
         //converts current position into inches
         double cPosition=fRight.getCurrentPosition()/COUNTS_PER_INCH*mDirection;
 
-        if(cPosition < distance){
-            cPosition=fRight.getCurrentPosition()/COUNTS_PER_INCH*mDirection;
-            if(distance-Math.abs(cPosition)<20){
+        if(cPosition < last_dist){
+            if(last_dist-Math.abs(cPosition)<20){
                 power=0.4*mDirection;
             }
             fLeft.setPower(power);
@@ -77,21 +79,28 @@ public class DriveTrainV2 {
             fRight.setPower(0);
             bLeft.setPower(0);
             bRight.setPower(0);
+
+            last_dist = 0;
+            return true;
         }
 
+        return false;
     }
 
     /**
      * drives inputted distance(inches)
-     * @param direction direction of driving. "backward" to go backward
-     * @param distance distance driving in inches
+     * @param direction direction of driving.
+     * @param dist distance to drive
      * @param power of drive wheels
      */
-    public void driveStraight(String direction, double distance,double power) {
-        resetEncoderWithoutEncoder();
+    public boolean driveStraight(Directions direction, double dist, double power) {
+        if (last_dist != dist) {
+            last_dist = dist;
+            resetEncoderWithoutEncoder();
+        }
         //sets direction of motors
         int mDirection = 1;
-        if (direction.equals("backward")) {
+        if (direction == Directions.FORWARD) {
             mDirection = -1;
         }
         power=power*mDirection;
@@ -99,21 +108,22 @@ public class DriveTrainV2 {
         //converts current position into inches
         double cPosition=fRight.getCurrentPosition()/COUNTS_PER_INCH*mDirection;
 
-        while(cPosition < distance){
-            cPosition=fRight.getCurrentPosition()/COUNTS_PER_INCH*mDirection;
-            if(distance-Math.abs(cPosition)<20){
-                power=0.4*mDirection;
-            }
+        if (cPosition < last_dist){
             fLeft.setPower(power);
             fRight.setPower(power);
             bLeft.setPower(power);
             bRight.setPower(power);
         }
+        else {
+            fLeft.setPower(0);
+            fRight.setPower(0);
+            bLeft.setPower(0);
+            bRight.setPower(0);
 
-        fLeft.setPower(0);
-        fRight.setPower(0);
-        bLeft.setPower(0);
-        bRight.setPower(0);
+            return true;
+        }
+
+        return false;
     }
 
 
@@ -136,14 +146,18 @@ public class DriveTrainV2 {
      * strafes for a given time
      * @param direction "left" for left "right" for right
      */
-    public boolean strafeSeconds(String direction){
+    public boolean strafeSeconds(Directions direction, double time){
+        if (last_time != time) {
+            last_time = time;
+            endTime = System.currentTimeMillis() + time;
+        }
         //sets direction strafing
         int mDirection=1;
-        if(direction.equals("right")){
+        if(direction == Directions.RIGHT){
             mDirection=-1;
         }
 
-        if (System.currentTimeMillis()<stopTime){
+        if (System.currentTimeMillis()<endTime){
             fLeft.setPower(0.45*mDirection);
             fRight.setPower(-0.45*mDirection);
             bLeft.setPower(-0.45*mDirection);
@@ -162,13 +176,63 @@ public class DriveTrainV2 {
     }
 
     /**
-     * Sets end time for entire class' use
-     * @param time
+     * Gets the shortest distance to destAngle
+     * and drives motors at a proportional speed
+     * to slow down as it gets closer
+     * Min Speed = 0.1
+     * Max Speed = 0.8
+     * @param destAngle Destination angle
+     * @return
      */
-    public void setTime (double time) {
-        stopTime=time+System.currentTimeMillis();
-    }
+    public boolean rotate(double destAngle) {
+        double speed=0, min=0.2;
 
+        //Get current heading
+        double heading = gyro.getYaw();
+
+        //If heading is not at destination
+        if (heading < destAngle - 0.5 || heading > destAngle + 0.5) {
+            //Get shortest distance to angle
+            double delta = gyro.getDelta(destAngle, heading);
+
+            //Calculate speed (Linear calculation)
+            //Farthest (180 away) : 0.8
+            //Closest (0 away) : 0.1
+            if (delta > 0) {
+                speed = (delta / 257.144) + 0.1;
+            }
+            else {
+                speed = (-delta / 257.144) + 0.1;
+                speed = -speed;
+            }
+
+            if (speed > 0 && speed < min) {
+                speed = min;
+            }
+            else if (speed < 0 && speed > -min) {
+                speed = -min;
+            }
+
+            telemetry.addData("Angle: ", heading);
+            telemetry.addData("Speed: ", speed);
+
+            //Drive the motors so the robot turns
+            fLeft.setPower(speed);
+            fRight.setPower(-speed);
+            bLeft.setPower(speed);
+            bRight.setPower(-speed);
+        }
+        else {
+            fLeft.setPower(0);
+            fRight.setPower(0);
+            bLeft.setPower(0);
+            bRight.setPower(0);
+
+            return true;
+        }
+
+        return false;
+    }
 
     /**
      * turns to the desired angle
@@ -184,7 +248,6 @@ public class DriveTrainV2 {
         double speed = 0;
         double min = 0.18;
         double max = 0.8;
-        double iTime=System.currentTimeMillis();
 
         //standard current angle
         double heading = gyro.getYaw();
@@ -263,17 +326,15 @@ public class DriveTrainV2 {
         return false;
     }
 
-    public boolean driveToLine(ColorSensor color, String dir){
+    public boolean driveToLine(ColorSensor color, Directions dir){
 
-        int theD;
-
-        theD = dir.equals("forward") ? -1 : 1;
+        int direction = dir == Directions.FORWARD ? -1 : 1;
 
         if (color.red()<35&&color.blue()<35){
-            fLeft.setPower(0.3*theD);
-            bLeft.setPower(0.3*theD);
-            bRight.setPower(0.3*theD);
-            fRight.setPower(0.3*theD);
+            fLeft.setPower(0.3*direction);
+            bLeft.setPower(0.3*direction);
+            bRight.setPower(0.3*direction);
+            fRight.setPower(0.3*direction);
         }
         else{
             fLeft.setPower(0);
@@ -287,17 +348,15 @@ public class DriveTrainV2 {
         return false;
     }
 
-    public boolean strafeToLine(ColorSensor color, String dir){
+    public boolean strafeToLine(ColorSensor color, Directions dir){
 
-        int theD;
-
-        theD = dir.equals("right") ? 1 : -1;
+        int direction = dir == Directions.RIGHT ? 1 : -1;
 
         if (color.red()<35&&color.blue()<35){
-            fLeft.setPower(-0.6*theD);
-            bLeft.setPower(0.6*theD);
-            bRight.setPower(-0.6*theD);
-            fRight.setPower(0.6*theD);
+            fLeft.setPower(-0.6*direction);
+            bLeft.setPower(0.6*direction);
+            bRight.setPower(-0.6*direction);
+            fRight.setPower(0.6*direction);
         }
         else {
             fLeft.setPower(0);
@@ -351,7 +410,7 @@ public class DriveTrainV2 {
      * @param distance distance driving to
      * @param sLocal location of sensor(center,right,left)
      */
-    public boolean driveRange(DistanceSensor dSensor, double distance, String sLocal){
+    public boolean driveRange(DistanceSensor dSensor, double distance, Positions sLocal){
         double cDistance=0;
         if(dSensor.getDistance(DistanceUnit.CM)>150){
             cDistance=150;
@@ -360,7 +419,7 @@ public class DriveTrainV2 {
             cDistance=dSensor.getDistance(DistanceUnit.CM);
         }
         int dir;
-        if(sLocal.equals("center")) {
+        if(sLocal == Positions.CENTER) {
             if(distance<cDistance){
                 if(dSensor.getDistance(DistanceUnit.CM)>150){
                     cDistance=150;
@@ -396,7 +455,7 @@ public class DriveTrainV2 {
             }
         }
         else{
-            if(sLocal.equals("right")){
+            if(sLocal == Positions.RIGHT){
                 dir = 1;
             }
             else{
@@ -445,14 +504,19 @@ public class DriveTrainV2 {
     }
 
     /**
-     * wait time. Can't be more than 5 seconds
-     * @param wTime time delayed in milliseconds
+     * Waits until the set time passes
      */
-    public void delay(double wTime){
-        double iTime=System.currentTimeMillis();
-        while (System.currentTimeMillis()<iTime+wTime) {
-
+    public boolean delay(double time){
+        if (last_time != time) {
+            last_time = time;
+            endTime = System.currentTimeMillis() + time;
         }
+        if (System.currentTimeMillis() >= endTime) {
+            last_time = 0;
+            return true;
+        }
+
+        return false;
     }
 
 

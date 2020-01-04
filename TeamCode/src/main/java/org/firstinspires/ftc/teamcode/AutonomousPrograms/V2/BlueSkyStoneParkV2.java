@@ -21,7 +21,7 @@ public class BlueSkyStoneParkV2 extends ParentInit {
                 driveTrainV1.driveStraight("forward",20,0.2);
                 break;
             case 1:
-                //driveTrainV1.driveRange(distanceR,65,"right");
+                //driveTrain.driveRange(distanceR,65,"right");
             case 2:
                 position = "center";
                 webcam.deactivate();
@@ -61,7 +61,7 @@ public class BlueSkyStoneParkV2 extends ParentInit {
                 break;
             case 11:
                 driveTrainV1.rotation(90);
-                //telemetry.addData("angle", driveTrainV1.getRawYaw());
+                //telemetry.addData("angle", driveTrain.getRawYaw());
                 break;
             case 12:
                 claw.down();
@@ -80,7 +80,7 @@ public class BlueSkyStoneParkV2 extends ParentInit {
                 driveTrainV1.driveToLine(color, "blue", "backward");
                 break;
             case 17:
-                //telemetry.addData("angle", driveTrainV1.getRawYaw());
+                //telemetry.addData("angle", driveTrain.getRawYaw());
                 driveTrainV1.rotation(80);
                 break;
             case 18:

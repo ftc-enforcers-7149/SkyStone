@@ -1,21 +1,27 @@
-package org.firstinspires.ftc.teamcode.Subsystems;
+package org.firstinspires.ftc.teamcode.notHarry;
 
+import com.qualcomm.hardware.rev.RevBlinkinLedDriver;
 import com.qualcomm.robotcore.hardware.DcMotor;
 import com.qualcomm.robotcore.hardware.DistanceSensor;
 import com.qualcomm.robotcore.hardware.Gamepad;
 
 import org.firstinspires.ftc.robotcore.external.navigation.DistanceUnit;
+import org.firstinspires.ftc.teamcode._Reference.LEDTest;
 
-public class Lift {
+public class ledLiftTest {
+
 
     DcMotor lift;
     DistanceSensor distanceLift;
+    RevBlinkinLedDriver blinkinLedDriver;
+    RevBlinkinLedDriver.BlinkinPattern pattern;
+    double dL ;
 
     boolean pressP, pressM, levelPlus, levelMinus, liftPress;
 
     int level;
 
-    public Lift(DcMotor lift, DistanceSensor distanceLift) {
+    public ledLiftTest(DcMotor lift, DistanceSensor distanceLift) {
         this.lift = lift;
         this.distanceLift = distanceLift;
     }
@@ -28,6 +34,7 @@ public class Lift {
      * @param gamepad1
      */
     public void liftSet(Gamepad gamepad1) {
+        blinkinLedDriver.setPattern(pattern);
         levelPlus = gamepad1.dpad_up;
         levelMinus = gamepad1.dpad_down;
 
