@@ -21,7 +21,7 @@ public class EncoderTest extends OpMode {
     DcMotor fRight, fLeft, bRight, bLeft;
 
     //Declaring motors
-    //DcMotor encoderY, encoderX;
+    DcMotor encoderY, encoderX;
 
     Gyroscope gyroscope;
 
@@ -57,26 +57,26 @@ public class EncoderTest extends OpMode {
         bLeft = hardwareMap.dcMotor.get("bLeft");
         bRight = hardwareMap.dcMotor.get("bRight");
 
-        /*encoderX = hardwareMap.dcMotor.get("encX");
-        encoderY = hardwareMap.dcMotor.get("encY");*/
+        encoderX = hardwareMap.dcMotor.get("encX");
+        encoderY = hardwareMap.dcMotor.get("encY");
 
         //Motor directions
         fLeft.setDirection(DcMotorSimple.Direction.REVERSE);
         fRight.setDirection(DcMotorSimple.Direction.FORWARD);
         bRight.setDirection(DcMotorSimple.Direction.FORWARD);
         bLeft.setDirection(DcMotorSimple.Direction.REVERSE);
-        //encoderY.setDirection(DcMotorSimple.Direction.REVERSE);
+        encoderY.setDirection(DcMotorSimple.Direction.REVERSE);
 
         gyroscope = new Gyroscope(telemetry, hardwareMap);
         //Initialize drive train
         driveSystem = new Headless(gyroscope, fLeft, fRight, bLeft, bRight);
 
-        /*encoderX.setMode(DcMotor.RunMode.STOP_AND_RESET_ENCODER);
+        encoderX.setMode(DcMotor.RunMode.STOP_AND_RESET_ENCODER);
         encoderY.setMode(DcMotor.RunMode.STOP_AND_RESET_ENCODER);
 
         //Sets our encoders to run again
         encoderX.setMode(DcMotor.RunMode.RUN_WITHOUT_ENCODER);
-        encoderY.setMode(DcMotor.RunMode.RUN_WITHOUT_ENCODER);*/
+        encoderY.setMode(DcMotor.RunMode.RUN_WITHOUT_ENCODER);
     }
 
     public void loop(){
@@ -87,20 +87,18 @@ public class EncoderTest extends OpMode {
         } else if (gamepad1.b){
             isTurning = false;
 
-            /*encoderX.setMode(DcMotor.RunMode.STOP_AND_RESET_ENCODER);
+            encoderX.setMode(DcMotor.RunMode.STOP_AND_RESET_ENCODER);
             encoderY.setMode(DcMotor.RunMode.STOP_AND_RESET_ENCODER);
 
             //Sets our encoders to run again
             encoderX.setMode(DcMotor.RunMode.RUN_WITHOUT_ENCODER);
-            encoderY.setMode(DcMotor.RunMode.RUN_WITHOUT_ENCODER);*/
-            fLeft.setMode(DcMotor.RunMode.STOP_AND_RESET_ENCODER);
-            fLeft.setMode(DcMotor.RunMode.RUN_WITHOUT_ENCODER);
+            encoderY.setMode(DcMotor.RunMode.RUN_WITHOUT_ENCODER);
 
         }
         //Gets our heading and change in x and y odometers
         double heading = gyroscope.getRawYaw();
-        yDisp = fLeft.getCurrentPosition();//encoderY.getCurrentPosition();
-        xDisp = 0;//encoderX.getCurrentPosition();
+        yDisp = encoderY.getCurrentPosition();
+        xDisp = encoderX.getCurrentPosition();
 
         //When turning, the odometers are not accurate, so they must be ignored
         if (!isTurning) {
@@ -108,10 +106,10 @@ public class EncoderTest extends OpMode {
             //Then uses that as a modifier for how much an odometer will effect that axis
 
             //Apply the x odometer to the x and y axes
-            positionX = /*((xDisp/COUNTS_PER_INCHX) * Math.sin(Math.toRadians(gyroscope.cvtTrigAng(heading))))*/ + ((yDisp/COUNTS_PER_INCH)* Math.cos(Math.toRadians(gyroscope.cvtTrigAng(heading))));
+            positionX = ((xDisp/COUNTS_PER_INCHX) * Math.sin(Math.toRadians(gyroscope.cvtTrigAng(heading)))) + ((yDisp/COUNTS_PER_INCHY)* Math.cos(Math.toRadians(gyroscope.cvtTrigAng(heading))));
 
             //Apply the y odometer to the x and y axes
-            positionY = ((yDisp/COUNTS_PER_INCH) * Math.sin(Math.toRadians(gyroscope.cvtTrigAng(heading)))) /*+ ((xDisp/COUNTS_PER_INCHX) * Math.cos(Math.toRadians(gyroscope.cvtTrigAng(heading))))*/;
+            positionY = ((yDisp/COUNTS_PER_INCHY) * Math.sin(Math.toRadians(gyroscope.cvtTrigAng(heading)))) + ((xDisp/COUNTS_PER_INCHX) * Math.cos(Math.toRadians(gyroscope.cvtTrigAng(heading))));
         }
 
         //Rounds the positions so you don't get numbers like 6.6278326e^-12678

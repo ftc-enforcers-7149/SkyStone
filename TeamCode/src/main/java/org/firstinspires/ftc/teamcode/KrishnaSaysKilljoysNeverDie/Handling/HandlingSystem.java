@@ -45,7 +45,7 @@ public class HandlingSystem {
 
         this.gyroscope = gyroscope;
         odometryEncoder = new OdometryEncoder(hardwareMap, encX, encY, imumap, posX, posY, gyroscope);
-        odometryPosition = new OdometryPosition(hardwareMap, encX, encY, posX, posY, gyroscope);
+        //odometryPosition = new OdometryPosition(hardwareMap, encX, encY, posX, posY, gyroscope);
 
         odometryEncoder.startOdometry();
 
