@@ -1,17 +1,11 @@
 package org.firstinspires.ftc.teamcode.Subsystems.Odometry;
 
-import com.qualcomm.hardware.bosch.BNO055IMU;
-import com.qualcomm.hardware.bosch.JustLoggingAccelerationIntegrator;
 import com.qualcomm.robotcore.hardware.DcMotor;
 import com.qualcomm.robotcore.hardware.DcMotorSimple;
 import com.qualcomm.robotcore.hardware.HardwareMap;
 
 import org.firstinspires.ftc.robotcore.external.Telemetry;
 import org.firstinspires.ftc.robotcore.external.navigation.AngleUnit;
-import org.firstinspires.ftc.robotcore.external.navigation.AxesOrder;
-import org.firstinspires.ftc.robotcore.external.navigation.AxesReference;
-import org.firstinspires.ftc.robotcore.external.navigation.Orientation;
-import org.firstinspires.ftc.robotcore.external.navigation.Velocity;
 import org.firstinspires.ftc.teamcode.KrishnaSaysKilljoysNeverDie.Misc.Position;
 import org.firstinspires.ftc.teamcode.Subsystems.Gyroscope;
 
@@ -24,16 +18,16 @@ import java.util.Locale;
 public class OdometryPosition extends Position {
 
     //Declaring motors
-    DcMotor encoderY, encoderX;
-    DcMotor fLeft, fRight, bLeft, bRight;
+    private DcMotor encoderY, encoderX;
+    private DcMotor fLeft, fRight, bLeft, bRight;
 
     private Gyroscope gyro;
 
     //Stored position for turning
-    double storedX, storedY;
+    private double storedX, storedY;
 
     //Last direction value
-    boolean last_dir;
+    private boolean last_dir;
 
     //Used for encoders
 
@@ -52,9 +46,6 @@ public class OdometryPosition extends Position {
 
     //Direction enum
     public enum Direction {FORWARD, BACKWARD, TURNING}
-
-
-
 
 
 
@@ -248,10 +239,10 @@ public class OdometryPosition extends Position {
 
     /**
      * Converts a normal circle of degrees (0 at top) to a unit circle (0 at right and goes counter-clockwise)
-     * @param heading
-     * @return
+     * @param heading   Angle in degrees to be converted
+     * @return Converted angle in degrees
      */
-    private double cvtDegrees(double heading) {
+    public double cvtDegrees(double heading) {
         if (heading >= 0 && heading < 90) {
             return -heading + 90;
         }
