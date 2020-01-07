@@ -25,7 +25,7 @@ public class OdometryEncoder {
         y = posY;
 
         //Initializes odometry pos class
-        odometryPositionClass = new OdometryPosition(hardwareMap, encX, encY, posX, posY, gyroscope);
+        //odometryPositionClass = new OdometryPosition(hardwareMap, encX, encY, posX, posY, gyroscope);
 
         //Starts our odometry tracking
         startOdometry();

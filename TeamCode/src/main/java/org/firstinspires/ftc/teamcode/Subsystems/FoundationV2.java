@@ -23,8 +23,8 @@ public class FoundationV2 {
      * left foundation down
      */
     public void lDown() {
-        fLFound.setPosition(0.46);
-        bLFound.setPosition(0.46);
+        fLFound.setPosition(0.79);  //0.46
+        bLFound.setPosition(0.79);  //0.46
     }
 
     /**
@@ -39,8 +39,8 @@ public class FoundationV2 {
      * right foundation down
      */
     public void rDown() {
-        fRFound.setPosition(0.40);
-        bRFound.setPosition(0.40);
+        fRFound.setPosition(0.75);  //0.4
+        bRFound.setPosition(0.75);  //0.4
     }
 
     /**
