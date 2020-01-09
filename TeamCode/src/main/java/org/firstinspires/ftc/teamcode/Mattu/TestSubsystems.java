@@ -67,6 +67,8 @@ public class TestSubsystems extends OpMode {
         bLeft = hardwareMap.dcMotor.get("bLeft");
         bRight = hardwareMap.dcMotor.get("bRight");
 
+        rGrab.setDirection(Servo.Direction.FORWARD);
+
         //Motor directions
         fLeft.setDirection(DcMotorSimple.Direction.REVERSE);
         fRight.setDirection(DcMotorSimple.Direction.FORWARD);
@@ -82,8 +84,6 @@ public class TestSubsystems extends OpMode {
         lArm.setDirection(Servo.Direction.FORWARD);
         rArm.setDirection(Servo.Direction.REVERSE);
         lGrab.setDirection(Servo.Direction.REVERSE);
-        rGrab.setDirection(Servo.Direction.FORWARD);
-
         //Initialize foundation and claw
         foundation = new FoundationV2(fLFound,fRFound,bLFound,bRFound);
         claw = new Claw(lArm,rArm,lGrab,rGrab);
@@ -91,8 +91,8 @@ public class TestSubsystems extends OpMode {
         foundation.lUp();
         foundation.rUp();
 
-        claw.up();
         claw.release();
+        claw.up();
 
         //Set which things to test
         drive = false;
@@ -112,6 +112,12 @@ public class TestSubsystems extends OpMode {
 
         if (drive) {
             driveTrain.updateOdom(direction);
+
+            telemetry.addData("Position: ", "(" + driveTrain.getPosX() + ", " + driveTrain.getPosY() + ")");
+        }
+
+        if (rotate) {
+            telemetry.addData("Angle: ", gyroscope.getYaw());
         }
 
         //Handle input
@@ -291,6 +297,16 @@ public class TestSubsystems extends OpMode {
             }
         }
 
+        //Telemetry for hardware
+        if (grabber) {
+            telemetry.addData("Grabbing? ", grab > 0.1 ? "YES" : "NO");
+            telemetry.addData("Arms Raised? ", arms > 0.1 ? "YES" : "NO");
+        }
+
+        if (found) {
+            telemetry.addData("Left Foundation? ", lFound ? "YES" : "NO");
+            telemetry.addData("Right Foundation? ", rFound ? "YES" : "NO");
+        }
 
         //Handle actions
         if (drive && driving) {

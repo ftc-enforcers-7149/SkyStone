@@ -176,8 +176,8 @@ public class OdometryPosition extends Position {
                 encoderX.setMode(DcMotor.RunMode.RUN_WITHOUT_ENCODER);
                 encoderY.setMode(DcMotor.RunMode.RUN_WITHOUT_ENCODER);
 
-                storedX += positionX;
-                storedY += positionY;
+                storedX = positionX;
+                storedY = positionY;
             }
         }
     }
