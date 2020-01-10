@@ -40,6 +40,8 @@ public class TeleOpV2 extends OpMode {
         lGrab = hardwareMap.servo.get("rGrab");
         rGrab = hardwareMap.servo.get("lGrab");
 
+        //lGrab.scaleRange(0.0012, 1);    //Use for single servo claw
+
         //Inits to combat lag
         /*colorSensor = hardwareMap.colorSensor.get("color");
         distL = hardwareMap.get(DistanceSensor.class, "distanceL");
@@ -132,12 +134,15 @@ public class TeleOpV2 extends OpMode {
 
         //Grabber
         if (grab != last_grab) {
+            //Single servo claw: 0.6 closed, 0.4 open
+            //Double servo claw: r 0.2 l 0.28 closed, r 0.13 l 0.23 open
+
             if (grab > 0.1) {
-                rGrab.setPosition(0.26);//.2
-                lGrab.setPosition(0.35);//.28
+                rGrab.setPosition(0.2);//.2
+                lGrab.setPosition(0.28);//.28
             } else {
-                rGrab.setPosition(0.2);//.13
-                lGrab.setPosition(0.28);//0.21
+                rGrab.setPosition(0.13);//.13
+                lGrab.setPosition(0.23);//0.23
             }
         }
 
@@ -174,5 +179,6 @@ public class TeleOpV2 extends OpMode {
         bRight.setPower(0);
         fLeft.setPower(0);
         bLeft.setPower(0);
+        liftMotor.setPower(0);
     }
 }

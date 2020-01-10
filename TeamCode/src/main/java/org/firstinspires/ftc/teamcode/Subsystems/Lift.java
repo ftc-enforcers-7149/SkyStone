@@ -61,109 +61,112 @@ public class Lift {
             }
         }
 
-        if(liftPress) {
+        if (liftPress) {
             switch (level) {
                 case 0:
-                    if(distanceLift.getDistance(DistanceUnit.CM) > 1) { //3
+                    if (distanceLift.getDistance(DistanceUnit.CM) > 1) { //3
                         lift.setPower(-0.4);
-                    }
-                    else{
+                    } else {
                         lift.setPower(0);
                         liftPress = false;
                     }
                     break;
                 case 1:
-                    if (distanceLift.getDistance(DistanceUnit.CM) < 10) {  //10.5
-                        lift.setPower(0.8);
-                    }
-                    else if(distanceLift.getDistance(DistanceUnit.CM) > 11) {
+                    if (distanceLift.getDistance(DistanceUnit.CM) < 4) {  //10.5
+                        lift.setPower(0.67);//0.8
+                    } else if (distanceLift.getDistance(DistanceUnit.CM) > 6) {
                         lift.setPower(-0.4);
-                    }
-                    else{
+                    } else {
                         lift.setPower(0.1);
                         liftPress = false;
                     }
                     break;
                 case 2:
-                    if (distanceLift.getDistance(DistanceUnit.CM) < 20) { //20.5
-                        lift.setPower(0.8);
-                    }
-                    else if(distanceLift.getDistance(DistanceUnit.CM) > 21) {
+                    if (distanceLift.getDistance(DistanceUnit.CM) < 13) { //20.5
+                        lift.setPower(0.67);
+                    } else if (distanceLift.getDistance(DistanceUnit.CM) > 15) {
                         lift.setPower(-0.4);
-                    }
-                    else{
+                    } else {
                         lift.setPower(0.1);
                         liftPress = false;
                     }
                     break;
                 case 3:
-                    if (distanceLift.getDistance(DistanceUnit.CM) < 30) { //30.5
-                        lift.setPower(0.8);
-                    }
-                    else if(distanceLift.getDistance(DistanceUnit.CM) > 31) {
+                    if (distanceLift.getDistance(DistanceUnit.CM) < 25) { //30.5
+                        lift.setPower(0.67);
+                    } else if (distanceLift.getDistance(DistanceUnit.CM) > 27) {
                         lift.setPower(-0.4);
-                    }
-                    else{
+                    } else {
                         lift.setPower(0.1);
                         liftPress = false;
                     }
                     break;
                 case 4:
-                    if (distanceLift.getDistance(DistanceUnit.CM) < 40) { //40.5
-                        lift.setPower(0.8);
-                    }
-                    else if(distanceLift.getDistance(DistanceUnit.CM) > 41) {
+                    if (distanceLift.getDistance(DistanceUnit.CM) < 35) { //40.5
+                        lift.setPower(0.67);
+                    } else if (distanceLift.getDistance(DistanceUnit.CM) > 37) {
                         lift.setPower(-0.4);
-                    }
-                    else{
+                    } else {
                         lift.setPower(0.1);
                         liftPress = false;
                     }
                     break;
                 case 5:
-                    if (distanceLift.getDistance(DistanceUnit.CM) < 55) {   //54
-                        lift.setPower(0.8);
-                    }
-                    else if(distanceLift.getDistance(DistanceUnit.CM) > 56) {
+                    if (distanceLift.getDistance(DistanceUnit.CM) < 45.5) {   //54
+                        lift.setPower(0.67);
+                    } else if (distanceLift.getDistance(DistanceUnit.CM) > 47.5) {
                         lift.setPower(-0.4);
-                    }
-                    else{
+                    } else {
                         lift.setPower(0.1);
                         liftPress = false;
                     }
                     break;
                 case 6:
-                    if (distanceLift.getDistance(DistanceUnit.CM) < 63) {   //62
+                    if (distanceLift.getDistance(DistanceUnit.CM) < 56) {   //62
                         lift.setPower(0.8);
-                    }
-                    else if(distanceLift.getDistance(DistanceUnit.CM) > 64) {
+                    } else if (distanceLift.getDistance(DistanceUnit.CM) > 58) {
                         lift.setPower(-0.4);
-                    }
-                    else{
+                    } else {
                         lift.setPower(0.1);
                         liftPress = false;
                     }
                     break;
                 case 7:
-                    if (distanceLift.getDistance(DistanceUnit.CM) < 73) {   //72
+                    if (distanceLift.getDistance(DistanceUnit.CM) < 66) {   //62
                         lift.setPower(0.8);
-                    }
-                    else if(distanceLift.getDistance(DistanceUnit.CM) > 74) {
+                    } else if (distanceLift.getDistance(DistanceUnit.CM) > 68) {
                         lift.setPower(-0.4);
-                    }
-                    else{
+                    } else {
                         lift.setPower(0.1);
                         liftPress = false;
                     }
                     break;
                 case 8:
-                    if (distanceLift.getDistance(DistanceUnit.CM) < 82) {   //81
+                    if (distanceLift.getDistance(DistanceUnit.CM) < 77) {   //72
                         lift.setPower(0.8);
-                    }
-                    else if(distanceLift.getDistance(DistanceUnit.CM) > 83) {
+                    } else if (distanceLift.getDistance(DistanceUnit.CM) > 79) {
                         lift.setPower(-0.4);
+                    } else {
+                        lift.setPower(0.1);
+                        liftPress = false;
                     }
-                    else{
+                    break;
+                case 9:
+                    if (distanceLift.getDistance(DistanceUnit.CM) < 85) {   //81
+                        lift.setPower(0.8);
+                    } else if (distanceLift.getDistance(DistanceUnit.CM) > 87) {
+                        lift.setPower(-0.4);
+                    } else {
+                        lift.setPower(0.1);
+                        liftPress = false;
+                    }
+                    break;
+                case 10:
+                    if (distanceLift.getDistance(DistanceUnit.CM) < 92) {   //62
+                        lift.setPower(0.8);
+                    } else if (distanceLift.getDistance(DistanceUnit.CM) > 94) {
+                        lift.setPower(-0.4);
+                    } else {
                         lift.setPower(0.1);
                         liftPress = false;
                     }
