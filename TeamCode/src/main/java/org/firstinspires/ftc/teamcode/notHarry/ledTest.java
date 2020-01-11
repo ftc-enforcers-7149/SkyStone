@@ -14,14 +14,17 @@ import com.qualcomm.robotcore.hardware.Servo;
 
 import org.firstinspires.ftc.robotcore.external.Telemetry;
 import org.firstinspires.ftc.robotcore.external.navigation.DistanceUnit;
+import org.firstinspires.ftc.teamcode.Subsystems.Claw;
 import org.firstinspires.ftc.teamcode.Subsystems.DriveSystems.Headless;
 import org.firstinspires.ftc.teamcode.Subsystems.Gyroscope;
 import org.firstinspires.ftc.teamcode._Reference.LEDTest;
 
 @TeleOp(name = "LED Auto Lift")
 public class ledTest extends OpMode {
+    //Servo lArm, rArm, lGrab, rGrab;
     Telemetry.Item patternName;
     Telemetry.Item display;
+
 
 
     LEDTest.DisplayKind displayKind;
@@ -29,6 +32,8 @@ public class ledTest extends OpMode {
 
     //Drive train
     Headless driveSystem;
+
+    Claw claw;
 
     //Hardware
 
@@ -64,6 +69,16 @@ public class ledTest extends OpMode {
         display = telemetry.addData("Display Kind: ", displayKind.toString());
         patternName = telemetry.addData("Pattern: ", pattern.toString());
 
+        /*lArm = hardwareMap.servo.get("lArm");
+        rArm = hardwareMap.servo.get("rArm");
+        lGrab = hardwareMap.servo.get("lGrab");
+        rGrab = hardwareMap.servo.get("rGrab");
+
+        lArm.setDirection(Servo.Direction.FORWARD);
+        rArm.setDirection(Servo.Direction.REVERSE);
+        lGrab.setDirection(Servo.Direction.REVERSE);
+        rGrab.setDirection(Servo.Direction.FORWARD);*/
+
         //Inits to combat lag
         /*colorSensor = hardwareMap.colorSensor.get("color");
         distL = hardwareMap.get(DistanceSensor.class, "distanceL");
@@ -92,11 +107,14 @@ public class ledTest extends OpMode {
 
         //Lift brake
         lift.setZeroPowerBehavior(DcMotor.ZeroPowerBehavior.BRAKE);
+        //claw = new Claw(lArm,rArm,lGrab,rGrab);
 
 
     }
 
     public void loop() {
+
+
 
         blinkinLedDriver = hardwareMap.get(RevBlinkinLedDriver.class, "blinkin");
         blinkinLedDriver.setPattern(pattern);
@@ -112,13 +130,13 @@ public class ledTest extends OpMode {
         lFoundationDown = gamepad1.left_bumper || gamepad2.x;
         rFoundationDown = gamepad1.right_bumper || gamepad2.b;
         startAccel = gamepad1.x;
-        levelPlus = gamepad1.dpad_up;
-        levelMinus = gamepad1.dpad_down;
+        levelPlus = gamepad1.y;
+        levelMinus = gamepad1.a;
 
 
-        if (distanceLift.getDistance(DistanceUnit.CM) <= 1.5) {
+        if (distanceLift.getDistance(DistanceUnit.CM) <= 2) {
             pattern = RevBlinkinLedDriver.BlinkinPattern.BLUE;
-        } else if (distanceLift.getDistance(DistanceUnit.CM) > 5 && distanceLift.getDistance(DistanceUnit.CM) < 8) {
+        } else if (distanceLift.getDistance(DistanceUnit.CM) > 3.5 && distanceLift.getDistance(DistanceUnit.CM) < 7) {
             pattern = RevBlinkinLedDriver.BlinkinPattern.GREEN;
         } else if (distanceLift.getDistance(DistanceUnit.CM) > 12 && distanceLift.getDistance(DistanceUnit.CM) < 16) {
             pattern = RevBlinkinLedDriver.BlinkinPattern.GREEN;
@@ -136,16 +154,21 @@ public class ledTest extends OpMode {
             pattern = RevBlinkinLedDriver.BlinkinPattern.GREEN;
         } else if (distanceLift.getDistance(DistanceUnit.CM) > 85 && distanceLift.getDistance(DistanceUnit.CM) < 89) {
             pattern = RevBlinkinLedDriver.BlinkinPattern.GREEN;
-        } else if (distanceLift.getDistance(DistanceUnit.CM) > 92 && distanceLift.getDistance(DistanceUnit.CM) < 96) {
-            pattern = RevBlinkinLedDriver.BlinkinPattern.GREEN;
         } else {
             pattern = RevBlinkinLedDriver.BlinkinPattern.RED;
         }
 
+        /*if(grab > 0.1){
+            claw.grab();
+        }
+        else{
+            claw.release();
+        }*/
+
 
         if (!pressP) {
             if (levelPlus) {
-                if (level < 10) {
+                if (level < 9) {
                     level++;
                     liftPress = true;
                 }
@@ -177,7 +200,7 @@ public class ledTest extends OpMode {
         if (liftPress) {
             switch (level) {
                 case 0:
-                    if (distanceLift.getDistance(DistanceUnit.CM) > 1) { //3
+                    if (distanceLift.getDistance(DistanceUnit.CM) > 1.5) { //3
                         lift.setPower(-0.4);
                     } else {
                         lift.setPower(0);
@@ -186,9 +209,9 @@ public class ledTest extends OpMode {
                     break;
                 case 1:
                     if (distanceLift.getDistance(DistanceUnit.CM) < 4) {  //10.5
-                        lift.setPower(0.67);//0.8
-                    } else if (distanceLift.getDistance(DistanceUnit.CM) > 6) {
-                        lift.setPower(-0.4);
+                        lift.setPower(0.45);//0.67
+                    } else if (distanceLift.getDistance(DistanceUnit.CM) > 7) {
+                        lift.setPower(-0.2);
                     } else {
                         lift.setPower(0.1);
                         liftPress = false;
@@ -196,19 +219,19 @@ public class ledTest extends OpMode {
                     break;
                 case 2:
                     if (distanceLift.getDistance(DistanceUnit.CM) < 13) { //20.5
-                        lift.setPower(0.67);
-                    } else if (distanceLift.getDistance(DistanceUnit.CM) > 15) {
-                        lift.setPower(-0.4);
+                        lift.setPower(0.45);//.67
+                    } else if (distanceLift.getDistance(DistanceUnit.CM) > 16) {
+                        lift.setPower(-0.2);
                     } else {
                         lift.setPower(0.1);
                         liftPress = false;
                     }
                     break;
                 case 3:
-                    if (distanceLift.getDistance(DistanceUnit.CM) < 25) { //30.5
-                        lift.setPower(0.67);
-                    } else if (distanceLift.getDistance(DistanceUnit.CM) > 27) {
-                        lift.setPower(-0.4);
+                    if (distanceLift.getDistance(DistanceUnit.CM) < 24) { //30.5
+                        lift.setPower(0.45);//.67
+                    } else if (distanceLift.getDistance(DistanceUnit.CM) > 26) {
+                        lift.setPower(-0.2);
                     } else {
                         lift.setPower(0.1);
                         liftPress = false;
@@ -216,9 +239,9 @@ public class ledTest extends OpMode {
                     break;
                 case 4:
                     if (distanceLift.getDistance(DistanceUnit.CM) < 35) { //40.5
-                        lift.setPower(0.67);
-                    } else if (distanceLift.getDistance(DistanceUnit.CM) > 37) {
-                        lift.setPower(-0.4);
+                        lift.setPower(0.45);
+                    } else if (distanceLift.getDistance(DistanceUnit.CM) > 38) {
+                        lift.setPower(0);
                     } else {
                         lift.setPower(0.1);
                         liftPress = false;
@@ -226,9 +249,9 @@ public class ledTest extends OpMode {
                     break;
                 case 5:
                     if (distanceLift.getDistance(DistanceUnit.CM) < 45.5) {   //54
-                        lift.setPower(0.67);
+                        lift.setPower(0.47);
                     } else if (distanceLift.getDistance(DistanceUnit.CM) > 47.5) {
-                        lift.setPower(-0.4);
+                        lift.setPower(0);
                     } else {
                         lift.setPower(0.1);
                         liftPress = false;
@@ -236,9 +259,9 @@ public class ledTest extends OpMode {
                     break;
                 case 6:
                     if (distanceLift.getDistance(DistanceUnit.CM) < 56) {   //62
-                        lift.setPower(0.8);
+                        lift.setPower(0.49);
                     } else if (distanceLift.getDistance(DistanceUnit.CM) > 58) {
-                        lift.setPower(-0.4);
+                        lift.setPower(0);
                     } else {
                         lift.setPower(0.1);
                         liftPress = false;
@@ -246,9 +269,9 @@ public class ledTest extends OpMode {
                     break;
                 case 7:
                     if (distanceLift.getDistance(DistanceUnit.CM) < 66) {   //62
-                        lift.setPower(0.8);
+                        lift.setPower(0.49);
                     } else if (distanceLift.getDistance(DistanceUnit.CM) > 68) {
-                        lift.setPower(-0.4);
+                        lift.setPower(0);
                     } else {
                         lift.setPower(0.1);
                         liftPress = false;
@@ -256,34 +279,25 @@ public class ledTest extends OpMode {
                     break;
                 case 8:
                     if (distanceLift.getDistance(DistanceUnit.CM) < 77) {   //72
-                        lift.setPower(0.8);
+                        lift.setPower(0.51);
                     } else if (distanceLift.getDistance(DistanceUnit.CM) > 79) {
-                        lift.setPower(-0.4);
+                        lift.setPower(0);
                     } else {
                         lift.setPower(0.1);
                         liftPress = false;
                     }
                     break;
                 case 9:
-                    if (distanceLift.getDistance(DistanceUnit.CM) < 85) {   //81
-                        lift.setPower(0.8);
-                    } else if (distanceLift.getDistance(DistanceUnit.CM) > 87) {
-                        lift.setPower(-0.4);
+                    if (distanceLift.getDistance(DistanceUnit.CM) < 87) {   //81
+                        lift.setPower(0.51);
+                    } else if (distanceLift.getDistance(DistanceUnit.CM) > 90) {
+                        lift.setPower(0);
                     } else {
                         lift.setPower(0.1);
                         liftPress = false;
                     }
                     break;
-                case 10:
-                    if (distanceLift.getDistance(DistanceUnit.CM) < 92) {   //62
-                        lift.setPower(0.8);
-                    } else if (distanceLift.getDistance(DistanceUnit.CM) > 94) {
-                        lift.setPower(-0.4);
-                    } else {
-                        lift.setPower(0.1);
-                        liftPress = false;
-                    }
-                    break;
+
             }
         }
 
