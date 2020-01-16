@@ -10,18 +10,26 @@ public class GearboxServoRotator extends OpMode {
 
     Servo drive;
 
+    double initialPosition = .90;
+    double grabPosition = .66;
+
     public void init() {
         drive = hardwareMap.servo.get("drive");
-
     }
 
     public void loop() {
+
         if(gamepad1.a) {
-            drive.setPosition(.6);
+            drive.setPosition(grabPosition);
         }
         else {
-            drive.setPosition(0.2);
+            drive.setPosition(initialPosition);
         }
+
+
+        telemetry.addData("Initial pos: ", initialPosition);
+        telemetry.addData("Grab pos: ", grabPosition);
+
     }
 
 }
