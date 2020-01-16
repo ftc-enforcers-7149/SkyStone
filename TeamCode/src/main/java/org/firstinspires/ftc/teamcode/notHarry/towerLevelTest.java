@@ -26,11 +26,7 @@ public class towerLevelTest extends OpMode {
 
     int level;
     public void init(){
-        //Servos
-        lArm = hardwareMap.servo.get("lArm");
-        rArm = hardwareMap.servo.get("rArm");
-        lGrab = hardwareMap.servo.get("lGrab");
-        rGrab = hardwareMap.servo.get("rGrab");
+
 
         lift = hardwareMap.dcMotor.get("lift");
 
@@ -39,14 +35,9 @@ public class towerLevelTest extends OpMode {
         //Motor directions
         lift.setDirection(DcMotorSimple.Direction.FORWARD);
 
-        lArm.setDirection(Servo.Direction.FORWARD);
-        rArm.setDirection(Servo.Direction.REVERSE);
-        lGrab.setDirection(Servo.Direction.REVERSE);
-        rGrab.setDirection(Servo.Direction.FORWARD);
 
         //Lift brake
         lift.setZeroPowerBehavior(DcMotor.ZeroPowerBehavior.BRAKE);
-        claw = new Claw(lArm, rArm, lGrab, rGrab);
     }
 
     public void loop(){
@@ -61,22 +52,15 @@ public class towerLevelTest extends OpMode {
         telemetry.addData("range", distanceLift.getDistance(DistanceUnit.CM));
         telemetry.addData("level", level);
         if(liftL > 0.1){
-            lift.setPower(0.8);
+            lift.setPower(0.98);
         }
         else if(liftL < -0.1){
-            lift.setPower(-0.4);
+            lift.setPower(-0.6);
         }
         else{
             lift.setPower(0);
         }
 
-
-        if(grab > 0.1){
-            claw.grab();
-        }
-        else{
-            claw.release();
-        }
 
         if(!pressP){
             if (levelPlus) {

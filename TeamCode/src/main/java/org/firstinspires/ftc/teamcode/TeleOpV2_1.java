@@ -34,6 +34,7 @@ public class TeleOpV2_1 extends OpMode {
     float grab;
     boolean startAccel;
 
+
     public void init(){
         //Servos
         fLFound = hardwareMap.servo.get("fLFound");
@@ -99,6 +100,7 @@ public class TeleOpV2_1 extends OpMode {
         lFoundationDown = gamepad1.left_bumper || gamepad2.x;
         rFoundationDown = gamepad1.right_bumper || gamepad2.b;
         startAccel = gamepad1.x;
+
 
         //Drive
         driveSystem.drive(gamepad1);

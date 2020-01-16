@@ -163,10 +163,10 @@ public class AutoLiftTest extends OpMode {
                     }
                     break;
                 case 1:
-                    if (distanceLift.getDistance(DistanceUnit.CM) < 10) {  //10.5
+                    if (distanceLift.getDistance(DistanceUnit.CM) < 5) {  //10.5
                         lift.setPower(0.8);
                     }
-                    else if(distanceLift.getDistance(DistanceUnit.CM) > 11) {
+                    else if(distanceLift.getDistance(DistanceUnit.CM) > 7) {
                         lift.setPower(-0.4);
                     }
                     else{
@@ -175,10 +175,10 @@ public class AutoLiftTest extends OpMode {
                     }
                     break;
                 case 2:
-                    if (distanceLift.getDistance(DistanceUnit.CM) < 20) { //20.5
+                    if (distanceLift.getDistance(DistanceUnit.CM) < 16) { //20.5
                         lift.setPower(0.8);
                     }
-                    else if(distanceLift.getDistance(DistanceUnit.CM) > 21) {
+                    else if(distanceLift.getDistance(DistanceUnit.CM) > 18) {
                         lift.setPower(-0.4);
                     }
                     else{
@@ -187,10 +187,10 @@ public class AutoLiftTest extends OpMode {
                     }
                     break;
                 case 3:
-                    if (distanceLift.getDistance(DistanceUnit.CM) < 30) { //30.5
+                    if (distanceLift.getDistance(DistanceUnit.CM) < 26) { //30.5
                         lift.setPower(0.8);
                     }
-                    else if(distanceLift.getDistance(DistanceUnit.CM) > 31) {
+                    else if(distanceLift.getDistance(DistanceUnit.CM) > 28) {
                         lift.setPower(-0.4);
                     }
                     else{
@@ -199,10 +199,10 @@ public class AutoLiftTest extends OpMode {
                     }
                     break;
                 case 4:
-                    if (distanceLift.getDistance(DistanceUnit.CM) < 40) { //40.5
+                    if (distanceLift.getDistance(DistanceUnit.CM) < 36) { //40.5
                         lift.setPower(0.8);
                     }
-                    else if(distanceLift.getDistance(DistanceUnit.CM) > 41) {
+                    else if(distanceLift.getDistance(DistanceUnit.CM) > 38) {
                         lift.setPower(-0.4);
                     }
                     else{
@@ -211,10 +211,10 @@ public class AutoLiftTest extends OpMode {
                     }
                     break;
                 case 5:
-                    if (distanceLift.getDistance(DistanceUnit.CM) < 55) {   //54
+                    if (distanceLift.getDistance(DistanceUnit.CM) < 48) {   //54
                         lift.setPower(0.8);
                     }
-                    else if(distanceLift.getDistance(DistanceUnit.CM) > 56) {
+                    else if(distanceLift.getDistance(DistanceUnit.CM) > 50) {
                         lift.setPower(-0.4);
                     }
                     else{
@@ -223,7 +223,7 @@ public class AutoLiftTest extends OpMode {
                     }
                     break;
                 case 6:
-                    if (distanceLift.getDistance(DistanceUnit.CM) < 63) {   //62
+                    if (distanceLift.getDistance(DistanceUnit.CM) < 62 ) {   //62
                         lift.setPower(0.8);
                     }
                     else if(distanceLift.getDistance(DistanceUnit.CM) > 64) {

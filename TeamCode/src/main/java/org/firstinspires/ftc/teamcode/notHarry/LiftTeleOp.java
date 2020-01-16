@@ -1,26 +1,28 @@
-package org.firstinspires.ftc.teamcode;
+package org.firstinspires.ftc.teamcode.notHarry;
 
 import com.qualcomm.robotcore.eventloop.opmode.OpMode;
 import com.qualcomm.robotcore.eventloop.opmode.TeleOp;
 import com.qualcomm.robotcore.hardware.DcMotor;
 import com.qualcomm.robotcore.hardware.DcMotorSimple;
 import com.qualcomm.robotcore.hardware.DistanceSensor;
-import com.qualcomm.robotcore.hardware.Gamepad;
 import com.qualcomm.robotcore.hardware.Servo;
 
 import org.firstinspires.ftc.teamcode.Subsystems.DriveSystems.Headless;
 import org.firstinspires.ftc.teamcode.Subsystems.Gyroscope;
 import org.firstinspires.ftc.teamcode.Subsystems.Lift;
 
-@TeleOp(name = "TeleOp v2")
-public class TeleOpV2 extends OpMode {
+@TeleOp(name = "Lift TeleOp")
+public class LiftTeleOp extends OpMode {
     //Drive train
     Headless driveSystem;
+
+    Lift lift;
 
     //Hardware
     Servo fLFound, fRFound, bLFound, bRFound;
     Servo lArm, rArm, lGrab, rGrab;
     DcMotor fRight,fLeft,bRight,bLeft, liftMotor;
+    DistanceSensor distanceLift;
 
     float armUp, last_armUp=0;
     boolean isBreak=false;
@@ -47,6 +49,7 @@ public class TeleOpV2 extends OpMode {
         distL = hardwareMap.get(DistanceSensor.class, "distanceL");
         distR = hardwareMap.get(DistanceSensor.class, "distanceR");
         distC = hardwareMap.get(DistanceSensor.class, "distanceC");*/
+        distanceLift = hardwareMap.get(DistanceSensor.class, "distanceLift");
 
         //Drive motors
         fLeft = hardwareMap.dcMotor.get("fLeft");
@@ -79,14 +82,14 @@ public class TeleOpV2 extends OpMode {
 
         //Lift brake
         liftMotor.setZeroPowerBehavior(DcMotor.ZeroPowerBehavior.BRAKE);
+
+        lift = new Lift(liftMotor, distanceLift);
     }
 
     public void loop() {
         //Inputs
         armUp = gamepad2.left_trigger;
         grab = gamepad2.right_trigger;
-        liftUp=gamepad1.right_trigger;
-        liftDown=gamepad1.left_trigger;
         lFoundationDown = gamepad1.left_bumper || gamepad2.x;
         rFoundationDown = gamepad1.right_bumper || gamepad2.b;
 
@@ -138,28 +141,19 @@ public class TeleOpV2 extends OpMode {
             //Double servo claw: r 0.2 l 0.28 closed, r 0.13 l 0.23 open
 
             if (grab > 0.1) {
-                rGrab.setPosition(0.2);//.2
-                lGrab.setPosition(0.28);//.28
+                rGrab.setPosition(0.28);//.2
+                lGrab.setPosition(0.42);//.28
             } else {
-                rGrab.setPosition(0.13);//.13
-                lGrab.setPosition(0.23);//0.23
+                rGrab.setPosition(0.16);//.13
+                lGrab.setPosition(0.35);//0.23
             }
         }
 
         //Lift
-        if (liftUp != last_liftUp || liftDown != last_liftDown) {
-            if (liftUp > 0.1) {
-                liftMotor.setPower(0.98);
-                isBreak = true;
-            } else if (liftDown > 0.1) {
-                liftMotor.setPower(-0.6);
-                isBreak = false;
-            } else {
-                liftMotor.setPower(0);
-            }
-        }
+        lift.liftSet(gamepad1);
 
         //Telemetry
+        telemetry.addData("Level: ", lift.getLevel());
         telemetry.addData("fL servo pos: ", fLFound.getPosition());
         telemetry.addData("fR servo pos: ", fRFound.getPosition());
         telemetry.addData("bL servo pos: ", bLFound.getPosition());

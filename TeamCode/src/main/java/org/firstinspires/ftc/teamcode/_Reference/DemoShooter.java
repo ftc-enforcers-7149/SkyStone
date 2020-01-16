@@ -40,7 +40,7 @@ public class DemoShooter extends OpMode {
         double lStick = gamepad1.left_stick_y, rStick = gamepad1.right_stick_y;
         boolean sweepF = gamepad1.y, sweepB = gamepad1.a;
         boolean conveyF = gamepad1.b, conveyB = gamepad1.x;
-        boolean launchF = gamepad1.right_bumper, launchB = gamepad2.left_bumper;
+        float launchF = gamepad1.right_trigger;
 
 
 
@@ -87,21 +87,14 @@ public class DemoShooter extends OpMode {
 
         //launcher for gamepad 1&2
 
-        if((launchF && !launchB))
+        if(launchF > 0.1)
         {
             rLaunch.setPower(1);
             lLaunch.setPower(1);
             convey.setPower(-0.75);
             sweeper.setPower(1);
         }
-        else if((launchB && !launchF))
-        {
-            rLaunch.setPower(-1);
-            lLaunch.setPower(-1);
-            convey.setPower(0.75);
-            sweeper.setPower(-1);
-        }
-        else
+        else if(launchF < 0.1)
         {
             rLaunch.setPower(0);
             lLaunch.setPower(0);

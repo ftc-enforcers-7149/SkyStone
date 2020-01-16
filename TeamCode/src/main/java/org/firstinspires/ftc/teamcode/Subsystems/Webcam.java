@@ -387,7 +387,7 @@ public class Webcam {
                     lGreen += Color.green(bitmap.getPixel(x, y));
                 }
 
-                for (int x = 240; x < 260; x++) {
+                for (int x = 240; x < 260; x++) {;
                     cRed += Color.red(bitmap.getPixel(x, y));
                     cGreen += Color.green(bitmap.getPixel(x, y));
                 }

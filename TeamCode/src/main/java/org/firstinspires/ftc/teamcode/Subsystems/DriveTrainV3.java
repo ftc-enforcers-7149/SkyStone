@@ -3,19 +3,24 @@ package org.firstinspires.ftc.teamcode.Subsystems;
 import com.qualcomm.robotcore.hardware.ColorSensor;
 import com.qualcomm.robotcore.hardware.DcMotor;
 import com.qualcomm.robotcore.hardware.DistanceSensor;
+import com.qualcomm.robotcore.hardware.HardwareMap;
 
 import org.firstinspires.ftc.robotcore.external.Telemetry;
 import org.firstinspires.ftc.robotcore.external.navigation.DistanceUnit;
-import org.firstinspires.ftc.teamcode.CollisionAvoidance.MovementDetectionClass;
 import org.firstinspires.ftc.teamcode.Subsystems.Enums.Directions;
 import org.firstinspires.ftc.teamcode.Subsystems.Enums.Positions;
+import org.firstinspires.ftc.teamcode.Subsystems.Odometry.OdometryPosition;
 
-public class DriveTrainV2 {
-    private DcMotor fLeft, fRight, bLeft, bRight;
+public class DriveTrainV3 {
     //IMU variables
     private Gyroscope gyro;
 
-    Telemetry telemetry;
+    private DcMotor fLeft, fRight, bLeft, bRight;
+
+    private OdometryPosition oP;
+
+    private Telemetry telemetry;
+
     //used for encoders
     private static final double     EXTERNAL_GEARING        = 1.5;    //From sprockets
     private static final double     COUNTS_PER_MOTOR_REV    = 753.2 ;  //28  // eg: AndyMark NeverRest40 Motor Encoder
@@ -24,8 +29,10 @@ public class DriveTrainV2 {
     public static final double     COUNTS_PER_INCH         = ((COUNTS_PER_MOTOR_REV * DRIVE_GEAR_REDUCTION) /
             (WHEEL_DIAMETER_INCHES * 3.1415))/EXTERNAL_GEARING;
 
-    double endTime, last_time=0;
-    double last_dist=0;
+    private double endTime, last_time=0;
+    private double last_dist=0;
+
+    private double x, y;
 
     /**
      * Main constructor
@@ -36,51 +43,31 @@ public class DriveTrainV2 {
      * @param bRight bRight
      * @param gyro gyro
      */
-    public DriveTrainV2(Telemetry telemetry, DcMotor fLeft, DcMotor fRight, DcMotor bLeft, DcMotor bRight, Gyroscope gyro){
+    public DriveTrainV3(HardwareMap hardwareMap, Telemetry telemetry, DcMotor fLeft, DcMotor fRight, DcMotor bLeft, DcMotor bRight, Gyroscope gyro){
         this.fLeft = fLeft;
         this.fRight = fRight;
         this.bLeft = bLeft;
         this.bRight = bRight;
         this.gyro=gyro;
         this.telemetry=telemetry;
+
+        oP = new OdometryPosition(hardwareMap, "encX", "encY", 0, 0, gyro, fLeft, fRight, bLeft, bRight);
+        oP.reverseY();
+    }
+
+    public void updateOdom(OdometryPosition.Direction dir) {
+        oP.updatePosition(dir);
     }
 
     /**
-     * drives inputted distance(inches)
-     * @param direction direction of driving.
-     * @param dist distance to drive.
+     * Drives to any point
+     * @param x X coord
+     * @param y Y coord
+     * @param power Power limit for motors
+     * @return
      */
-    public boolean driveStraight(Directions direction, double dist) {
-        if (last_dist != dist) {
-            last_dist = dist;
-            resetEncoderWithoutEncoder();
-        }
-        //sets direction of motors
-        int mDirection = 1;
-        if (direction == Directions.FORWARD) {
-            mDirection = -1;
-        }
-        double power=0.6*mDirection;
-
-        //converts current position into inches
-        double cPosition=fRight.getCurrentPosition()/COUNTS_PER_INCH*mDirection;
-
-        if(cPosition < last_dist){
-            if(last_dist-Math.abs(cPosition)<20){
-                power=0.4*mDirection;
-            }
-            fLeft.setPower(power);
-            fRight.setPower(power);
-            bLeft.setPower(power);
-            bRight.setPower(power);
-        }
-        else {
-            fLeft.setPower(0);
-            fRight.setPower(0);
-            bLeft.setPower(0);
-            bRight.setPower(0);
-
-            last_dist = 0;
+    public boolean driveToPoint(double x, double y, double power) {
+        if (oP.driveToPoint(x, y, power, telemetry)) {
             return true;
         }
 
@@ -88,37 +75,28 @@ public class DriveTrainV2 {
     }
 
     /**
-     * drives inputted distance(inches)
+     * Drives inputted distance(inches)
      * @param direction direction of driving.
-     * @param dist distance to drive
-     * @param power of drive wheels
+     * @param dist distance to drive.
+     * @param power Limit for power to drive
      */
     public boolean driveStraight(Directions direction, double dist, double power) {
         if (last_dist != dist) {
             last_dist = dist;
-            resetEncoderWithoutEncoder();
-        }
-        //sets direction of motors
-        int mDirection = 1;
-        if (direction == Directions.FORWARD) {
-            mDirection = -1;
-        }
-        power=power*mDirection;
 
-        //converts current position into inches
-        double cPosition=fRight.getCurrentPosition()/COUNTS_PER_INCH*mDirection;
+            double angle = Math.toRadians(oP.cvtDegrees(oP.getHeading()));
 
-        if (cPosition < last_dist){
-            fLeft.setPower(power);
-            fRight.setPower(power);
-            bLeft.setPower(power);
-            bRight.setPower(power);
+            if (direction == Directions.FORWARD) {
+                x = dist * Math.cos(angle);
+                y = dist * Math.sin(angle);
+            } else {
+                x = -dist * Math.cos(angle);
+                y = -dist * Math.sin(angle);
+            }
         }
-        else {
-            fLeft.setPower(0);
-            fRight.setPower(0);
-            bLeft.setPower(0);
-            bRight.setPower(0);
+
+        if (oP.driveToPoint(x, y, power, telemetry)) {
+            last_dist = 0;
 
             return true;
         }
@@ -126,20 +104,43 @@ public class DriveTrainV2 {
         return false;
     }
 
-
     /**
-     * Resets drive encoders without running using encoders
+     * Strafes inputted distance(inches)
+     * @param direction direction of strafing.
+     * @param dist distance to strafe.
+     * @param power Limit for power to drive
      */
-    public void resetEncoderWithoutEncoder(){
-        bRight.setMode(DcMotor.RunMode.STOP_AND_RESET_ENCODER);
-        bLeft.setMode(DcMotor.RunMode.STOP_AND_RESET_ENCODER);
-        fLeft.setMode(DcMotor.RunMode.STOP_AND_RESET_ENCODER);
-        fRight.setMode(DcMotor.RunMode.STOP_AND_RESET_ENCODER);
+    public boolean driveStrafe(Directions direction, double dist, double power) {
+        if (last_dist != dist) {
+            last_dist = dist;
 
-        fRight.setMode(DcMotor.RunMode.RUN_WITHOUT_ENCODER);
-        fLeft.setMode(DcMotor.RunMode.RUN_WITHOUT_ENCODER);
-        bRight.setMode(DcMotor.RunMode.RUN_WITHOUT_ENCODER);
-        bLeft.setMode(DcMotor.RunMode.RUN_WITHOUT_ENCODER);
+            double offsetAngle;
+
+            if (direction == Directions.RIGHT) {
+                offsetAngle = 90;
+            }
+            else {
+                offsetAngle = -90;
+            }
+
+            double angle = Math.toRadians(oP.cvtDegrees(oP.getHeading() + offsetAngle));
+
+            if (direction == Directions.RIGHT) {
+                x = dist * Math.cos(angle);
+                y = dist * Math.sin(angle);
+            } else {
+                x = -dist * Math.cos(angle);
+                y = -dist * Math.sin(angle);
+            }
+        }
+
+        if (oP.driveToPoint(x, y, power, telemetry)) {
+            last_dist = 0;
+
+            return true;
+        }
+
+        return false;
     }
 
     /**
@@ -235,142 +236,6 @@ public class DriveTrainV2 {
     }
 
     /**
-     * turns to the desired angle
-     * 0-360 in a clockwise format
-     * @param destination
-     */
-    public boolean rotation(double destination) {
-        fRight.setMode(DcMotor.RunMode.RUN_WITHOUT_ENCODER);
-        fLeft.setMode(DcMotor.RunMode.RUN_WITHOUT_ENCODER);
-        bRight.setMode(DcMotor.RunMode.RUN_WITHOUT_ENCODER);
-        bLeft.setMode(DcMotor.RunMode.RUN_WITHOUT_ENCODER);
-
-        double speed = 0;
-        double min = 0.18;
-        double max = 0.8;
-
-        //standard current angle
-        double heading = gyro.getYaw();
-
-        //check if over 360
-        if (Math.abs(destination)>360) {
-            //positive
-            if(destination>0) {
-                while(destination>360) {
-                    destination-=360;
-                    System.out.println(destination);
-                }//end while
-            }
-            //negative
-            else {
-                while(destination<-360) {
-                    destination+=360;
-                    System.out.println(destination);
-                }//end while
-            }//end if else
-        }//end greater than 360
-        destination = Math.abs(destination);// convert to positive value
-        if (destination==0) {//if 360 set to 0 as they are the same heading
-            destination = 360;
-        }
-        if (heading==0) {//if 360 set to 0 as they are the same heading
-            heading = 360;
-        }
-
-        //main phase of method
-        if (heading < destination - 0.5 || heading > destination + 0.5) {
-            telemetry.addData("heading",heading);
-            telemetry.addData("speed",speed);
-            telemetry.update();
-            double delta = destination-heading; //the difference between destination and heading
-            heading = gyro.getYaw();
-            //decreases speed as robot approaches destination
-            speed = (1 - ((heading) / destination)) * ((destination - heading) * 0.01);
-
-            //if the speed gets under the min speed it will use the min speed
-            if (Math.abs(speed) < min && Math.abs(speed) != 0) {
-                speed = min;
-            }
-            //if the speed is over the max it will use max speed
-            if(Math.abs(speed) > max){
-                speed=max;
-            }
-            if (!(Math.abs(delta) == 360 || Math.abs(delta) == 0)) {//determine if we are at the intended heading
-                if (((delta + 360) % 360) > 180) { //Chooses fastest route by determining if the arc length is longer to the right or left. Chooses fastest route by
-                    fLeft.setPower(speed);
-                    bLeft.setPower(speed);
-                    bRight.setPower(-speed);
-                    fRight.setPower(-speed);
-                } else {
-                    fLeft.setPower(-speed);
-                    bLeft.setPower(-speed);
-                    bRight.setPower(speed);
-                    fRight.setPower(speed);
-                }
-            } else {
-                fLeft.setPower(0);
-                bLeft.setPower(0);
-                bRight.setPower(0);
-                fRight.setPower(0);
-            }
-        }
-        else {
-            fLeft.setPower(0);
-            bLeft.setPower(0);
-            bRight.setPower(0);
-            fRight.setPower(0);
-
-            return true;
-        }
-
-        return false;
-    }
-
-    public boolean driveToLine(ColorSensor color, Directions dir){
-
-        int direction = dir == Directions.FORWARD ? -1 : 1;
-
-        if (color.red()<35&&color.blue()<35){
-            fLeft.setPower(0.3*direction);
-            bLeft.setPower(0.3*direction);
-            bRight.setPower(0.3*direction);
-            fRight.setPower(0.3*direction);
-        }
-        else{
-            fLeft.setPower(0);
-            bLeft.setPower(0);
-            bRight.setPower(0);
-            fRight.setPower(0);
-
-            return true;
-        }
-
-        return false;
-    }
-
-    public boolean strafeToLine(ColorSensor color, Directions dir){
-
-        int direction = dir == Directions.RIGHT ? 1 : -1;
-
-        if (color.red()<35&&color.blue()<35){
-            fLeft.setPower(-0.6*direction);
-            bLeft.setPower(0.6*direction);
-            bRight.setPower(-0.6*direction);
-            fRight.setPower(0.6*direction);
-        }
-        else {
-            fLeft.setPower(0);
-            bLeft.setPower(0);
-            bRight.setPower(0);
-            fRight.setPower(0);
-
-            return true;
-        }
-
-        return false;
-    }
-
-    /**
      * turns to given angle without correction
      * @param distance angle destination
      * @param power drive power
@@ -398,6 +263,56 @@ public class DriveTrainV2 {
             fRight.setPower(0);
 
             return true;
+        }
+
+        return false;
+    }
+
+    /**
+     * Drives or strafes to colored line depending on direction
+     * @param color Color sensor to use
+     * @param dir   Direction to drive / strafe in
+     * @return
+     */
+    public boolean driveToLine(ColorSensor color, Directions dir){
+
+        int direction;
+
+        if (dir == Directions.FORWARD || dir == Directions.BACKWARD) {
+            direction = dir == Directions.FORWARD ? -1 : 1;
+
+            if (color.red()<35&&color.blue()<35){
+                fLeft.setPower(0.3*direction);
+                bLeft.setPower(0.3*direction);
+                bRight.setPower(0.3*direction);
+                fRight.setPower(0.3*direction);
+            }
+            else{
+                fLeft.setPower(0);
+                bLeft.setPower(0);
+                bRight.setPower(0);
+                fRight.setPower(0);
+
+                return true;
+            }
+        }
+        else {
+            direction = dir == Directions.RIGHT ? 1 : -1;
+
+            if (color.red()<35&&color.blue()<35){
+                fLeft.setPower(-0.6*direction);
+                bLeft.setPower(0.6*direction);
+                bRight.setPower(-0.6*direction);
+                fRight.setPower(0.6*direction);
+            }
+            else {
+                fLeft.setPower(0);
+                bLeft.setPower(0);
+                bRight.setPower(0);
+                fRight.setPower(0);
+
+                return true;
+            }
         }
 
         return false;
@@ -519,5 +434,23 @@ public class DriveTrainV2 {
         return false;
     }
 
+    public double getHeading() {
+        return gyro.getYaw();
+    }
 
+    public double getPosX() {
+        return oP.positionX;
+    }
+
+    public double getPosY() {
+        return oP.positionY;
+    }
+
+    public double getRawX() {
+        return oP.getRawX();
+    }
+
+    public double getRawY() {
+        return oP.getRawY();
+    }
 }

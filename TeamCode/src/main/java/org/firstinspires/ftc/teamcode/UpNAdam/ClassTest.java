@@ -60,7 +60,12 @@ public class ClassTest extends OpMode {
                 }
                 break;
             case 1:
-                if (driveTrain.driveStraight(Directions.FORWARD, 24, 0.2)) {
+                if (driveTrain.driveStraight(Directions.FORWARD, 24, 0.3)) {
+                    step++;
+                }
+                break;
+            case 2:
+                if (driveTrain.rotate(270)) {
                     step++;
                 }
                 break;
