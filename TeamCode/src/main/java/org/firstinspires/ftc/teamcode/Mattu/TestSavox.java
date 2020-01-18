@@ -4,24 +4,36 @@ import com.qualcomm.robotcore.eventloop.opmode.OpMode;
 import com.qualcomm.robotcore.eventloop.opmode.TeleOp;
 import com.qualcomm.robotcore.hardware.Servo;
 
-@TeleOp(name = "Test Savox")
+@TeleOp(name="TestSavox")
 public class TestSavox extends OpMode {
 
-    Servo testServo;
+    Servo drive;
+
+    boolean lastA, lastB;
 
     public void init() {
-        testServo = hardwareMap.servo.get("test");
-        testServo.scaleRange(0.0012, 1);
+        drive = hardwareMap.servo.get("drive");
     }
 
     public void loop() {
-        if (gamepad1.a) {
-            testServo.setPosition(0.4);
+        if (gamepad1.a != lastA) {
+            if (gamepad1.a) {
+                if (drive.getPosition() <= 0.95) {
+                    drive.setPosition(drive.getPosition() + 0.05);//0.9
+                }
+            }
         }
-        if (gamepad1.b) {
-            testServo.setPosition(0.2);
+        if (gamepad1.b != lastB) {
+            if (gamepad1.b) {
+                if (drive.getPosition() >= 0.05) {
+                    drive.setPosition(drive.getPosition() - 0.05);//0
+                }
+            }
         }
 
-        telemetry.addData("Servo Pos: ", testServo.getPosition());
+        telemetry.addData("Servo Position: ", drive.getPosition());
+
+        lastA = gamepad1.a;
+        lastB = gamepad1.b;
     }
 }

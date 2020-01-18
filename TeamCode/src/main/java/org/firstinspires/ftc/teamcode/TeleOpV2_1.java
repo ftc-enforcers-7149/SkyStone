@@ -37,14 +37,14 @@ public class TeleOpV2_1 extends OpMode {
 
     public void init(){
         //Servos
-        fLFound = hardwareMap.servo.get("fLFound");
-        fRFound = hardwareMap.servo.get("fRFound");
-        bLFound = hardwareMap.servo.get("bLFound");
-        bRFound = hardwareMap.servo.get("bRFound");
-        lArm = hardwareMap.servo.get("lArm");
-        rArm = hardwareMap.servo.get("rArm");
-        lGrab = hardwareMap.servo.get("lGrab");
-        rGrab = hardwareMap.servo.get("rGrab");
+        fLFound=hardwareMap.servo.get("fLFound");
+        fRFound=hardwareMap.servo.get("fRFound");
+        bLFound=hardwareMap.servo.get("bLFound");
+        bRFound=hardwareMap.servo.get("bRFound");
+        lArm=hardwareMap.servo.get("lArm");
+        rArm=hardwareMap.servo.get("rArm");
+        lGrab=hardwareMap.servo.get("lGrab");
+        rGrab=hardwareMap.servo.get("rGrab");
 
         //Inits to combat lag
         /*colorSensor = hardwareMap.colorSensor.get("color");
@@ -52,14 +52,14 @@ public class TeleOpV2_1 extends OpMode {
         distR = hardwareMap.get(DistanceSensor.class, "distanceR");
         distC = hardwareMap.get(DistanceSensor.class, "distanceC");*/
 
-        distanceLift = hardwareMap.get(DistanceSensor.class, "distanceLift");
+        distanceLift=hardwareMap.get(DistanceSensor.class,"distanceLift");
 
         //Drive motors
-        fLeft = hardwareMap.dcMotor.get("fLeft");
-        fRight = hardwareMap.dcMotor.get("fRight");
-        bLeft = hardwareMap.dcMotor.get("bLeft");
-        bRight = hardwareMap.dcMotor.get("bRight");
-        liftMotor = hardwareMap.dcMotor.get("lift");
+        fLeft=hardwareMap.dcMotor.get("fLeft");
+        fRight=hardwareMap.dcMotor.get("fRight");
+        bLeft=hardwareMap.dcMotor.get("bLeft");
+        bRight=hardwareMap.dcMotor.get("bRight");
+        liftMotor=hardwareMap.dcMotor.get("lift");
 
         //Motor directions
         fLeft.setDirection(DcMotorSimple.Direction.REVERSE);
@@ -69,8 +69,8 @@ public class TeleOpV2_1 extends OpMode {
         liftMotor.setDirection(DcMotorSimple.Direction.FORWARD);
 
         //Initialize drive train
-        Gyroscope gyroscope = new Gyroscope(telemetry, hardwareMap);
-        driveSystem = new Headless(gyroscope, fLeft, fRight, bLeft, bRight);
+        Gyroscope gyroscope=new Gyroscope(telemetry,hardwareMap);
+        driveSystem=new Headless(gyroscope,fLeft,fRight,bLeft,bRight);
 
         //Servo directions
         fLFound.setDirection(Servo.Direction.REVERSE);
@@ -86,9 +86,9 @@ public class TeleOpV2_1 extends OpMode {
         //Lift brake
         liftMotor.setZeroPowerBehavior(DcMotor.ZeroPowerBehavior.BRAKE);
 
-        foundation =new FoundationV2(fLFound,fRFound,bLFound,bRFound);
+        foundation=new FoundationV2(fLFound,fRFound,bLFound,bRFound);
         claw=new Claw(lArm,rArm,lGrab,rGrab);
-        lift = new Lift(liftMotor, distanceLift);
+        lift=new Lift(liftMotor,distanceLift);
     }
 
     public void loop(){

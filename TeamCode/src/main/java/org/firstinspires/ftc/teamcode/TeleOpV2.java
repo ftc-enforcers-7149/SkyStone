@@ -4,19 +4,15 @@ import com.qualcomm.robotcore.eventloop.opmode.OpMode;
 import com.qualcomm.robotcore.eventloop.opmode.TeleOp;
 import com.qualcomm.robotcore.hardware.DcMotor;
 import com.qualcomm.robotcore.hardware.DcMotorSimple;
-import com.qualcomm.robotcore.hardware.DistanceSensor;
-import com.qualcomm.robotcore.hardware.Gamepad;
 import com.qualcomm.robotcore.hardware.Servo;
 
 import org.firstinspires.ftc.teamcode.Subsystems.DriveSystems.Headless;
 import org.firstinspires.ftc.teamcode.Subsystems.Gyroscope;
-import org.firstinspires.ftc.teamcode.Subsystems.Lift;
 
 @TeleOp(name = "TeleOp v2")
 public class TeleOpV2 extends OpMode {
     //Drive train
     Headless driveSystem;
-
     //Hardware
     Servo fLFound, fRFound, bLFound, bRFound;
     Servo lArm, rArm, lGrab, rGrab;
@@ -37,10 +33,8 @@ public class TeleOpV2 extends OpMode {
         bRFound = hardwareMap.servo.get("bRFound");
         lArm = hardwareMap.servo.get("lArm");
         rArm = hardwareMap.servo.get("rArm");
-        lGrab = hardwareMap.servo.get("rGrab");
-        rGrab = hardwareMap.servo.get("lGrab");
-
-        //lGrab.scaleRange(0.0012, 1);    //Use for single servo claw
+        lGrab = hardwareMap.servo.get("lGrab");
+        rGrab = hardwareMap.servo.get("rGrab");
 
         //Inits to combat lag
         /*colorSensor = hardwareMap.colorSensor.get("color");
@@ -134,7 +128,6 @@ public class TeleOpV2 extends OpMode {
 
         //Grabber
         if (grab != last_grab) {
-            //Single servo claw: 0.6 closed, 0.4 open
             //Double servo claw: r 0.2 l 0.28 closed, r 0.13 l 0.23 open
 
             if (grab > 0.1) {

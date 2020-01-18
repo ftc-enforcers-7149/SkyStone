@@ -10,6 +10,7 @@ import com.qualcomm.robotcore.hardware.Servo;
 import org.firstinspires.ftc.teamcode.Subsystems.Claw;
 import org.firstinspires.ftc.teamcode.Subsystems.DriveTrainV1;
 import org.firstinspires.ftc.teamcode.Subsystems.DriveTrainV2;
+import org.firstinspires.ftc.teamcode.Subsystems.DriveTrainV3;
 import org.firstinspires.ftc.teamcode.Subsystems.Enums.Directions;
 import org.firstinspires.ftc.teamcode.Subsystems.FoundationV2;
 import org.firstinspires.ftc.teamcode.Subsystems.Gyroscope;
@@ -22,7 +23,7 @@ public class BlueFoundationParkV3 extends OpMode {
     public Servo fLFound, fRFound, bLFound, bRFound;
     public DcMotor fRight,fLeft,bRight,bLeft,lift;
 
-    DriveTrainV2 driveTrain;
+    DriveTrainV3 driveTrain;
     Gyroscope gyro;
 
     FoundationV2 foundation;
@@ -78,12 +79,11 @@ public class BlueFoundationParkV3 extends OpMode {
 
         fRFound.setPosition(1);
         bRFound.setPosition(1);
-
     }
 
     public void start(){
         gyro = new Gyroscope(telemetry,hardwareMap);
-        driveTrain = new DriveTrainV2(telemetry,fLeft,fRight,bLeft,bRight,gyro);
+        driveTrain = new DriveTrainV3(hardwareMap, telemetry,fLeft,fRight,bLeft,bRight,gyro);
         foundation =new FoundationV2(fLFound,fRFound,bLFound,bRFound);
         claw=new Claw(lArm,rArm,lGrab,rGrab);
     }
@@ -93,7 +93,7 @@ public class BlueFoundationParkV3 extends OpMode {
         switch(step){
             //Move to and grab foundation
             case 1:
-                if (driveTrain.driveStraight(Directions.BACKWARD, 47)) {
+                if (driveTrain.driveStraight(Directions.BACKWARD, 47, 0.6)) {
                     step++;
                 }
                 break;
@@ -129,7 +129,7 @@ public class BlueFoundationParkV3 extends OpMode {
                 break;
             //Move foundation flush against wall
             case 8:
-                if (driveTrain.driveStraight(Directions.FORWARD, 36)) {
+                if (driveTrain.driveStraight(Directions.FORWARD, 36, 0.6)) {
                     step++;
                 }
                 break;
@@ -144,7 +144,7 @@ public class BlueFoundationParkV3 extends OpMode {
                 break;
             //Navigate to line close to wall
             case 11:
-                if (driveTrain.strafeToLine(color, Directions.LEFT)) {
+                if (driveTrain.driveToLine(color, Directions.LEFT)) {
                     step++;
                 }
                 break;

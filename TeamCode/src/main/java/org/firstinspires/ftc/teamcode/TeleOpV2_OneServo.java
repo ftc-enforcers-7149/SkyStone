@@ -36,8 +36,6 @@ public class TeleOpV2_OneServo extends OpMode {
         rArm = hardwareMap.servo.get("rArm");
         grabS = hardwareMap.servo.get("grab");
 
-        //lGrab.scaleRange(0.0012, 1);    //Use for single servo claw
-
         //Inits to combat lag
         /*colorSensor = hardwareMap.colorSensor.get("color");
         distL = hardwareMap.get(DistanceSensor.class, "distanceL");
@@ -129,7 +127,6 @@ public class TeleOpV2_OneServo extends OpMode {
         //Grabber
         if (grab != last_grab) {
             //Single servo claw: 0.666 closed, 0.9 open
-            //Double servo claw: r 0.2 l 0.28 closed, r 0.13 l 0.23 open
 
             if (grab > 0.1) {
                 grabS.setPosition(.66);
