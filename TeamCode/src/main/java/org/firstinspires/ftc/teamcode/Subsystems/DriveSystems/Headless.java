@@ -25,6 +25,8 @@ public class Headless {
     private double slowTime;
     private boolean accel;
 
+    private boolean normal;
+
     public Headless(Gyroscope gyro, DcMotor fl, DcMotor fr, DcMotor bl, DcMotor br) {
         //Hardware mapping the motors
         fLeft = fl;
@@ -44,13 +46,47 @@ public class Headless {
         v2 = 0;
         v3 = 0;
         v4 = 0;
+
+        normal = true;
+    }
+
+    public Headless(Gyroscope gyro, DcMotor fl, DcMotor fr, DcMotor bl, DcMotor br, boolean reverse) {
+        //Hardware mapping the motors
+        fLeft = fl;
+        fRight = fr;
+        bLeft = bl;
+        bRight = br;
+
+        //Reversing left motors
+        if (reverse) {
+            fLeft.setDirection(DcMotorSimple.Direction.REVERSE);
+            bLeft.setDirection(DcMotorSimple.Direction.REVERSE);
+        }
+
+        this.gyro = gyro;
+
+        //Initialize variables
+        lim = 1;
+        v1 = 0;
+        v2 = 0;
+        v3 = 0;
+        v4 = 0;
+
+        normal = reverse;
     }
 
     public void drive(Gamepad gamepad1) {
         //Getting inputs
-        leftY = gamepad1.left_stick_y;
-        leftX = gamepad1.left_stick_x;
-        rightX = gamepad1.right_stick_x;
+        if (normal) {
+            leftY = gamepad1.left_stick_y;
+            leftX = gamepad1.left_stick_x;
+            rightX = gamepad1.right_stick_x;
+        }
+        else {
+            leftY = gamepad1.left_stick_x;
+            leftX = -gamepad1.left_stick_y;
+            rightX = gamepad1.right_stick_x;
+        }
 
         //Specific inputs
         angle = gyro.getRawYaw();
