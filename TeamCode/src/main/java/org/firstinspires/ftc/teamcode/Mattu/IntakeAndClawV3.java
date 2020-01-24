@@ -85,7 +85,7 @@ public class IntakeAndClawV3 extends OpMode {
         clawRight.setPosition(0.6);
 
         arm.setPosition(0);
-        stopper.setPosition(0.4);
+        stopper.setPosition(0.55);//90 degrees //0.4
     }
 
     public void loop() {

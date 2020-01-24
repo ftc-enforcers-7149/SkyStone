@@ -116,8 +116,8 @@ public class EncoderTest extends OpMode {
         positionY = Math.ceil(positionY * 10000) / 10000;
         positionX = Math.ceil(positionX * 10000) / 10000;
 
-        telemetry.addData("posX:",positionX);
-        telemetry.addData("posY:",(positionY));
+        telemetry.addData("posX:",positionX);//telemetry.addData("posX:",positionX);
+        telemetry.addData("posY:",positionY);
         telemetry.addData("isTurning:",isTurning);
         telemetry.addData("heading:" ,heading);
         telemetry.addData("cos: ",Math.cos(Math.toRadians(gyroscope.cvtTrigAng(heading))));
