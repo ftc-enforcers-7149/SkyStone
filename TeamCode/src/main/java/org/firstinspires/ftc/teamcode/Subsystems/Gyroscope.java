@@ -70,6 +70,18 @@ public class Gyroscope {
     }
 
     /**
+     * Gets the shortest distance between two angles.
+     * @param destAngle Destination angle
+     * @param heading   Current angle
+     * @return
+     */
+    public double getRelDelta(double destAngle, double heading) {
+        return (heading-destAngle);
+    }
+
+
+
+    /**
      * converts gyro degrees from -180 to 180 to be 0 to 360
      * @param heading
      * @return
@@ -88,10 +100,27 @@ public class Gyroscope {
      * @return
      */
     public double cvtTrigAng(double heading) {
-        if (heading >= 0 && heading < 90) {
-            return -heading + 90;
+        double retVal;
+        if (heading < 0) {
+            retVal =  360 + heading;
+        } else {
+            retVal =  heading;
         }
-        return -heading + 450;
+
+        return (retVal+90)%360;
+
+
+    }
+
+    public double cvtRelativeAng(double heading){
+        double retVal;
+        if (heading < 0) {
+            retVal =  360 + heading;
+        } else {
+            retVal =  heading;
+        }
+
+        return (retVal+180)%360;
     }
 
     /**
@@ -107,6 +136,17 @@ public class Gyroscope {
      * @return
      */
     public double getYaw() {return cvtDegrees(imu.getAngularOrientation(AxesReference.INTRINSIC, AxesOrder.ZYX, AngleUnit.DEGREES).firstAngle);}
+
+    /**
+     * returns degrees in 0-360 degree format, with straight being 90 degrees instead of 0
+     * @return
+     */
+    public double getTrigYaw() {return cvtTrigAng(imu.getAngularOrientation(AxesReference.INTRINSIC, AxesOrder.ZYX, AngleUnit.DEGREES).firstAngle);}
+
+    /**
+     *
+     */
+    public double getRelativeYaw(){return cvtRelativeAng(imu.getAngularOrientation(AxesReference.INTRINSIC, AxesOrder.ZYX, AngleUnit.DEGREES).firstAngle);}
 
 
     /**

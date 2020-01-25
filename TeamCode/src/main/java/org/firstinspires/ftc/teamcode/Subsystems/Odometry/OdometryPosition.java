@@ -83,6 +83,9 @@ public class OdometryPosition extends Position {
         encoderX = hardwareMap.dcMotor.get(encX);
         encoderY = hardwareMap.dcMotor.get(encY);
 
+        encoderX.setDirection(DcMotorSimple.Direction.FORWARD);
+        encoderY.setDirection(DcMotorSimple.Direction.REVERSE);
+
         encoderX.setMode(DcMotor.RunMode.STOP_AND_RESET_ENCODER);
         encoderY.setMode(DcMotor.RunMode.STOP_AND_RESET_ENCODER);
 
@@ -159,8 +162,8 @@ public class OdometryPosition extends Position {
             //Then uses that as a modifier for how much an odometer will effect that axis
 
             //Apply the x odometer to the x and y axes
-            positionX = ((xDisp/COUNTS_PER_INCHX) * Math.sin(Math.toRadians(gyro.cvtTrigAng(heading)))) + ((yDisp/COUNTS_PER_INCHY)* Math.cos(Math.toRadians(gyro.cvtTrigAng(heading)))) + storedX;
-            positionY = ((yDisp/COUNTS_PER_INCHY) * Math.sin(Math.toRadians(gyro.cvtTrigAng(heading)))) + ((xDisp/COUNTS_PER_INCHX) * Math.cos(Math.toRadians(gyro.cvtTrigAng(heading)))) + storedY;
+            positionX = ((xDisp/COUNTS_PER_INCHX) * Math.sin(Math.toRadians(gyro.cvtTrigAng(heading)))) + (-(yDisp/COUNTS_PER_INCHY)* Math.cos(Math.toRadians(gyro.cvtTrigAng(heading)))) + storedX;
+            positionY = ((yDisp/COUNTS_PER_INCHY) * Math.sin(Math.toRadians(gyro.cvtTrigAng(heading)))) + (-(xDisp/COUNTS_PER_INCHX) * Math.cos(Math.toRadians(gyro.cvtTrigAng(heading)))) + storedY;
 
             //Rounds the positions so you don't get numbers like 6.6278326e^-12678
             /*positionY = Math.ceil(positionY * 1000000) / 1000000;
@@ -198,7 +201,7 @@ public class OdometryPosition extends Position {
 
         //Uses distance to calculate power and angle
         double r = Math.hypot(relativeX, relativeY);
-        double robotAngle = Math.atan2(relativeY, relativeX) - Math.toRadians(cvtDegrees(getHeading())) + Math.PI / 4;
+        double robotAngle = (Math.atan2(relativeY, relativeX) - Math.toRadians(cvtDegrees(getHeading())) + Math.PI / 4);
 
         telemetry.addData("Rel X: ", relativeX);
         telemetry.addData("Rel Y: ", relativeY);
@@ -243,10 +246,14 @@ public class OdometryPosition extends Position {
      * @return Converted angle in degrees
      */
     public double cvtDegrees(double heading) {
-        if (heading >= 0 && heading < 90) {
-            return -heading + 90;
+        double retVal;
+        if (heading < 0) {
+            retVal =  360 + heading;
+        } else {
+            retVal =  heading;
         }
-        return -heading + 450;
+
+        return (retVal+90)%360;
     }
 
     /**

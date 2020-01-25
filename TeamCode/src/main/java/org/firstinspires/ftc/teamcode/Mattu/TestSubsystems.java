@@ -1,3 +1,4 @@
+/*
 package org.firstinspires.ftc.teamcode.Mattu;
 
 import com.qualcomm.robotcore.eventloop.opmode.Autonomous;
@@ -13,11 +14,13 @@ import org.firstinspires.ftc.teamcode.Subsystems.FoundationV2;
 import org.firstinspires.ftc.teamcode.Subsystems.Gyroscope;
 import org.firstinspires.ftc.teamcode.Subsystems.Odometry.OdometryPosition;
 
+*/
 /**
  * This class was made to test various subsystems and functions of the robot
  * It uses controller input, but is done in an autonomous fashion
  * As of right now, it can drive by distance in 4 directions, rotate to 4 angles, use claw, and use foundation
- */
+ *//*
+
 @Autonomous(name = "TestSubsystems")
 public class TestSubsystems extends OpMode {
 
@@ -332,3 +335,4 @@ public class TestSubsystems extends OpMode {
         bLeft.setPower(0);
     }
 }
+*/

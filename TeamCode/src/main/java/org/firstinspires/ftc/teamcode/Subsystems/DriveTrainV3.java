@@ -183,18 +183,41 @@ public class DriveTrainV3 {
      * Min Speed = 0.1
      * Max Speed = 0.8
      * @param destAngle Destination angle
+     * @param initAngle initial angle
      * @return
      */
-    public boolean rotate(double destAngle) {
-        double speed=0, min=0.2;
+    public boolean rotate(double destAngle,double initAngle) {
+        double speed=0, min=0.12;
 
         //Get current heading
+        double relHeading = gyro.getRelativeYaw();
         double heading = gyro.getYaw();
+        boolean greater=false;
+        boolean done=false;
+
+        if(initAngle < destAngle){
+                greater=false;
+            }
+            else{
+                greater=true;
+            }
+
+
+        if(greater){
+            if(relHeading <= destAngle){
+                done=true;
+            }
+        }
+        else{
+            if(relHeading >= destAngle){
+                done=true;
+            }
+        }
 
         //If heading is not at destination
-        if (heading < destAngle - 0.5 || heading > destAngle + 0.5) {
+        if (!done) {
             //Get shortest distance to angle
-            double delta = gyro.getDelta(destAngle, heading);
+            double delta = gyro.getRelDelta(destAngle, relHeading);
 
             //Calculate speed (Linear calculation)
             //Farthest (180 away) : 0.8
@@ -214,8 +237,9 @@ public class DriveTrainV3 {
                 speed = -min;
             }
 
-            telemetry.addData("Angle: ", heading);
+            telemetry.addData("Angle: ", relHeading);
             telemetry.addData("Speed: ", speed);
+            telemetry.addData("Delta: ",delta);
 
             //Drive the motors so the robot turns
             fLeft.setPower(speed);
