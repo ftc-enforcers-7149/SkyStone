@@ -196,7 +196,7 @@ public class OdometryPosition extends Position {
      */
     public boolean driveToPoint(double x, double y, double lim, Telemetry telemetry) {
         //Gets the distance to the point
-        double relativeX = x - positionX;
+        double relativeX = x - positionX;//
         double relativeY = y - positionY;
 
         //Uses distance to calculate power and angle
