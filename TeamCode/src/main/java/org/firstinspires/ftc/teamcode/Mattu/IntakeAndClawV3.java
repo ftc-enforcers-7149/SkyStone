@@ -127,8 +127,8 @@ public class IntakeAndClawV3 extends OpMode {
         switch (armState) {
             case GRAB:
                 if (armButton > 0.1 && last_armButton <= 0.1) {
-                    clawLeft.setPosition(0.3);
-                    clawRight.setPosition(0.3);
+                    clawLeft.setPosition(0.33);
+                    clawRight.setPosition(0.33);
                     stopper.setPosition(0.16);
 
                     armState = State.AVOID_CHANNEL;

@@ -131,11 +131,11 @@ public class TeleOpV2 extends OpMode {
             //Double servo claw: r 0.2 l 0.28 closed, r 0.13 l 0.23 open
 
             if (grab > 0.1) {
-                rGrab.setPosition(0.2);//.2
-                lGrab.setPosition(0.28);//.28
+                rGrab.setPosition(0.25);//.13 //.25
+                lGrab.setPosition(0.35);//0.23 //.35
             } else {
-                rGrab.setPosition(0.13);//.13
-                lGrab.setPosition(0.23);//0.23
+                rGrab.setPosition(0.22);//.13 //.22
+                lGrab.setPosition(0.31);//0.23 //.31
             }
         }
 
