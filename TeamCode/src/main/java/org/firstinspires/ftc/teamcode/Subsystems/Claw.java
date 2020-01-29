@@ -26,8 +26,8 @@ public class Claw {
      * Makes the claw go up
      */
     public void down(){
-        lArm.setPosition(0.36); //0
-        rArm.setPosition(0.3);  //0
+        lArm.setPosition(0.36);
+        rArm.setPosition(0.31);  //0
     }
 
     /**
@@ -50,16 +50,16 @@ public class Claw {
      * Makes claw grab
      */
     public void grab(){
-        rGrab.setPosition(.20);//.41
-        lGrab.setPosition(0.28);//.45
+        rGrab.setPosition(0.25);//.13 //.25
+        lGrab.setPosition(0.35);//0.23 //.35
     }
 
     /**
      * Makes claw release
      */
     public void release(){
-        rGrab.setPosition(.13);//.6
-        lGrab.setPosition(0.21);//1
+        rGrab.setPosition(0.22);//.13 //.22
+        lGrab.setPosition(0.31);//0.23 //.31
     }
 
     /**
