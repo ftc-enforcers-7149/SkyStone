@@ -63,6 +63,9 @@ public class OdometryPosition extends Position {
         encoderX = hardwareMap.dcMotor.get(encX);
         encoderY = hardwareMap.dcMotor.get(encY);
 
+        encoderX.setDirection(DcMotorSimple.Direction.FORWARD);
+        encoderY.setDirection(DcMotorSimple.Direction.REVERSE);
+
         encoderX.setMode(DcMotor.RunMode.STOP_AND_RESET_ENCODER);
         encoderY.setMode(DcMotor.RunMode.STOP_AND_RESET_ENCODER);
 
@@ -162,8 +165,8 @@ public class OdometryPosition extends Position {
             //Then uses that as a modifier for how much an odometer will effect that axis
 
             //Apply the x odometer to the x and y axes
-            positionX = ((xDisp/COUNTS_PER_INCHX) * Math.sin(Math.toRadians(gyro.cvtTrigAng(heading)))) + (-(yDisp/COUNTS_PER_INCHY)* Math.cos(Math.toRadians(gyro.cvtTrigAng(heading)))) + storedX;
-            positionY = ((yDisp/COUNTS_PER_INCHY) * Math.sin(Math.toRadians(gyro.cvtTrigAng(heading)))) + (-(xDisp/COUNTS_PER_INCHX) * Math.cos(Math.toRadians(gyro.cvtTrigAng(heading)))) + storedY;
+            positionX = ((xDisp/COUNTS_PER_INCHX) * Math.sin(Math.toRadians(gyro.cvtTrigAng(heading)))) + ((-yDisp/COUNTS_PER_INCHY)* Math.cos(Math.toRadians(gyro.cvtTrigAng(heading)))) + storedX;
+            positionY = ((yDisp/COUNTS_PER_INCHY) * Math.sin(Math.toRadians(gyro.cvtTrigAng(heading)))) + ((xDisp/COUNTS_PER_INCHX) * Math.cos(Math.toRadians(gyro.cvtTrigAng(heading)))) + storedY;
 
             //Rounds the positions so you don't get numbers like 6.6278326e^-12678
             /*positionY = Math.ceil(positionY * 1000000) / 1000000;
@@ -208,10 +211,10 @@ public class OdometryPosition extends Position {
         telemetry.addData("Robot Angle: ", robotAngle);
 
         //Calculates each motor power using trig
-        double v1 = r * Math.cos(robotAngle);
-        double v2 = r * Math.sin(robotAngle);
-        double v3 = r * Math.sin(robotAngle);
-        double v4 = r * Math.cos(robotAngle);
+        double v1 = r * Math.sin(robotAngle);
+        double v2 = r * Math.cos(robotAngle);
+        double v3 = r * Math.cos(robotAngle);
+        double v4 = r * Math.sin(robotAngle);
 
         //Getting the max value can assure that no motor will be set to a value above a certain point.
         double max = Math.max(Math.max(Math.abs(v1), Math.abs(v2)), Math.max(Math.abs(v3), Math.abs(v4)));
@@ -246,14 +249,19 @@ public class OdometryPosition extends Position {
      * @return Converted angle in degrees
      */
     public double cvtDegrees(double heading) {
-        double retVal;
+        /*double retVal;
         if (heading < 0) {
             retVal =  360 + heading;
         } else {
             retVal =  heading;
         }
 
-        return (retVal+90)%360;
+        return (retVal+90)%360;*/
+
+        if (heading >= 0 && heading < 90) {
+            return -heading + 90;
+        }
+        return -heading + 450;
     }
 
     /**

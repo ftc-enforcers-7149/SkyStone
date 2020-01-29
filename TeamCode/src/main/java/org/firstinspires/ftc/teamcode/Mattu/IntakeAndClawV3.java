@@ -93,6 +93,7 @@ public class IntakeAndClawV3 extends OpMode {
         armButton = gamepad1.right_trigger;
         //stopperButton = gamepad2.x;
         intakeIn = gamepad1.left_trigger;
+        //intakeOut = gamepad1.right_trigger;
         liftUp = gamepad1.right_bumper;
         liftDown = gamepad1.left_bumper;
 
@@ -166,15 +167,6 @@ public class IntakeAndClawV3 extends OpMode {
                 break;
         }
 
-        //Control block stopper
-        /*if (stopperButton != last_stopperButton) {
-            if (stopperButton) {
-                stopper.setPosition(0.53);
-            } else {
-                stopper.setPosition(0.16);
-            }
-        }*/
-
         //Control the two intake motors
         //Positive power rotates inward
         //Negative power rotates outward
@@ -207,13 +199,13 @@ public class IntakeAndClawV3 extends OpMode {
         }
 
         telemetry.addData("Arm State: ", armState);
-        telemetry.addData("Block Detected: ", detectBlock.getDistance(DistanceUnit.CM));
+        telemetry.addData("Block Distance: ", detectBlock.getDistance(DistanceUnit.CM));
 
-        last_clawButton = clawButton;
+        //last_clawButton = clawButton;
         last_armButton = armButton;
-        last_stopperButton = stopperButton;
+        //last_stopperButton = stopperButton;
         last_intakeIn = intakeIn;
-        last_intakeOut = intakeOut;
+        //last_intakeOut = intakeOut;
         last_liftUp = liftUp;
         last_liftDown = liftDown;
     }

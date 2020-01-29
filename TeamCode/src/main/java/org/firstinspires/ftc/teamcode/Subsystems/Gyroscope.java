@@ -100,16 +100,10 @@ public class Gyroscope {
      * @return
      */
     public double cvtTrigAng(double heading) {
-        double retVal;
-        if (heading < 0) {
-            retVal =  360 + heading;
-        } else {
-            retVal =  heading;
+        if (heading >= 0 && heading < 90) {
+            return -heading + 90;
         }
-
-        return (retVal+90)%360;
-
-
+        return -heading + 450;
     }
 
     public double cvtRelativeAng(double heading){

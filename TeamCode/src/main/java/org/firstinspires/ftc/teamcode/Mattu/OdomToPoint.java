@@ -54,14 +54,12 @@ public class OdomToPoint extends OpMode {
         telemetry.addData("Position: ", "(" + driveTrain.getPosX() + ", " + driveTrain.getPosY() + ")");
         telemetry.addData("Raw X and Y: ", "(" + driveTrain.getRawX() + ", " + driveTrain.getRawY() + ")");
         telemetry.addData("Heading: ", driveTrain.getHeading());
-        telemetry.addData("rel heading: ",gyroscope.getRelativeYaw());
-        telemetry.addData("trig heading: ", gyroscope.getTrigYaw());
 
         switch (step) {
             case 0:
                 //This is the right format for driving to a point
                 //It will keep driving until at the point, then it will stop and move on
-                if (driveTrain.driveToPoint(0, 10, 0.3)) {
+                if (driveTrain.driveToPoint(0, 10, 0.5)) {
                     direction = OdometryPosition.Direction.TURNING;
                     step++;
                 }
@@ -73,7 +71,7 @@ public class OdomToPoint extends OpMode {
                 }
                 break;
             case 2:
-                if (driveTrain.driveToPoint(0, 20, 0.3)) {
+                if (driveTrain.driveToPoint(0, 20, 0.5)) {
                     step++;
                 }
                 break;
