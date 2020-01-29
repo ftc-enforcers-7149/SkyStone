@@ -165,7 +165,7 @@ public class OdometryPosition extends Position {
             //Then uses that as a modifier for how much an odometer will effect that axis
 
             //Apply the x odometer to the x and y axes
-            positionX = ((xDisp/COUNTS_PER_INCHX) * Math.sin(Math.toRadians(gyro.cvtTrigAng(heading)))) + ((-yDisp/COUNTS_PER_INCHY)* Math.cos(Math.toRadians(gyro.cvtTrigAng(heading)))) + storedX;
+            positionX = ((xDisp/COUNTS_PER_INCHX) * Math.sin(Math.toRadians(gyro.cvtTrigAng(heading)))) + ((yDisp/COUNTS_PER_INCHY)* Math.cos(Math.toRadians(gyro.cvtTrigAng(heading)))) + storedX;
             positionY = ((yDisp/COUNTS_PER_INCHY) * Math.sin(Math.toRadians(gyro.cvtTrigAng(heading)))) + ((xDisp/COUNTS_PER_INCHX) * Math.cos(Math.toRadians(gyro.cvtTrigAng(heading)))) + storedY;
 
             //Rounds the positions so you don't get numbers like 6.6278326e^-12678
@@ -204,17 +204,17 @@ public class OdometryPosition extends Position {
 
         //Uses distance to calculate power and angle
         double r = Math.hypot(relativeX, relativeY);
-        double robotAngle = (Math.atan2(relativeY, relativeX) - Math.toRadians(cvtDegrees(getHeading())) + Math.PI / 4);
+        double robotAngle = Math.atan2(relativeY, relativeX) - Math.toRadians(cvtDegrees(getHeading())) + Math.PI / 4;
 
         telemetry.addData("Rel X: ", relativeX);
         telemetry.addData("Rel Y: ", relativeY);
         telemetry.addData("Robot Angle: ", robotAngle);
 
         //Calculates each motor power using trig
-        double v1 = r * Math.sin(robotAngle);
-        double v2 = r * Math.cos(robotAngle);
-        double v3 = r * Math.cos(robotAngle);
-        double v4 = r * Math.sin(robotAngle);
+        double v1 = r * Math.cos(robotAngle);
+        double v2 = r * Math.sin(robotAngle);
+        double v3 = r * Math.sin(robotAngle);
+        double v4 = r * Math.cos(robotAngle);
 
         //Getting the max value can assure that no motor will be set to a value above a certain point.
         double max = Math.max(Math.max(Math.abs(v1), Math.abs(v2)), Math.max(Math.abs(v3), Math.abs(v4)));

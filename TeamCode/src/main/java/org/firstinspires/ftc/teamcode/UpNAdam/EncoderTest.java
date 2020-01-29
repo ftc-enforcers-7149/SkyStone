@@ -116,14 +116,24 @@ public class EncoderTest extends OpMode {
         positionY = Math.ceil(positionY * 10000) / 10000;
         positionX = Math.ceil(positionX * 10000) / 10000;
 
+        double relativeY = fLeft.getPower() + bLeft.getPower() + fRight.getPower() + bRight.getPower();
+        double relativeX = fLeft.getPower() - bLeft.getPower() - fRight.getPower() + bRight.getPower();
+        double robotAngle = Math.atan2(relativeY, relativeX) - Math.toRadians(gyroscope.cvtTrigAng(heading)) + Math.PI / 4;
+
         telemetry.addData("posX:",positionX);//telemetry.addData("posX:",positionX);
         telemetry.addData("posY:",positionY);
-        telemetry.addData("isTurning:",isTurning);
         telemetry.addData("heading:" ,heading);
-        telemetry.addData("cos: ",Math.cos(Math.toRadians(gyroscope.cvtTrigAng(heading))));
-        telemetry.addData("sin: ",Math.sin(Math.toRadians(gyroscope.cvtTrigAng(heading))));
-
+        telemetry.addLine();
+        telemetry.addData("fLeft: ", fLeft.getPower());
+        telemetry.addData("fRight: ", fRight.getPower());
+        telemetry.addData("bLeft: ", bLeft.getPower());
+        telemetry.addData("bRight: ", bRight.getPower());
+        telemetry.addLine();
+        telemetry.addData("Relative X: ", relativeX);
+        telemetry.addData("Relative Y: ", relativeY);
+        telemetry.addData("RobotAngle: ", robotAngle);
     }
+
     public void stop(){
         fRight.setPower(0);
         bRight.setPower(0);
