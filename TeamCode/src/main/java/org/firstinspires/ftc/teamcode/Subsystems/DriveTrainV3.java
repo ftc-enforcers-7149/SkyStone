@@ -196,20 +196,20 @@ public class DriveTrainV3 {
         boolean done=false;
 
         if(initAngle < destAngle){
-                greater=false;
-            }
-            else{
-                greater=true;
-            }
+            greater=false;
+        }
+        else{
+            greater=true;
+        }
 
 
         if(greater){
-            if(relHeading <= destAngle){
+            if(heading <= destAngle){
                 done=true;
             }
         }
         else{
-            if(relHeading >= destAngle){
+            if(heading >= destAngle){
                 done=true;
             }
         }

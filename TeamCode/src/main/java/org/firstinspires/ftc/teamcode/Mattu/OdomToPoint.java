@@ -54,6 +54,7 @@ public class OdomToPoint extends OpMode {
         telemetry.addData("Position: ", "(" + driveTrain.getPosX() + ", " + driveTrain.getPosY() + ")");
         telemetry.addData("Raw X and Y: ", "(" + driveTrain.getRawX() + ", " + driveTrain.getRawY() + ")");
         telemetry.addData("Heading: ", driveTrain.getHeading());
+        telemetry.addLine();
 
         switch (step) {
             case 0:

@@ -106,7 +106,7 @@ public class EncoderTest extends OpMode {
             //Then uses that as a modifier for how much an odometer will effect that axis
 
             //Apply the x odometer to the x and y axes
-            positionX = ((xDisp/COUNTS_PER_INCHX) * Math.sin(Math.toRadians(gyroscope.cvtTrigAng(heading)))) + ((yDisp/COUNTS_PER_INCHY)* Math.cos(Math.toRadians(gyroscope.cvtTrigAng(heading))));
+            positionX = ((xDisp/COUNTS_PER_INCHX) * Math.sin(Math.toRadians(gyroscope.cvtTrigAng(heading)))) - ((yDisp/COUNTS_PER_INCHY)* Math.cos(Math.toRadians(gyroscope.cvtTrigAng(heading))));
 
             //Apply the y odometer to the x and y axes
             positionY = ((yDisp/COUNTS_PER_INCHY) * Math.sin(Math.toRadians(gyroscope.cvtTrigAng(heading)))) + ((xDisp/COUNTS_PER_INCHX) * Math.cos(Math.toRadians(gyroscope.cvtTrigAng(heading))));

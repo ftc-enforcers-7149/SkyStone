@@ -58,8 +58,8 @@ public class Claw {
      * Makes claw release
      */
     public void release(){
-        rGrab.setPosition(0.22);//.13 //.22
-        lGrab.setPosition(0.31);//0.23 //.31
+        rGrab.setPosition(0.19);//.13 //.22
+        lGrab.setPosition(0.28);//0.23 //.31
     }
 
     /**

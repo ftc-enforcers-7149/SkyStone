@@ -160,19 +160,6 @@ public class OdometryPosition extends Position {
 
         //When turning, the odometers are not accurate, so they must be ignored
         if (dir != Direction.TURNING) {
-            last_dir = false;
-            //Converts the robot's angle for use with sine and cosine
-            //Then uses that as a modifier for how much an odometer will effect that axis
-
-            //Apply the x odometer to the x and y axes
-            positionX = ((xDisp/COUNTS_PER_INCHX) * Math.sin(Math.toRadians(gyro.cvtTrigAng(heading)))) + ((yDisp/COUNTS_PER_INCHY)* Math.cos(Math.toRadians(gyro.cvtTrigAng(heading)))) + storedX;
-            positionY = ((yDisp/COUNTS_PER_INCHY) * Math.sin(Math.toRadians(gyro.cvtTrigAng(heading)))) + ((xDisp/COUNTS_PER_INCHX) * Math.cos(Math.toRadians(gyro.cvtTrigAng(heading)))) + storedY;
-
-            //Rounds the positions so you don't get numbers like 6.6278326e^-12678
-            /*positionY = Math.ceil(positionY * 1000000) / 1000000;
-            positionX = Math.ceil(positionX * 1000000) / 1000000;*/
-        }
-        else {
             if (!last_dir) {
                 last_dir = true;
                 encoderX.setMode(DcMotor.RunMode.STOP_AND_RESET_ENCODER);
@@ -185,6 +172,19 @@ public class OdometryPosition extends Position {
                 storedX = positionX;
                 storedY = positionY;
             }
+            //Converts the robot's angle for use with sine and cosine
+            //Then uses that as a modifier for how much an odometer will effect that axis
+
+            //Apply the x odometer to the x and y axes
+            positionX = ((xDisp/COUNTS_PER_INCHX) * Math.sin(Math.toRadians(gyro.cvtTrigAng(heading)))) - ((yDisp/COUNTS_PER_INCHY)* Math.cos(Math.toRadians(gyro.cvtTrigAng(heading)))) + storedX;
+            positionY = ((yDisp/COUNTS_PER_INCHY) * Math.sin(Math.toRadians(gyro.cvtTrigAng(heading)))) + ((xDisp/COUNTS_PER_INCHX) * Math.cos(Math.toRadians(gyro.cvtTrigAng(heading)))) + storedY;
+
+            //Rounds the positions so you don't get numbers like 6.6278326e^-12678
+            /*positionY = Math.ceil(positionY * 1000000) / 1000000;
+            positionX = Math.ceil(positionX * 1000000) / 1000000;*/
+        }
+        else {
+            last_dir=false;
         }
     }
 
@@ -249,15 +249,7 @@ public class OdometryPosition extends Position {
      * @return Converted angle in degrees
      */
     public double cvtDegrees(double heading) {
-        /*double retVal;
-        if (heading < 0) {
-            retVal =  360 + heading;
-        } else {
-            retVal =  heading;
-        }
-
-        return (retVal+90)%360;*/
-
+        heading = 360-heading;
         if (heading >= 0 && heading < 90) {
             return -heading + 90;
         }
