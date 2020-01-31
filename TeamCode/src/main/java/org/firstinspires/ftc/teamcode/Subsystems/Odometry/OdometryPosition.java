@@ -198,6 +198,8 @@ public class OdometryPosition extends Position {
      * @return
      */
     public boolean driveToPoint(double x, double y, double lim, Telemetry telemetry) {
+        double min = 0.2;
+
         //Gets the distance to the point
         double relativeX = x - positionX;//
         double relativeY = y - positionY;
@@ -218,6 +220,10 @@ public class OdometryPosition extends Position {
 
         //Getting the max value can assure that no motor will be set to a value above a certain point.
         double max = Math.max(Math.max(Math.abs(v1), Math.abs(v2)), Math.max(Math.abs(v3), Math.abs(v4)));
+
+        if (r < 10) {
+            lim = min;
+        }
 
         //In this case, no motor can go above lim power by scaling them all down if such a thing might occur.
         if (max > lim) {

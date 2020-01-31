@@ -57,15 +57,25 @@ public class Gyroscope {
      * @return
      */
     public double getDelta(double destAngle, double heading) {
-        if (Math.abs(heading-destAngle) < 180) {
-            return -heading + destAngle;
+        if (heading >= 360) {
+            heading -= 360;
         }
-        else {
-            if (heading > 180) {
-                return -heading + (destAngle - 360);
+        double delta;
+        if (heading > destAngle) {
+            delta = heading - destAngle;
+            if (delta > 180) {
+                return 360 - delta;
             }
 
-            return -heading + (destAngle + 360);
+            return -delta;
+        }
+        else {
+            delta = destAngle - heading;
+            if (delta > 180) {
+                return -(360 - delta);
+            }
+
+            return delta;
         }
     }
 
@@ -106,7 +116,7 @@ public class Gyroscope {
         return -heading + 450;
     }
 
-    public double cvtRelativeAng(double heading){
+    public double cvtRelativeAng(double heading,double initAng){
         double retVal;
         if (heading < 0) {
             retVal =  360 + heading;
@@ -114,7 +124,7 @@ public class Gyroscope {
             retVal =  heading;
         }
 
-        return (retVal+180)%360;
+        return (retVal+180+initAng)%360;
     }
 
     /**
@@ -140,7 +150,7 @@ public class Gyroscope {
     /**
      *
      */
-    public double getRelativeYaw(){return cvtRelativeAng(imu.getAngularOrientation(AxesReference.INTRINSIC, AxesOrder.ZYX, AngleUnit.DEGREES).firstAngle);}
+    public double getRelativeYaw(double initAng){return cvtRelativeAng(imu.getAngularOrientation(AxesReference.INTRINSIC, AxesOrder.ZYX, AngleUnit.DEGREES).firstAngle,initAng);}
 
 
     /**

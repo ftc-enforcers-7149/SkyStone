@@ -34,6 +34,9 @@ public class DriveTrainV3 {
 
     private double x, y;
 
+    private boolean last_ang=true;
+    private double initAngle;
+
     /**
      * Main constructor
      * @param telemetry telemetry
@@ -183,33 +186,37 @@ public class DriveTrainV3 {
      * Min Speed = 0.1
      * Max Speed = 0.8
      * @param destAngle Destination angle
-     * @param initAngle initial angle
      * @return
      */
-    public boolean rotate(double destAngle,double initAngle) {
+    public boolean rotate(double destAngle) {
+        if (last_ang) {
+            initAngle=360-gyro.getYaw();
+            last_ang=false;
+        }
         double speed=0, min=0.12;
 
         //Get current heading
-        double relHeading = gyro.getRelativeYaw();
-        double heading = gyro.getYaw();
-        boolean greater=false;
+        double heading = 360-gyro.getYaw();
+        double delta = gyro.getDelta(destAngle, heading);
+        boolean left=false;
         boolean done=false;
 
-        if(initAngle < destAngle){
-            greater=false;
+
+        if(gyro.getDelta(destAngle, initAngle) > 0){
+            left=false;
         }
         else{
-            greater=true;
+            left=true;
         }
 
 
-        if(greater){
-            if(heading <= destAngle){
+        if(left){
+            if(delta > 0){
                 done=true;
             }
         }
         else{
-            if(heading >= destAngle){
+            if(delta < 0){
                 done=true;
             }
         }
@@ -217,7 +224,7 @@ public class DriveTrainV3 {
         //If heading is not at destination
         if (!done) {
             //Get shortest distance to angle
-            double delta = gyro.getRelDelta(destAngle, relHeading);
+
 
             //Calculate speed (Linear calculation)
             //Farthest (180 away) : 0.8
@@ -237,7 +244,7 @@ public class DriveTrainV3 {
                 speed = -min;
             }
 
-            telemetry.addData("Angle: ", relHeading);
+            telemetry.addData("Angle: ", delta);
             telemetry.addData("Speed: ", speed);
             telemetry.addData("Delta: ",delta);
 
@@ -252,6 +259,8 @@ public class DriveTrainV3 {
             fRight.setPower(0);
             bLeft.setPower(0);
             bRight.setPower(0);
+
+            last_ang = true;
 
             return true;
         }
