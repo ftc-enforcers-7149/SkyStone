@@ -27,6 +27,7 @@ public class TeleOpV2_2 extends OpMode {
     float armUp, last_armUp=0; //arm variables
     float liftUp, last_liftUp=0, liftDown, last_liftDown=0; //lift variables
     float grab, last_grab=0; //grabber variables
+    boolean smallGrab, last_smallGrab=false;
 
     boolean isBreak=false; // breaking for lift
     boolean lFoundationDown, last_lFoundationDown=false, rFoundationDown, last_rFoundationDown=false; //lift variable
@@ -85,6 +86,7 @@ public class TeleOpV2_2 extends OpMode {
         liftDown=gamepad1.left_trigger;
         lFoundationDown = gamepad1.left_bumper || gamepad2.x;
         rFoundationDown = gamepad1.right_bumper || gamepad2.b;
+        smallGrab = gamepad2.a;
 
         //Drive
         driveSystem.drive(gamepad1);
@@ -123,10 +125,12 @@ public class TeleOpV2_2 extends OpMode {
         }
 
         //Grabber
-        if (grab != last_grab) {
+        if ((grab != last_grab) || (smallGrab != last_smallGrab)) {
             //Double servo claw: r 0.2 l 0.28 closed, r 0.13 l 0.23 open
             if (grab > 0.1) {
                 claw.grab();
+            } else if (smallGrab){
+                claw.grabVertical();
             } else {
                 claw.release();
             }
@@ -148,6 +152,8 @@ public class TeleOpV2_2 extends OpMode {
             }
         }
 
+
+
         //Telemetry
         telemetry.addData("fL servo pos: ", fLFound.getPosition());
         telemetry.addData("fR servo pos: ", fRFound.getPosition());
@@ -161,6 +167,7 @@ public class TeleOpV2_2 extends OpMode {
         last_grab = grab;
         last_liftUp = liftUp;
         last_liftDown = liftDown;
+        last_smallGrab = smallGrab;
     }
 
     public void stop(){

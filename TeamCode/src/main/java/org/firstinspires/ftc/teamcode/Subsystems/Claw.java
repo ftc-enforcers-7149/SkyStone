@@ -88,8 +88,8 @@ public class Claw {
      * grabs stone vertically
      */
     public void grabVertical() {
-        rGrab.setPosition(0.29);
-        lGrab.setPosition(0.39);
+        rGrab.setPosition(0.36);
+        lGrab.setPosition(0.46);
     }
 
 }
