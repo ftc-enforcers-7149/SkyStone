@@ -146,6 +146,16 @@ public class OdometryPosition extends Position {
         return input/COUNTS_PER_INCHX;
     }
 
+    public void setX(double x) {
+        storedX = x;
+        positionX = x;
+    }
+
+    public void setY(double y) {
+        storedY = y;
+        positionY = y;
+    }
+
 
     /**
      * Updates the overall position of the robot based on the change in x odometer and y odometer
@@ -198,7 +208,7 @@ public class OdometryPosition extends Position {
      * @return
      */
     public boolean driveToPoint(double x, double y, double lim, Telemetry telemetry) {
-        double min = 0.2;
+        double min = 0.1;
 
         //Gets the distance to the point
         double relativeX = x - positionX;//
@@ -225,13 +235,20 @@ public class OdometryPosition extends Position {
             lim = min;
         }
 
-        //In this case, no motor can go above lim power by scaling them all down if such a thing might occur.
-        if (max > lim) {
+        if (max != lim) {
             v1 /= max * (1 / lim);
             v2 /= max * (1 / lim);
             v3 /= max * (1 / lim);
             v4 /= max * (1 / lim);
         }
+
+        //In this case, no motor can go above lim power by scaling them all down if such a thing might occur.
+        /*if (max > lim) {
+            v1 /= max * (1 / lim);
+            v2 /= max * (1 / lim);
+            v3 /= max * (1 / lim);
+            v4 /= max * (1 / lim);
+        }*/
 
         //Sets power to motors
         fLeft.setPower(v1);

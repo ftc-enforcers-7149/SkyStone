@@ -486,4 +486,12 @@ public class DriveTrainV3 {
     public double getRawY() {
         return oP.getRawY();
     }
+
+    public void setX(double x) {
+        oP.setX(x);
+    }
+
+    public void setY(double y) {
+        oP.setY(y);
+    }
 }

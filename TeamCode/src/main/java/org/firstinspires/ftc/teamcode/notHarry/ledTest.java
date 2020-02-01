@@ -91,7 +91,7 @@ public class ledTest extends OpMode {
         fRight = hardwareMap.dcMotor.get("fRight");
         bLeft = hardwareMap.dcMotor.get("bLeft");
         bRight = hardwareMap.dcMotor.get("bRight");
-        lift = hardwareMap.dcMotor.get("lift");
+        //lift = hardwareMap.dcMotor.get("lift");
 
         //Motor directions
         fLeft.setDirection(DcMotorSimple.Direction.REVERSE);
