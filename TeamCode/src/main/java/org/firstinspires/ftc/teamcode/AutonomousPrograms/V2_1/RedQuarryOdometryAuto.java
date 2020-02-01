@@ -94,7 +94,7 @@ public class RedQuarryOdometryAuto extends ParentInit {
                 break;
             case 2:
                 if (position.equals("right")) {
-                    if (driveTrain.driveToPoint(37, 31, 0.5)) {
+                    if (driveTrain.driveToPoint(36, 31, 0.5)) {
                         claw.grab();
                         step++;
                     }
@@ -118,7 +118,7 @@ public class RedQuarryOdometryAuto extends ParentInit {
                 break;
             case 4:
                 if (position.equals("right")) {
-                    if (driveTrain.driveToPoint(37, 24, 0.5)) {
+                    if (driveTrain.driveToPoint(36, 24, 0.5)) {
                         step++;
                     }
                 }

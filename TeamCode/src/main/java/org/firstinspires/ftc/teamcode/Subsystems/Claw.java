@@ -34,8 +34,8 @@ public class Claw {
      * raises arm half way
      */
     public void halfUp(){
-        lArm.setPosition(0.47);
-        rArm.setPosition(0.4);
+        lArm.setPosition(0.65);//0.47
+        rArm.setPosition(0.56);//0.4
     }
 
     /**
@@ -58,8 +58,8 @@ public class Claw {
      * Makes claw release
      */
     public void release(){
-        rGrab.setPosition(0.18);//.13 //.22
-        lGrab.setPosition(0.27);//0.23 //.31
+        rGrab.setPosition(0.17);//.13 //.22
+        lGrab.setPosition(0.26);//0.23 //.31
     }
 
     /**
@@ -70,17 +70,17 @@ public class Claw {
      */
     public void setState(boolean left,boolean right){
         if(left){//grab
-            lGrab.setPosition(0.28);//.45
+            lGrab.setPosition(0.36);//.45
         }
         else{//release
-            lGrab.setPosition(1);
+            lGrab.setPosition(0.27);
         }
 
         if(right){//grab
-            rGrab.setPosition(.20);//.41
+            rGrab.setPosition(0.26);//.41
         }
         else{//release
-            rGrab.setPosition(.13);//.6
+            rGrab.setPosition(0.18);//.6
         }
     }
 
