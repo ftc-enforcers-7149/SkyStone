@@ -78,6 +78,7 @@ public class RedQuarryOdometryAuto extends ParentInit {
         switch (step) {
             case 0:
                 position=webcam.getQueuePos(telemetry);
+                claw.release();
                 step++;
                 break;
             case 1:
@@ -120,37 +121,35 @@ public class RedQuarryOdometryAuto extends ParentInit {
                 }
                 break;
             case 3:
-                claw.halfUp();
-                step++;
+                if(driveTrain.delay(500)){
+                    claw.halfUp();
+                    step++;
+                }
                 break;
             case 4:
                 //drive backward
-                if (position.equals("right")) {
-                    if (driveTrain.driveToPoint(36, 20, 0.5)) {
-                        step++;
-                    }
-                }
-                else if (position.equals("center")) {
-                    if (driveTrain.driveToPoint(28, 20, 0.5)) {
-                        step++;
-                    }
-                }
-                else {
-                    if (driveTrain.driveToPoint(20,20, 0.5)) {
-                        step++;
-                    }
+                if (driveTrain.driveToPoint(42, 24, 0.5)) {
+                    direction = OdometryPosition.Direction.TURNING;
+                    step++;
                 }
                 break;
             case 5:
+                if (driveTrain.rotate(0)) {
+                    direction = OdometryPosition.Direction.FORWARD;
+                    driveTrain.setY(range.getCenter(DistanceUnit.INCH));
+                    step++;
+                }
+                break;
+            case 6:
                 //drive to foundation side
-                if (driveTrain.driveToPoint(108, 10, 0.5)) {
+                if (driveTrain.driveToPoint(108, 24, 0.5)) {
                     claw.down();
                     claw.release();
                     direction = OdometryPosition.Direction.TURNING;
                     step++;
                 }
                 break;
-            case 6://
+            case 7://
                 if (driveTrain.rotate(0)) {
                     claw.up();
                     driveTrain.setY(range.getCenter(DistanceUnit.INCH));
@@ -158,28 +157,31 @@ public class RedQuarryOdometryAuto extends ParentInit {
                     step++;
                 }
                 break;
-            case 7:
-                if (position.equals("right")) {
-                    if (driveTrain.driveToPoint(12, 10, 0.5)) {
+            case 8:
+                /*if (position.equals("right")) {
+                    if (driveTrain.driveToPoint(12, 20, 0.5)) {
                         claw.down();
+                        driveTrain.setY(range.getCenter(DistanceUnit.INCH));
                         step++;
                     }
                 }
                 else if (position.equals("center")) {
-                    if (driveTrain.driveToPoint(4, 10, 0.5)) {
+                    if (driveTrain.driveToPoint(4, 20, 0.5)) {
                         claw.down();
+                        driveTrain.setY(range.getCenter(DistanceUnit.INCH));
                         step++;
                     }
                 }
                 else {
                     if (driveTrain.driveToPoint(0,20, 0.5)) {
                         claw.down();
+                        driveTrain.setY(range.getCenter(DistanceUnit.INCH));
                         step++;
                     }
-                }
+                }*/
                 break;
-            case 8:
-                if (position.equals("right")) {
+            case 9:
+                /*if (position.equals("right")) {
                     if (driveTrain.driveToPoint(12, 31, 0.5)) {
                         claw.grab();
                         step++;
@@ -196,14 +198,14 @@ public class RedQuarryOdometryAuto extends ParentInit {
                         claw.grab();
                         step++;
                     }
-                }
-                break;
-            case 9:
-                claw.halfUp();
-                step++;
+                }*/
                 break;
             case 10:
-                if (position.equals("right")) {
+                /*claw.halfUp();
+                step++;*/
+                break;
+            case 11:
+                /*if (position.equals("right")) {
                     if (driveTrain.driveToPoint(12, 24, 0.5)) {
                         step++;
                     }
@@ -217,24 +219,24 @@ public class RedQuarryOdometryAuto extends ParentInit {
                     if (driveTrain.driveToPoint(0,24, 0.5)) {
                         step++;
                     }
-                }
+                }*/
                 break;
-            case 11:
-                if (driveTrain.driveToPoint(96, 24, 0.5)) {
+            case 12:
+                /*if (driveTrain.driveToPoint(96, 24, 0.5)) {
                     claw.down();
                     claw.release();
                     step++;
-                }
-                break;
-            case 12:
-                claw.halfUp();
-                step++;
+                }*/
                 break;
             case 13:
-                if (driveTrain.driveToPoint(63, 24, 0.5)) {
+                /*claw.halfUp();
+                step++;*/
+                break;
+            case 14:
+                /*if (driveTrain.driveToPoint(63, 24, 0.5)) {
                     step++;
                     requestOpModeStop();
-                }
+                }*/
                 break;
         }
     }

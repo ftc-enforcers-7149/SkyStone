@@ -193,7 +193,7 @@ public class DriveTrainV3 {
             initAngle=360-gyro.getYaw();
             last_ang=false;
         }
-        double speed=0, min=0.12;
+        double speed=0, min=0.175;
 
         //Get current heading
         double heading = 360-gyro.getYaw();
