@@ -208,7 +208,7 @@ public class OdometryPosition extends Position {
      * @return
      */
     public boolean driveToPoint(double x, double y, double lim, Telemetry telemetry) {
-        double min = 0.1;
+        double min = 0.2;
 
         //Gets the distance to the point
         double relativeX = x - positionX;//
@@ -218,9 +218,9 @@ public class OdometryPosition extends Position {
         double r = Math.hypot(relativeX, relativeY);
         double robotAngle = Math.atan2(relativeY, relativeX) - Math.toRadians(cvtDegrees(getHeading())) + Math.PI / 4;
 
-        telemetry.addData("Rel X: ", relativeX);
+        /*telemetry.addData("Rel X: ", relativeX);
         telemetry.addData("Rel Y: ", relativeY);
-        telemetry.addData("Robot Angle: ", robotAngle);
+        telemetry.addData("Robot Angle: ", robotAngle);*/
 
         //Calculates each motor power using trig
         double v1 = r * Math.cos(robotAngle);
@@ -231,7 +231,7 @@ public class OdometryPosition extends Position {
         //Getting the max value can assure that no motor will be set to a value above a certain point.
         double max = Math.max(Math.max(Math.abs(v1), Math.abs(v2)), Math.max(Math.abs(v3), Math.abs(v4)));
 
-        if (r < 10) {
+        if (r < 5) {
             lim = min;
         }
 

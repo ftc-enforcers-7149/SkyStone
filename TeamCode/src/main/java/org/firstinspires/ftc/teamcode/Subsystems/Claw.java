@@ -51,7 +51,7 @@ public class Claw {
      */
     public void grab(){
         rGrab.setPosition(0.26);//.13 //.25
-        lGrab.setPosition(0.36);//0.23 //.35
+        lGrab.setPosition(0.28);//0.23 //.35
     }
 
     /**
@@ -59,7 +59,7 @@ public class Claw {
      */
     public void release(){
         rGrab.setPosition(0.17);//.13 //.22
-        lGrab.setPosition(0.26);//0.23 //.31
+        lGrab.setPosition(0.20);//0.23 //.31
     }
 
     /**
