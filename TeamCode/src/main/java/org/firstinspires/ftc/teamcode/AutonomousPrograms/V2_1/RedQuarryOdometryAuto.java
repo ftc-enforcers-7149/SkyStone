@@ -4,10 +4,12 @@ import com.qualcomm.robotcore.eventloop.opmode.Autonomous;
 import com.qualcomm.robotcore.hardware.DcMotor;
 import com.qualcomm.robotcore.hardware.DcMotorSimple;
 
+import org.firstinspires.ftc.robotcore.external.navigation.DistanceUnit;
 import org.firstinspires.ftc.teamcode.Subsystems.DriveTrainV3;
 import org.firstinspires.ftc.teamcode.Subsystems.Gyroscope;
 import org.firstinspires.ftc.teamcode.Subsystems.Odometry.OdometryPosition;
 import org.firstinspires.ftc.teamcode.Subsystems.ParentInit;
+import org.firstinspires.ftc.teamcode.Subsystems.Range;
 
 @Autonomous(name = "Red Quarry Odom Auto v2")
 public class RedQuarryOdometryAuto extends ParentInit {
@@ -19,6 +21,8 @@ public class RedQuarryOdometryAuto extends ParentInit {
     //Motors and imu
     DcMotor fRight, fLeft, bRight, bLeft;
     Gyroscope gyroscope;
+
+    Range range;
 
     String position="";
 
@@ -45,6 +49,8 @@ public class RedQuarryOdometryAuto extends ParentInit {
         bRight.setZeroPowerBehavior(DcMotor.ZeroPowerBehavior.BRAKE);
         fLeft.setZeroPowerBehavior(DcMotor.ZeroPowerBehavior.BRAKE);
         fRight.setZeroPowerBehavior(DcMotor.ZeroPowerBehavior.BRAKE);
+
+        range = new Range(hardwareMap, "distanceL", "distanceR", "distanceC");
 
         direction = OdometryPosition.Direction.FORWARD;
 
@@ -147,6 +153,7 @@ public class RedQuarryOdometryAuto extends ParentInit {
             case 6://
                 if (driveTrain.rotate(0)) {
                     claw.up();
+                    driveTrain.setY(range.getCenter(DistanceUnit.INCH));
                     direction = OdometryPosition.Direction.FORWARD;
                     step++;
                 }
