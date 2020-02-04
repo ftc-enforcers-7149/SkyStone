@@ -144,7 +144,7 @@ public class RedQuarryOdometryAuto extends ParentInit {
                     step++;
                 }
                 break;
-            case 6:
+            case 6://
                 if (driveTrain.rotate(0)) {
                     claw.up();
                     direction = OdometryPosition.Direction.FORWARD;
