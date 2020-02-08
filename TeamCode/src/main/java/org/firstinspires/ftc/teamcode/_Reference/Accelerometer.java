@@ -82,8 +82,8 @@ public class Accelerometer extends OpMode {
         gravity = imu.getAcceleration();
         angular = imu.getAngularVelocity();
 
-        speedX += gravity.xAccel * (System.currentTimeMillis() - dTime) / 1000;
-        speedY += gravity.yAccel * (System.currentTimeMillis() - dTime) / 1000;
+        speedX = gravity.xAccel * (System.currentTimeMillis() - dTime) / 1000;
+        speedY = gravity.yAccel * (System.currentTimeMillis() - dTime) / 1000;
         dTime = System.currentTimeMillis();
 
         //Telemetry of speed, acceleration, and angular velocity

@@ -50,6 +50,14 @@ public class Gyroscope {
         imu.startAccelerationIntegration(new Position(), new Velocity(), 1000);
     }
 
+    public double getXAccel(){
+        return imu.getLinearAcceleration().xAccel /* 39.3701*/;
+    }
+
+    public double getYAccel(){
+        return imu.getLinearAcceleration().yAccel /* 39.3701*/;
+    }
+
     /**
      * Gets the shortest distance between two angles.
      * @param destAngle Destination angle

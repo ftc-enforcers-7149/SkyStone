@@ -70,17 +70,17 @@ public class Claw {
      */
     public void setState(boolean left,boolean right){
         if(left){//grab
-            lGrab.setPosition(0.36);//.45
+            lGrab.setPosition(0.28);//.45
         }
         else{//release
-            lGrab.setPosition(0.27);
+            lGrab.setPosition(0.20);
         }
 
         if(right){//grab
             rGrab.setPosition(0.26);//.41
         }
         else{//release
-            rGrab.setPosition(0.18);//.6
+            rGrab.setPosition(0.17);//.6
         }
     }
 

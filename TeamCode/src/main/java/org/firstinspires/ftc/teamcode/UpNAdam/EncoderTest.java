@@ -7,6 +7,9 @@ import com.qualcomm.robotcore.hardware.DcMotor;
 import com.qualcomm.robotcore.hardware.DcMotorSimple;
 import com.qualcomm.robotcore.hardware.Servo;
 
+import org.firstinspires.ftc.robotcore.external.navigation.DistanceUnit;
+import org.firstinspires.ftc.teamcode.Subsystems.Range;
+
 import org.firstinspires.ftc.teamcode.Subsystems.DriveSystems.Headless;
 import org.firstinspires.ftc.teamcode.Subsystems.Gyroscope;
 import org.firstinspires.ftc.teamcode.Subsystems.Odometry.OdometryPosition;
@@ -18,6 +21,7 @@ public class EncoderTest extends OpMode {
 
     //O do met ry
     OdometryPosition oP;
+    Range range;
 
     DcMotor fRight, fLeft, bRight, bLeft;
 
@@ -63,6 +67,7 @@ public class EncoderTest extends OpMode {
         encoderX = hardwareMap.dcMotor.get("encX");
         encoderY = hardwareMap.dcMotor.get("encY");
 
+
         color = hardwareMap.colorSensor.get("color");
 
         //Motor directions
@@ -76,6 +81,9 @@ public class EncoderTest extends OpMode {
         //Initialize drive train
         driveSystem = new Headless(gyroscope, fLeft, fRight, bLeft, bRight);
 
+        range = new Range(hardwareMap, "distanceL", "distanceR", "distanceC");
+
+
         encoderX.setMode(DcMotor.RunMode.STOP_AND_RESET_ENCODER);
         encoderY.setMode(DcMotor.RunMode.STOP_AND_RESET_ENCODER);
 
@@ -87,6 +95,7 @@ public class EncoderTest extends OpMode {
     public void loop(){
         driveSystem.drive(gamepad1);
         telemetry.addData("Red: ", color.red());
+        telemetry.addData("left: ", range.getLeft(DistanceUnit.INCH));
 
         if (gamepad1.a) {
             isTurning = true;

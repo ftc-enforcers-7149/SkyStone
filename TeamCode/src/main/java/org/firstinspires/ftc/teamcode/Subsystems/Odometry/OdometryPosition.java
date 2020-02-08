@@ -149,11 +149,15 @@ public class OdometryPosition extends Position {
     public void setX(double x) {
         storedX = x;
         positionX = x;
+        encoderX.setMode(DcMotor.RunMode.STOP_AND_RESET_ENCODER);
+        encoderX.setMode(DcMotor.RunMode.RUN_WITHOUT_ENCODER);
     }
 
     public void setY(double y) {
         storedY = y;
         positionY = y;
+        encoderY.setMode(DcMotor.RunMode.STOP_AND_RESET_ENCODER);
+        encoderY.setMode(DcMotor.RunMode.RUN_WITHOUT_ENCODER);
     }
 
 
@@ -241,7 +245,7 @@ public class OdometryPosition extends Position {
         //Getting the max value can assure that no motor will be set to a value above a certain point.
         double max = Math.max(Math.max(Math.abs(v1), Math.abs(v2)), Math.max(Math.abs(v3), Math.abs(v4)));
 
-        if (r < 5) {
+        if (r < 15) {
             lim = min;
         }
 
