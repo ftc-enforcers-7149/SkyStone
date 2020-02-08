@@ -207,7 +207,7 @@ public class OdometryPosition extends Position {
      * @param telemetry Telemetry object
      * @return
      */
-    public boolean driveToPoint(double x, double y, double lim, Telemetry telemetry) {
+    public boolean driveToPoint(double x, double y, double lim, double ang, Telemetry telemetry) {
         double min = 0.25;
 
         //Gets the distance to the point
@@ -222,11 +222,21 @@ public class OdometryPosition extends Position {
         telemetry.addData("Rel Y: ", relativeY);
         telemetry.addData("Robot Angle: ", robotAngle);*/
 
+        double delta = gyro.getDelta(ang, getHeading());
+        double turn = 0;
+
+        if (delta > 0.8) {
+            turn = -0.1;
+        }
+        else if (delta < -0.8) {
+            turn = 0.1;
+        }
+
         //Calculates each motor power using trig
-        double v1 = r * Math.cos(robotAngle);
-        double v2 = r * Math.sin(robotAngle);
-        double v3 = r * Math.sin(robotAngle);
-        double v4 = r * Math.cos(robotAngle);
+        double v1 = r * Math.cos(robotAngle) + turn;
+        double v2 = r * Math.sin(robotAngle) - turn;
+        double v3 = r * Math.sin(robotAngle) + turn;
+        double v4 = r * Math.cos(robotAngle) - turn;
 
         //Getting the max value can assure that no motor will be set to a value above a certain point.
         double max = Math.max(Math.max(Math.abs(v1), Math.abs(v2)), Math.max(Math.abs(v3), Math.abs(v4)));

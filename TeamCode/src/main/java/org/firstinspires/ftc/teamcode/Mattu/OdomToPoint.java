@@ -60,7 +60,7 @@ public class OdomToPoint extends OpMode {
             case 0:
                 //This is the right format for driving to a point
                 //It will keep driving until at the point, then it will stop and move on
-                if (driveTrain.driveToPoint(24, 96, 0.5)) {
+                if (driveTrain.driveToPoint(24, 96, 0.5, 0)) {
                     direction = OdometryPosition.Direction.TURNING;
                     requestOpModeStop();
                     step++;

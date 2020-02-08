@@ -2,6 +2,7 @@ package org.firstinspires.ftc.teamcode.UpNAdam;
 
 import com.qualcomm.robotcore.eventloop.opmode.OpMode;
 import com.qualcomm.robotcore.eventloop.opmode.TeleOp;
+import com.qualcomm.robotcore.hardware.ColorSensor;
 import com.qualcomm.robotcore.hardware.DcMotor;
 import com.qualcomm.robotcore.hardware.DcMotorSimple;
 import com.qualcomm.robotcore.hardware.Servo;
@@ -24,6 +25,8 @@ public class EncoderTest extends OpMode {
     DcMotor encoderY, encoderX;
 
     Gyroscope gyroscope;
+
+    ColorSensor color;
 
     double positionY,positionX;
 
@@ -60,6 +63,8 @@ public class EncoderTest extends OpMode {
         encoderX = hardwareMap.dcMotor.get("encX");
         encoderY = hardwareMap.dcMotor.get("encY");
 
+        color = hardwareMap.colorSensor.get("color");
+
         //Motor directions
         fLeft.setDirection(DcMotorSimple.Direction.REVERSE);
         fRight.setDirection(DcMotorSimple.Direction.FORWARD);
@@ -81,6 +86,7 @@ public class EncoderTest extends OpMode {
 
     public void loop(){
         driveSystem.drive(gamepad1);
+        telemetry.addData("Red: ", color.red());
 
         if (gamepad1.a) {
             isTurning = true;
