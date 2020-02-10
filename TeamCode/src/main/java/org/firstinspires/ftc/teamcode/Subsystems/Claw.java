@@ -1,9 +1,6 @@
 package org.firstinspires.ftc.teamcode.Subsystems;
 
-import com.qualcomm.robotcore.hardware.DcMotor;
 import com.qualcomm.robotcore.hardware.Servo;
-
-import org.firstinspires.ftc.robotcore.external.navigation.Orientation;
 
 public class Claw {
     private Servo lArm, rArm, lGrab, rGrab;
@@ -50,16 +47,16 @@ public class Claw {
      * Makes claw grab
      */
     public void grab(){
-        rGrab.setPosition(0.26);//.13 //.25
-        lGrab.setPosition(0.28);//0.23 //.35
+        rGrab.setPosition(0.23);//.26
+        lGrab.setPosition(0.22);//0.28
     }
 
     /**
      * Makes claw release
      */
     public void release(){
-        rGrab.setPosition(0.17);//.13 //.22
-        lGrab.setPosition(0.20);//0.23 //.31
+        rGrab.setPosition(0.15);//.17
+        lGrab.setPosition(0.14);//0.2
     }
 
     /**
@@ -89,7 +86,7 @@ public class Claw {
      */
     public void grabVertical() {
         rGrab.setPosition(0.36);
-        lGrab.setPosition(0.46);
+        lGrab.setPosition(0.36);//.46
     }
 
 }
