@@ -96,7 +96,7 @@ public class RedSkyStoneParkV2 extends OpMode {
             case 1:
                 double startTime = System.currentTimeMillis();
                 while (System.currentTimeMillis() < startTime + 4000) {
-                    position = webcam.getBitmapPos(telemetry);
+                    //position = webcam.getBitmapPos(telemetry);
                 }
                 webcam.deactivate();
                 break;

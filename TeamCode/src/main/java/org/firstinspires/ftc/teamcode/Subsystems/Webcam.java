@@ -28,6 +28,7 @@ import org.firstinspires.ftc.robotcore.external.navigation.VuforiaTrackable;
 import org.firstinspires.ftc.robotcore.external.navigation.VuforiaTrackableDefaultListener;
 import org.firstinspires.ftc.robotcore.external.navigation.VuforiaTrackables;
 import org.firstinspires.ftc.robotcore.internal.system.AppUtil;
+import org.firstinspires.ftc.teamcode.Subsystems.Enums.Positions;
 
 import java.io.File;
 import java.io.FileNotFoundException;
@@ -42,6 +43,8 @@ import static org.firstinspires.ftc.robotcore.external.navigation.AxesOrder.XYZ;
 import static org.firstinspires.ftc.robotcore.external.navigation.AxesOrder.YZX;
 import static org.firstinspires.ftc.robotcore.external.navigation.AxesReference.EXTRINSIC;
 import static org.firstinspires.ftc.robotcore.external.navigation.VuforiaLocalizer.CameraDirection.BACK;
+import static org.firstinspires.ftc.teamcode.Subsystems.Enums.Positions.CENTER;
+import static org.firstinspires.ftc.teamcode.Subsystems.Enums.Positions.LEFT;
 
 public class Webcam {
     // IMPORTANT: If you are using a USB WebCam, you must select CAMERA_CHOICE = BACK; and PHONE_IS_PORTRAIT = false;
@@ -100,7 +103,7 @@ public class Webcam {
     private VuforiaTrackables targetsSkyStone;
     private List<VuforiaTrackable> allTrackables;
 
-    private String position;
+    private Positions position;
 
     int captureCounter = 0;
     File captureDirectory = AppUtil.ROBOT_DATA_DIR;
@@ -313,7 +316,7 @@ public class Webcam {
      * Sets the position accordingly, defaulting to left.
      * @return the position of the skystone
      */
-    public String getQueuePos(Telemetry telemetry) {
+    public Positions getQueuePos(Telemetry telemetry) {
         targetsSkyStone.activate();
         Vuforia.setFrameFormat(PIXEL_FORMAT.RGB565, true);
         VuforiaLocalizer.CloseableFrame frame = null;
@@ -408,13 +411,13 @@ public class Webcam {
         telemetry.addData("Right color", rRedGreen);
 
         if (rRedGreen < cRedGreen && rRedGreen < lRedGreen) {
-            position = "right";
+            position = Positions.RIGHT;
         }
         else if (cRedGreen < lRedGreen) {
-            position = "center";
+            position = CENTER;
         }
         else {
-            position = "left";
+            position = Positions.LEFT;
         }
 
         return position;
@@ -458,7 +461,7 @@ public class Webcam {
      * Sets the position accordingly, defaulting to left.
      * @return the position of the skystone
      */
-    public String getBitmapPos(final Telemetry telemetry) {
+    public Positions getBitmapPos(final Telemetry telemetry) {
         targetsSkyStone.activate();
         vuforia.getFrameOnce(Continuation.create(ThreadPool.getDefault(), new Consumer<Frame>()
         {
@@ -515,12 +518,12 @@ public class Webcam {
         telemetry.update();
 
         if (rRed < 100) {
-            position = "right";
+            position = Positions.RIGHT;
         } else if (cRed < 100) {
-            position = "center";
+            position = CENTER;
         }
         else {
-            position = "left";
+            position = LEFT;
         }
 
         return position;

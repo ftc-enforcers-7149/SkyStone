@@ -6,6 +6,7 @@ import com.qualcomm.robotcore.hardware.DcMotorSimple;
 
 import org.firstinspires.ftc.robotcore.external.navigation.DistanceUnit;
 import org.firstinspires.ftc.teamcode.Subsystems.DriveTrainV3;
+import org.firstinspires.ftc.teamcode.Subsystems.Enums.Positions;
 import org.firstinspires.ftc.teamcode.Subsystems.Gyroscope;
 import org.firstinspires.ftc.teamcode.Subsystems.Odometry.OdometryPosition;
 import org.firstinspires.ftc.teamcode.Subsystems.ParentInit;
@@ -24,7 +25,7 @@ public class RedQuarryOdometryAuto extends ParentInit {
 
     Range range;
 
-    String position="";
+    Positions position=Positions.RIGHT;
 
     int step = 0;
 
@@ -105,12 +106,12 @@ public class RedQuarryOdometryAuto extends ParentInit {
                 break;
             case 1:
                 //Align to grab stone
-                if (position.equals("right")) {
+                if (position == Positions.RIGHT) {
                     if (driveTrain.driveToPoint(FIRST_RIGHT_SKYSTONE, PRE_GRAB_Y, 0.8, 0)) {
                         step++;
                     }
                 }
-                else if (position.equals("center")) {
+                else if (position == Positions.CENTER) {
                     if (driveTrain.driveToPoint(FIRST_CENTER_SKYSTONE, PRE_GRAB_Y, 0.8, 0)) {
                         step++;
                     }
@@ -123,13 +124,13 @@ public class RedQuarryOdometryAuto extends ParentInit {
                 break;
             case 2:
                 //Move to put stone in claw
-                if (position.equals("right")) {
+                if (position == Positions.RIGHT) {
                     if (driveTrain.driveToPoint(FIRST_RIGHT_SKYSTONE, POST_GRAB_Y, 0.3, 0)) {
                         claw.grab();
                         step++;
                     }
                 }
-                else if (position.equals("center")) {
+                else if (position == Positions.CENTER) {
                     if (driveTrain.driveToPoint(FIRST_CENTER_SKYSTONE, POST_GRAB_Y, 0.3, 0)) {
                         claw.grab();
                         step++;
@@ -202,12 +203,12 @@ public class RedQuarryOdometryAuto extends ParentInit {
                 break;
             case 10:
                 //Move into position for next skystone
-                if (position.equals("right")) {
+                if (position == Positions.RIGHT) {
                     if (driveTrain.driveToPoint(SECOND_RIGHT_SKYSTONE, PRE_GRAB_Y, 0.8, 0)) {
                         step++;
                     }
                 }
-                else if (position.equals("center")) {
+                else if (position == Positions.CENTER) {
                     if (driveTrain.driveToPoint(SECOND_CENTER_SKYSTONE, PRE_GRAB_Y, 0.8, 0)) {
                         step++;
                     }
@@ -225,13 +226,13 @@ public class RedQuarryOdometryAuto extends ParentInit {
                 break;
             case 11:
                 //Move to put skystone in claw
-                if (position.equals("right")) {
+                if (position == Positions.RIGHT) {
                     if (driveTrain.driveToPoint(SECOND_RIGHT_SKYSTONE, POST_GRAB_Y, 0.3, 0)) {
                         claw.grab();
                         step++;
                     }
                 }
-                else if (position.equals("center")) {
+                else if (position == Positions.CENTER) {
                     if (driveTrain.driveToPoint(SECOND_CENTER_SKYSTONE, POST_GRAB_Y, 0.3, 0)) {
                         claw.grab();
                         step++;

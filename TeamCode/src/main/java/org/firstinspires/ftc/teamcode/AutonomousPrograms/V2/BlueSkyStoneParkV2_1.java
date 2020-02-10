@@ -25,7 +25,7 @@ public class BlueSkyStoneParkV2_1 extends ParentInit {
     public void loop(){
         switch(step){
             case 0:
-                position = webcam.getQueuePos(telemetry);
+                //position = webcam.getQueuePos(telemetry);
                 webcam.deactivate();
                 break;
             case 1:
