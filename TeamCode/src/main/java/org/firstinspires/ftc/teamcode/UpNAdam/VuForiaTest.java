@@ -1,3 +1,4 @@
+/*
 package org.firstinspires.ftc.teamcode.UpNAdam;
 
 import com.qualcomm.robotcore.eventloop.opmode.Autonomous;
@@ -31,3 +32,4 @@ public class VuForiaTest extends OpMode {
     }
 
 }
+*/
