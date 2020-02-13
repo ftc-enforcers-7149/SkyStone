@@ -69,6 +69,22 @@ public class DriveTrainV3 {
      * @param power Power limit for motors
      * @return
      */
+    public boolean driveToPoint(double x, double y, double power) {
+        if (oP.driveToPoint(x, y, power, telemetry)) {
+            return true;
+        }
+
+        return false;
+    }
+
+    /**
+     * Drives to any point
+     * Auto corrects angle for strafing
+     * @param x X coord
+     * @param y Y coord
+     * @param power Power limit for motors
+     * @return
+     */
     public boolean driveToPoint(double x, double y, double power, double ang) {
         if (oP.driveToPoint(x, y, power, ang, telemetry)) {
             return true;

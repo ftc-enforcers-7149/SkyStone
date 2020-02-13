@@ -204,8 +204,9 @@ public class OdometryPosition extends Position {
 
     /**
      * Uses if statements to drive towards the point.
-     * Returns true if it still needs to run.
-     * Returns false if it is done
+     * Does auto turn correction
+     * Returns false if it still needs to run.
+     * Returns true if it is done
      * @param x     X coord
      * @param y     Y coord
      * @param telemetry Telemetry object
@@ -241,6 +242,74 @@ public class OdometryPosition extends Position {
         double v2 = r * Math.sin(robotAngle) - turn;
         double v3 = r * Math.sin(robotAngle) + turn;
         double v4 = r * Math.cos(robotAngle) - turn;
+
+        //Getting the max value can assure that no motor will be set to a value above a certain point.
+        double max = Math.max(Math.max(Math.abs(v1), Math.abs(v2)), Math.max(Math.abs(v3), Math.abs(v4)));
+
+        if (r < 15) {
+            lim = min;
+        }
+
+        if (max != lim) {
+            v1 /= max * (1 / lim);
+            v2 /= max * (1 / lim);
+            v3 /= max * (1 / lim);
+            v4 /= max * (1 / lim);
+        }
+
+        //In this case, no motor can go above lim power by scaling them all down if such a thing might occur.
+        /*if (max > lim) {
+            v1 /= max * (1 / lim);
+            v2 /= max * (1 / lim);
+            v3 /= max * (1 / lim);
+            v4 /= max * (1 / lim);
+        }*/
+
+        //Sets power to motors
+        fLeft.setPower(v1);
+        fRight.setPower(v2);
+        bLeft.setPower(v3);
+        bRight.setPower(v4);
+
+        //Returns true when the robot is close to the point
+        if (Math.abs(relativeX) < 1 && Math.abs(relativeY) < 1) {
+            motorStop();
+            return true;
+        }
+
+        //Returns false if the robot is not at the point yet
+        return false;
+    }
+
+    /**
+     * Uses if statements to drive towards the point.
+     * Returns false if it still needs to run.
+     * Returns true if it is done
+     * @param x     X coord
+     * @param y     Y coord
+     * @param telemetry Telemetry object
+     * @return
+     */
+    public boolean driveToPoint(double x, double y, double lim, Telemetry telemetry) {
+        double min = 0.25;
+
+        //Gets the distance to the point
+        double relativeX = x - positionX;//
+        double relativeY = y - positionY;
+
+        //Uses distance to calculate power and angle
+        double r = Math.hypot(relativeX, relativeY);
+        double robotAngle = Math.atan2(relativeY, relativeX) - Math.toRadians(cvtDegrees(getHeading())) + Math.PI / 4;
+
+        /*telemetry.addData("Rel X: ", relativeX);
+        telemetry.addData("Rel Y: ", relativeY);
+        telemetry.addData("Robot Angle: ", robotAngle);*/
+
+        //Calculates each motor power using trig
+        double v1 = r * Math.cos(robotAngle);
+        double v2 = r * Math.sin(robotAngle);
+        double v3 = r * Math.sin(robotAngle);
+        double v4 = r * Math.cos(robotAngle);
 
         //Getting the max value can assure that no motor will be set to a value above a certain point.
         double max = Math.max(Math.max(Math.abs(v1), Math.abs(v2)), Math.max(Math.abs(v3), Math.abs(v4)));
