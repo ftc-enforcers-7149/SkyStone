@@ -73,7 +73,7 @@ public class RedQuarryOdometryAuto extends ParentInit {
         range = new Range(hardwareMap, "distanceL", "distanceR", "distanceC");
         gyroscope = new Gyroscope(telemetry, hardwareMap);
         driveTrain = new DriveTrainV3(hardwareMap, telemetry, fLeft, fRight, bLeft, bRight, gyroscope);
-    }
+    } //
 
     public void init_loop() {
         super.init_loop();
