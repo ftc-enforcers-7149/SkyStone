@@ -26,6 +26,8 @@ public class OdometryPosition extends Position {
     //Stored position for turning
     private double storedX, storedY;
 
+    private double lastX=0, lastY=0;
+
     //Last direction value
     private boolean last_dir;
 
@@ -34,12 +36,12 @@ public class OdometryPosition extends Position {
     //used for encoders (y)
     private static final double     COUNTS_PER_MOTOR_REVY    = 1440;  //1440 for 1 enc //512 for another(x) 400 for (y) //
     private static final double     WHEEL_DIAMETER_INCHESY  = 1.49606299d ;     // For figuring circumference
-    public static final double     COUNTS_PER_INCHY        = COUNTS_PER_MOTOR_REVY /(WHEEL_DIAMETER_INCHESY * Math.PI);
+    public static final double      INCH_PER_COUNT_Y = (WHEEL_DIAMETER_INCHESY * Math.PI)/COUNTS_PER_MOTOR_REVY;
 
     //used for encoders (x)
     private static final double     COUNTS_PER_MOTOR_REVX    = 1440;  //1440 for 1 enc //512 for another(x) 400 for (y) //
     private static final double     WHEEL_DIAMETER_INCHESX  = 1.49606299d ;     // For figuring circumference
-    public static final double     COUNTS_PER_INCHX      = COUNTS_PER_MOTOR_REVX /(WHEEL_DIAMETER_INCHESX * Math.PI);
+    public static final double      INCH_PER_COUNT_X = (WHEEL_DIAMETER_INCHESX * Math.PI)/COUNTS_PER_MOTOR_REVX;
 
 
 
@@ -138,26 +140,24 @@ public class OdometryPosition extends Position {
 
     //Returns the motor distance in inches for Y
     private double getMotorDistInY(double input) {
-        return input/COUNTS_PER_INCHY;
+        return input * INCH_PER_COUNT_Y;
     }
 
     //Returns the motor distance in inches for Y
     private double getMotorDistInX(double input) {
-        return input/COUNTS_PER_INCHX;
+        return input* INCH_PER_COUNT_X;
     }
 
     public void setX(double x) {
         storedX = x;
         positionX = x;
-        encoderX.setMode(DcMotor.RunMode.STOP_AND_RESET_ENCODER);
-        encoderX.setMode(DcMotor.RunMode.RUN_WITHOUT_ENCODER);
+        lastX = encoderX.getCurrentPosition() * INCH_PER_COUNT_X;
     }
 
     public void setY(double y) {
         storedY = y;
         positionY = y;
-        encoderY.setMode(DcMotor.RunMode.STOP_AND_RESET_ENCODER);
-        encoderY.setMode(DcMotor.RunMode.RUN_WITHOUT_ENCODER);
+        lastY = encoderY.getCurrentPosition() * INCH_PER_COUNT_Y;
     }
 
 
@@ -185,13 +185,15 @@ public class OdometryPosition extends Position {
 
                 storedX = positionX;
                 storedY = positionY;
+                lastX = 0;
+                lastY = 0;
             }
             //Converts the robot's angle for use with sine and cosine
             //Then uses that as a modifier for how much an odometer will effect that axis
 
             //Apply the x odometer to the x and y axes
-            positionX = ((xDisp/COUNTS_PER_INCHX) * Math.sin(Math.toRadians(gyro.cvtTrigAng(heading)))) - ((yDisp/COUNTS_PER_INCHY)* Math.cos(Math.toRadians(gyro.cvtTrigAng(heading)))) + storedX;
-            positionY = ((yDisp/COUNTS_PER_INCHY) * Math.sin(Math.toRadians(gyro.cvtTrigAng(heading)))) + ((xDisp/COUNTS_PER_INCHX) * Math.cos(Math.toRadians(gyro.cvtTrigAng(heading)))) + storedY;
+            positionX = ((xDisp * INCH_PER_COUNT_X - lastX) * Math.sin(Math.toRadians(gyro.cvtTrigAng(heading)))) - ((yDisp * INCH_PER_COUNT_Y - lastY)* Math.cos(Math.toRadians(gyro.cvtTrigAng(heading)))) + storedX;
+            positionY = ((yDisp * INCH_PER_COUNT_Y - lastY) * Math.sin(Math.toRadians(gyro.cvtTrigAng(heading)))) + ((xDisp * INCH_PER_COUNT_X - lastX) * Math.cos(Math.toRadians(gyro.cvtTrigAng(heading)))) + storedY;
 
             //Rounds the positions so you don't get numbers like 6.6278326e^-12678
             /*positionY = Math.ceil(positionY * 1000000) / 1000000;

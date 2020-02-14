@@ -6,6 +6,7 @@ import com.qualcomm.robotcore.hardware.ColorSensor;
 import com.qualcomm.robotcore.hardware.DcMotor;
 import com.qualcomm.robotcore.hardware.DcMotorSimple;
 import com.qualcomm.robotcore.hardware.Servo;
+import com.qualcomm.robotcore.util.RobotLog;
 
 import org.firstinspires.ftc.robotcore.external.navigation.DistanceUnit;
 import org.firstinspires.ftc.teamcode.Subsystems.Range;
@@ -137,16 +138,16 @@ public class EncoderTest extends OpMode {
 
         telemetry.addData("posX:",positionX);//telemetry.addData("posX:",positionX);
         telemetry.addData("posY:",positionY);
+        telemetry.addData("raw x: ", encoderX.getCurrentPosition());
+        telemetry.addData("raw y: ", encoderY.getCurrentPosition());
         telemetry.addData("heading:" ,heading);
         telemetry.addLine();
         telemetry.addData("fLeft: ", fLeft.getPower());
         telemetry.addData("fRight: ", fRight.getPower());
         telemetry.addData("bLeft: ", bLeft.getPower());
         telemetry.addData("bRight: ", bRight.getPower());
-        telemetry.addLine();
-        telemetry.addData("Relative X: ", relativeX);
-        telemetry.addData("Relative Y: ", relativeY);
-        telemetry.addData("RobotAngle: ", robotAngle);
+
+        RobotLog.vv("ODOMETRY", "Pos X: " + positionX + " Pos Y: " + positionY);
     }
 
     public void stop(){

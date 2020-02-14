@@ -3,6 +3,7 @@ package org.firstinspires.ftc.teamcode.AutonomousPrograms.V2_1;
 import com.qualcomm.robotcore.eventloop.opmode.Autonomous;
 import com.qualcomm.robotcore.hardware.DcMotor;
 import com.qualcomm.robotcore.hardware.DcMotorSimple;
+import com.qualcomm.robotcore.util.RobotLog;
 
 import org.firstinspires.ftc.robotcore.external.navigation.DistanceUnit;
 import org.firstinspires.ftc.teamcode.Subsystems.DriveTrainV3;
@@ -39,7 +40,7 @@ public class RedQuarryOdometryAuto extends ParentInit {
 
     final double SECOND_LEFT_SKYSTONE = 1;
     final double SECOND_CENTER_SKYSTONE = 4.5;
-    final double SECOND_RIGHT_SKYSTONE = 12;
+    final double SECOND_RIGHT_SKYSTONE = 4;
 
     final double PRE_FOUNDATION_X = 42; //Spot to go to before or after cross skybridge
     final double FIRST_FOUNDATION_SIDE = 108;   //Spot to go to in first skystone cycle
@@ -93,6 +94,8 @@ public class RedQuarryOdometryAuto extends ParentInit {
         telemetry.addData("Heading: ", driveTrain.getHeading());
         telemetry.addData("position",position);
         telemetry.addLine();
+
+        RobotLog.vv("ODOMETRY", "Pos X: " + driveTrain.getPosX() + " Pos Y: " + driveTrain.getPosY());
 
         switch (step) {
             case 0:
@@ -168,9 +171,10 @@ public class RedQuarryOdometryAuto extends ParentInit {
                     direction = OdometryPosition.Direction.TURNING;
                     step++;
                 }
-                if (color.red()>90) {
+                /*if (color.red()>80) {
+                    telemetry.addLine("read line");
                     driveTrain.setX(64.25);
-                }
+                }*/
                 break;
             case 7:
                 //Self correction
@@ -187,9 +191,10 @@ public class RedQuarryOdometryAuto extends ParentInit {
                     direction = OdometryPosition.Direction.TURNING;
                     step++;
                 }
-                if (color.red()>90) {
+                /*if (color.red()>80) {
+                    telemetry.addLine("read line");
                     driveTrain.setX(64.25);
-                }
+                }*/
                 break;
             case 9:
                 //Self correction
@@ -261,15 +266,15 @@ public class RedQuarryOdometryAuto extends ParentInit {
                 break;
             case 15:
                 //Move to foundation side
-                if (driveTrain.driveToPoint(SECOND_FOUNDATION_SIDE, FOUNDATION_Y, 0.8)) {
+                if (driveTrain.driveToPoint(SECOND_FOUNDATION_SIDE, FOUNDATION_Y, 0.6)) {
                     claw.down();
                     claw.release();
                     direction = OdometryPosition.Direction.TURNING;
                     step++;
                 }
-                if (color.red()>85) {
+                /*if (color.red()>80) {
                     driveTrain.setX(64.25);
-                }
+                }*/
                 break;
             case 16:
                 if (driveTrain.rotate(270)) {
