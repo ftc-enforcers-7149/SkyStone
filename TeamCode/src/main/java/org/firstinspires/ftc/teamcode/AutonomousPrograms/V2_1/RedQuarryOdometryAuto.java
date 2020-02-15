@@ -35,12 +35,12 @@ public class RedQuarryOdometryAuto extends ParentInit {
 
     //These are the x values
     final double FIRST_LEFT_SKYSTONE = 19;
-    final double FIRST_CENTER_SKYSTONE = 28;
+    final double FIRST_CENTER_SKYSTONE = 27;
     final double FIRST_RIGHT_SKYSTONE = 35;
 
-    final double SECOND_LEFT_SKYSTONE = 1;
-    final double SECOND_CENTER_SKYSTONE = 4.5;
-    final double SECOND_RIGHT_SKYSTONE = 4;
+    final double SECOND_LEFT_SKYSTONE = -13;
+    final double SECOND_CENTER_SKYSTONE = -5;
+    final double SECOND_RIGHT_SKYSTONE = 12;//3;
 
     final double PRE_FOUNDATION_X = 42; //Spot to go to before or after cross skybridge
     final double FIRST_FOUNDATION_SIDE = 108;   //Spot to go to in first skystone cycle
@@ -107,17 +107,17 @@ public class RedQuarryOdometryAuto extends ParentInit {
             case 1:
                 //Align to grab stone
                 if (position == Positions.RIGHT) {
-                    if (driveTrain.driveToPoint(FIRST_RIGHT_SKYSTONE, PRE_GRAB_Y, 0.5, 0)) {
+                    if (driveTrain.driveToPoint(FIRST_RIGHT_SKYSTONE, PRE_GRAB_Y, 0.5,0)) {
                         step++;
                     }
                 }
                 else if (position == Positions.CENTER) {
-                    if (driveTrain.driveToPoint(FIRST_CENTER_SKYSTONE, PRE_GRAB_Y, 0.5, 0)) {
+                    if (driveTrain.driveToPoint(FIRST_CENTER_SKYSTONE, PRE_GRAB_Y, 0.5,0)) {
                         step++;
                     }
                 }
                 else {
-                    if (driveTrain.driveToPoint(FIRST_LEFT_SKYSTONE, PRE_GRAB_Y, 0.5, 0)) {
+                    if (driveTrain.driveToPoint(FIRST_LEFT_SKYSTONE, PRE_GRAB_Y, 0.5,0)) {
                         step++;
                     }
                 }
@@ -125,19 +125,19 @@ public class RedQuarryOdometryAuto extends ParentInit {
             case 2:
                 //Move to put stone in claw
                 if (position == Positions.RIGHT) {
-                    if (driveTrain.driveToPoint(FIRST_RIGHT_SKYSTONE, POST_GRAB_Y, 0.3)) {
+                    if (driveTrain.driveToPoint(FIRST_RIGHT_SKYSTONE, POST_GRAB_Y, 0.3,0)) {
                         claw.grab();
                         step++;
                     }
                 }
                 else if (position == Positions.CENTER) {
-                    if (driveTrain.driveToPoint(FIRST_CENTER_SKYSTONE, POST_GRAB_Y, 0.3)) {
+                    if (driveTrain.driveToPoint(FIRST_CENTER_SKYSTONE, POST_GRAB_Y, 0.3,0)) {
                         claw.grab();
                         step++;
                     }
                 }
                 else {
-                    if (driveTrain.driveToPoint(FIRST_LEFT_SKYSTONE, POST_GRAB_Y, 0.3)) {
+                    if (driveTrain.driveToPoint(FIRST_LEFT_SKYSTONE, POST_GRAB_Y, 0.3,0)) {
                         claw.grab();
                         step++;
                     }
@@ -187,8 +187,6 @@ public class RedQuarryOdometryAuto extends ParentInit {
             case 8:
                 //Drive back in preparation of going to skystone
                 if (driveTrain.driveToPoint(PRE_FOUNDATION_X, FOUNDATION_Y, 0.8, 270)) {
-                    claw.down();
-                    direction = OdometryPosition.Direction.TURNING;
                     step++;
                 }
                 /*if (color.red()>80) {
@@ -197,33 +195,38 @@ public class RedQuarryOdometryAuto extends ParentInit {
                 }*/
                 break;
             case 9:
-                //Self correction
-                if (driveTrain.rotate(0)) {
-                    direction = OdometryPosition.Direction.FORWARD;
-                    step++;
-                }
-                break;
-            case 10:
                 //Move into position for next skystone
                 if (position == Positions.RIGHT) {
-                    if (driveTrain.driveToPoint(SECOND_RIGHT_SKYSTONE, PRE_GRAB_Y, 0.5, 0)) {
+                    if (driveTrain.driveToPoint(SECOND_RIGHT_SKYSTONE, PRE_GRAB_Y, 0.5, 270)) {
+                        direction = OdometryPosition.Direction.TURNING;
                         step++;
                     }
                 }
                 else if (position == Positions.CENTER) {
-                    if (driveTrain.driveToPoint(SECOND_CENTER_SKYSTONE, PRE_GRAB_Y, 0.5, 0)) {
+                    if (driveTrain.driveToPoint(SECOND_CENTER_SKYSTONE, PRE_GRAB_Y, 0.5, 270)) {
+                        direction = OdometryPosition.Direction.TURNING;
                         step++;
                     }
                 }
                 else {
-                    if (driveTrain.driveToPoint(SECOND_LEFT_SKYSTONE,PRE_GRAB_Y, 0.5, 0)) {
+                    if (driveTrain.driveToPoint(SECOND_LEFT_SKYSTONE,PRE_GRAB_Y, 0.5, 270)) {
                         claw.setState(false, true);
+                        direction = OdometryPosition.Direction.TURNING;
                         step++;
                     }
                     else if (gyroscope.getXAccel() == 0) {
                         claw.setState(false, true);
+                        direction = OdometryPosition.Direction.TURNING;
                         step++;
                     }
+                }
+
+                break;
+            case 10:
+                if (driveTrain.rotate(0)) {
+                    direction = OdometryPosition.Direction.FORWARD;
+                    claw.down();
+                    step++;
                 }
                 break;
             case 11:
