@@ -215,7 +215,7 @@ public class OdometryPosition extends Position {
      * @return
      */
     public boolean driveToPoint(double x, double y, double lim, double ang, Telemetry telemetry) {
-        double min = 0.25;
+        double min = 0.3;
 
         //Gets the distance to the point
         double relativeX = x - positionX;//

@@ -24,15 +24,15 @@ public class Claw {
      */
     public void down(){
         lArm.setPosition(0.36);
-        rArm.setPosition(0.31);  //0
+        rArm.setPosition(0.45);  //0
     }
 
     /**
      * raises arm half way
      */
     public void halfUp(){
-        lArm.setPosition(0.65);//0.47
-        rArm.setPosition(0.56);//0.4
+        lArm.setPosition(0.66);//0.47
+        rArm.setPosition(0.73);//0.4
     }
 
     /**
@@ -40,7 +40,7 @@ public class Claw {
      */
     public void up(){
         lArm.setPosition(0.95);
-        rArm.setPosition(0.81);
+        rArm.setPosition(1);
     }
 
     /**
