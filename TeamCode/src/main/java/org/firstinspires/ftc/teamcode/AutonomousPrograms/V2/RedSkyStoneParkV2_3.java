@@ -155,7 +155,7 @@ public class RedSkyStoneParkV2_3 extends ParentInit {
                 if (driveTrain.strafeDrive(Directions.RIGHT,4,0.4)) {
                     step++;
                 }
-                break;
+                break;//
 
         }
     }
