@@ -139,10 +139,10 @@ public class TeleOpV2_2 extends OpMode {
         //Lift
         if (liftUp != last_liftUp || liftDown != last_liftDown) {
             if (liftUp > 0.1) {
-                liftMotor.setPower(1);
+                liftMotor.setPower(liftUp);
                 isBreak = true;
             } else if (liftDown > 0.1) {
-                liftMotor.setPower(-0.6);
+                liftMotor.setPower(-liftDown*0.6);
                 isBreak = false;
             } else if(isBreak){
                 liftMotor.setPower(0.1);

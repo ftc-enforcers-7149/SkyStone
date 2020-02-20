@@ -19,7 +19,7 @@ public class ParentInit extends OpMode {
     protected DriveTrainV1 driveTrainV1;
     protected FoundationV2 foundation;
     protected Claw claw;
-    protected Gyroscope gyro;
+   // protected Gyroscope gyro;
 
     //Distance Sensors
     protected DistanceSensor distanceL, distanceR, distanceC;
@@ -94,7 +94,7 @@ public class ParentInit extends OpMode {
     }
 
     public void start(){
-        driveTrainV1 =new DriveTrainV1(telemetry,fLeft,fRight,bLeft,bRight,gyro);
+        //driveTrainV1 =new DriveTrainV1(telemetry,fLeft,fRight,bLeft,bRight,gyro);
     }
 
     public void loop(){}

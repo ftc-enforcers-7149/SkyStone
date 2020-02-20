@@ -1,4 +1,4 @@
-package org.firstinspires.ftc.teamcode.AutonomousPrograms.V2_1;
+package org.firstinspires.ftc.teamcode.AutonomousPrograms.V2;
 
 import com.qualcomm.robotcore.eventloop.opmode.Autonomous;
 import com.qualcomm.robotcore.hardware.DcMotor;
@@ -13,8 +13,8 @@ import org.firstinspires.ftc.teamcode.Subsystems.Odometry.OdometryPosition;
 import org.firstinspires.ftc.teamcode.Subsystems.ParentInit;
 import org.firstinspires.ftc.teamcode.Subsystems.Range;
 
-@Autonomous(name = "Red Quarry Odom Auto v2")
-public class RedQuarryOdometryAuto extends ParentInit {
+//@Autonomous(name = "Red Quarry Odom Auto v2")
+public class RedSkyStoneParkV2_2 extends ParentInit {
 
     DriveTrainV3 driveTrain;
     Gyroscope gyroscope;

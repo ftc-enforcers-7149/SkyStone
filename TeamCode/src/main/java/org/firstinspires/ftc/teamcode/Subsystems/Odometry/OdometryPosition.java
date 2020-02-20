@@ -112,17 +112,29 @@ public class OdometryPosition extends Position {
     }
 
 
+    public void resetEncoderWithoutEncoder(){
+        encoderX.setMode(DcMotor.RunMode.STOP_AND_RESET_ENCODER);
+        encoderY.setMode(DcMotor.RunMode.STOP_AND_RESET_ENCODER);
+
+        //Sets our encoders to run again
+        encoderX.setMode(DcMotor.RunMode.RUN_WITHOUT_ENCODER);
+        encoderY.setMode(DcMotor.RunMode.RUN_WITHOUT_ENCODER);
+    }
 
     //Simple return methods that return data
     public double getPositionX() {
-        return positionX;
+        return -encoderX.getCurrentPosition() * INCH_PER_COUNT_X;
     }
 
     public double getPositionY() {
-        return positionY;
+        return encoderY.getCurrentPosition() * INCH_PER_COUNT_Y;
     }
 
     public double getRawX() {
+        return encoderX.getCurrentPosition();
+    }
+
+    public double getX() {
         return encoderX.getCurrentPosition();
     }
 
