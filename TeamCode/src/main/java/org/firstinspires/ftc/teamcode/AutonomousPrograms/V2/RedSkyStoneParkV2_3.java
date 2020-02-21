@@ -122,29 +122,30 @@ public class RedSkyStoneParkV2_3 extends ParentInit {
                 }
                 break;
             case 4:
-                if (driveTrain.driveStraight(Directions.FORWARD,73,0)) {
+                if (driveTrain.driveStraight(Directions.FORWARD,55,0)) {
                     step++;
                 }
                 break;
             case 5:
-                if (driveTrain.strafeDrive(Directions.LEFT,10,0.4)) {
+                if (driveTrain.strafeDrive(Directions.LEFT,7,0.4)) {
                     step++;
                 }
                 break;
             case 6:
-                if (driveTrain.strafeDrive(Directions.RIGHT,5,0.4)) {
+                if (driveTrain.strafeDrive(Directions.RIGHT,3,0.4)) {
                     step++;
                 }
                 break;
             case 7:
-                if (driveTrain.driveStraight(Directions.BACKWARD,97,358)) {
+                if (driveTrain.driveStraight(Directions.BACKWARD,79,358)) {
                     step++;
                 }
                 break;
             case 8:
-                if (driveTrain.rotate(0)){
+                /*if (driveTrain.rotate(0,0.1)){
                     step++;
-                }
+                }*/
+                step++;
                 break;
             case 9:
                 if (driveTrain.strafeDrive(Directions.LEFT,4,0.4)) {
@@ -152,10 +153,37 @@ public class RedSkyStoneParkV2_3 extends ParentInit {
                 }
                 break;
             case 10:
-                if (driveTrain.strafeDrive(Directions.RIGHT,4,0.4)) {
+                if (driveTrain.strafeDrive(Directions.RIGHT,2,0.4)) {
                     step++;
                 }
-                break;//
+                break;
+            case 11:
+                if (driveTrain.driveStraight(Directions.FORWARD,86,358)) {
+                    step++;
+                }
+                break;
+            case 12:
+                if (driveTrain.strafeDrive(Directions.LEFT,10,0.4)) {
+                    foundation.lDown();
+                    step++;
+                }
+                break;
+            case 13:
+                if(driveTrain.delay(1250)){
+                    step++;
+                }
+                break;
+            case 14:
+                if (driveTrain.foundationTurn(90)){
+                    step++;
+                }
+                break;
+            case 15:
+                if(driveTrain.strafeSeconds(Directions.LEFT,1500,0.7)){
+                    step++;
+                }
+                break;
+
 
         }
     }

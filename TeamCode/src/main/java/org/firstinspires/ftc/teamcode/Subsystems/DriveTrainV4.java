@@ -179,11 +179,63 @@ public class DriveTrainV4 {
         if(cPosition < last_dist){
             if(delta < 1){
                 //power -= 0.1;
-                turnR = 0.05;
+                turnR = 0.075;
             }
             else if(delta > -1){
                 //power -= 0.1;
-                turnL = 0.05;
+                turnL = 0.075;
+            }
+
+            fLeft.setPower(power - turnL);
+            fRight.setPower(power - turnR);
+            bLeft.setPower(power - turnL);
+            bRight.setPower(power - turnR);
+        }
+        else {
+            fLeft.setPower(0);
+            fRight.setPower(0);
+            bLeft.setPower(0);
+            bRight.setPower(0);
+
+            last_dist = 0;
+            return true;
+        }
+
+        return false;
+    }
+
+    /**
+     * drives inputted distance(inches)
+     * @param direction direction of driving.
+     * @param dist distance to drive.
+     */
+    public boolean driveStraight(Directions direction, double dist, double ang,double power) {
+        if (last_dist != dist) {
+            last_dist = dist;
+            resetEncoderWithoutEncoder();
+        }
+        //sets direction of motors
+        int mDirection = 1;
+        if (direction == Directions.BACKWARD) {
+            mDirection = -1;
+        }
+        power*=mDirection;
+
+        //converts current position into inches
+        double cPosition=oP.getPositionY()*mDirection;
+
+        double delta = gyro.getDelta(ang, gyro.getRawYaw());
+        double turnL = 0;
+        double turnR = 0;
+
+        if(cPosition < last_dist){
+            if(delta < 1){
+                //power -= 0.1;
+                turnR = 0.075;
+            }
+            else if(delta > -1){
+                //power -= 0.1;
+                turnL = 0.075;
             }
 
             fLeft.setPower(power - turnL);
@@ -331,22 +383,22 @@ public class DriveTrainV4 {
      * strafes for a given time
      * @param direction "left" for left "right" for right
      */
-    public boolean strafeSeconds(Directions direction, double time){
+    public boolean strafeSeconds(Directions direction, double time,double power){
         if (last_time != time) {
             last_time = time;
             endTime = System.currentTimeMillis() + time;
         }
         //sets direction strafing
-        int mDirection=1;
+        int mDirection=-1;
         if(direction == Directions.RIGHT){
-            mDirection=-1;
+            mDirection=1;
         }
 
         if (System.currentTimeMillis()<endTime){
-            fLeft.setPower(0.45*mDirection);
-            fRight.setPower(-0.45*mDirection);
-            bLeft.setPower(-0.45*mDirection);
-            bRight.setPower(0.45*mDirection);
+            fLeft.setPower(power*mDirection);
+            fRight.setPower(-power*mDirection);
+            bLeft.setPower(-power*mDirection);
+            bRight.setPower(power*mDirection);
         }
         else {
             fLeft.setPower(0);
@@ -434,6 +486,147 @@ public class DriveTrainV4 {
             fRight.setPower(-speed);
             bLeft.setPower(speed);
             bRight.setPower(-speed);
+        }
+        else {
+            fLeft.setPower(0);
+            fRight.setPower(0);
+            bLeft.setPower(0);
+            bRight.setPower(0);
+
+            last_ang = true;
+
+            return true;
+        }
+
+        return false;
+    }
+
+    /**
+     * Gets the shortest distance to destAngle
+     * and drives motors at a proportional speed
+     * to slow down as it gets closer
+     * Min Speed = 0.1
+     * Max Speed = 0.8
+     * @param destAngle Destination angle
+     * @return
+     */
+    public boolean rotate(double destAngle,double speed) {
+        if (last_ang) {
+            initAngle=360-gyro.getYaw();
+            last_ang=false;
+        }
+
+        //Get current heading
+        double heading = 360-gyro.getYaw();
+        double delta = gyro.getDelta(destAngle, heading);
+        boolean left;
+        boolean done=false;
+        double mDirection;
+
+
+        if(gyro.getDelta(destAngle, initAngle) > 0){
+            left=false;
+            mDirection=1;
+        }
+        else{
+            left=true;
+            mDirection=-1;
+        }
+
+
+        if(left){
+            if(delta > 0){
+                done=true;
+            }
+        }
+        else{
+            if(delta < 0){
+                done=true;
+            }
+        }
+
+        //If heading is not at destination
+        if (!done) {
+
+            telemetry.addData("Angle: ", delta);
+            telemetry.addData("Speed: ", speed);
+            telemetry.addData("Delta: ",delta);
+
+            //Drive the motors so the robot turns
+            fLeft.setPower(speed*mDirection);
+            fRight.setPower(-speed*mDirection);
+            bLeft.setPower(speed*mDirection);
+            bRight.setPower(-speed*mDirection);
+        }
+        else {
+            fLeft.setPower(0);
+            fRight.setPower(0);
+            bLeft.setPower(0);
+            bRight.setPower(0);
+
+            last_ang = true;
+
+            return true;
+        }
+
+        return false;
+    }
+
+    /**
+     * Gets the shortest distance to destAngle
+     * and drives motors at a proportional speed
+     * to slow down as it gets closer
+     * Min Speed = 0.1
+     * Max Speed = 0.8
+     * @param destAngle Destination angle
+     * @return
+     */
+    public boolean foundationTurn(double destAngle) {
+        if (last_ang) {
+            initAngle=360-gyro.getYaw();
+            last_ang=false;
+        }
+
+        //Get current heading
+        double heading = 360-gyro.getYaw();
+        double delta = gyro.getDelta(destAngle, heading);
+        boolean left;
+        boolean done=false;
+        double mDirection;
+
+
+        if(gyro.getDelta(destAngle, initAngle) > 0){
+            left=false;
+            mDirection=1;
+        }
+        else{
+            left=true;
+            mDirection=-1;
+        }
+
+
+        if(left){
+            if(delta > 0){
+                done=true;
+            }
+        }
+        else{
+            if(delta < 0){
+                done=true;
+            }
+        }
+
+        //If heading is not at destination
+        if (!done) {
+
+            telemetry.addData("Angle: ", delta);
+            telemetry.addData("Delta: ",delta);
+
+            //Drive the motors so the robot turns
+            fLeft.setPower(0.5*mDirection);
+            fRight.setPower(-0.7*mDirection);
+            bLeft.setPower(0.5*mDirection);
+            bRight.setPower(-0.5*mDirection);
         }
         else {
             fLeft.setPower(0);
