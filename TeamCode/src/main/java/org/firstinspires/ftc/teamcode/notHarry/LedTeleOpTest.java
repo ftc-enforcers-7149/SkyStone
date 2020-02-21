@@ -80,17 +80,9 @@ public class LedTeleOpTest extends OpMode {
 
         //LEDs
         if (distanceLift.getDistance(DistanceUnit.CM) <= 3) {
-            pattern = RevBlinkinLedDriver.BlinkinPattern.GREEN;
-        } else if (distanceLift.getDistance(DistanceUnit.CM) > 10 && distanceLift.getDistance(DistanceUnit.CM) < 11) {
-            pattern = RevBlinkinLedDriver.BlinkinPattern.YELLOW;
-        }else if (distanceLift.getDistance(DistanceUnit.CM) > 20 && distanceLift.getDistance(DistanceUnit.CM) < 21) {
-            pattern = RevBlinkinLedDriver.BlinkinPattern.ORANGE;
-        }else if (distanceLift.getDistance(DistanceUnit.CM) > 30 && distanceLift.getDistance(DistanceUnit.CM) < 31) {
+            pattern = RevBlinkinLedDriver.BlinkinPattern.BLUE;
+        } else {
             pattern = RevBlinkinLedDriver.BlinkinPattern.RED;
-        }else if (distanceLift.getDistance(DistanceUnit.CM) > 40 && distanceLift.getDistance(DistanceUnit.CM) < 41) {
-            pattern = RevBlinkinLedDriver.BlinkinPattern.GRAY;
-        }else{
-            pattern = RevBlinkinLedDriver.BlinkinPattern.BEATS_PER_MINUTE_RAINBOW_PALETTE;
         }
 
 
@@ -98,11 +90,11 @@ public class LedTeleOpTest extends OpMode {
 
 
         //Lift
-        ledLift.liftSet(gamepad1);
+        //ledLift.liftSet(gamepad1);
 
 
 
-        telemetry.addData("Lift Level", ledLift.getLevel());
+        //telemetry.addData("Lift Level", ledLift.getLevel());
 
     }
 

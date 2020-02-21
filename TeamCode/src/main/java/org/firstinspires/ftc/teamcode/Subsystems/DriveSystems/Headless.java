@@ -83,11 +83,11 @@ public class Headless {
             rightX = gamepad1.right_stick_x;
         }
         else {
-            leftY = gamepad1.left_stick_x;
-            leftX = -gamepad1.left_stick_y;
+            leftY = -gamepad1.left_stick_y;
+            leftX = -gamepad1.left_stick_x;
             rightX = gamepad1.right_stick_x;
         }
-
+;
         //Specific inputs
         angle = gyro.getRawYaw();
         resetAngle = gamepad1.y;
