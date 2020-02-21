@@ -103,7 +103,7 @@ public class RedSkyStoneParkV2_3Claw extends ParentInit {
                 }
                 else if (position == Positions.CENTER) {
                     if (driveTrain.strafeDrive(Directions.LEFT,4)) {
-                        step++;
+                        step++;//
                     }
                 }
                 else {
