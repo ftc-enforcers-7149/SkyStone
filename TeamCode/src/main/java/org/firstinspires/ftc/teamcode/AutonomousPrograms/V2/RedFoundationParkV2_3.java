@@ -143,6 +143,7 @@ public class RedFoundationParkV2_3 extends ParentInit {
                 }
                 break;
             case 10:
+
                 fLeft.setPower(0);
                 fRight.setPower(0);
                 bLeft.setPower(0);
