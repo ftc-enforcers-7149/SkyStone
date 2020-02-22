@@ -20,6 +20,14 @@ public class Claw {
     }
 
     /**
+     * Sets initial position for the claw
+     */
+    public void init() {
+        lArm.setPosition(1);
+        rArm.setPosition(0.86);
+    }
+
+    /**
      * Makes the claw go up
      */
     public void down(){

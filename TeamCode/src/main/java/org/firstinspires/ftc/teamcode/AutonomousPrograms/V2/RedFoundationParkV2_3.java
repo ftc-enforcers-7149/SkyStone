@@ -3,7 +3,6 @@ package org.firstinspires.ftc.teamcode.AutonomousPrograms.V2;
 import com.qualcomm.robotcore.eventloop.opmode.Autonomous;
 import com.qualcomm.robotcore.hardware.DcMotor;
 import com.qualcomm.robotcore.hardware.DcMotorSimple;
-import com.qualcomm.robotcore.util.RobotLog;
 
 import org.firstinspires.ftc.teamcode.Subsystems.DriveTrainV4;
 import org.firstinspires.ftc.teamcode.Subsystems.Enums.Directions;
@@ -13,8 +12,8 @@ import org.firstinspires.ftc.teamcode.Subsystems.Odometry.OdometryPosition;
 import org.firstinspires.ftc.teamcode.Subsystems.ParentInit;
 import org.firstinspires.ftc.teamcode.Subsystems.Range;
 
-@Autonomous(name = "Red Skystone Park V2_3")
-public class RedSkyStoneParkV2_3 extends ParentInit {
+@Autonomous(name = "RedFoundation2_3")
+public class RedFoundationParkV2_3 extends ParentInit {
 
     DriveTrainV4 driveTrain;
     Gyroscope gyroscope;
@@ -78,6 +77,7 @@ public class RedSkyStoneParkV2_3 extends ParentInit {
     public void init_loop() { super.init_loop(); }
 
     public void start() {
+        claw.up();
     }
 
     public void loop() {
@@ -87,122 +87,68 @@ public class RedSkyStoneParkV2_3 extends ParentInit {
 
         switch (step) {
             case 0:
-                //Get skystone position
-                position= Positions.RIGHT;
-                claw.release();
-                step++;
+                if (driveTrain.driveStraight(Directions.FORWARD, 5)) {
+                    step++;
+                }
                 break;
             case 1:
-                if (position == Positions.RIGHT) {
-                    if (driveTrain.driveStraight(Directions.FORWARD,4)) {
-                        step++;
-                    }
-                }
-                else if (position == Positions.CENTER) {
-                    if (driveTrain.driveToPoint(FIRST_CENTER_SKYSTONE, PRE_GRAB_Y, 0.5,0)) {
-                        step++;
-                    }
-                }
-                else {
-                    if (driveTrain.driveToPoint(FIRST_LEFT_SKYSTONE, PRE_GRAB_Y, 0.5,0)) {
-                        step++;
-                    }
-                }
-                break;
-            case 2:
-                if (driveTrain.strafeDrive(Directions.LEFT,26)) {
-                    step++;
-                }
-                break;
-            case 3:
-                if (driveTrain.strafeDrive(Directions.RIGHT,1)) {
-                    step++;
-                }
-                break;
-            case 4:
-                if (driveTrain.driveStraight(Directions.FORWARD,55,0)) {
-                    step++;
-                }
-                break;
-            case 5:
-                if (driveTrain.strafeDrive(Directions.LEFT,7,0.4)) {
-                    step++;
-                }
-                break;
-            case 6:
-                if (driveTrain.strafeDrive(Directions.RIGHT,3,0.4)) {
-                    step++;
-                }
-                break;
-            case 7:
-                if (driveTrain.driveStraight(Directions.BACKWARD,79,358)) {
-                    step++;
-                }
-                break;
-            case 8:
-                /*if (driveTrain.rotate(0,0.1)){
-                    step++;
-                }*/
-                step++;
-                break;
-            case 9:
-                if (driveTrain.strafeDrive(Directions.LEFT,4,0.4)) {
-                    step++;
-                }
-                break;
-            case 10:
-                if (driveTrain.strafeDrive(Directions.RIGHT,2,0.4)) {
-                    step++;
-                }
-                break;
-            case 11:
-                if (driveTrain.driveStraight(Directions.FORWARD,86,2)) {
-                    step++;
-                }
-                break;
-            case 12:
-                if (driveTrain.strafeDrive(Directions.LEFT,10,0.4)) {
+                if (driveTrain.strafeDrive(Directions.LEFT,35,0.4)) {
                     foundation.lDown();
                     step++;
                 }
                 break;
-            case 13:
+            case 2:
                 if(driveTrain.delay(1250)){
                     step++;
                 }
                 break;
-            case 14:
+            case 3:
                 if (driveTrain.foundationTurn(90)){
                     step++;
                 }
                 break;
-            case 15:
+            case 4:
                 if(driveTrain.strafeSeconds(Directions.LEFT,1500,0.7)){
                     step++;
                 }
                 break;
-            case 16:
+            case 5:
                 if(driveTrain.driveStraight(Directions.FORWARD, 2)) {
                     foundation.lUp();
                     step++;
                 }
                 break;
-            case 17:
+            case 6:
                 if(driveTrain.strafeDrive(Directions.RIGHT, 4)) {
                     claw.halfUp();
                     step++;
                 }
                 break;
-            case 18:
-                if(driveTrain.rotate(180, .5)) {
+            case 7:
+                if(driveTrain.rotate(270, .3)) {
                     step++;
                 }
                 break;
-            case 19:
-                if (driveTrain.driveToLine(color, Directions.FORWARD)) {
+            case 8:
+                if (driveTrain.driveStraight(Directions.BACKWARD, 20)) {
                     step++;
                 }
                 break;
+            case 9:
+                if (driveTrain.strafeDrive(Directions.LEFT, 30)) {
+                    step++;
+                }
+                else if (color.red()>80) {
+                    step++;
+                }
+                break;
+            case 10:
+                fLeft.setPower(0);
+                fRight.setPower(0);
+                bLeft.setPower(0);
+                bRight.setPower(0);
+                break;
+
         }
     }
 
@@ -212,4 +158,5 @@ public class RedSkyStoneParkV2_3 extends ParentInit {
         bLeft.setPower(0);
         bRight.setPower(0);
     }
+
 }

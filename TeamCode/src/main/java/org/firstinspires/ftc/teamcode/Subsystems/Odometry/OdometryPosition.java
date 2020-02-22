@@ -31,6 +31,8 @@ public class OdometryPosition extends Position {
     //Last direction value
     private boolean last_dir;
 
+    private double last_dist=0, last_r_x=0, last_r_y=0;
+
     //Used for encoders
 
     //used for encoders (y)
@@ -227,7 +229,7 @@ public class OdometryPosition extends Position {
      * @return
      */
     public boolean driveToPoint(double x, double y, double lim, double ang, Telemetry telemetry) {
-        double min = 0.3;
+        double min = 0.25;
 
         //Gets the distance to the point
         double relativeX = x - positionX;//
@@ -235,6 +237,14 @@ public class OdometryPosition extends Position {
 
         //Uses distance to calculate power and angle
         double r = Math.hypot(relativeX, relativeY);
+
+        if (x != last_r_x && y != last_r_y) {
+            last_r_x = x;
+            last_r_y = y;
+
+            last_dist = r;
+        }
+
         double robotAngle = Math.atan2(relativeY, relativeX) - Math.toRadians(cvtDegrees(getHeading())) + Math.PI / 4;
 
         /*telemetry.addData("Rel X: ", relativeX);
@@ -257,18 +267,42 @@ public class OdometryPosition extends Position {
         double v3 = r * Math.sin(robotAngle) + turn;
         double v4 = r * Math.cos(robotAngle) - turn;
 
+        //Quadratic acceleration
+        //double rawLim = -(4/Math.pow(last_dist, 2)) * Math.pow(r - (last_dist/2), 2) + 1.15;
+
+        double rawLim = -r/100 + 1;
+
+        if(rawLim > lim) {
+
+            rawLim = lim;
+
+        }
+
+        if (r < 15 ) {
+            rawLim = min;
+        }
+
+        if (rawLim < 0.15) {
+
+            rawLim = 0.15;
+
+        }
+        else if(rawLim > 1){
+
+            rawLim = lim;
+
+        }
+
+        telemetry.addData("Raw lim: ", rawLim);
+
         //Getting the max value can assure that no motor will be set to a value above a certain point.
         double max = Math.max(Math.max(Math.abs(v1), Math.abs(v2)), Math.max(Math.abs(v3), Math.abs(v4)));
 
-        if (r < 15) {
-            lim = min;
-        }
-
-        if (max != lim) {
-            v1 /= max * (1 / lim);
-            v2 /= max * (1 / lim);
-            v3 /= max * (1 / lim);
-            v4 /= max * (1 / lim);
+        if (max != rawLim) {
+            v1 /= max * (1 / rawLim);
+            v2 /= max * (1 / rawLim);
+            v3 /= max * (1 / rawLim);
+            v4 /= max * (1 / rawLim);
         }
 
         //In this case, no motor can go above lim power by scaling them all down if such a thing might occur.
@@ -288,6 +322,11 @@ public class OdometryPosition extends Position {
         //Returns true when the robot is close to the point
         if (Math.abs(relativeX) < 1 && Math.abs(relativeY) < 1) {
             motorStop();
+
+            last_r_x = 0;
+            last_r_y = 0;
+            last_dist = 0;
+
             return true;
         }
 
@@ -313,6 +352,14 @@ public class OdometryPosition extends Position {
 
         //Uses distance to calculate power and angle
         double r = Math.hypot(relativeX, relativeY);
+
+        if (x != last_r_x && y != last_r_y) {
+            last_r_x = x;
+            last_r_y = y;
+
+            last_dist = r;
+        }
+
         double robotAngle = Math.atan2(relativeY, relativeX) - Math.toRadians(cvtDegrees(getHeading())) + Math.PI / 4;
 
         /*telemetry.addData("Rel X: ", relativeX);
@@ -325,18 +372,43 @@ public class OdometryPosition extends Position {
         double v3 = r * Math.sin(robotAngle);
         double v4 = r * Math.cos(robotAngle);
 
+        //Quadratic acceleration
+        //double rawLim = -(4/Math.pow(last_dist, 2)) * Math.pow(r - (last_dist/2), 2) + 1.15;
+
+        double rawLim = -r/100 + 1;
+
+        if(rawLim > lim) {
+
+            rawLim = lim;
+
+        }
+
+        if (r < 15) {
+            rawLim = min;
+        }
+
+
+        if (rawLim < 0.15) {
+
+            rawLim = 0.15;
+
+        }
+        else if(rawLim > 1){
+
+            rawLim = lim;
+
+        }
+
+        telemetry.addData("Raw lim: ", rawLim);
+
         //Getting the max value can assure that no motor will be set to a value above a certain point.
         double max = Math.max(Math.max(Math.abs(v1), Math.abs(v2)), Math.max(Math.abs(v3), Math.abs(v4)));
 
-        if (r < 15) {
-            lim = min;
-        }
-
-        if (max != lim) {
-            v1 /= max * (1 / lim);
-            v2 /= max * (1 / lim);
-            v3 /= max * (1 / lim);
-            v4 /= max * (1 / lim);
+        if (max != rawLim) {
+            v1 /= max * (1 / rawLim);
+            v2 /= max * (1 / rawLim);
+            v3 /= max * (1 / rawLim);
+            v4 /= max * (1 / rawLim);
         }
 
         //In this case, no motor can go above lim power by scaling them all down if such a thing might occur.
@@ -356,6 +428,11 @@ public class OdometryPosition extends Position {
         //Returns true when the robot is close to the point
         if (Math.abs(relativeX) < 1 && Math.abs(relativeY) < 1) {
             motorStop();
+
+            last_r_x = 0;
+            last_r_y = 0;
+            last_dist = 0;
+
             return true;
         }
 

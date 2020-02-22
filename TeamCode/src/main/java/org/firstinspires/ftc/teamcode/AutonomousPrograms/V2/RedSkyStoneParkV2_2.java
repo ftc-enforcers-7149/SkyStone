@@ -93,6 +93,7 @@ public class RedSkyStoneParkV2_2 extends ParentInit {
         telemetry.addData("Position: ", "(" + driveTrain.getPosX() + ", " + driveTrain.getPosY() + ")");
         telemetry.addData("Heading: ", driveTrain.getHeading());
         telemetry.addData("position",position);
+        telemetry.addData("Odometry position: ", direction);
         telemetry.addLine();
 
         RobotLog.vv("ODOMETRY", "Pos X: " + driveTrain.getPosX() + " Pos Y: " + driveTrain.getPosY());
@@ -165,10 +166,11 @@ public class RedSkyStoneParkV2_2 extends ParentInit {
                 break;
             case 6:
                 //Drive to foundation side
-                if (driveTrain.driveToPoint(FIRST_FOUNDATION_SIDE, FOUNDATION_Y, 0.8)) {
+                if (driveTrain.driveToPoint(FIRST_FOUNDATION_SIDE, FOUNDATION_Y, 0.6)) {
                     claw.down();
                     claw.release();
                     direction = OdometryPosition.Direction.TURNING;
+
                     step++;
                 }
                 /*if (color.red()>80) {
@@ -186,18 +188,19 @@ public class RedSkyStoneParkV2_2 extends ParentInit {
                 break;
             case 8:
                 //Drive back in preparation of going to skystone
-                if (driveTrain.driveToPoint(PRE_FOUNDATION_X, FOUNDATION_Y, 0.8, 270)) {
+                if (driveTrain.driveToPoint(PRE_FOUNDATION_X, FOUNDATION_Y, 0.5, 270)) {
                     step++;
                 }
                 /*if (color.red()>80) {
                     telemetry.addLine("read line");
                     driveTrain.setX(64.25);
+                    driveTrain.setY(insert value here);
                 }*/
                 break;
             case 9:
                 //Move into position for next skystone
                 if (position == Positions.RIGHT) {
-                    if (driveTrain.driveToPoint(SECOND_RIGHT_SKYSTONE, PRE_GRAB_Y, 0.5, 270)) {
+                    if (driveTrain.driveToPoint(SECOND_RIGHT_SKYSTONE, PRE_GRAB_Y, 0.5)) {
                         direction = OdometryPosition.Direction.TURNING;
                         step++;
                     }

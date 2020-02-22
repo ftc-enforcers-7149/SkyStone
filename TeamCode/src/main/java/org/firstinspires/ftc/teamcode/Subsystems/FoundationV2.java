@@ -31,8 +31,8 @@ public class FoundationV2 {
      * left foundation up
      */
     public void lUp() {
-        fLFound.setPosition(1);
-        bLFound.setPosition(1);
+        fLFound.setPosition(.98);
+        bLFound.setPosition(.99);
     }
 
     /**
@@ -47,8 +47,8 @@ public class FoundationV2 {
      * right foundation up
      */
     public void rUp() {
-        fRFound.setPosition(0.7);
-        bRFound.setPosition(0.77);
+        fRFound.setPosition(.68);
+        bRFound.setPosition(.68);
     }
 
 }

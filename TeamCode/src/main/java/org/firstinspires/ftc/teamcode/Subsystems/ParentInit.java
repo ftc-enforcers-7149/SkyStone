@@ -66,14 +66,16 @@ public class ParentInit extends OpMode {
         bLFound.setDirection(Servo.Direction.FORWARD);
         bRFound.setDirection(Servo.Direction.REVERSE);
 
-        lArm.setPosition(0.95);
-        rArm.setPosition(0.81);
+        /*
+        lArm.setPosition(1);
+        rArm.setPosition(0.86);
+        */
 
-        fLFound.setPosition(1);
-        bLFound.setPosition(1);
+        fLFound.setPosition(.98);
+        bLFound.setPosition(.99);
 
-        fRFound.setPosition(1);
-        bRFound.setPosition(1);
+        fRFound.setPosition(.68);
+        bRFound.setPosition(.68);
 
         lift.setZeroPowerBehavior(DcMotor.ZeroPowerBehavior.BRAKE);
         fLeft.setZeroPowerBehavior(DcMotor.ZeroPowerBehavior.BRAKE);
