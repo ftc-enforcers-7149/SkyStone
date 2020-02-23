@@ -25,7 +25,12 @@ public class ParentInit extends OpMode {
     protected DistanceSensor distanceL, distanceR, distanceC;
     protected ColorSensor color;
 
-    private boolean initialize = true;
+    //Driving-related objects
+    protected DriveTrainV4 driveTrain;
+    protected Gyroscope gyroscope;
+    protected Range range;
+
+    /*private boolean initialize = true;*/
 
     public void init(){
         //Servos
@@ -50,7 +55,7 @@ public class ParentInit extends OpMode {
 
         color = hardwareMap.get(ColorSensor.class, "color");
 
-        //direction of motors
+        //Motor directions
         fLeft.setDirection(DcMotorSimple.Direction.FORWARD);
         fRight.setDirection(DcMotorSimple.Direction.REVERSE);
         bRight.setDirection(DcMotorSimple.Direction.REVERSE);
@@ -78,21 +83,27 @@ public class ParentInit extends OpMode {
         bRFound.setPosition(.68);
 
         lift.setZeroPowerBehavior(DcMotor.ZeroPowerBehavior.BRAKE);
-        fLeft.setZeroPowerBehavior(DcMotor.ZeroPowerBehavior.BRAKE);
-        fRight.setZeroPowerBehavior(DcMotor.ZeroPowerBehavior.BRAKE);
         bLeft.setZeroPowerBehavior(DcMotor.ZeroPowerBehavior.BRAKE);
         bRight.setZeroPowerBehavior(DcMotor.ZeroPowerBehavior.BRAKE);
+        fLeft.setZeroPowerBehavior(DcMotor.ZeroPowerBehavior.BRAKE);
+        fRight.setZeroPowerBehavior(DcMotor.ZeroPowerBehavior.BRAKE);
+
+        webcam=new Webcam(hardwareMap);
+        foundation =new FoundationV2(fLFound,fRFound,bLFound,bRFound);
+        claw=new Claw(lArm,rArm,lGrab,rGrab);
+
+        range = new Range(hardwareMap, "distanceL", "distanceR", "distanceC");
+        gyroscope = new Gyroscope(telemetry, hardwareMap);
+        driveTrain = new DriveTrainV4(hardwareMap, telemetry, fLeft, fRight, bLeft, bRight, gyroscope);
 
         telemetry.addData("sensor:",distanceC.getDeviceName());
     }
 
     public void init_loop() {
-        if (initialize) {
-            webcam=new Webcam(hardwareMap);
-            foundation =new FoundationV2(fLFound,fRFound,bLFound,bRFound);
-            claw=new Claw(lArm,rArm,lGrab,rGrab);
+        /*if (initialize) {
+
             initialize = false;
-        }
+        }*/
     }
 
     public void start(){
