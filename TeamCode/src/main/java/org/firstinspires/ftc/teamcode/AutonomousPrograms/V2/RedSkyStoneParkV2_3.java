@@ -52,13 +52,13 @@ public class RedSkyStoneParkV2_3 extends ParentInit {
                 }
                 else if (position == Positions.CENTER) {
                     if (driveTrain.driveStraight(Directions.BACKWARD, 4)) {
-                        offset = 8;
+                        offset = 4;
                         step++;
                     }
                 }
                 else {
                     if (driveTrain.driveStraight(Directions.BACKWARD, 12)) {
-                        offset = 16;
+                        offset = 12;
                         step++;
                     }
                 }
