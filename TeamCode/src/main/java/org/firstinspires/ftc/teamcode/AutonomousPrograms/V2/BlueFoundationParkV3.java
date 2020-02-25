@@ -15,7 +15,7 @@ import org.firstinspires.ftc.teamcode.Subsystems.Enums.Directions;
 import org.firstinspires.ftc.teamcode.Subsystems.FoundationV2;
 import org.firstinspires.ftc.teamcode.Subsystems.Gyroscope;
 
-@Autonomous(name = "Blue Foundation ParkV3")
+//@Autonomous(name = "Blue Foundation ParkV3")
 //@Disabled                            // Comment this out to add to the opmode list
 public class BlueFoundationParkV3 extends OpMode {
 

@@ -423,6 +423,90 @@ public class Webcam {
         return position;
     }
 
+    public boolean posDriveL(Telemetry telemetry){
+        targetsSkyStone.activate();
+        Vuforia.setFrameFormat(PIXEL_FORMAT.RGB565, true);
+        VuforiaLocalizer.CloseableFrame frame = null;
+        vuforia.setFrameQueueCapacity(1);
+        rgb = null;
+
+        while (rgb == null) {
+            try {
+                frame = vuforia.getFrameQueue().take();
+
+                for (int i = 0; i < frame.getNumImages(); i++) {
+                    if (frame.getImage(i).getFormat() == PIXEL_FORMAT.RGB565) {
+                        if (frame.getImage(i) != null) {
+                            rgb = frame.getImage(i);
+                            if (rgb != null) {
+                                break;
+                            }
+                        }
+                    }
+                }
+            }
+            catch (InterruptedException e) {
+                e.printStackTrace();
+            }
+            finally {
+                if (frame != null) {
+                    frame.close();
+                }
+            }
+        }
+
+        bitmap = Bitmap.createBitmap(rgb.getWidth(), rgb.getHeight(), Bitmap.Config.RGB_565);
+        bitmap.copyPixelsFromBuffer(rgb.getPixels());
+
+        FileOutputStream output = null;
+
+        try {
+            File file = new File(Environment.getExternalStorageDirectory().toString(), "bitmap.png");
+            output = new FileOutputStream(file);
+            bitmap.compress(Bitmap.CompressFormat.PNG, 100, output);
+        } catch (FileNotFoundException e) {
+            e.printStackTrace();
+        }
+        finally {
+            try {
+                if (output != null) {
+                    output.flush();
+                    output.close();
+                }
+            }
+            catch (Exception e) {
+                e.printStackTrace();
+            }
+        }
+
+        //Width is 640. Height is 480
+        bitmap = Bitmap.createBitmap(bitmap, 0, 150, bitmap.getWidth(), 200);
+        //Width is 640. Height is now 130
+
+        lRed = 0;
+        lGreen = 0;
+
+        if (bitmap != null) {
+            for (int y = 0; y < bitmap.getHeight(); y++) {
+                for (int x = 60; x < 80; x++) {
+                    lRed += Color.red(bitmap.getPixel(x, y));
+                    lGreen += Color.green(bitmap.getPixel(x, y));
+                }
+
+            }
+        }
+
+        int lRedGreen = lRed + lGreen;
+
+
+       if(lRedGreen<1000000){
+           return true;
+       }
+       else{
+           return false;
+       }
+    }
+
     /**
      * Sample one frame from the Vuforia stream and write it to a .PNG image file on the robot
      * controller in the /sdcard/FIRST/data directory. The images can be downloaded using Android

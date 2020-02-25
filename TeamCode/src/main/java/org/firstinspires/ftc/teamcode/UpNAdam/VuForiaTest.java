@@ -1,11 +1,8 @@
-/*
 package org.firstinspires.ftc.teamcode.UpNAdam;
 
 import com.qualcomm.robotcore.eventloop.opmode.Autonomous;
 import com.qualcomm.robotcore.eventloop.opmode.OpMode;
-import com.qualcomm.robotcore.hardware.HardwareMap;
 
-import org.firstinspires.ftc.teamcode.KrishnaSaysKilljoysNeverDie.Misc.Position;
 import org.firstinspires.ftc.teamcode.Subsystems.Enums.Positions;
 import org.firstinspires.ftc.teamcode.Subsystems.Webcam;
 @Autonomous(name="VuForia Test")
@@ -24,6 +21,7 @@ public class VuForiaTest extends OpMode {
                 break;
         }
         telemetry.addData("position",position);
+        telemetry.addData("skystone? ",webcam.posDriveL(telemetry));
     }
 
     public void loop(){
@@ -34,4 +32,3 @@ public class VuForiaTest extends OpMode {
     }
 
 }
-*/

@@ -35,6 +35,11 @@ public class FoundationV2 {
         bLFound.setPosition(.99);
     }
 
+    public void lHalf() {
+        fLFound.setPosition(.735);//.735
+        bLFound.setPosition(.74);//.74
+    }
+
     /**
      * right foundation down
      */

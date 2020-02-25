@@ -9,7 +9,7 @@ import org.firstinspires.ftc.teamcode.Subsystems.DriveTrainV3;
 import org.firstinspires.ftc.teamcode.Subsystems.Gyroscope;
 import org.firstinspires.ftc.teamcode.Subsystems.Odometry.OdometryPosition;
 
-@Autonomous(name = "OdomToPoint")
+//@Autonomous(name = "OdomToPoint")
 public class OdomToPoint extends OpMode {
 
     DriveTrainV3 driveTrain;

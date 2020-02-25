@@ -39,7 +39,7 @@ import org.firstinspires.ftc.teamcode.Subsystems.Claw;
 import org.firstinspires.ftc.teamcode.Subsystems.DriveTrainV1;
 import org.firstinspires.ftc.teamcode.Subsystems.FoundationV2;
 
-@Autonomous(name = "Red Foundation  ParkV2")
+//@Autonomous(name = "Red Foundation  ParkV2")
 //@Disabled                            // Comment this out to add to the opmode list
 public class RedFoundationParkV2 extends OpMode {
 

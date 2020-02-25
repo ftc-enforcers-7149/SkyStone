@@ -341,6 +341,57 @@ public class DriveTrainV4 {
     }
 
     /**
+     * drives inputted distance(inches) with angle correct
+     * @param direction direction of driving.
+     * @param dist distance to drive.
+     */
+    public boolean strafeDrive(Directions direction, double dist, double power, double ang) {
+        if (last_dist != dist) {
+            last_dist = dist;
+            resetEncoderWithoutEncoder();
+        }
+        //sets direction of motors
+        int mDirection = 1;
+        if (direction == Directions.RIGHT) {
+            mDirection = -1;
+        }
+
+
+        //converts current position into inches
+        double cPosition=oP.getPositionX()*mDirection;
+
+        double delta = gyro.getDelta(ang, gyro.getRawYaw());
+        double turnL = 0;
+        double turnR = 0;
+
+        if(cPosition < last_dist){
+            if(delta < 1){
+                //power -= 0.1;
+                turnR = 0.075;
+            }
+            else if(delta > -1){
+                //power -= 0.1;
+                turnL = 0.075;
+            }
+            fLeft.setPower(-power*mDirection);
+            fRight.setPower(power*mDirection);
+            bLeft.setPower(power*mDirection);
+            bRight.setPower(-power*mDirection);
+        }
+        else {
+            fLeft.setPower(0);
+            fRight.setPower(0);
+            bLeft.setPower(0);
+            bRight.setPower(0);
+
+            last_dist = 0;
+            return true;
+        }
+
+        return false;
+    }
+
+    /**
      * Strafes inputted distance(inches)
      * @param direction direction of strafing.
      * @param dist distance to strafe.
@@ -688,7 +739,7 @@ public class DriveTrainV4 {
         if (dir == Directions.FORWARD || dir == Directions.BACKWARD) {
             direction = dir == Directions.FORWARD ? 1 : -1;
 
-            if (color.red()<35&&color.blue()<35){
+            if (color.red()<80&&color.blue()<80){
                 fLeft.setPower(0.3*direction);
                 bLeft.setPower(0.3*direction);
                 bRight.setPower(0.3*direction);
@@ -706,7 +757,7 @@ public class DriveTrainV4 {
         else {
             direction = dir == Directions.RIGHT ? -1 : 1;
 
-            if (color.red()<35&&color.blue()<35){
+            if (color.red()<80&&color.blue()<80){
                 fLeft.setPower(-0.6*direction);
                 bLeft.setPower(0.6*direction);
                 bRight.setPower(-0.6*direction);
