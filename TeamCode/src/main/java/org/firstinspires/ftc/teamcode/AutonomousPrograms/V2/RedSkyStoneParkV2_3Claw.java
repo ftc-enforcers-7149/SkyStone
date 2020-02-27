@@ -13,7 +13,7 @@ import org.firstinspires.ftc.teamcode.Subsystems.Odometry.OdometryPosition;
 import org.firstinspires.ftc.teamcode.Subsystems.ParentInit;
 import org.firstinspires.ftc.teamcode.Subsystems.Range;
 
-@Autonomous(name = "Red Skystone Park V2_3 Claw")
+//@Autonomous(name = "Red Skystone Park V2_3 Claw")
 public class RedSkyStoneParkV2_3Claw extends ParentInit {
 
     DriveTrainV4 driveTrain;

@@ -6,7 +6,7 @@ import org.firstinspires.ftc.teamcode.Subsystems.Enums.Positions;
 import org.firstinspires.ftc.teamcode.Subsystems.Odometry.OdometryPosition;
 import org.firstinspires.ftc.teamcode.Subsystems.ParentInit;
 
-@Autonomous(name = "RedFoundation2_3")
+@Autonomous(name = "Red Foundation Park V2_3")
 public class RedFoundationParkV2_3 extends ParentInit {
 
     OdometryPosition.Direction direction;

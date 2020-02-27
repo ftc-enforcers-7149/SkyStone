@@ -9,7 +9,7 @@ import org.firstinspires.ftc.teamcode.Subsystems.DriveTrainV2;
 import org.firstinspires.ftc.teamcode.Subsystems.Enums.Directions;
 import org.firstinspires.ftc.teamcode.Subsystems.Gyroscope;
 
-@Autonomous(name="auto class")
+//@Autonomous(name="auto class")
 public class ClassTest extends OpMode {
 
     public DcMotor fLeft, fRight, bLeft, bRight;
