@@ -4,15 +4,15 @@ import com.qualcomm.robotcore.eventloop.opmode.OpMode;
 import com.qualcomm.robotcore.eventloop.opmode.TeleOp;
 import com.qualcomm.robotcore.hardware.Servo;
 
-@TeleOp(name="TestSavox")
-public class TestSavox extends OpMode {
+@TeleOp(name="TestServo")
+public class TestServo extends OpMode {
 
     Servo drive;
 
     boolean lastA, lastB;
 
     public void init() {
-        drive = hardwareMap.servo.get("drive");
+        drive = hardwareMap.servo.get("lArm");
     }
 
     public void loop() {
