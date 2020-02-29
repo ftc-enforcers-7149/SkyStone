@@ -44,8 +44,8 @@ public class FoundationV2 {
      * right foundation down
      */
     public void rDown() {
-        fRFound.setPosition(0.12);  //0.75 for kyle skystone grabber
-        bRFound.setPosition(0.12);
+        fRFound.setPosition(0);  //0.75 for kyle skystone grabber
+        bRFound.setPosition(0);
     }
 
     /**

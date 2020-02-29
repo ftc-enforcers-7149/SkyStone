@@ -675,7 +675,7 @@ public class DriveTrainV4 {
 
             //Drive the motors so the robot turns
             fLeft.setPower(0.5*mDirection);
-            fRight.setPower(-0.7*mDirection);
+            fRight.setPower(-1*mDirection);
             bLeft.setPower(0.5*mDirection);
             bRight.setPower(-0.5*mDirection);
         }
@@ -740,10 +740,10 @@ public class DriveTrainV4 {
             direction = dir == Directions.FORWARD ? 1 : -1;
 
             if (color.red()<80&&color.blue()<80){
-                fLeft.setPower(0.3*direction);
-                bLeft.setPower(0.3*direction);
-                bRight.setPower(0.3*direction);
-                fRight.setPower(0.3*direction);
+                fLeft.setPower(0.5*direction);
+                bLeft.setPower(0.5*direction);
+                bRight.setPower(0.5*direction);
+                fRight.setPower(0.5*direction);
             }
             else{
                 fLeft.setPower(0);

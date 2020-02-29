@@ -89,7 +89,7 @@ public class RedSkyStoneParkV2_3 extends ParentInit {
                 }
                 break;
             case 6:
-                if (driveTrain.driveStraight(Directions.FORWARD,57 + offset,0)) {
+                if (driveTrain.driveStraight(Directions.FORWARD,55 + offset,0,0.8)) {
                     step++;
                 }
                 break;
@@ -111,7 +111,7 @@ public class RedSkyStoneParkV2_3 extends ParentInit {
                 }
                 break;
             case 10:
-                if (driveTrain.driveStraight(Directions.BACKWARD,81 + offset,0)) {
+                if (driveTrain.driveStraight(Directions.BACKWARD,79 + offset,0.8)) {
                     foundation.lDown();
                     step++;
                 }
@@ -121,7 +121,7 @@ public class RedSkyStoneParkV2_3 extends ParentInit {
                     step++;
                 }
             case 12:
-                if (driveTrain.strafeDrive(Directions.LEFT,8, 0.6, 0)) {
+                if (driveTrain.strafeDrive(Directions.LEFT,6, 0.6, 0)) {
                     step++;
                 }
                 break;
@@ -132,12 +132,12 @@ public class RedSkyStoneParkV2_3 extends ParentInit {
                 }
                 break;
             case 14:
-                if (driveTrain.strafeDrive(Directions.RIGHT,11,0.4)) {
+                if (driveTrain.strafeDrive(Directions.RIGHT,18,0.4)) {
                     step++;
                 }
                 break;
             case 15:
-                if (driveTrain.driveStraight(Directions.FORWARD,86 + offset,2)) {
+                if (driveTrain.driveStraight(Directions.FORWARD,90 + offset,2,0.8)) {
                     step++;
                 }
                 break;
@@ -163,7 +163,7 @@ public class RedSkyStoneParkV2_3 extends ParentInit {
                 }
                 break;
             case 20:
-                if(driveTrain.driveStraight(Directions.FORWARD, 4)) {
+                if(driveTrain.driveStraight(Directions.FORWARD, 8)) {
                     foundation.lUp();
                     step++;
                 }
