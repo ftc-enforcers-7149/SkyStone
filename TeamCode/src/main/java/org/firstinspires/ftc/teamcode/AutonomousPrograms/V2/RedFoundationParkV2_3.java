@@ -85,10 +85,11 @@ public class RedFoundationParkV2_3 extends ParentInit {
             case 9:
                 if (driveTrain.strafeDrive(Directions.LEFT, 30)) {
                     step++;
+                    if (color.red()>80) {
+                        step++;
+                    }
                 }
-                else if (color.red()>80) {
-                    step++;
-                }
+
                 break;
             case 10:
 
