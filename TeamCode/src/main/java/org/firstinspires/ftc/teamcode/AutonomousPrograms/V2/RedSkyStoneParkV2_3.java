@@ -39,12 +39,15 @@ public class RedSkyStoneParkV2_3 extends ParentInit {
         telemetry.addData("step: ",step);
 
         switch (step) {
+            //Senses skystone
             case 0:
                 //Get skystone position
                 position = webcam.getQueuePos(telemetry);
+                claw.up();
                 claw.release();
                 step++;
                 break;
+            //Moves to align with block, and sets offset
             case 1:
                 if (position == Positions.RIGHT) {
                     if (driveTrain.driveStraight(Directions.FORWARD,6)) {
@@ -65,6 +68,7 @@ public class RedSkyStoneParkV2_3 extends ParentInit {
                 }
                 foundation.lHalf();
                 break;
+            //Strafes into and grabs block
             case 2:
                 if (driveTrain.strafeDrive(Directions.LEFT,24, 0.6, 0)) {
                     foundation.lDown();
@@ -72,114 +76,159 @@ public class RedSkyStoneParkV2_3 extends ParentInit {
                 }
                 break;
 
+            //Strafes more into block
             case 3:
                 if (driveTrain.strafeDrive(Directions.LEFT,8, 0.6, 0)) {
                     step++;
                 }
                 break;
+            //Drives forward to correct block grab
             case 4:
                 if (driveTrain.driveStraight(Directions.FORWARD,2,0,0.2)) {
                     foundation.lHalf();
                     step++;
                 }
                 break;
+            //Strafes away from block
             case 5:
-                if (driveTrain.strafeDrive(Directions.RIGHT,8)) {
+                if (driveTrain.strafeDrive(Directions.RIGHT,9)) {
                     step++;
                 }
                 break;
+            //Drives to foundation
             case 6:
-                if (driveTrain.driveStraight(Directions.FORWARD,55 + offset,0,0.8)) {
+                if (driveTrain.driveStraight(Directions.FORWARD,55 + offset,0)) {
                     step++;
                 }
                 break;
+            //Strafes into foundation and releases block
             case 7:
-                if (driveTrain.strafeDrive(Directions.LEFT,10,0.4)) {
+                if (driveTrain.strafeDrive(Directions.LEFT,12,0.4)) {
                     foundation.lDown();
                     step++;
                 }
                 break;
+            //Waits and puts foundation grabber up
             case 8:
                 if(driveTrain.delay(500)) {
                     foundation.lUp();
                     step++;
                 }
                 break;
+            //Strafes away from block
             case 9:
-                if (driveTrain.strafeDrive(Directions.RIGHT,6,0.4)) {
+                if (driveTrain.strafeDrive(Directions.RIGHT,8,0.4)) {
                     step++;
                 }
                 break;
+            //Drives back to second block
             case 10:
-                if (driveTrain.driveStraight(Directions.BACKWARD,79 + offset,0.8)) {
+                if(position == Positions.CENTER) {
+                    offset = 6.6;
+                }
+                if (driveTrain.driveStraight(Directions.BACKWARD,79 + offset,0)) {
                     foundation.lDown();
                     step++;
                 }
                 break;
+            //Waits for a second
             case 11:
                 if (driveTrain.delay(1000)) {
                     step++;
                 }
+            //Strafes to block
             case 12:
                 if (driveTrain.strafeDrive(Directions.LEFT,6, 0.6, 0)) {
                     step++;
                 }
                 break;
+            //If left, drives for 1.25 seconds. Else, sets into ready position
             case 13:
+                if(position==Positions.LEFT) {
+                    fLeft.setPower(-0.2);
+                    fRight.setPower(-0.2);
+                    bLeft.setPower(-0.2);
+                    bRight.setPower(-0.2);
+                    if (driveTrain.delay(1250)) {
+                        fLeft.setPower(0);
+                        fRight.setPower(0);
+                        bLeft.setPower(0);
+                        bRight.setPower(0);
+                        step++;
+                    }
+                }
+                else {
+                    step++;
+                }
+                break;
+
+            case 14:
                 if (driveTrain.driveStraight(Directions.FORWARD,2,0,0.2)) {
                     foundation.lHalf();
                     step++;
                 }
                 break;
-            case 14:
-                if (driveTrain.strafeDrive(Directions.RIGHT,18,0.4)) {
-                    step++;
-                }
-                break;
+            //Strafes away from block
             case 15:
-                if (driveTrain.driveStraight(Directions.FORWARD,90 + offset,2,0.8)) {
+                if (driveTrain.strafeDrive(Directions.RIGHT,12,0.4)) {
                     step++;
                 }
                 break;
+            //Drives forward to foundation
             case 16:
+                if (driveTrain.driveStraight(Directions.FORWARD,83 + offset,2,0.8)) {
+                    step++;
+                }
+                break;
+            //Strafes into foundation and grabs it
+            case 17:
                 if (driveTrain.strafeDrive(Directions.LEFT,14,0.4)) {
                     foundation.lDown();
                     step++;
                 }
                 break;
-            case 17:
-                if(driveTrain.delay(1250)){
+            //Waits for 1.25 seconds
+            case 18:
+                if(driveTrain.delay(750)){
                     step++;
                 }
                 break;
-            case 18:
+            //Turns foundation
+            case 19:
                 if (driveTrain.foundationTurn(90)){
                     step++;
                 }
                 break;
-            case 19:
+            //Strafes against wall
+            case 20:
                 if(driveTrain.strafeSeconds(Directions.LEFT,1500,0.7)){
                     step++;
                 }
                 break;
-            case 20:
-                if(driveTrain.driveStraight(Directions.FORWARD, 8)) {
+            //Drives foundation in and releases foundation
+            case 21:
+
+                if(driveTrain.driveStraight(Directions.FORWARD, 7)) {
                     foundation.lUp();
                     step++;
                 }
                 break;
-            case 21:
-                if(driveTrain.strafeDrive(Directions.RIGHT, 4)) {
-                    claw.halfUp();
-                    step++;
-                }
-                break;
+            //Strafes away from foundation
             case 22:
+                    if(driveTrain.strafeDrive(Directions.RIGHT, 4)) {
+                        claw.halfUp();
+                        step++;
+                    }
+
+                break;
+            //Turns to line
+            case 23:
                 if(driveTrain.rotate(180)) {
                     step++;
                 }
                 break;
-            case 23:
+            //Drives to line
+            case 24:
                 if (driveTrain.driveToLine(color, Directions.FORWARD)) {
                     step++;
                 }

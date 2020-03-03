@@ -674,10 +674,10 @@ public class DriveTrainV4 {
             telemetry.addData("Delta: ",delta);
 
             //Drive the motors so the robot turns
-            fLeft.setPower(0.5*mDirection);
+            fLeft.setPower(1*mDirection);
             fRight.setPower(-1*mDirection);
-            bLeft.setPower(0.5*mDirection);
-            bRight.setPower(-0.5*mDirection);
+            bLeft.setPower(-0.25*mDirection);
+            bRight.setPower(-0.7*mDirection);
         }
         else {
             fLeft.setPower(0);
@@ -739,8 +739,8 @@ public class DriveTrainV4 {
         if (dir == Directions.FORWARD || dir == Directions.BACKWARD) {
             direction = dir == Directions.FORWARD ? 1 : -1;
 
-            if (color.red()<80&&color.blue()<80){
-                fLeft.setPower(0.5*direction);
+            if (color.red()<50&&color.blue()<50){
+                fLeft.setPower(0.4*direction);
                 bLeft.setPower(0.5*direction);
                 bRight.setPower(0.5*direction);
                 fRight.setPower(0.5*direction);
