@@ -9,7 +9,7 @@ import com.qualcomm.robotcore.hardware.Servo;
 import org.firstinspires.ftc.teamcode.Subsystems.Enums.Directions;
 import org.firstinspires.ftc.teamcode.Subsystems.Gyroscope;
 
-@Autonomous(name = "Demobot Stones")
+//@Autonomous(name = "Demobot Stones")
 public class DemoAutoStones extends OpMode {
 
     Gyroscope gyro;

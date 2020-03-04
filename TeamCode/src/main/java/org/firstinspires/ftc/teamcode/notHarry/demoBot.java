@@ -11,7 +11,7 @@ import org.firstinspires.ftc.teamcode.Subsystems.DriveSystems.Headless;
 import org.firstinspires.ftc.teamcode.Subsystems.Gyroscope;
 
 
-@TeleOp(name = "demoBot")
+//@TeleOp(name = "demoBot")
 public class demoBot extends OpMode {
     Headless driveSystem;
     Gyroscope gyro;

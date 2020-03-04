@@ -11,7 +11,7 @@ import org.firstinspires.ftc.robotcore.external.navigation.DistanceUnit;
 import org.firstinspires.ftc.teamcode.Subsystems.DriveSystems.Headless;
 import org.firstinspires.ftc.teamcode.Subsystems.Gyroscope;
 
-@TeleOp(name = "Auto Lift")
+//@TeleOp(name = "Auto Lift")
 public class AutoLiftTest extends OpMode {
 
     //Drive train

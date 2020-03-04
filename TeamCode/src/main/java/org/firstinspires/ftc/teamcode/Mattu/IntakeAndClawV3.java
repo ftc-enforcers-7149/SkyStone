@@ -13,7 +13,7 @@ import org.firstinspires.ftc.robotcore.external.navigation.DistanceUnit;
 import org.firstinspires.ftc.teamcode.Subsystems.DriveSystems.Headless;
 import org.firstinspires.ftc.teamcode.Subsystems.Gyroscope;
 
-@TeleOp(name = "V3 Robot TeleOp")
+//@TeleOp(name = "V3 Robot TeleOp")
 public class IntakeAndClawV3 extends OpMode {
 
     //Drive System

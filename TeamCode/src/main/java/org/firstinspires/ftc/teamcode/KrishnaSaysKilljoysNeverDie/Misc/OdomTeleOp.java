@@ -17,7 +17,7 @@ import org.firstinspires.ftc.teamcode.Subsystems.DriveSystems.Headless;
 import org.firstinspires.ftc.teamcode.Subsystems.Gyroscope;
 import org.firstinspires.ftc.teamcode.Subsystems.Odometry.OdometryPosition;
 
-@TeleOp(name = "OdomTeleOp")
+//@TeleOp(name = "OdomTeleOp")
 public class OdomTeleOp extends OpMode {
 
     //Drive train

@@ -14,7 +14,7 @@ import org.firstinspires.ftc.teamcode.Subsystems.DriveSystems.Headless;
 import org.firstinspires.ftc.teamcode.Subsystems.FoundationV2;
 import org.firstinspires.ftc.teamcode.Subsystems.Gyroscope;
 
-@TeleOp(name = "ledTeleOpTest")
+//@TeleOp(name = "ledTeleOpTest")
 public class LedTeleOpTest extends OpMode {
     //Drive train
     Headless driveSystem;

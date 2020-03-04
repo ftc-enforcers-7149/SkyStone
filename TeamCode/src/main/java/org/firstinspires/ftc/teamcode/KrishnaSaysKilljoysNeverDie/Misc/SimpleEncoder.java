@@ -8,7 +8,7 @@ import org.firstinspires.ftc.teamcode.Subsystems.Gyroscope;
 import org.firstinspires.ftc.teamcode.Subsystems.Odometry.OdometryEncoder;
 import org.firstinspires.ftc.teamcode.Subsystems.Odometry.OdometryPosition;
 
-@TeleOp(name = "Simple Encoder")
+//@TeleOp(name = "Simple Encoder")
 public class SimpleEncoder extends OpMode {
 
     OdometryPosition oP;

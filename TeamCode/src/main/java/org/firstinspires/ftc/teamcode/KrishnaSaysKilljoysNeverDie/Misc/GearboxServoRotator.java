@@ -5,7 +5,7 @@ import com.qualcomm.robotcore.eventloop.opmode.TeleOp;
 import com.qualcomm.robotcore.hardware.Servo;
 import com.qualcomm.robotcore.hardware.ServoController;
 
-@TeleOp(name="GearboxServoRotator")
+//@TeleOp(name="GearboxServoRotator")
 public class GearboxServoRotator extends OpMode {
 
     Servo drive;

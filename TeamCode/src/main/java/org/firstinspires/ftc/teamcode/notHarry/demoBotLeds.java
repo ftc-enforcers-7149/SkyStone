@@ -11,7 +11,7 @@ import org.firstinspires.ftc.teamcode.Subsystems.DriveSystems.Headless;
 import org.firstinspires.ftc.teamcode.Subsystems.Gyroscope;
 
 import com.qualcomm.robotcore.hardware.DistanceSensor;
-@TeleOp(name = "demoBotLeds")
+//@TeleOp(name = "demoBotLeds")
 public class demoBotLeds extends OpMode {
 
       DistanceSensor autoGrab;

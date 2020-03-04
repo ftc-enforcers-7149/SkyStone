@@ -8,7 +8,7 @@ import com.qualcomm.robotcore.hardware.DcMotorSimple;
 import org.firstinspires.ftc.teamcode.Subsystems.DriveSystems.Headless;
 import org.firstinspires.ftc.teamcode.Subsystems.Gyroscope;
 
-@TeleOp(name="simple odom")
+//@TeleOp(name="simple odom")
 public class SimpleOdomTeleOp extends OpMode {
 
     //used for encoders
