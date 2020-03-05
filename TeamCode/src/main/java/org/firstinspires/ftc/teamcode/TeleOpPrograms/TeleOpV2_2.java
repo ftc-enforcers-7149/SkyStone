@@ -98,7 +98,7 @@ public class TeleOpV2_2 extends OpMode {
             if (lFoundationDown) {
                 foundation.lDown();
             } else {
-                foundation.lUp();
+                foundation.lHalf();
             }
         }
 

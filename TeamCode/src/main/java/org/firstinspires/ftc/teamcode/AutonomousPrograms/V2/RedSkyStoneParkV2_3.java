@@ -145,7 +145,7 @@ public class RedSkyStoneParkV2_3 extends ParentInit {
                 break;
             //If left, drives for 1.25 seconds. Else, sets into ready position
             case 13:
-                if(position==Positions.LEFT) {
+                /*if(position==Positions.LEFT) {
                     fLeft.setPower(-0.2);
                     fRight.setPower(-0.2);
                     bLeft.setPower(-0.2);
@@ -160,7 +160,8 @@ public class RedSkyStoneParkV2_3 extends ParentInit {
                 }
                 else {
                     step++;
-                }
+                }*/
+                step++;
                 break;
 
             case 14:
