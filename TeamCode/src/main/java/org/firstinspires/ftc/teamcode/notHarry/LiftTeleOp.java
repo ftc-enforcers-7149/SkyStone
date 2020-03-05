@@ -11,7 +11,7 @@ import org.firstinspires.ftc.teamcode.Subsystems.DriveSystems.Headless;
 import org.firstinspires.ftc.teamcode.Subsystems.Gyroscope;
 import org.firstinspires.ftc.teamcode.Subsystems.Lift;
 
-@TeleOp(name = "Lift TeleOp")
+//@TeleOp(name = "Lift TeleOp")
 public class LiftTeleOp extends OpMode {
     //Drive train
     Headless driveSystem;

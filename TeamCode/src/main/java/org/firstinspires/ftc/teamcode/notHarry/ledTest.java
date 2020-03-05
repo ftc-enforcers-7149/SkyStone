@@ -19,7 +19,7 @@ import org.firstinspires.ftc.teamcode.Subsystems.DriveSystems.Headless;
 import org.firstinspires.ftc.teamcode.Subsystems.Gyroscope;
 import org.firstinspires.ftc.teamcode._Reference.LEDTest;
 
-@TeleOp(name = "LED Auto Lift")
+//@TeleOp(name = "LED Auto Lift")
 public class ledTest extends OpMode {
     //Servo lArm, rArm, lGrab, rGrab;
     Telemetry.Item patternName;

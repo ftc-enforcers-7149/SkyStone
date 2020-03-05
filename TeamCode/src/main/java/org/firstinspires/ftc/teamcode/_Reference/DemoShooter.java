@@ -6,7 +6,7 @@ import com.qualcomm.robotcore.hardware.CRServo;
 import com.qualcomm.robotcore.hardware.DcMotor;
 import com.qualcomm.robotcore.hardware.DcMotorSimple;
 
-@TeleOp(name="Shoot")
+//@TeleOp(name="Shoot")
 public class DemoShooter extends OpMode {
     DcMotor bRight, bLeft, sweeper, lLaunch, rLaunch;
     CRServo convey;

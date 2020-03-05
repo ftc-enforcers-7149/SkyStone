@@ -11,7 +11,7 @@ import org.firstinspires.ftc.teamcode.Subsystems.DriveSystems.Headless;
 import org.firstinspires.ftc.teamcode.Subsystems.FoundationV2;
 import org.firstinspires.ftc.teamcode.Subsystems.Gyroscope;
 
-@TeleOp(name = "TeleOp v2")
+@TeleOp(name = "TeleOp")
 public class TeleOpV2_2 extends OpMode {
     //Subsystems
     Headless driveSystem;

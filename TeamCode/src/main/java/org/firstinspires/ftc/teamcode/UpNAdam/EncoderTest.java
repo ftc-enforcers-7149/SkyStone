@@ -15,7 +15,7 @@ import org.firstinspires.ftc.teamcode.Subsystems.DriveSystems.Headless;
 import org.firstinspires.ftc.teamcode.Subsystems.Gyroscope;
 import org.firstinspires.ftc.teamcode.Subsystems.Odometry.OdometryPosition;
 
-@TeleOp(name = "Encoder Testing")
+//@TeleOp(name = "Encoder Testing")
 public class EncoderTest extends OpMode {
     //Drive train
     Headless driveSystem;

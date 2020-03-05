@@ -14,7 +14,7 @@ import org.firstinspires.ftc.teamcode.Subsystems.Claw;
 import org.firstinspires.ftc.teamcode.Subsystems.DriveSystems.Headless;
 
 //fish in a tube
-@TeleOp(name = "towerLevelTest")
+//@TeleOp(name = "towerLevelTest")
 public class towerLevelTest extends OpMode {
     DcMotor lift;
     Servo lArm, rArm, lGrab, rGrab;

@@ -12,7 +12,7 @@ import org.firstinspires.ftc.teamcode.Subsystems.Odometry.OdometryPosition;
 import org.firstinspires.ftc.teamcode.Subsystems.ParentInit;
 import org.firstinspires.ftc.teamcode.Subsystems.Range;
 
-@TeleOp(name = "AccelerationTest")
+//@TeleOp(name = "AccelerationTest")
 public class AccelerationTest extends OpMode {
 
     DcMotor fRight, fLeft, bRight, bLeft;
