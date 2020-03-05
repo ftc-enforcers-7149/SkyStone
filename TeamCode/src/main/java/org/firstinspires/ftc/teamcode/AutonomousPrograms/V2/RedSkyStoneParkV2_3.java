@@ -44,7 +44,7 @@ public class RedSkyStoneParkV2_3 extends ParentInit {
                 //Get skystone position
                 position = webcam.getQueuePos(telemetry);
                 claw.up();
-                claw.release();
+                claw.grab();
                 step++;
                 break;
             //Moves to align with block, and sets offset
@@ -103,7 +103,7 @@ public class RedSkyStoneParkV2_3 extends ParentInit {
                 break;
             //Strafes into foundation and releases block
             case 7:
-                if (driveTrain.strafeDrive(Directions.LEFT,12,0.4)) {
+                if (driveTrain.strafeDrive(Directions.LEFT,11,0.4)) {
                     foundation.lDown();
                     step++;
                 }
@@ -216,6 +216,7 @@ public class RedSkyStoneParkV2_3 extends ParentInit {
             //Strafes away from foundation
             case 22:
                     if(driveTrain.strafeDrive(Directions.RIGHT, 4)) {
+                        claw.release();
                         claw.halfUp();
                         step++;
                     }
