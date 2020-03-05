@@ -36,6 +36,7 @@ public class DriveTrainV4 {
 
     private boolean last_ang=true;
     private double initAngle;
+    private boolean driveColor=true;
 
     /**
      * Main constructor
@@ -721,6 +722,48 @@ public class DriveTrainV4 {
             fRight.setPower(0);
 
             return true;
+        }
+
+        return false;
+    }
+
+    /**
+     * Drives to a line and then drives a distance
+     */
+    public boolean driveColorDist(ColorSensor color, Directions dir, double dist, double ang){
+
+        int direction;
+        if (driveColor) {
+
+            if (dir == Directions.FORWARD || dir == Directions.BACKWARD) {
+                direction = dir == Directions.FORWARD ? 1 : -1;
+
+                if (color.red() < 50 && color.blue() < 50) {
+                    fLeft.setPower(0.4 * direction);
+                    bLeft.setPower(0.5 * direction);
+                    bRight.setPower(0.5 * direction);
+                    fRight.setPower(0.5 * direction);
+                } else {
+                    driveColor = false;
+                }
+            } else {
+                direction = dir == Directions.RIGHT ? -1 : 1;
+
+                if (color.red() < 80 && color.blue() < 80) {
+                    fLeft.setPower(-0.6 * direction);
+                    bLeft.setPower(0.6 * direction);
+                    bRight.setPower(-0.6 * direction);
+                    fRight.setPower(0.6 * direction);
+                } else {
+                    driveColor = false;
+                }
+            }
+        }
+        else{
+            if (driveStraight(dir, dist, ang)) {
+                driveColor = true;
+                return true;
+            }
         }
 
         return false;
