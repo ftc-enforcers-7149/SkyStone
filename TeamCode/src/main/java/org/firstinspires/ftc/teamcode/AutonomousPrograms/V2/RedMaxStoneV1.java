@@ -95,7 +95,7 @@ public class RedMaxStoneV1 extends ParentInit {
                     foundation.lDown();
                     step++;
                 }
-                break;
+                break;//
             //Waits and puts foundation grabber up
             case 7:
                 if(driveTrain.delay(500)) {
