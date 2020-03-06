@@ -738,8 +738,8 @@ public class DriveTrainV4 {
             if (dir == Directions.FORWARD || dir == Directions.BACKWARD) {
                 direction = dir == Directions.FORWARD ? 1 : -1;
 
-                if (color.red() < 50 && color.blue() < 50) {
-                    fLeft.setPower(0.4 * direction);
+                if (color.red() < 65 && color.blue() < 65) {
+                    fLeft.setPower(0.5 * direction);
                     bLeft.setPower(0.5 * direction);
                     bRight.setPower(0.5 * direction);
                     fRight.setPower(0.5 * direction);
@@ -749,7 +749,7 @@ public class DriveTrainV4 {
             } else {
                 direction = dir == Directions.RIGHT ? -1 : 1;
 
-                if (color.red() < 80 && color.blue() < 80) {
+                if (color.red() < 65 && color.blue() < 65) {
                     fLeft.setPower(-0.6 * direction);
                     bLeft.setPower(0.6 * direction);
                     bRight.setPower(-0.6 * direction);

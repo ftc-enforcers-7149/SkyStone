@@ -79,7 +79,7 @@ public class RedMaxStoneV1 extends ParentInit {
             //Drives forward to correct block grab
             case 4:
                 if (driveTrain.driveStraight(Directions.FORWARD,2,0,0.2)) {
-                    foundation.lHalf();
+                    foundation.lStick();
                     step++;
                 }
                 break;
@@ -105,42 +105,61 @@ public class RedMaxStoneV1 extends ParentInit {
                 break;
             //Drives back to second block
             case 8:
-                if(position == Positions.CENTER) {
-                    offset = 6.6;
-                }
-                if (driveTrain.driveColorDist(color, Directions.BACKWARD,30 + offset, 0)) {
+                if (driveTrain.strafeDrive(Directions.RIGHT,1, 0.2, 0)) {
                     step++;
                 }
                 break;
-            //Strafes to block
             case 9:
-                if (driveTrain.strafeDrive(Directions.LEFT,6, 0.6, 0)) {
+                if(position == Positions.CENTER) {
+                    offset = 6.6;
+                }
+                if (driveTrain.driveColorDist(color, Directions.BACKWARD,31 + offset, 0)) {
+                    foundation.lHalf();
                     step++;
                 }
                 break;
             case 10:
+                /*if (driveTrain.delay(500)) {
+                    step++;
+                }*/
+                step++;
+                break;
+            //Strafes to block
+            case 11:
+                if (driveTrain.strafeDrive(Directions.LEFT,4, 0.6, 0)) {
+                    foundation.lDown();
+                    step++;
+                }
+                break;
+            case 12:
+                if (driveTrain.strafeDrive(Directions.LEFT,5, 0.6, 0)) {
+                    step++;
+                }
+                break;
+            case 13:
                 if (driveTrain.driveStraight(Directions.FORWARD,2,0,0.2)) {
                     foundation.lHalf();
                     step++;
                 }
                 break;
             //Strafes away from block
-            case 11:
-                if (driveTrain.strafeDrive(Directions.RIGHT,12,0.4)) {
-                    foundation.lDown();
+            case 14:
+                if (driveTrain.strafeDrive(Directions.RIGHT,8,0.4)) {
                     step++;
                 }
                 break;
             //Drives forward to foundation
-            case 12:
+            case 15:
                 if (driveTrain.driveColorDist(color, Directions.FORWARD,20 + offset, 0)) {
                     foundation.lDown();
                     step++;
                 }
                 break;
-            case 13:
+            case 16:
                 foundation.lUp();
                 step++;
+                requestOpModeStop();
+                break;
 
         }
     }

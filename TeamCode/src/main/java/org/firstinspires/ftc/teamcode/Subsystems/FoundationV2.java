@@ -36,6 +36,11 @@ public class FoundationV2 {
     }
 
     public void lHalf() {
+        fLFound.setPosition(.735);//.735
+        bLFound.setPosition(.74);//.74
+    }
+
+    public void lStick() {
         fLFound.setPosition(.865);//.735
         bLFound.setPosition(.87);//.74
     }
