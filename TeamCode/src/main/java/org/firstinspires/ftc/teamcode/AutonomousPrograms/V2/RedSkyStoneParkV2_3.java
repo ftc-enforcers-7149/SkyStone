@@ -124,7 +124,7 @@ public class RedSkyStoneParkV2_3 extends ParentInit {
             //Drives back to second block
             case 10:
                 if(position == Positions.CENTER) {
-                    offset = 6.6;
+                    offset = 5;
                 }
                 if (driveTrain.driveStraight(Directions.BACKWARD,79 + offset,0)) {
                     foundation.lDown();
@@ -177,7 +177,7 @@ public class RedSkyStoneParkV2_3 extends ParentInit {
                 break;
             //Drives forward to foundation
             case 16:
-                if (driveTrain.driveStraight(Directions.FORWARD,83 + offset,2,0.8)) {
+                if (driveTrain.driveStraight(Directions.FORWARD,85 + offset,2,0.8)) {
                     step++;
                 }
                 break;

@@ -84,7 +84,7 @@ public class BlueSkyStoneParkV2 extends ParentInit {
                 driveTrainV1.rotation(80);
                 break;
             case 18:
-                driveTrainV1.driveRange(distanceC,40,"center");
+
                 break;
             case 19:
                 driveTrainV1.simpleTurn(0,0.2);

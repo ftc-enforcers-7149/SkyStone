@@ -22,13 +22,12 @@ public class ParentInit extends OpMode {
    // protected Gyroscope gyro;
 
     //Distance Sensors
-    protected DistanceSensor distanceL, distanceR, distanceC;
+    protected DistanceSensor distanceL, distanceR;
     protected ColorSensor color;
 
     //Driving-related objects
     protected DriveTrainV4 driveTrain;
     protected Gyroscope gyroscope;
-    protected Range range;
 
     /*private boolean initialize = true;*/
 
@@ -49,7 +48,6 @@ public class ParentInit extends OpMode {
         bRight = hardwareMap.dcMotor.get("bRight");
         lift = hardwareMap.dcMotor.get("lift");
 
-        distanceC = hardwareMap.get(DistanceSensor.class, "distanceC");
         distanceL = hardwareMap.get(DistanceSensor.class, "distanceL");
         distanceR = hardwareMap.get(DistanceSensor.class, "distanceR");
 
@@ -71,10 +69,6 @@ public class ParentInit extends OpMode {
         bLFound.setDirection(Servo.Direction.FORWARD);
         bRFound.setDirection(Servo.Direction.REVERSE);
 
-        /*
-        lArm.setPosition(1);
-        rArm.setPosition(0.86);
-        */
 
         fLFound.setPosition(.98);
         bLFound.setPosition(.99);
@@ -92,23 +86,15 @@ public class ParentInit extends OpMode {
         foundation =new FoundationV2(fLFound,fRFound,bLFound,bRFound);
         claw=new Claw(lArm,rArm,lGrab,rGrab);
 
-        range = new Range(hardwareMap, "distanceL", "distanceR", "distanceC");
         gyroscope = new Gyroscope(telemetry, hardwareMap);
         driveTrain = new DriveTrainV4(hardwareMap, telemetry, fLeft, fRight, bLeft, bRight, gyroscope);
 
-        telemetry.addData("sensor:",distanceC.getDeviceName());
+        claw.grab();
     }
 
-    public void init_loop() {
-        /*if (initialize) {
+    public void init_loop() {}
 
-            initialize = false;
-        }*/
-    }
-
-    public void start(){
-        //driveTrainV1 =new DriveTrainV1(telemetry,fLeft,fRight,bLeft,bRight,gyro);
-    }
+    public void start(){}
 
     public void loop(){}
 
