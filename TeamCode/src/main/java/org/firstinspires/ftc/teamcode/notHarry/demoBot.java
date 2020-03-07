@@ -11,17 +11,17 @@ import org.firstinspires.ftc.teamcode.Subsystems.DriveSystems.Headless;
 import org.firstinspires.ftc.teamcode.Subsystems.Gyroscope;
 
 
-//@TeleOp(name = "demoBot")
+//@TeleOp(name = "Demo Bot")
 public class demoBot extends OpMode {
     Headless driveSystem;
     Gyroscope gyro;
 
-    DcMotor fLeft, fRight, bLeft, bRight;//, lift;
+    DcMotor fLeft, fRight, bLeft, bRight, lift;
 
     Servo lArm, rArm, claw;
 
     double arms, last_arms=0, grab, last_grab=0;
-    //double liftUp, last_liftUp=0, liftDown, last_liftDown=0;
+    boolean liftUp, last_liftUp=false, liftDown, last_liftDown=false;
 
     public void init(){
         //Motor initialization
@@ -29,14 +29,14 @@ public class demoBot extends OpMode {
         fRight = hardwareMap.dcMotor.get("fRight");
         bLeft = hardwareMap.dcMotor.get("bLeft");
         bRight = hardwareMap.dcMotor.get("bRight");
-        //lift = hardwareMap.dcMotor.get("lift");
+        lift = hardwareMap.dcMotor.get("lift");
 
         fLeft.setDirection(DcMotorSimple.Direction.FORWARD);
         fRight.setDirection(DcMotorSimple.Direction.REVERSE);
         bLeft.setDirection(DcMotorSimple.Direction.FORWARD);
         bRight.setDirection(DcMotorSimple.Direction.REVERSE);
 
-        //lift.setZeroPowerBehavior(DcMotor.ZeroPowerBehavior.BRAKE);
+        lift.setZeroPowerBehavior(DcMotor.ZeroPowerBehavior.BRAKE);
 
         //Servo initialization
         lArm = hardwareMap.servo.get("lArm");
@@ -56,8 +56,8 @@ public class demoBot extends OpMode {
         //Inputs
         arms = gamepad1.left_trigger;
         grab = gamepad1.right_trigger;
-        //liftUp = gamepad1.right_trigger;
-        //liftDown = gamepad1.left_trigger;
+        liftUp = gamepad1.dpad_up;
+        liftDown = gamepad1.dpad_down;
 
         //Drive
         driveSystem.drive(gamepad1);
@@ -85,23 +85,23 @@ public class demoBot extends OpMode {
         }
 
         //Lift
-        /*if (liftUp != last_liftUp || liftDown != last_liftDown) {
-            if (liftUp > 0.1) {
+        if (liftUp != last_liftUp || liftDown != last_liftDown) {
+            if (liftUp) {
                 lift.setPower(0.75);
             }
-            else if (liftDown > 0.1) {
+            else if (liftDown) {
                 lift.setPower(-0.5);
             }
             else {
-                lift.setPower(0);
+                lift.setPower(0.1);
             }
-        }*/
+        }
 
         //Update _last variables
         last_arms = arms;
         last_grab = grab;
-        //last_liftUp = liftUp;
-        //last_liftDown = liftDown;
+        last_liftUp = liftUp;
+        last_liftDown = liftDown;
     }
 
     public void stop(){
