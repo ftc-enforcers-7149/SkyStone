@@ -65,8 +65,10 @@ public class TeleOpV2_2 extends OpMode {
         bRFound.setDirection(Servo.Direction.REVERSE);
         lArm.setDirection(Servo.Direction.FORWARD);
         rArm.setDirection(Servo.Direction.REVERSE);
-        lGrab.setDirection(Servo.Direction.REVERSE);
-        rGrab.setDirection(Servo.Direction.FORWARD);
+
+        //For old savox: l - reverse, r - forward
+        lGrab.setDirection(Servo.Direction.FORWARD);
+        rGrab.setDirection(Servo.Direction.REVERSE);
 
         //Lift brake
         liftMotor.setZeroPowerBehavior(DcMotor.ZeroPowerBehavior.BRAKE);

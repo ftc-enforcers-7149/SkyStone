@@ -210,7 +210,7 @@ public class DriveTrainV4 {
      * @param direction direction of driving.
      * @param dist distance to drive.
      */
-    public boolean driveStraight(Directions direction, double dist, double ang,double power) {
+    public boolean driveStraight(Directions direction, double dist, double ang, double power) {
         if (last_dist != dist) {
             last_dist = dist;
             resetEncoderWithoutEncoder();
@@ -251,6 +251,30 @@ public class DriveTrainV4 {
             bRight.setPower(0);
 
             last_dist = 0;
+            return true;
+        }
+
+        return false;
+    }
+
+    public boolean driveAvoid(DistanceSensor distanceL, DistanceSensor distanceR, double dist, double ang, double power) {
+        double strafePower = power / 2;
+        //Check left sensor -> strafe right
+        if (distanceL.getDistance(DistanceUnit.CM) < (dist * 200) / 3) { //Example distance: 0.6 speed -> 40 distance
+            fLeft.setPower(strafePower);
+            fRight.setPower(-strafePower);
+            bLeft.setPower(-strafePower);
+            bRight.setPower(strafePower);
+        }
+        //Check right sensor -> strafe left
+        else if (distanceR.getDistance(DistanceUnit.CM) < (dist * 200) / 3) {
+            fLeft.setPower(-strafePower);
+            fRight.setPower(strafePower);
+            bLeft.setPower(strafePower);
+            bRight.setPower(-strafePower);
+        }
+        //If nothing detected -> continue driving
+        else if (driveStraight(Directions.FORWARD, dist, ang, power)) {
             return true;
         }
 
