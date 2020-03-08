@@ -62,8 +62,8 @@ public class ParentInit extends OpMode {
         //direction of servos
         lArm.setDirection(Servo.Direction.FORWARD);
         rArm.setDirection(Servo.Direction.REVERSE);
-        lGrab.setDirection(Servo.Direction.REVERSE);
-        rGrab.setDirection(Servo.Direction.FORWARD);
+        lGrab.setDirection(Servo.Direction.FORWARD);
+        rGrab.setDirection(Servo.Direction.REVERSE);
         fLFound.setDirection(Servo.Direction.REVERSE);
         fRFound.setDirection(Servo.Direction.FORWARD);
         bLFound.setDirection(Servo.Direction.FORWARD);

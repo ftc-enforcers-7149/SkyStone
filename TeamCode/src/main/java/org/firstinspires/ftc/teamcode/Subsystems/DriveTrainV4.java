@@ -7,6 +7,7 @@ import com.qualcomm.robotcore.hardware.HardwareMap;
 
 import org.firstinspires.ftc.robotcore.external.Telemetry;
 import org.firstinspires.ftc.robotcore.external.navigation.DistanceUnit;
+import org.firstinspires.ftc.teamcode.KrishnaSaysKilljoysNeverDie.Misc.Position;
 import org.firstinspires.ftc.teamcode.Subsystems.Enums.Directions;
 import org.firstinspires.ftc.teamcode.Subsystems.Enums.Positions;
 import org.firstinspires.ftc.teamcode.Subsystems.Odometry.OdometryPosition;
@@ -243,6 +244,53 @@ public class DriveTrainV4 {
             fRight.setPower(power - turnR);
             bLeft.setPower(power - turnL);
             bRight.setPower(power - turnR);
+        }
+        else {
+            fLeft.setPower(0);
+            fRight.setPower(0);
+            bLeft.setPower(0);
+            bRight.setPower(0);
+
+            last_dist = 0;
+            return true;
+        }
+
+        return false;
+    }
+
+    /**
+     * drives inputted distance(inches)
+     * @param direction direction of driving.
+     * @param dist distance to drive.
+     */
+    public boolean foundationDrive(Directions direction, Positions position, double dist, double power) {
+        if (last_dist != dist) {
+            last_dist = dist;
+            resetEncoderWithoutEncoder();
+        }
+        //sets direction of motors
+        int mDirection = 1;
+        if (direction == Directions.BACKWARD) {
+            mDirection = -1;
+        }
+
+        //converts current position into inches
+        double cPosition=oP.getPositionY()*mDirection;
+
+
+        if(cPosition < last_dist){
+          if(position==Positions.RIGHT){
+              fLeft.setPower(0.1 * mDirection);
+              fRight.setPower(power * mDirection);
+              bLeft.setPower(0.1 * mDirection);
+              bRight.setPower(power * mDirection);
+          }
+          else{
+              fRight.setPower(0.1 * mDirection);
+              fLeft.setPower(power * mDirection);
+              bRight.setPower(0.1 * mDirection);
+              bLeft.setPower(power * mDirection);
+          }
         }
         else {
             fLeft.setPower(0);
@@ -668,16 +716,13 @@ public class DriveTrainV4 {
         double delta = gyro.getDelta(destAngle, heading);
         boolean left;
         boolean done=false;
-        double mDirection;
 
 
         if(gyro.getDelta(destAngle, initAngle) > 0){
             left=false;
-            mDirection=1;
         }
         else{
             left=true;
-            mDirection=-1;
         }
 
 
@@ -699,10 +744,19 @@ public class DriveTrainV4 {
             telemetry.addData("Delta: ",delta);
 
             //Drive the motors so the robot turns
-            fLeft.setPower(1*mDirection);
-            fRight.setPower(-1*mDirection);
-            bLeft.setPower(-0.25*mDirection);
-            bRight.setPower(-0.7*mDirection);
+            if(!left){ //For red side
+                fLeft.setPower(1);
+                fRight.setPower(-1);
+                bLeft.setPower(-0.25);
+                bRight.setPower(-0.7);
+            }
+            else{ //For blue side
+                bLeft.setPower(-1);
+                bRight.setPower(1);
+                fLeft.setPower(0.25);
+                fRight.setPower(0.7);
+            }
+
         }
         else {
             fLeft.setPower(0);
