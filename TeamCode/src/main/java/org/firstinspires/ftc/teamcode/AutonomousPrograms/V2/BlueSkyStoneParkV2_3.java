@@ -174,7 +174,7 @@ public class BlueSkyStoneParkV2_3 extends ParentInit {
                 }
                 if (driveTrain.driveStraight(Directions.BACKWARD,75 + offset,2,0.8)) {
                     step++;
-                }
+                }//
                 break;
             //Strafes into foundation and grabs it
             case 17:
