@@ -280,15 +280,15 @@ public class DriveTrainV4 {
 
         if(cPosition < last_dist){
           if(position==Positions.RIGHT){
-              fLeft.setPower(0.1 * mDirection);
+              fLeft.setPower(0.4 * mDirection);
               fRight.setPower(power * mDirection);
-              bLeft.setPower(0.1 * mDirection);
+              bLeft.setPower(0.4 * mDirection);
               bRight.setPower(power * mDirection);
           }
           else{
-              fRight.setPower(0.1 * mDirection);
+              fRight.setPower(0.4 * mDirection);
               fLeft.setPower(power * mDirection);
-              bRight.setPower(0.1 * mDirection);
+              bRight.setPower(0.4 * mDirection);
               bLeft.setPower(power * mDirection);
           }
         }
