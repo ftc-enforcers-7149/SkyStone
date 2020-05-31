@@ -21,6 +21,7 @@ public class RedSkyStoneParkV2_3 extends ParentInit {
 
     int step = 0;
     double offset = 0;
+    double foundationOffset = 0;
 
     public void init() {
         super.init();
@@ -57,12 +58,14 @@ public class RedSkyStoneParkV2_3 extends ParentInit {
                 else if (position == Positions.CENTER) {
                     if (driveTrain.driveStraight(Directions.FORWARD, 0,0)) {
                         offset = 10;
+                        foundationOffset = -3;
                         step++;
                     }
                 }
                 else {
-                    if (driveTrain.driveStraight(Directions.BACKWARD, 7)) {
-                        offset = 16;
+                    if (driveTrain.driveStraight(Directions.BACKWARD, 8)) {
+                        offset = 17;
+                        foundationOffset = -3;
                         step++;
                     }
                 }
@@ -126,7 +129,7 @@ public class RedSkyStoneParkV2_3 extends ParentInit {
                 if(position == Positions.CENTER) {
                     offset = 5;
                 }
-                if (driveTrain.driveStraight(Directions.BACKWARD,79 + offset,0)) {
+                if (driveTrain.driveStraight(Directions.BACKWARD,81 + offset,0)) {
                     foundation.lDown();
                     step++;
                 }
@@ -171,19 +174,19 @@ public class RedSkyStoneParkV2_3 extends ParentInit {
                 break;
             //Strafes away from block
             case 15:
-                if (driveTrain.strafeDrive(Directions.RIGHT,12,0.4)) {
+                if (driveTrain.strafeDrive(Directions.RIGHT,14,0.4)) {
                     step++;
                 }
                 break;
             //Drives forward to foundation
             case 16:
-                if (driveTrain.driveStraight(Directions.FORWARD,85 + offset,2,0.8)) {
+                if (driveTrain.driveStraight(Directions.FORWARD,84 + offset,2,0.8)) {
                     step++;
                 }
                 break;
             //Strafes into foundation and grabs it
             case 17:
-                if (driveTrain.strafeDrive(Directions.LEFT,14,0.4)) {
+                if (driveTrain.strafeDrive(Directions.LEFT,16,0.4)) {
                     foundation.lDown();
                     step++;
                 }
@@ -196,27 +199,33 @@ public class RedSkyStoneParkV2_3 extends ParentInit {
                 break;
             //Turns foundation
             case 19:
-                if (driveTrain.foundationTurn(90)){
+                if (driveTrain.foundationTurn(100)){
                     step++;
                 }
                 break;
-            //Strafes against wall
             case 20:
-                if(driveTrain.strafeSeconds(Directions.LEFT,1500,0.7)){
+                /*if (driveTrain.rotate(90,0.7)){
+                    step++;
+                }*/
+                step++;
+                break;
+            //Strafes against wall
+            case 21:
+                if(driveTrain.strafeSeconds(Directions.LEFT,2500,0.7)){
                     step++;
                 }
                 break;
             //Drives foundation in and releases foundation
-            case 21:
+            case 22:
 
-                if(driveTrain.driveStraight(Directions.FORWARD, 7)) {
+                if(driveTrain.driveStraight(Directions.FORWARD, 6 + foundationOffset)) {
                     foundation.lUp();
                     step++;
                 }
                 break;
             //Strafes away from foundation
-            case 22:
-                    if(driveTrain.strafeDrive(Directions.RIGHT, 4)) {
+            case 23:
+                    if(driveTrain.strafeDrive(Directions.RIGHT, 6)) {
                         claw.release();
                         claw.halfUp();
                         step++;
@@ -224,13 +233,13 @@ public class RedSkyStoneParkV2_3 extends ParentInit {
 
                 break;
             //Turns to line
-            case 23:
+            case 24:
                 if(driveTrain.rotate(180)) {
                     step++;
                 }
                 break;
             //Drives to line
-            case 24:
+            case 25:
                 if (driveTrain.driveToLine(color, Directions.FORWARD)) {
                     step++;
                 }

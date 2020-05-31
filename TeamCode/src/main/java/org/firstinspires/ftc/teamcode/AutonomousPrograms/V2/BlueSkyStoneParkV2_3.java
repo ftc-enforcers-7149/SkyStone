@@ -163,7 +163,7 @@ public class BlueSkyStoneParkV2_3 extends ParentInit {
                 break;
             //Strafes away from block
             case 15:
-                if (driveTrain.strafeDrive(Directions.RIGHT,11,0.4)) {
+                if (driveTrain.strafeDrive(Directions.RIGHT,13,0.4)) {
                     step++;
                 }
                 break;
@@ -178,7 +178,7 @@ public class BlueSkyStoneParkV2_3 extends ParentInit {
                 break;
             //Strafes into foundation and grabs it
             case 17:
-                if (driveTrain.strafeDrive(Directions.LEFT,14,0.4)) {
+                if (driveTrain.strafeDrive(Directions.LEFT,16,0.4)) {
                     foundation.lDown();
                     step++;
                 }
@@ -202,14 +202,14 @@ public class BlueSkyStoneParkV2_3 extends ParentInit {
                 break;
             //Strafes against wall
             case 21:
-                if(driveTrain.strafeSeconds(Directions.LEFT,1500,1)){
+                if(driveTrain.strafeSeconds(Directions.LEFT,2500,1)){
                     step++;
                 }
                 break;
             //Drives foundation in and releases foundation
             case 22:
 
-                if(driveTrain.foundationDrive(Directions.BACKWARD,Positions.LEFT,5+offset,0.8)) {
+                if(driveTrain.foundationDrive(Directions.BACKWARD,Positions.LEFT,2+offset,0.8)) {
                     foundation.lUp();
                     step++;
                 }
