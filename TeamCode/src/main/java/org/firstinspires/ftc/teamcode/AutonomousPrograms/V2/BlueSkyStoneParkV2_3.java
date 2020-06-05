@@ -19,8 +19,8 @@ public class BlueSkyStoneParkV2_3 extends ParentInit {
 
     public void init() {
         super.init();
-        direction = OdometryPosition.Direction.FORWARD;
-    } //
+    direction = OdometryPosition.Direction.FORWARD;
+} //
 
     public void init_loop() { super.init_loop(); }
 
@@ -46,17 +46,18 @@ public class BlueSkyStoneParkV2_3 extends ParentInit {
             case 1:
                 if (position == Positions.LEFT) {
                     if (driveTrain.driveStraight(Directions.BACKWARD,7)) {
+                        offset=2;
                         step++;
                     }
                 }
                 else if (position == Positions.CENTER) {
-                    if (driveTrain.driveStraight(Directions.BACKWARD, 2.5)) {
-                        offset = 6;
+                    if (driveTrain.driveStraight(Directions.BACKWARD, 2)) {
+                        offset = 7;
                         step++;
                     }
                 }
                 else {
-                    if (driveTrain.driveStraight(Directions.BACKWARD, 0.5)) {
+                    if (driveTrain.driveStraight(Directions.BACKWARD, 0.25)) {
                         offset = 18;
                         step++;
                     }
@@ -92,13 +93,13 @@ public class BlueSkyStoneParkV2_3 extends ParentInit {
                 break;
             //Drives to foundation
             case 6:
-                if (driveTrain.driveStraight(Directions.BACKWARD,67 + offset,0)) {
+                if (driveTrain.driveStraight(Directions.BACKWARD,66 + offset,0)) {
                     step++;
                 }
                 break;
             //Strafes into foundation and releases block
             case 7:
-                if (driveTrain.strafeDrive(Directions.LEFT,8,0.4)) {
+                if (driveTrain.strafeDrive(Directions.LEFT,7,0.4)) {
                     foundation.lDown();
                     step++;
                 }
@@ -118,7 +119,7 @@ public class BlueSkyStoneParkV2_3 extends ParentInit {
                 break;
             //Drives back to second block
             case 10:
-                if (driveTrain.driveStraight(Directions.FORWARD,100 + offset,0)) {
+                if (driveTrain.driveStraight(Directions.FORWARD,99 + offset,0)) {
                     foundation.lDown();
                     step++;
                 }
@@ -172,6 +173,9 @@ public class BlueSkyStoneParkV2_3 extends ParentInit {
                 if(position==Positions.CENTER){
                     offset=10;
                 }
+                else if(position==Positions.RIGHT){
+                    offset=13;
+                }
                 if (driveTrain.driveStraight(Directions.BACKWARD,75 + offset,2,0.8)) {
                     step++;
                 }//
@@ -191,7 +195,7 @@ public class BlueSkyStoneParkV2_3 extends ParentInit {
                 break;
             //Turns foundation
             case 19:
-                if (driveTrain.foundationTurn(300)){
+                if (driveTrain.foundationTurn(280)){
                     step++;
                 }
                 break;
@@ -202,13 +206,15 @@ public class BlueSkyStoneParkV2_3 extends ParentInit {
                 break;
             //Strafes against wall
             case 21:
-                if(driveTrain.strafeSeconds(Directions.LEFT,2500,1)){
+                if(driveTrain.strafeSecondsBlue(Directions.LEFT,2500,1)){
                     step++;
                 }
                 break;
             //Drives foundation in and releases foundation
             case 22:
-
+                if(position==Positions.LEFT){
+                    offset=4;
+                }
                 if(driveTrain.foundationDrive(Directions.BACKWARD,Positions.LEFT,2+offset,0.8)) {
                     foundation.lUp();
                     step++;

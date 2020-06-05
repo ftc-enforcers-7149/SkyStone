@@ -507,7 +507,7 @@ public class DriveTrainV4 {
      * strafes for a given time
      * @param direction "left" for left "right" for right
      */
-    public boolean strafeSeconds(Directions direction, double time,double power){
+    public boolean strafeSecondsBlue(Directions direction, double time,double power){
         if (last_time != time) {
             last_time = time;
             endTime = System.currentTimeMillis() + time;
@@ -519,7 +519,7 @@ public class DriveTrainV4 {
         }
 
         if (System.currentTimeMillis()<endTime){
-            fLeft.setPower(power*mDirection);
+            fLeft.setPower((power/2)*mDirection);
             fRight.setPower(-power*mDirection);
             bLeft.setPower(-power*mDirection);
             bRight.setPower(power*mDirection);
@@ -536,6 +536,71 @@ public class DriveTrainV4 {
         return false;
     }
 
+    /**
+     * strafes for a given time
+     * @param direction "left" for left "right" for right
+     */
+    public boolean strafeSecondsRed(Directions direction, double time,double power){
+        if (last_time != time) {
+            last_time = time;
+            endTime = System.currentTimeMillis() + time;
+        }
+        //sets direction strafing
+        int mDirection=-1;
+        if(direction == Directions.RIGHT){
+            mDirection=1;
+        }
+
+        if (System.currentTimeMillis()<endTime){
+            fLeft.setPower((power)*mDirection);
+            fRight.setPower(-power*mDirection);
+            bLeft.setPower(-power*mDirection);
+            bRight.setPower((power/2)*mDirection);
+        }
+        else {
+            fLeft.setPower(0);
+            fRight.setPower(0);
+            bLeft.setPower(0);
+            bRight.setPower(0);
+
+            return true;
+        }
+
+        return false;
+    }
+
+    /**
+     * strafes for a given time
+     * @param direction "left" for left "right" for right
+     */
+    public boolean strafeSeconds(Directions direction, double time,double power){
+        if (last_time != time) {
+            last_time = time;
+            endTime = System.currentTimeMillis() + time;
+        }
+        //sets direction strafing
+        int mDirection=-1;
+        if(direction == Directions.RIGHT){
+            mDirection=1;
+        }
+
+        if (System.currentTimeMillis()<endTime){
+            fLeft.setPower((power)*mDirection);
+            fRight.setPower(-power*mDirection);
+            bLeft.setPower(-power*mDirection);
+            bRight.setPower(power*mDirection);
+        }
+        else {
+            fLeft.setPower(0);
+            fRight.setPower(0);
+            bLeft.setPower(0);
+            bRight.setPower(0);
+
+            return true;
+        }
+
+        return false;
+    }
     /**
      * Gets the shortest distance to destAngle
      * and drives motors at a proportional speed

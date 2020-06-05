@@ -26,27 +26,27 @@ public class ParentInit extends OpMode {
     protected ColorSensor color;
 
     //Driving-related objects
-    protected DriveTrainV4 driveTrain;
-    protected Gyroscope gyroscope;
+        protected DriveTrainV4 driveTrain;
+        protected Gyroscope gyroscope;
 
-    /*private boolean initialize = true;*/
+        /*private boolean initialize = true;*/
 
-    public void init(){
-        //Servos
-        lArm = hardwareMap.servo.get("lArm");
-        rArm = hardwareMap.servo.get("rArm");
-        lGrab = hardwareMap.servo.get("lGrab");
-        rGrab = hardwareMap.servo.get("rGrab");
-        fLFound = hardwareMap.servo.get("fLFound");
-        fRFound = hardwareMap.servo.get("fRFound");
-        bLFound = hardwareMap.servo.get("bLFound");
-        bRFound = hardwareMap.servo.get("bRFound");
-        //Drive motors
-        fLeft = hardwareMap.dcMotor.get("fLeft");
-        fRight = hardwareMap.dcMotor.get("fRight");
-        bLeft = hardwareMap.dcMotor.get("bLeft");
-        bRight = hardwareMap.dcMotor.get("bRight");
-        lift = hardwareMap.dcMotor.get("lift");
+        public void init(){
+            //Servos
+            lArm = hardwareMap.servo.get("lArm");
+            rArm = hardwareMap.servo.get("rArm");
+            lGrab = hardwareMap.servo.get("lGrab");
+            rGrab = hardwareMap.servo.get("rGrab");
+            fLFound = hardwareMap.servo.get("fLFound");
+            fRFound = hardwareMap.servo.get("fRFound");
+            bLFound = hardwareMap.servo.get("bLFound");
+            bRFound = hardwareMap.servo.get("bRFound");
+            //Drive motors
+            fLeft = hardwareMap.dcMotor.get("fLeft");
+            fRight = hardwareMap.dcMotor.get("fRight");
+            bLeft = hardwareMap.dcMotor.get("bLeft");
+            bRight = hardwareMap.dcMotor.get("bRight");
+            lift = hardwareMap.dcMotor.get("lift");
 
         distanceL = hardwareMap.get(DistanceSensor.class, "distanceL");
         distanceR = hardwareMap.get(DistanceSensor.class, "distanceR");
