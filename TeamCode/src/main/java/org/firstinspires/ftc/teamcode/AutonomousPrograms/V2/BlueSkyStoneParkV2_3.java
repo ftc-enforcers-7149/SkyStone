@@ -32,6 +32,8 @@ public class BlueSkyStoneParkV2_3 extends ParentInit {
         telemetry.addData("delta: ",gyroscope.getDelta(90,gyroscope.getRawYaw()));
         telemetry.addData("heading: ",gyroscope.getYaw());
         telemetry.addData("step: ",step);
+        telemetry.addData("Blue: ",color.blue());
+        telemetry.addData("Blue: ",color.red());
 
         switch (step) {
             //Senses skystone
@@ -51,13 +53,13 @@ public class BlueSkyStoneParkV2_3 extends ParentInit {
                     }
                 }
                 else if (position == Positions.CENTER) {
-                    if (driveTrain.driveStraight(Directions.BACKWARD, 2)) {
+                    if (driveTrain.driveStraight(Directions.BACKWARD, 1.25)) {
                         offset = 7;
                         step++;
                     }
                 }
                 else {
-                    if (driveTrain.driveStraight(Directions.BACKWARD, 0.25)) {
+                    if (driveTrain.driveStraight(Directions.FORWARD, 0.1)) {
                         offset = 18;
                         step++;
                     }
@@ -93,7 +95,7 @@ public class BlueSkyStoneParkV2_3 extends ParentInit {
                 break;
             //Drives to foundation
             case 6:
-                if (driveTrain.driveStraight(Directions.BACKWARD,66 + offset,0)) {
+                if (driveTrain.driveStraight(Directions.BACKWARD,68 + offset,0)) {
                     step++;
                 }
                 break;
@@ -119,6 +121,9 @@ public class BlueSkyStoneParkV2_3 extends ParentInit {
                 break;
             //Drives back to second block
             case 10:
+                if(position==Positions.CENTER){
+                    offset=9;
+                }
                 if (driveTrain.driveStraight(Directions.FORWARD,99 + offset,0)) {
                     foundation.lDown();
                     step++;
@@ -171,7 +176,7 @@ public class BlueSkyStoneParkV2_3 extends ParentInit {
             //Drives forward to foundation
             case 16:
                 if(position==Positions.CENTER){
-                    offset=10;
+                    offset=9;
                 }
                 else if(position==Positions.RIGHT){
                     offset=13;

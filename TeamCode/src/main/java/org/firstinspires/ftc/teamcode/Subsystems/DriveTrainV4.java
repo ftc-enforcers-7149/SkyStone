@@ -519,7 +519,7 @@ public class DriveTrainV4 {
         }
 
         if (System.currentTimeMillis()<endTime){
-            fLeft.setPower((power/2)*mDirection);
+            fLeft.setPower((power/4)*mDirection);
             fRight.setPower(-power*mDirection);
             bLeft.setPower(-power*mDirection);
             bRight.setPower(power*mDirection);
@@ -925,7 +925,7 @@ public class DriveTrainV4 {
         if (dir == Directions.FORWARD || dir == Directions.BACKWARD) {
             direction = dir == Directions.FORWARD ? 1 : -1;
 
-            if (color.red()<50&&color.blue()<60){
+            if (color.red()<70&&color.blue()<70){
                 fLeft.setPower(0.6*direction);
                 bLeft.setPower(0.6*direction);
                 bRight.setPower(0.6*direction);

@@ -56,14 +56,14 @@ public class RedSkyStoneParkV2_3 extends ParentInit {
                     }
                 }
                 else if (position == Positions.CENTER) {
-                    if (driveTrain.driveStraight(Directions.FORWARD, 0,0)) {
+                    if (driveTrain.driveStraight(Directions.FORWARD, 1,0)) {
                         offset = 10;
                         foundationOffset = -3;
                         step++;
                     }
                 }
                 else {
-                    if (driveTrain.driveStraight(Directions.BACKWARD, 8)) {
+                    if (driveTrain.driveStraight(Directions.BACKWARD, 7)) {
                         offset = 17;
                         foundationOffset = -3;
                         step++;
@@ -73,7 +73,7 @@ public class RedSkyStoneParkV2_3 extends ParentInit {
                 break;
             //Strafes into and grabs block
             case 2:
-                if (driveTrain.strafeDrive(Directions.LEFT,24, 0.6, 0)) {
+                if (driveTrain.strafeDrive(Directions.LEFT,24, 0.5, 0)) {
                     foundation.lDown();
                     step++;
                 }
@@ -106,7 +106,7 @@ public class RedSkyStoneParkV2_3 extends ParentInit {
                 break;
             //Strafes into foundation and releases block
             case 7:
-                if (driveTrain.strafeDrive(Directions.LEFT,11,0.4)) {
+                if (driveTrain.strafeDrive(Directions.LEFT,14,0.4)) {
                     foundation.lDown();
                     step++;
                 }
@@ -129,7 +129,7 @@ public class RedSkyStoneParkV2_3 extends ParentInit {
                 if(position == Positions.CENTER) {
                     offset = 5;
                 }
-                if (driveTrain.driveStraight(Directions.BACKWARD,81 + offset,0)) {
+                if (driveTrain.driveStraight(Directions.BACKWARD,83 + offset,0)) {
                     foundation.lDown();
                     step++;
                 }
@@ -174,7 +174,7 @@ public class RedSkyStoneParkV2_3 extends ParentInit {
                 break;
             //Strafes away from block
             case 15:
-                if (driveTrain.strafeDrive(Directions.RIGHT,14,0.4)) {
+                if (driveTrain.strafeDrive(Directions.RIGHT,16,0.4)) {
                     step++;
                 }
                 break;
@@ -186,7 +186,7 @@ public class RedSkyStoneParkV2_3 extends ParentInit {
                 break;
             //Strafes into foundation and grabs it
             case 17:
-                if (driveTrain.strafeDrive(Directions.LEFT,16,0.4)) {
+                if (driveTrain.strafeDrive(Directions.LEFT,18,0.4)) {
                     foundation.lDown();
                     step++;
                 }
