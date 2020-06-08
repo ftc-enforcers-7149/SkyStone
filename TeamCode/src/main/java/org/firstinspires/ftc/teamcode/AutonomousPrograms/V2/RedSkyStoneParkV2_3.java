@@ -184,7 +184,7 @@ public class RedSkyStoneParkV2_3 extends ParentInit {
                     step++;
                 }
                 break;
-            //Strafes into foundation and grabs it
+            //Strafes into foundation and grabs it//
             case 17:
                 if (driveTrain.strafeDrive(Directions.LEFT,18,0.4)) {
                     foundation.lDown();
