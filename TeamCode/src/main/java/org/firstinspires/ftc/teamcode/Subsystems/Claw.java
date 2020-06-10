@@ -56,8 +56,8 @@ public class Claw {
      */
     public void grab(){
         //For old savox: r - 0.23, l - 0.22
-        rGrab.setPosition(0.24);
-        lGrab.setPosition(0.25);
+        rGrab.setPosition(0.26);
+        lGrab.setPosition(0.27);
     }
 
     /**
@@ -95,8 +95,8 @@ public class Claw {
      * grabs stone vertically
      */
     public void grabVertical() {
-        rGrab.setPosition(0.36);
-        lGrab.setPosition(0.36);//.46
+        rGrab.setPosition(0.38);
+        lGrab.setPosition(0.38);//.46
     }
 
 }
