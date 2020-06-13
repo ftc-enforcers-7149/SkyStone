@@ -22,7 +22,11 @@ public class BlueSkyStoneParkV2_3 extends ParentInit {
     direction = OdometryPosition.Direction.FORWARD;
 } //
 
-    public void init_loop() { super.init_loop(); }
+    public void init_loop() {
+        super.init_loop();
+        telemetry.addData("Position x: ", driveTrain.getPosX());
+        telemetry.addData("Position y: ", driveTrain.getPosY());
+    }
 
     public void start() {
     }
@@ -34,6 +38,9 @@ public class BlueSkyStoneParkV2_3 extends ParentInit {
         telemetry.addData("step: ",step);
         telemetry.addData("Blue: ",color.blue());
         telemetry.addData("Blue: ",color.red());
+        telemetry.addData("Position x: ", driveTrain.getPosX());
+        telemetry.addData("Position y: ", driveTrain.getPosY());
+
 
         switch (step) {
             //Senses skystone

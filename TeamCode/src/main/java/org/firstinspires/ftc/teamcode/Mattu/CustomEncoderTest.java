@@ -11,7 +11,7 @@ import org.firstinspires.ftc.teamcode.Subsystems.DriveSystems.Headless;
 import org.firstinspires.ftc.teamcode.Subsystems.Gyroscope;
 import org.firstinspires.ftc.teamcode.Subsystems.Range;
 
-//@TeleOp(name="Custom Encoder Testing")
+@TeleOp(name="Custom Encoder Testing")
 public class CustomEncoderTest extends OpMode {
     //Drive train
     Headless driveSystem;
