@@ -102,7 +102,7 @@ public class BlueSkyStoneParkV2_3 extends ParentInit {
                 break;
             //Drives to foundation
             case 6:
-                if (driveTrain.driveStraight(Directions.BACKWARD,68 + offset,0)) {
+                if (driveTrain.driveStraight(Directions.BACKWARD,60 + offset,0)) {
                     step++;
                 }
                 break;
