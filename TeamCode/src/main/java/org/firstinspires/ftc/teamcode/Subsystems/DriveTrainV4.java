@@ -925,7 +925,7 @@ public class DriveTrainV4 {
         if (dir == Directions.FORWARD || dir == Directions.BACKWARD) {
             direction = dir == Directions.FORWARD ? 1 : -1;
 
-            if (color.red()<70&&color.blue()<70){
+            if (color.red()<70&&color.blue()<60){
                 fLeft.setPower(0.6*direction);
                 bLeft.setPower(0.6*direction);
                 bRight.setPower(0.6*direction);
@@ -1083,11 +1083,11 @@ public class DriveTrainV4 {
     }
 
     public double getPosX() {
-        return oP.positionX;
+        return oP.getPositionX();
     }
 
     public double getPosY() {
-        return oP.positionY;
+        return oP.getPositionY();
     }
 
     public double getRawX() {
